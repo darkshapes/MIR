@@ -1,0 +1,56 @@
+[build-system]
+requires      = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name        = "MIR"
+version     = "0.0.1"
+description = "Machine Intelligence Resource URI Schema"
+readme      = "README.md"
+
+requires-python = ">=3.11"
+dependencies = [
+    "tqdm",
+    "nnll[nnll-01,nnll-04,nnll-44,nnll-30,nnll-60] @ git+https://github.com/darkshapes/nnll@main",
+    "pydantic>=2.10.6",
+]
+
+[project.scripts]
+mir-maid  = "mir.mir_maid:main"
+mir-find  = "mir.compare_layers:main"
+mir-hash  = "mir.hash256:main"
+mir-add   = "mir.mir:main"
+mir-parse = "nnll_36:main"
+
+[project.urls]
+Homepage = "https://github.com/darkshapes/MIR"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3.5", "pytest-asyncio>=0.26.0", "ruff>=0.11.6"]
+
+[dependency-groups]
+dev = ["pytest-asyncio>=0.26.0", "pytest>=8.3.5", "ruff>=0.11.6"]
+
+[tool.setuptools]
+packages = ["mir"]
+
+[tool.ruff]
+line-length    = 140
+include        = ["*.py"]
+extend-exclude = ["^tests/.*$", "test.*$"]
+
+# [tool.ruff.format]
+# exclude = ["*.py"]
+
+[tool.pylint]
+max-line-length = 140
+ignore-paths    = ["^tests/.*$", "test_.*$"]
+disable         = ["C0415"]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length               = 140
+ignore-overlong-task-comments = true
+
+[tool.typos]
+files.extend-exclude = ["^tests/.*$", "test.*$"]
+default.extend-words = { "ot" = "ot" }

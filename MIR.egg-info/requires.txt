@@ -1,5 +1,7 @@
-nnll[nnll-01,nnll-04,nnll-30,nnll-60]@ git+https://github.com/darkshapes/nnll@main
+tqdm
+nnll[nnll-01,nnll-04,nnll-30,nnll-44,nnll-60]@ git+https://github.com/darkshapes/nnll@x.dev-refactor
 pydantic>=2.10.6
+huggingface-hub[hf-transfer,hf_xet]>=0.30.2
 
 [dev]
 pytest>=8.3.5

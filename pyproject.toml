@@ -11,8 +11,9 @@ readme      = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "tqdm",
-    "nnll[nnll-01,nnll-04,nnll-44,nnll-30,nnll-60] @ git+https://github.com/darkshapes/nnll@main",
+    "nnll[nnll-01,nnll-04,nnll-44,nnll-30,nnll-60] @ git+https://github.com/darkshapes/nnll@x.dev-refactor",
     "pydantic>=2.10.6",
+    "huggingface-hub[hf-transfer,hf_xet]>=0.30.2",
 ]
 
 [project.scripts]
@@ -33,6 +34,10 @@ dev = ["pytest-asyncio>=0.26.0", "pytest>=8.3.5", "ruff>=0.11.6"]
 
 [tool.setuptools]
 packages = ["mir"]
+
+[tool.setuptools.package-data]
+'mir' = ['config/*.json']
+
 
 [tool.ruff]
 line-length    = 140

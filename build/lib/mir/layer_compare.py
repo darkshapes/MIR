@@ -39,7 +39,7 @@ def compare_layers(query: str, file_path: str) -> None:
                 nfo(file_path, table_entries)  # output information
 
 
-def main():
+def main() -> None:
     """
     Find pattern matches using recursive `grep` search\n
     If 'grep' is not available, only the current folder is scanned.

@@ -10,7 +10,7 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 from pydantic import BaseModel, create_model
 
-from nnll.monitoring.file import debug_monitor
+from nnll.monitor.file import debug_monitor
 
 T = TypeVar("T")
 

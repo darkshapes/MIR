@@ -3,7 +3,7 @@
 
 
 def test_mir_creation():
-    from nnll.monitoring.file import nfo
+    from nnll.monitor.file import nfo
     from mir.mir import mir_entry
     from pprint import pprint
 

@@ -8,7 +8,7 @@
 
 from dataclasses import dataclass
 
-from nnll.monitoring.file import debug_monitor
+from nnll.monitor.file import debug_monitor
 from mir.json_cache import CHAIN_PATH_NAMED, JSONCache
 
 

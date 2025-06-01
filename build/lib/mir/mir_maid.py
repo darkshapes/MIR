@@ -7,7 +7,7 @@
 from typing import Any, Callable, Union, List, Optional
 import os
 
-from nnll.monitoring.file import debug_monitor, nfo  # , dbug
+from nnll.monitor.file import debug_monitor, nfo  # , dbug
 from mir.json_cache import JSONCache, MIR_PATH
 from mir.mir import mir_entry
 

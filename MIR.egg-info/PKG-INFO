@@ -3,17 +3,15 @@ Name: MIR
 Version: 0.0.1
 Summary: Machine Intelligence Resource URI Schema
 Project-URL: Homepage, https://github.com/darkshapes/MIR
-Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: tqdm
-Requires-Dist: nnll[nnll-01,nnll-04,nnll-30,nnll-44,nnll-60]@ git+https://github.com/darkshapes/nnll@x.dev-refactor
-Requires-Dist: pydantic>=2.10.6
-Requires-Dist: huggingface-hub[hf-transfer,hf_xet]>=0.30.2
-Provides-Extra: dev
-Requires-Dist: pytest>=8.3.5; extra == "dev"
-Requires-Dist: pytest-asyncio>=0.26.0; extra == "dev"
-Requires-Dist: ruff>=0.11.6; extra == "dev"
+Requires-Dist: huggingface-hub[hf-transfer,hf-xet]>=0.32.3
+Requires-Dist: lmstudio>=1.3.1
+Requires-Dist: nnll
+Requires-Dist: ollama>=0.5.1
+Requires-Dist: openai>=1.82.1
+Requires-Dist: pydantic>=2.11.5
+Requires-Dist: tqdm>=4.67.1
 Dynamic: license-file
 
 ---

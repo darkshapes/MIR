@@ -8,7 +8,7 @@
 from typing import Dict, List, Tuple, Optional
 from pydantic import BaseModel, computed_field
 
-from nnll.monitoring.file import dbug, debug_monitor, nfo
+from nnll.monitor.file import dbug, debug_monitor, nfo
 from mir.constants import LIBTYPE_CONFIG, VALID_CONVERSIONS, VALID_TASKS, LibType, has_api
 from mir.mir_maid import MIRDatabase
 

@@ -9,7 +9,7 @@ import sys
 sys.path.append(os.getcwd())
 from pathlib import Path
 from functools import cache
-from nnll.monitoring.file import dbug
+from nnll.monitor.file import dbug
 
 
 @cache

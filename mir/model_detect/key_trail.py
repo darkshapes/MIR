@@ -4,7 +4,7 @@
 # pylint: disable=import-outside-toplevel
 
 
-from nnll.monitoring.file import debug_monitor
+from nnll.monitor.file import debug_monitor
 from mir.model_detect.value_compare import ValueComparison
 
 

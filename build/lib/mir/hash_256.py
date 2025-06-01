@@ -4,7 +4,7 @@ import sys
 import os
 
 sys.path.append(os.getcwd())
-from nnll.monitoring.file import nfo
+from nnll.monitor.file import nfo
 from mir.json_cache import JSONCache, HASH_PATH_NAMED
 
 cache_manager = JSONCache(HASH_PATH_NAMED)

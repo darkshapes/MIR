@@ -4,7 +4,7 @@
 
 # pylint: disable=import-outside-toplevel
 
-from nnll.monitoring.file import debug_monitor
+from nnll.monitor.file import debug_monitor
 
 
 @debug_monitor
@@ -34,7 +34,7 @@ def route_metadata(unpacked_metadata: dict, pattern_reference: dict, attributes:
     :param attributes: `dict` Optional additional metadata, such as tensor count and file_size (None will bypass necessity of these matches)
     :return:
     """
-    from nnll_46 import IdConductor
+    from mir.model_detect.id_conductor import IdConductor
     # from nnll_47 import parse_pulled_keys
 
     conductor_instance = IdConductor()

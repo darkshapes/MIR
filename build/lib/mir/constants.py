@@ -7,7 +7,7 @@ from typing import Annotated, Callable, Optional
 
 from pydantic import BaseModel, Field
 
-from nnll.monitoring.file import dbug, nfo
+from nnll.monitor.file import dbug, nfo
 from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED
 
 LIBTYPE_CONFIG = JSONCache(LIBTYPE_PATH_NAMED)

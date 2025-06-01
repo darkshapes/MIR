@@ -4,7 +4,7 @@
 # pylint: disable=import-outside-toplevel
 
 
-from nnll.monitoring.file import debug_monitor
+from nnll.monitor.file import debug_monitor
 
 
 class IdConductor:
@@ -12,6 +12,8 @@ class IdConductor:
 
     current_file = ""
     attributes = None
+    category_keys = []
+    model_keys = []
 
     @debug_monitor
     def identify_model(self, category_type: dict, pattern_reference: dict, unpacked_metadata: dict, attributes: dict | None = None):
@@ -27,7 +29,6 @@ class IdConductor:
         from mir.model_detect.key_trail import KeyTrail
 
         key_trail = KeyTrail()
-        self.model_keys = []
         if isinstance(category_type, str):
             category_type = [category_type]
 
@@ -56,7 +57,6 @@ class IdConductor:
         from mir.model_detect.key_trail import KeyTrail
 
         key_trail = KeyTrail()
-        self.category_keys = []
         self.category_keys.append(key_trail.pull_key_names(pattern_reference["category"], unpacked_metadata, attributes))
 
         if layer_keys["layer_type"] == "modelspec" and attributes.get("tensors", None) > 1100:  # ModelSpec UNet model attributes

@@ -5,7 +5,7 @@
 from math import isclose
 import re
 
-from nnll.monitoring.file import debug_monitor
+from nnll.monitor.file import debug_monitor
 
 
 class ExtractAndMatchMetadata:

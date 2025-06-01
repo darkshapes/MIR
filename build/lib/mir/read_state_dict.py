@@ -6,7 +6,7 @@ import sys
 import os
 
 sys.path.append(os.getcwd())
-from nnll.monitoring.file import debug_monitor
+from nnll.monitor.file import debug_monitor
 
 
 @debug_monitor

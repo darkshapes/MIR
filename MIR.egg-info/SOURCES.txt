@@ -4,6 +4,7 @@ LICENSE
 README.md
 pyproject.toml
 uv.lock
+.github/workflows/python-app.yml
 MIR.egg-info/PKG-INFO
 MIR.egg-info/SOURCES.txt
 MIR.egg-info/dependency_links.txt
@@ -22,6 +23,7 @@ mir/mir_maid.py
 mir/mir_template.json
 mir/read_state_dict.py
 mir/registry_entry.py
+mir/config/__init__.py
 mir/config/config.toml
 mir/config/filter.json
 mir/config/hashes.json

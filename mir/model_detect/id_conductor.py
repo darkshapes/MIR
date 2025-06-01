@@ -28,6 +28,7 @@ class IdConductor:
 
         from mir.model_detect.key_trail import KeyTrail
 
+        self.model_keys = []
         key_trail = KeyTrail()
         if isinstance(category_type, str):
             category_type = [category_type]
@@ -56,6 +57,7 @@ class IdConductor:
 
         from mir.model_detect.key_trail import KeyTrail
 
+        self.category_keys = []
         key_trail = KeyTrail()
         self.category_keys.append(key_trail.pull_key_names(pattern_reference["category"], unpacked_metadata, attributes))
 

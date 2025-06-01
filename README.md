@@ -2,6 +2,7 @@
 language:
 - en
 library_name: mir
+license_name: LGPL-3.0-only
 ---
 
 # MIR (Machine Intelligence Resource)<br><br>A naming schema for AIGC/ML work.
@@ -11,43 +12,53 @@ The work is inspired by:
 - [AIR-URN](https://github.com/civitai/civitai/wiki/AIR-%E2%80%90-Uniform-Resource-Names-for-AI) project by [CivitAI](https://civitai.com/)
 - [Spandrel](https://github.com/chaiNNer-org/spandrel/blob/main/libs/spandrel/spandrel/__helpers/registry.py) library's super-resolution registry
 
-Example:
+
 
 > [!NOTE]
-> # mir : model . transformer . clip-l : stable-diffusion-xl
+> ## Example:
+> ## mir : model . transformer . clip-l : stable-diffusion-xl
+>
+>
+> ```
+> mir : model .    lora      .    hyper    :   flux-1
+>   ↑      ↑         ↑               ↑            ↑
+>  [URI]:[Domain].[Architecture].[Series]:[Compatibility]
+> ```
 
 
-```
- mir : model .    lora      .    hyper    :   flux-1
-  ↑      ↑         ↑               ↑            ↑
- [URI]:[Domain].[Architecture].[Series]:[Compatibility]
-```
+## Purpose:
+
+The purpose of MIR is to create a universal, independent human and machine-readable format for reference metadata related to artificial intelligence research models, algorithms, tensor shapes, libraries, function expressions, and any other property required to operate the models. As this information rapidly accumulates, the intent of MIR is to function as both an archive and a hyperlink to the essential parameters for models and their operation conditions. There is particular emphesis on diffusion models, LLM models, and LoRA, but any kind of model can be described and included in the work.
 
 ## Definitions:
 
 Like other URI schema, the order of the identifiers roughly indicates their specificity from left (broad) to right (narrow)
+Current entries are listed in the [template](https://github.com/darkshapes/MIR/blob/efd2d82dca61beccf432cb16373cdd6788e658db/mir/mir_template.json)
 
 ### Domains
 
-
-- `dev`: Varying local neural network layers, in-training, pre-release, items under evaluation, likely in unexpected formats<br>
-- `model`: Static local neural network layers. Publicly released machine learning models with an identifier in the database<br>
-- `operations`: Varying global neural network attributes, algorithms, optimizations and procedures on models<br>
-- `info`:  Static global neural network attributes, metadata with an identifier in the database<br>
+- `dev`: Varying local neural network layers, in-training, pre-release, items under evaluation, likely in unexpected formats. Files.<br>
+- `model`: Static local neural network layers. Publicly released machine learning models with an identifier in the database. Files.<br>
+- `operations`: Varying global neural network attributes, algorithms, optimizations and procedures on models. Equations or library functions.<br>
+- `info`:  Static global neural network attributes, parameters with an identifier in the database. Metadata.<br>
 
 ### Architecture
-Broad and general terms for system architectures.
+Broad and general terms for system architectures. Example:
+
 - `dit`: Diffusion transformer, typically Vision Synthesis
 - `unet`: Unet diffusion structure
 - `art` : Autoregressive transformer, typically LLMs
 - `lora`: Low-Rank Adapter (may work with dit or transformer)
 - `vae`: Variational Autoencoder
+...
+- etc
 
 ### Series
 Foundational network and technique types.
 
 ### Compatibility
 Implementation details based on version-breaking changes, configuration inconsistencies, or other conflicting indicators that have practical application.
+
 
 ### Goals
 - Standard identification scheme for **ALL** fields of ML-related development

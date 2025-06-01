@@ -9,8 +9,8 @@ def compare_layers(query: str, file_path: str) -> None:
     :param query: Search term to scan for
     :param file_path: The folder of JSON files to scan
     """
-    from nnll_01.__init__ import nfo
-    from nnll_30 import read_json_file
+    from nnll.monitor.file import nfo
+    from nnll.metadata.json_io import read_json_file
     import json
 
     try:
@@ -39,14 +39,14 @@ def compare_layers(query: str, file_path: str) -> None:
                 nfo(file_path, table_entries)  # output information
 
 
-def main():
+def main() -> None:
     """
     Find pattern matches using recursive `grep` search\n
     If 'grep' is not available, only the current folder is scanned.
     """
     import argparse
     import subprocess
-    from nnll_01.__init__ import nfo
+    from nnll.monitor.file import nfo
 
     parser = argparse.ArgumentParser(description="Search layer name metadata in the current folder's models.")
     parser.add_argument("pattern", help="Pattern to search for")

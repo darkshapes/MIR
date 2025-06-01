@@ -17,12 +17,12 @@ def read_state_dict_headers(folder_path_named: str = ".", save_location: str = "
     :param save_location: `str` The full path to reserve for output. Must include a `.json` file name.
     :return: `None`
     """
-    from nnll.metadata.json_io import write_json_file
-    from nnll.metadata.model_tags import ReadModelTags
+    from nnll_30 import write_json_file
+    from nnll_04 import ModelTool
     from pathlib import Path
     import os
 
-    model_tool = ReadModelTags()
+    model_tool = ModelTool()
     if folder_path_named is not None:
         for file_name in os.listdir(folder_path_named):
             file = os.path.join(folder_path_named, file_name)

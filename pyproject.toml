@@ -20,15 +20,21 @@ dependencies = [
 ]
 
 [dependency-groups]
+dev      = ["pytest>=8.3.5", "pytest-asyncio>=1.0.0", "ruff>=0.11.12","mir[lmstudio,ollama,openai]"]
+lmstudio = ["lmstudio>=1.3.1"]
+ollama   = ["ollama>=0.5.1"]
+openai   = ["openai>=1.84.0"]
+
+[project.optional-dependencies]
 dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
-    "nnll @ git+https://github.com/darkshapes/nnll@x/dev",
     "ruff>=0.11.12",
+    "mir[lmstudio,ollama,openai]"
 ]
 lmstudio = ["lmstudio>=1.3.1"]
-ollama = ["ollama>=0.5.1"]
-openai = ["openai>=1.84.0"]
+ollama   = ["ollama>=0.5.1"]
+openai   = ["openai>=1.84.0"]
 
 [project.scripts]
 mir-maid  = "mir.mir_maid:main"

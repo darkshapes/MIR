@@ -20,21 +20,23 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev      = ["pytest>=8.3.5", "pytest-asyncio>=1.0.0", "ruff>=0.11.12","mir[lmstudio,ollama,openai]"]
+dev      = ["pytest>=8.3.5", "pytest-asyncio>=1.0.0", "ruff>=0.11.12","mir[full]"]
 lmstudio = ["lmstudio>=1.3.1"]
 ollama   = ["ollama>=0.5.1"]
 openai   = ["openai>=1.84.0"]
+full     = ["mir[lmstudio,ollama,openai]"]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
-    "mir[lmstudio,ollama,openai]"
+    "mir[full]"
 ]
 lmstudio = ["lmstudio>=1.3.1"]
 ollama   = ["ollama>=0.5.1"]
 openai   = ["openai>=1.84.0"]
+full     = ["mir[lmstudio,ollama,openai]"]
 
 [project.scripts]
 mir-maid  = "mir.mir_maid:main"

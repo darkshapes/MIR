@@ -54,4 +54,5 @@ tests/test_mir_db_create.py
 tests/test_mir_search.py
 tests/test_read_state_dict.py
 tests/test_register_types.py
+tests/test_registry_entry.py
 tests/test_value_compare.py

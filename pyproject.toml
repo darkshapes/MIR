@@ -23,7 +23,7 @@ mir-maid  = "mir.mir_maid:main"
 mir-find  = "mir.compare_layers:main"
 mir-hash  = "mir.hash256:main"
 mir-add   = "mir.mir:main"
-mir-parse = "nnll_36:main"
+mir-parse = "mir.read_state_dict:main"
 
 [project.urls]
 Homepage = "https://github.com/darkshapes/MIR"
@@ -49,7 +49,7 @@ extend-exclude = ["^tests/.*$", "test.*$"]
 [tool.pylint]
 max-line-length = 140
 ignore-paths    = ["^tests/.*$", "test_.*$"]
-disable         = ["C0415"]
+disable         = ["C0415", "E731"]
 
 [tool.ruff.lint.pycodestyle]
 max-line-length               = 140

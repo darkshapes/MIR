@@ -5,7 +5,7 @@ library_name: mir
 license_name: LGPL-3.0-only
 ---
 
-# MIR (Machine Intelligence Resource)<br><br>A naming schema for AIGC/ML work.
+# MIR (Machine Intelligence Resource)<br><sub>A naming schema for AIGC/ML work.</sub>
 
 The MIR classification format seeks to standardize and complete a hyperlinked network of model information, improving accessibility and reproducibility across the AI community.<br>
 

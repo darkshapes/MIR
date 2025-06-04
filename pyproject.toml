@@ -3,15 +3,24 @@ requires      = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "MIR"
-version = "0.0.1"
 authors = [
     { name = "darkshapes", email = "91800957+exdysa@users.noreply.github.com" },
 ]
-requires-python = ">= 3.11"
-license = { file = "LICENSE" }
 description = "Machine Intelligence Resource URI Schema Codebase"
+license = { file = "LICENSE" }
+name = "MIR"
 readme = "README.md"
+requires-python = ">= 3.11"
+version = "0.0.1"
+keywords = [
+    "ML",
+    "AI",
+    "URI",
+    "schema",
+    "diffusion",
+    "LLM",
+    "identification",
+]
 
 dependencies = [
     "nnll @ git+https://github.com/darkshapes/nnll@main",
@@ -38,15 +47,15 @@ ollama   = ["ollama>=0.5.1"]
 openai   = ["openai>=1.84.0"]
 full     = ["mir[lmstudio,ollama,openai]"]
 
+[project.urls]
+Homepage = "https://github.com/darkshapes/MIR"
+
 [project.scripts]
 mir-maid  = "mir.mir_maid:main"
 mir-find  = "mir.compare_layers:main"
 mir-hash  = "mir.hash256:main"
 mir-add   = "mir.mir:main"
 mir-parse = "mir.read_state_dict:main"
-
-[project.urls]
-Homepage = "https://github.com/darkshapes/MIR"
 
 [tool.setuptools]
 packages = ["mir"]

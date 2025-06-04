@@ -12,14 +12,16 @@ name = "MIR"
 readme = "README.md"
 requires-python = ">= 3.11"
 version = "0.0.1"
-keywords = [
-    "ML",
-    "AI",
-    "URI",
-    "schema",
-    "diffusion",
-    "LLM",
-    "identification",
+keywords = ["ML", "AI", "URI", "schema", "diffusion", "LLM", "identification"]
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
 dependencies = [
@@ -29,26 +31,22 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev      = ["pytest>=8.3.5", "pytest-asyncio>=1.0.0", "ruff>=0.11.12","mir[full]"]
+dev      = ["pytest>=8.3.5", "pytest-asyncio>=1.0.0", "ruff>=0.11.12", "mir[full]"]
 lmstudio = ["lmstudio>=1.3.1"]
 ollama   = ["ollama>=0.5.1"]
 openai   = ["openai>=1.84.0"]
 full     = ["mir[lmstudio,ollama,openai]"]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=8.3.5",
-    "pytest-asyncio>=1.0.0",
-    "ruff>=0.11.12",
-    "mir[full]"
-]
+dev      = ["pytest>=8.3.5", "pytest-asyncio>=1.0.0", "ruff>=0.11.12", "mir[full]"]
 lmstudio = ["lmstudio>=1.3.1"]
 ollama   = ["ollama>=0.5.1"]
 openai   = ["openai>=1.84.0"]
 full     = ["mir[lmstudio,ollama,openai]"]
 
 [project.urls]
-Homepage = "https://github.com/darkshapes/MIR"
+Homepage      = "https://github.com/darkshapes/MIR"
+Documentation = "https://github.com/darkshapes/sdbx/wiki"
 
 [project.scripts]
 mir-maid  = "mir.mir_maid:main"

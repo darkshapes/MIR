@@ -169,6 +169,7 @@ License:                    GNU LESSER GENERAL PUBLIC LICENSE
         permanent authorization for you to choose that version for the
         Library.
 Project-URL: Homepage, https://github.com/darkshapes/MIR
+Keywords: ML,AI,URI,schema,diffusion,LLM,identification
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE
@@ -179,13 +180,15 @@ Provides-Extra: dev
 Requires-Dist: pytest>=8.3.5; extra == "dev"
 Requires-Dist: pytest-asyncio>=1.0.0; extra == "dev"
 Requires-Dist: ruff>=0.11.12; extra == "dev"
-Requires-Dist: mir[lmstudio,ollama,openai]; extra == "dev"
+Requires-Dist: mir[full]; extra == "dev"
 Provides-Extra: lmstudio
 Requires-Dist: lmstudio>=1.3.1; extra == "lmstudio"
 Provides-Extra: ollama
 Requires-Dist: ollama>=0.5.1; extra == "ollama"
 Provides-Extra: openai
 Requires-Dist: openai>=1.84.0; extra == "openai"
+Provides-Extra: full
+Requires-Dist: mir[lmstudio,ollama,openai]; extra == "full"
 Dynamic: license-file
 
 ---

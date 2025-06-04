@@ -722,6 +722,11 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "ruff" },
 ]
+full = [
+    { name = "lmstudio" },
+    { name = "ollama" },
+    { name = "openai" },
+]
 lmstudio = [
     { name = "lmstudio" },
 ]
@@ -734,10 +739,13 @@ openai = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "mir", extra = ["lmstudio", "ollama", "openai"] },
+    { name = "mir", extra = ["full"] },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "ruff" },
+]
+full = [
+    { name = "mir", extra = ["lmstudio", "ollama", "openai"] },
 ]
 lmstudio = [
     { name = "lmstudio" },
@@ -752,7 +760,8 @@ openai = [
 [package.metadata]
 requires-dist = [
     { name = "lmstudio", marker = "extra == 'lmstudio'", specifier = ">=1.3.1" },
-    { name = "mir", extras = ["lmstudio", "ollama", "openai"], marker = "extra == 'dev'" },
+    { name = "mir", extras = ["full"], marker = "extra == 'dev'" },
+    { name = "mir", extras = ["lmstudio", "ollama", "openai"], marker = "extra == 'full'" },
     { name = "nnll", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "ollama", marker = "extra == 'ollama'", specifier = ">=0.5.1" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.84.0" },
@@ -762,15 +771,16 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.12" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
-provides-extras = ["dev", "lmstudio", "ollama", "openai"]
+provides-extras = ["dev", "lmstudio", "ollama", "openai", "full"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "mir", extras = ["lmstudio", "ollama", "openai"] },
+    { name = "mir", extras = ["full"] },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-asyncio", specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.11.12" },
 ]
+full = [{ name = "mir", extras = ["lmstudio", "ollama", "openai"] }]
 lmstudio = [{ name = "lmstudio", specifier = ">=1.3.1" }]
 ollama = [{ name = "ollama", specifier = ">=0.5.1" }]
 openai = [{ name = "openai", specifier = ">=1.84.0" }]

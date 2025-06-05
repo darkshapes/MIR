@@ -194,7 +194,7 @@ setattr(ChipType, "CPU", (True, "CPU"))
 
 class PipeType(Enum):
     MFLUX: tuple = ("MPS" in ChipType._show_ready("mps"), PkgType.MFLUX, {"mir_tag": "flux"})  # pylint:disable=protected-access
-    MFLUX: tuple = ("MPS" in ChipType._show_ready("mps"), PkgType.MFLUX, {"mir_tag": "flux"})  # pylint:disable=protected-access
+    # MFLUX: tuple = ("MPS" in ChipType._show_ready("mps"), PkgType.MFLUX, {"mir_tag": "flux"})  # pylint:disable=protected-access
 
 
 class GenTypeC(BaseModel):
@@ -276,6 +276,7 @@ class GenTypeE(BaseModel):
 # Using graphs also allows us to offload the logic elsewhere
 
 VALID_CONVERSIONS = ["text", "image", "music", "speech", "video", "3d_render", "vector_graphic", "upscale_image"]
+VALID_JUNCTIONS = [""]
 
 # note : decide on a way to keep paired tuples and sets together inside config dict
 VALID_TASKS = {

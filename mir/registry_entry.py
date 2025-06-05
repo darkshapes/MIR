@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple, Optional
 from pydantic import BaseModel, computed_field
 
 from nnll.monitor.file import dbug, debug_monitor, nfo
-from mir.constants import LIBTYPE_CONFIG, VALID_CONVERSIONS, VALID_TASKS, LibType, has_api
+from mir.constants import LIBTYPE_CONFIG, VALID_CONVERSIONS, VALID_TASKS, LibType, has_api, PkgType
 from mir.mir_maid import MIRDatabase
 
 
@@ -21,8 +21,9 @@ class RegistryEntry(BaseModel):
     tags: list[str]
     library: LibType
     timestamp: int
-    mir: Optional[list[str]]
-    api_kwargs: Optional[dict]
+    mir: Optional[list[str]] = None
+    api_kwargs: Optional[dict] = None
+    package: Optional[PkgType] = None
     # tokenizer: None
 
     @computed_field
@@ -101,6 +102,7 @@ class RegistryEntry(BaseModel):
                             tags=tags,
                             library=LibType.HUB,
                             mir=mir_db.find_path("repo", repo.repo_id.lower()),
+                            package=PkgType.check_type("meta.library_name"),
                             api_kwargs=None,
                             timestamp=int(repo.last_modified),
                         )  # pylint: disable=undefined-loop-variable
@@ -120,6 +122,7 @@ class RegistryEntry(BaseModel):
                     tags=[model.details.family],
                     library=LibType.OLLAMA,
                     mir=None,
+                    package=LibType.OLLAMA,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.modified_at.timestamp()),
                 )
@@ -139,6 +142,7 @@ class RegistryEntry(BaseModel):
                     tags=[str(model_data.get("modalities", "text"))],
                     library=LibType.CORTEX,
                     mir=None,
+                    package=LibType.CORTEX,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(datetime.timestamp(datetime.now())),  # no api for time data in cortex
                 )
@@ -156,6 +160,7 @@ class RegistryEntry(BaseModel):
                     tags=["text"],
                     library=LibType.LLAMAFILE,
                     mir=None,
+                    package=LibType.LLAMAFILE,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.created),  # no api for time data in cortex
                 )
@@ -172,6 +177,7 @@ class RegistryEntry(BaseModel):
                     tags=["text"],
                     library=LibType.VLLM,
                     mir=None,
+                    package=LibType.VLLM,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.created),  # no api for time data in cortex
                 )
@@ -194,6 +200,7 @@ class RegistryEntry(BaseModel):
                     tags=tags,
                     library=LibType.LM_STUDIO,
                     mir=None,
+                    package=LibType.LM_STUDIO,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.modified_at.timestamp()),
                 )

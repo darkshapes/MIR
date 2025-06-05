@@ -105,6 +105,7 @@ class MIRDatabase:
         target = target.lower()
         matches = []
         for series, comp in self.database.items():
+            print(comp)
             for compatibility, fields in comp.items():
                 value = fields.get(field)
                 if value is not None:

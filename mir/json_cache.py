@@ -5,6 +5,7 @@
 
 import os
 import sys
+from typing import Union
 
 sys.path.append(os.getcwd())
 from pathlib import Path
@@ -35,7 +36,7 @@ for const in constants:
 class JSONCache:
     """Manage input/output disk/mem for json and read-only toml files"""
 
-    def __init__(self, file_or_path: str):
+    def __init__(self, file_or_path: Union[str, Path]):
         """Cache operations for .json and read-only .toml files. Example:
         ```
         cache_manager = JSONCache("path/to/file.json")
@@ -48,7 +49,7 @@ class JSONCache:
         `cache_manager.update({"new_key": "new_value"})`
         """
 
-        self.file: str = file_or_path
+        self.file: Union[str, Path] = file_or_path
         self._cache: dict = {}
 
     def _load_cache(self):
@@ -79,7 +80,7 @@ class JSONCache:
         """
         import json
 
-        temp_file = self.file + ".tmp"
+        temp_file = str(self.file) + ".tmp"
         with open(temp_file, "w", encoding="UTF-8") as doc:
             if Path(self.file).suffix == ".toml":
                 pass

@@ -5,6 +5,7 @@ LICENSE
 README.md
 pyproject.toml
 uv.lock
+.github/workflows/mir.yml
 MIR.egg-info/PKG-INFO
 MIR.egg-info/SOURCES.txt
 MIR.egg-info/dependency_links.txt
@@ -13,14 +14,12 @@ MIR.egg-info/requires.txt
 MIR.egg-info/top_level.txt
 mir/__init__.py
 mir/constants.py
-mir/filter.json
 mir/hash_256.py
 mir/hyper_chain.py
 mir/json_cache.py
-mir/mir.json
 mir/mir.py
 mir/mir_maid.py
-mir/mir_template.json
+mir/pkg_detect.py
 mir/read_state_dict.py
 mir/registry_entry.py
 mir/config/__init__.py
@@ -52,6 +51,7 @@ tests/test_libtype.py
 tests/test_metadata_match.py
 tests/test_mir_db_create.py
 tests/test_mir_search.py
+tests/test_pkg_deps.py
 tests/test_read_state_dict.py
 tests/test_register_types.py
 tests/test_registry_entry.py

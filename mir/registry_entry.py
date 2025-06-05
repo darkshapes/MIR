@@ -5,7 +5,7 @@
 
 # pylint: disable=line-too-long, import-outside-toplevel, protected-access, unsubscriptable-object
 
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Union
 from pydantic import BaseModel, computed_field
 
 from nnll.monitor.file import dbug, debug_monitor, nfo
@@ -23,7 +23,7 @@ class RegistryEntry(BaseModel):
     timestamp: int
     mir: Optional[list[str]] = None
     api_kwargs: Optional[dict] = None
-    package: Optional[PkgType] = None
+    package: Optional[Union[PkgType, LibType]] = None
     # tokenizer: None
 
     @computed_field
@@ -102,7 +102,7 @@ class RegistryEntry(BaseModel):
                             tags=tags,
                             library=LibType.HUB,
                             mir=mir_db.find_path("repo", repo.repo_id.lower()),
-                            package=PkgType.check_type("meta.library_name"),
+                            package=PkgType.check_type(meta.get("library_name")),
                             api_kwargs=None,
                             timestamp=int(repo.last_modified),
                         )  # pylint: disable=undefined-loop-variable

@@ -39,9 +39,10 @@ class RegistryEntry(BaseModel):
         library_tasks = {}
         processed_tasks = []
         library_tasks = VALID_TASKS[self.library]
-        if self.library in [LibType.OLLAMA, LibType.LM_STUDIO, LibType.LLAMAFILE, LibType.CORTEX, LibType.VLLM]:
+        if self.library in [x for x in list(LibType) if x != LibType.HUB]:
             default_task = ("text", "text")  # usually these are txt gen libraries
-        elif self.library == LibType.HUB:  # pair tags from the hub such 'x-to-y' such as 'text-to-text' etc
+        elif self.library == LibType.HUB:
+            print(self.library)  # pair tags from the hub such 'x-to-y' such as 'text-to-text' etc
             pattern = re.compile(r"(\w+)-to-(\w+)")
             for tag in self.tags:
                 match = pattern.search(tag)
@@ -78,24 +79,7 @@ class RegistryEntry(BaseModel):
 
         mir_db = MIRDatabase()
         api_data = _read_data()
-
-        if next(iter(LibType.OLLAMA.value)) and has_api("OLLAMA"):  # check that server is still up!
-            from ollama import ListResponse, list as ollama_list
-
-            config = api_data[LibType.OLLAMA.value[1]]
-            model_data: ListResponse = ollama_list()  # type: ignore
-            for model in model_data.models:  # pylint:disable=no-member
-                entry = cls(
-                    model=f"{api_data[LibType.OLLAMA.value[1]].get('prefix')}{model.model}",
-                    size=model.size.real,
-                    tags=[model.details.family],
-                    library=LibType.OLLAMA,
-                    mir=None,
-                    api_kwargs={**config["api_kwargs"]},
-                    timestamp=int(model.modified_at.timestamp()),
-                )
-                entries.append(entry)
-        if next(iter(LibType.HUB.value)) and has_api("HUB"):
+        if LibType.check_type("HUB"):
             from huggingface_hub import scan_cache_dir, repocard, HFCacheInfo, CacheNotFound  # type: ignore
 
             try:
@@ -124,7 +108,24 @@ class RegistryEntry(BaseModel):
             except CacheNotFound as error_log:
                 dbug(error_log)
 
-        if next(iter(LibType.CORTEX.value)) and has_api("CORTEX"):
+        if LibType.check_type("OLLAMA"):  # check that server is still up!
+            from ollama import ListResponse, list as ollama_list
+
+            config = api_data[LibType.OLLAMA.value[1]]
+            model_data: ListResponse = ollama_list()  # type: ignore
+            for model in model_data.models:  # pylint:disable=no-member
+                entry = cls(
+                    model=f"{api_data[LibType.OLLAMA.value[1]].get('prefix')}{model.model}",
+                    size=model.size.real,
+                    tags=[model.details.family],
+                    library=LibType.OLLAMA,
+                    mir=None,
+                    api_kwargs={**config["api_kwargs"]},
+                    timestamp=int(model.modified_at.timestamp()),
+                )
+                entries.append(entry)
+
+        if LibType.check_type("CORTEX"):
             import requests
             from datetime import datetime
 
@@ -143,7 +144,7 @@ class RegistryEntry(BaseModel):
                 )
                 entries.append(entry)
 
-        if next(iter(LibType.LLAMAFILE.value)) and has_api("LLAMAFILE"):
+        if LibType.check_type("LLAMAFILE"):
             from openai import OpenAI
 
             model_data: OpenAI = OpenAI(base_url=api_data["LLAMAFILE"]["api_kwargs"]["api_base"], api_key="sk-no-key-required")
@@ -160,7 +161,7 @@ class RegistryEntry(BaseModel):
                 )
                 entries.append(entry)
 
-        if next(iter(LibType.VLLM.value)) and has_api("VLLM"):  # placeholder
+        if LibType.check_type("VLLM"):  # placeholder
             # import vllm
             config = api_data[LibType.VLLM.value[1]]
             model_data = OpenAI(base_url=api_data["VLLM"]["api_kwargs"]["api_base"], api_key=api_data["VLLM"]["api_kwargs"]["api_key"])
@@ -176,7 +177,7 @@ class RegistryEntry(BaseModel):
                 )
                 entries.append(entry)
 
-        if next(iter(LibType.LM_STUDIO.value)) and has_api("LM_STUDIO"):
+        if LibType.check_type("LMSTUDIO"):
             from lmstudio import list_downloaded_models  # pylint: disable=import-error, # type: ignore
 
             config = api_data[LibType.LM_STUDIO.value[1]]

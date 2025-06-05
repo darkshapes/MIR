@@ -1,10 +1,10 @@
 .gitignore
+.python-version
 .test.json
 LICENSE
 README.md
 pyproject.toml
 uv.lock
-.github/workflows/python-app.yml
 MIR.egg-info/PKG-INFO
 MIR.egg-info/SOURCES.txt
 MIR.egg-info/dependency_links.txt

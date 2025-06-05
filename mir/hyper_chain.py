@@ -9,7 +9,8 @@
 from dataclasses import dataclass
 
 from nnll.monitor.file import debug_monitor
-from mir.json_cache import CHAIN_PATH_NAMED, JSONCache
+from mir.json_cache import JSONCache
+from mir.json_cache import HYPERCHAIN_PATH_NAMED
 
 
 @dataclass(frozen=True)
@@ -87,7 +88,7 @@ class HyperChain:
     Use sequence of hashes to assert validity of links.\n
     """
 
-    chain_file = JSONCache(CHAIN_PATH_NAMED)
+    chain_file = JSONCache(HYPERCHAIN_PATH_NAMED)
 
     @debug_monitor
     @chain_file.decorator

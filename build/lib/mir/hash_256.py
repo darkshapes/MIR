@@ -17,11 +17,11 @@ def hash_layers_or_files(folder_path: str, layer: bool = True) -> dict[str:str]:
     :return: `dict` Map of hashes(k) to filenames(v)
     """
     import os
-    from nnll_04 import ModelTool
-    from nnll_44 import compute_hash_for
+    from nnll.metadata.model_tags import ReadModelTags
+    from nnll.integrity.hashing import compute_hash_for
     from pathlib import Path
 
-    model_tool = ModelTool()
+    model_tool = ReadModelTags()
     nfo(folder_path)
     hash_values = {}
 
@@ -71,7 +71,6 @@ def compare_hash_values(hash_values: dict, data: dict):
     :param data: _description_
     :return: _description_
     """
-    import os
     from tqdm.auto import tqdm
 
     model_id = {}

@@ -3,12 +3,13 @@
 
 
 from enum import Enum
-from typing import Annotated, Callable, Optional
+from typing import Annotated, Callable, List, Optional
 
 from pydantic import BaseModel, Field
 
 from nnll.monitor.file import dbug, nfo
-from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED
+from nnll.configure.init_gpu import first_available
+from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED  # pylint:disable=no-name-in-module
 
 LIBTYPE_CONFIG = JSONCache(LIBTYPE_PATH_NAMED)
 
@@ -23,7 +24,11 @@ def has_api(api_name: str, data: dict = None) -> bool:
     :return: _description_
     """
 
-    def check_host() -> bool:
+    def set_false(api_name):
+        nfo("|Ignorable| Source unavailable:", f"{api_name}")
+        return False
+
+    def check_host(api_name) -> bool:
         from json.decoder import JSONDecodeError
         import httpcore
         import httpx
@@ -48,41 +53,86 @@ def has_api(api_name: str, data: dict = None) -> bool:
                 except requests.HTTPError() as error_log:
                     dbug(error_log)
 
-        except (requests.exceptions.ConnectionError, httpcore.ConnectError, httpx.ConnectError, ConnectionRefusedError, MaxRetryError, NewConnectionError, TimeoutError, OSError, RuntimeError, ConnectionError):
-            nfo("|Ignorable| Source unavailable:", f"{api_name}")
-            return False
+        except (
+            requests.exceptions.ConnectionError,
+            httpcore.ConnectError,
+            httpx.ConnectError,
+            ConnectionRefusedError,
+            MaxRetryError,
+            NewConnectionError,
+            TimeoutError,
+            OSError,
+            RuntimeError,
+            ConnectionError,
+        ):
+            set_false(api_name)
         return False
 
-    api_data = data[api_name]  # pylint: disable=unsubscriptable-object
+    api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
+    if not api_data:
+        api_data = {"module": api_name.lower()}
 
-    try:
-        if api_name == "LM_STUDIO":
+    if api_name == "LM_STUDIO":
+        try:
             from lmstudio import APIConnectionError, APITimeoutError, APIStatusError, LMStudioWebsocketError
 
-            return check_host()
-        elif api_name in ["LLAMAFILE", "CORTEX"]:
+            try:
+                return check_host(api_name)
+            except (LMStudioWebsocketError, APIConnectionError, APITimeoutError, APIStatusError):
+                return set_false(api_name)
+        except (UnboundLocalError, ImportError, ModuleNotFoundError):
+            return set_false(api_name)
+    elif api_name in ["LLAMAFILE", "CORTEX"]:
+        try:
             from openai import APIConnectionError, APIStatusError, APITimeoutError
 
-            return check_host()
-        else:
+            try:
+                return check_host(api_name)
+            except (APIConnectionError, APITimeoutError, APIStatusError):
+                return set_false(api_name)
+        except (UnboundLocalError, ImportError, ModuleNotFoundError):
+            return set_false(api_name)
+    elif api_name in ["OLLAMA"]:
+        try:
+            return check_host(api_name)
+        except (UnboundLocalError, ImportError, ModuleNotFoundError):
+            return set_false(api_name)
+    else:
+        try:
             __import__(api_data.get("module"))
-            if api_name == "HUB":
+            if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM"]:
                 return True
-            else:
-                return check_host()
-    except (ImportError, ModuleNotFoundError):
-        nfo("|Ignorable| Source unavailable:", f"{api_name}")
-        return False
-    except (APIConnectionError, APITimeoutError, APIStatusError):
-        nfo("|Ignorable| Source unavailable:", f"{api_name}")
-        return False
-    except LMStudioWebsocketError:
-        nfo("|Ignorable| Source unavailable:", f"{api_name}")
-        return False
-    return False
+        except (UnboundLocalError, ImportError, ModuleNotFoundError):
+            nfo("|Ignorable| Source unavailable:", f"{api_name}")
+            return False
+        return check_host(api_name)
 
 
-class LibType(Enum):
+class BaseEnum(Enum):
+    """Base class for available system packages\n"""
+
+    @classmethod
+    def show_all(cls) -> List:
+        """Show all possible API types"""
+        return [x for x, y in LibType.__members__.items()]
+
+    @classmethod
+    def show_available(cls) -> bool:
+        """Show all available API types"""
+        return [library.value[1] for library in list(cls) if library.value[0] is True]
+
+    @classmethod
+    def check_type(cls, type_name: str, server: bool = False) -> bool:
+        """Check for a single API"""
+        type_name = type_name.upper()
+        if hasattr(cls, type_name):
+            available = next(iter(getattr(cls, type_name).value))
+            if server and available:
+                return has_api(type_name)
+            return available
+
+
+class LibType(BaseEnum):
     """API library constants"""
 
     # Integers are usedto differentiate boolean condition
@@ -97,6 +147,54 @@ class LibType(Enum):
 
 
 example_str = ("function_name", "import.function_name")
+
+
+class PkgType(BaseEnum):
+    """Package dependency constants"""
+
+    MFLUX: tuple = (has_api("MFLUX"), "MFLUX")  # pylint:disable=no-member
+    DIFFUSERS: tuple = (has_api("DIFFUSERS"), "DIFFUSERS")
+    TRANSFORMERS: tuple = (has_api("TRANSFORMERS"), "TRANSFORMERS")
+    TORCH: tuple = (has_api("TORCH"), "TORCH")
+    TORCHVISION: tuple = (has_api("TORCHVISION"), "TORCHVISION")
+    TORCHAUDIO: tuple = (has_api("TORCHAUDIO"), "TORCHAUDIO")
+    BITSANDBYTES: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES")
+
+
+class ChipType(Enum):
+    """Device constants
+    CUDA, MPS, XPU, MTIA
+    """
+
+    @classmethod
+    def _show_all(cls) -> List:
+        atypes = [atype for atype in ChipType.__dict__ if "_" not in atype]
+        return atypes
+
+    @classmethod
+    def _show_ready(cls, api_name: Optional[str] = None):
+        atypes = cls._show_all()
+        if api_name:
+            return api_name.upper() in list(getattr(cls, x)[1] for x in atypes if getattr(cls, x)[0] is True)
+        return [getattr(cls, x)[1] for x in atypes if getattr(cls, x)[0] is True]
+
+
+chip_types = [
+    ("CUDA", "cuda"),
+    ("MPS", "mps"),
+    ("XPU", "xpu"),
+    ("MTIA", "mtia"),
+]
+accelerator = first_available(assign=False)
+
+for name, key in chip_types:
+    setattr(ChipType, name, (key in accelerator, name))
+setattr(ChipType, "CPU", (True, "CPU"))
+
+
+class PipeType(Enum):
+    MFLUX: tuple = ("MPS" in ChipType._show_ready("mps"), PkgType.MFLUX, {"mir_tag": "flux"})  # pylint:disable=protected-access
+    MFLUX: tuple = ("MPS" in ChipType._show_ready("mps"), PkgType.MFLUX, {"mir_tag": "flux"})  # pylint:disable=protected-access
 
 
 class GenTypeC(BaseModel):

@@ -5,12 +5,13 @@
 
 import os
 import sys
+from typing import Union
 
 sys.path.append(os.getcwd())
 from pathlib import Path
 from functools import cache
 from nnll.monitor.file import dbug
-from nnll.configure import HOME_FOLDER_PATH
+from nnll.configure import ensure_path, set_home_stable
 
 
 def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__), prefix: str = "config") -> Path:
@@ -20,22 +21,22 @@ def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__)
     :param prefix: Optional folder between `folder_path` and `file_name`, defaults to "config"
     :return: A combined path string of the given values
     """
+    folder_path_named = os.path.join(folder_path, prefix)
+    return ensure_path(folder_path_named, file_name)
 
-    return os.path.join(folder_path, prefix, file_name)
 
+constants = ["mir", "hashes", "libtype", "hyperchain"]
 
-MIR_PATH = set_path_stable("mir.json")
-HASH_PATH_NAMED = set_path_stable("hashes.json")
-LIBTYPE_PATH_NAMED = set_path_stable("libtype.json")
-CHAIN_PATH_NAMED = set_path_stable("hyperchain.json")
-
-# CONFIG_PATH_NAMED = set_path_stable("config.json")
+for const in constants:
+    paths = {}
+    path_var = f"{const.upper()}_PATH_NAMED"
+    globals()[path_var] = set_path_stable(const + ".json")
 
 
 class JSONCache:
     """Manage input/output disk/mem for json and read-only toml files"""
 
-    def __init__(self, file_or_path: str):
+    def __init__(self, file_or_path: Union[str, Path]):
         """Cache operations for .json and read-only .toml files. Example:
         ```
         cache_manager = JSONCache("path/to/file.json")
@@ -48,7 +49,7 @@ class JSONCache:
         `cache_manager.update({"new_key": "new_value"})`
         """
 
-        self.file: str = file_or_path
+        self.file: Union[str, Path] = file_or_path
         self._cache: dict = {}
 
     def _load_cache(self):
@@ -65,14 +66,12 @@ class JSONCache:
                         dbug(f"Error decoding cache file. Using an empty cache. {error_log}")
                         self._cache = {}
             else:
-                with open(self.file, "r", encoding="UTF-8") as f:
-                    try:
+                try:
+                    with open(self.file, "r", encoding="UTF-8") as f:
                         self._cache = json.load(f)
-                    except FileNotFoundError:
-                        self._cache = {}
-                    except json.JSONDecodeError as error_log:
-                        dbug(f"Error decoding cache file. Using an empty cache. {error_log}")
-                        self._cache = {}
+                except (FileNotFoundError, json.JSONDecodeError) as error_log:
+                    dbug(f"Error decoding cache file. Using an empty cache. {error_log}")
+                    self._cache = {}
 
     def _save_cache(self):
         """
@@ -81,7 +80,7 @@ class JSONCache:
         """
         import json
 
-        temp_file = self.file + ".tmp"
+        temp_file = str(self.file) + ".tmp"
         with open(temp_file, "w", encoding="UTF-8") as doc:
             if Path(self.file).suffix == ".toml":
                 pass

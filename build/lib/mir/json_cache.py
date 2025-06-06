@@ -10,29 +10,7 @@ sys.path.append(os.getcwd())
 from pathlib import Path
 from functools import cache
 from nnll.monitor.file import dbug
-
-
-@cache
-def set_home_stable() -> Path:
-    """Return platform-dependent app data mapping\n
-    :return: A platform-specific path to vendor-designated app data folder\n
-    RATIONALE: operator may want to discard the application\n
-    EXAMPLES: to maintain experimental conditions, improper venv setup, conflicting dependencies, troubleshooting,
-    overreliance on reinstalling to fix things, switching computersquit, disk space full, they got advice online, etc.\n Therefore,
-    To accomodate user so they can return to previous settings, leverage os-specific library location.
-    """
-    from platform import system
-
-    return (
-        os.path.join(os.environ.get("LOCALAPPDATA", os.path.join(os.path.expanduser("~"), "AppData", "Local")), "Shadowbox")
-        if system().lower() == "windows"
-        else os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Shadowbox")
-        if system().lower() == "darwin"
-        else os.path.join(os.path.expanduser("~"), ".config", "shadowbox")
-    )
-
-
-HOME_FOLDER_PATH = set_home_stable()
+from nnll.configure import HOME_FOLDER_PATH
 
 
 def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__), prefix: str = "config") -> Path:
@@ -47,7 +25,6 @@ def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__)
 
 
 MIR_PATH = set_path_stable("mir.json")
-USER_PATH_NAMED = os.path.join(HOME_FOLDER_PATH, "config.toml")
 HASH_PATH_NAMED = set_path_stable("hashes.json")
 LIBTYPE_PATH_NAMED = set_path_stable("libtype.json")
 CHAIN_PATH_NAMED = set_path_stable("hyperchain.json")

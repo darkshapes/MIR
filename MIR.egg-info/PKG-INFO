@@ -169,7 +169,16 @@ License:                    GNU LESSER GENERAL PUBLIC LICENSE
         permanent authorization for you to choose that version for the
         Library.
 Project-URL: Homepage, https://github.com/darkshapes/MIR
+Project-URL: Documentation, https://github.com/darkshapes/sdbx/wiki
 Keywords: ML,AI,URI,schema,diffusion,LLM,identification
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE

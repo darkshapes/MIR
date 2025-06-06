@@ -3,14 +3,14 @@ import pytest
 
 def test_mir_maid():
     from mir.mir_maid import MIRDatabase, main
-    from mir.json_cache import MIR_PATH
+    from mir.json_cache import MIR_PATH_NAMED
     import json
 
     expected = {"empty": "101010101010101010"}
     mir_db = MIRDatabase()
     mir_db.database = expected
     mir_db.write_to_disk()
-    with open(MIR_PATH, "r", encoding="UTF-8") as f:
+    with open(MIR_PATH_NAMED, "r", encoding="UTF-8") as f:
         result = json.load(f)
 
     assert result == expected
@@ -18,14 +18,14 @@ def test_mir_maid():
 
 def test_restore_mir():
     from mir.mir_maid import MIRDatabase, main
-    from mir.json_cache import MIR_PATH
+    from mir.json_cache import MIR_PATH_NAMED
     import json
 
     mir_db = MIRDatabase()
     mir_db.database.pop("empty")
     main(mir_db)
     expected = mir_db.database
-    with open(MIR_PATH, "r", encoding="UTF-8") as f:
+    with open(MIR_PATH_NAMED, "r", encoding="UTF-8") as f:
         result = json.load(f)
     assert result == expected
 

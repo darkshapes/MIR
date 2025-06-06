@@ -18,6 +18,9 @@
         "taesd": "",
         "unet": "",
         "vae": "",
+        "embedding": "",
+        "mix": "",
+        "seq2seq": "",
         "scheduler": ""
     },
     "series.__scheduler__": {

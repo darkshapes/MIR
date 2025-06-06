@@ -23,13 +23,13 @@ def has_api(api_name: str, data: dict = None) -> bool:
     :param _data: filled by config decorator, ignore, defaults to None
     :return: _description_
     """
+    from json.decoder import JSONDecodeError
 
     def set_false(api_name):
         nfo("|Ignorable| Source unavailable:", f"{api_name}")
         return False
 
     def check_host(api_name) -> bool:
-        from json.decoder import JSONDecodeError
         import httpcore
         import httpx
         from urllib3.exceptions import NewConnectionError, MaxRetryError
@@ -39,19 +39,24 @@ def has_api(api_name: str, data: dict = None) -> bool:
         try:
             if api_data.get("api_url", 0):
                 request = requests.get(api_data.get("api_url"), timeout=(1, 1))
-                status = request.json() if request is not None else {}
-                if status.get("result") == "OK":
-                    return True
-        except JSONDecodeError:
+                if request is not None:
+                    if hasattr(request, "reason") and request.reason == "OK":  # The curious case of Ollama
+                        return True
+                    status = request.json()
+                    if status.get("result") == "OK":
+                        return True
+                return False
+        except JSONDecodeError as error_log:
+            dbug(error_log)
             dbug(f"json for ! {api_data}")
             dbug(request.status_code)
             if request.ok:
                 return True
-            else:
-                try:
-                    request.raise_for_status()
-                except requests.HTTPError() as error_log:
-                    dbug(error_log)
+            try:
+                request.raise_for_status()
+            except requests.HTTPError() as _error_log:
+                dbug(_error_log)
+                return False
 
         except (
             requests.exceptions.ConnectionError,
@@ -68,7 +73,10 @@ def has_api(api_name: str, data: dict = None) -> bool:
             set_false(api_name)
         return False
 
-    api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
+    try:
+        api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
+    except JSONDecodeError as error_log:
+        dbug(error_log)
     if not api_data:
         api_data = {"module": api_name.lower()}
 
@@ -78,9 +86,9 @@ def has_api(api_name: str, data: dict = None) -> bool:
 
             try:
                 return check_host(api_name)
-            except (LMStudioWebsocketError, APIConnectionError, APITimeoutError, APIStatusError):
+            except (LMStudioWebsocketError, APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError):
                 return set_false(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError):
+        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
             return set_false(api_name)
     elif api_name in ["LLAMAFILE", "CORTEX"]:
         try:
@@ -88,14 +96,14 @@ def has_api(api_name: str, data: dict = None) -> bool:
 
             try:
                 return check_host(api_name)
-            except (APIConnectionError, APITimeoutError, APIStatusError):
+            except (APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError):
                 return set_false(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError):
+        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
             return set_false(api_name)
     elif api_name in ["OLLAMA"]:
         try:
             return check_host(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError):
+        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
             return set_false(api_name)
     else:
         try:

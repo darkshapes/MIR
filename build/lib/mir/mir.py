@@ -4,7 +4,7 @@
 
 import urllib.parse
 from collections import defaultdict
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
@@ -31,7 +31,6 @@ class Info(BaseModel):
     :param weight_map: Remote location of the weight map for the model
     """
 
-    dep_alt: Optional[Dict[str, List[str]]] = None
     file_256: Optional[Union[List[str], Dict[Any, Any]]] = None
     gen_kwargs: Optional[Dict[str, Any]] = None
     init_kwargs: Optional[Dict[str, Any]] = None
@@ -100,6 +99,7 @@ class Dev(Info, Ops, Model):
     scheduler: Optional[str] = None
     scheduler_kwargs: Optional[Dict[str, Any]] = None
     module_path: Optional[list[str]] = None
+    requires: Optional[Dict[str, list[str]]] = None
     # :param stage: Where item fits in a chain
 
 
@@ -135,7 +135,8 @@ def build_comp(comp: str, domain: str, kwargs: dict) -> Callable:
     base_modules = [
         "scheduler",  # name of a scheduler package
         "scheduler_kwargs",  # dictionary of scheduler arguments
-        "dep_pkg",  # a dictionary of dependency modules mapped to a list of module path, last work with from_single_file, single or multi-length listt
+        "dep_pkg",  # deprecated
+        "requires",  # a dictionary of dependency modules mapped to a list of module path, last work with from_single_file, single or multi-length listt
     ]
     for module_name in base_modules:
         if module_name in kwargs and domain != Dev:
@@ -210,7 +211,7 @@ class Architecture:
     :param vae: Variational Autoencoder, roughly
 
     **add_impl** Add an Series object to the Architecture
-    **to_dict** Flatten the Architeture class structure
+    **to_dict** Flatten the Architecture class structure
     """
 
     # @debug_monitor
@@ -306,12 +307,11 @@ def mir_entry(domain: str, arch: str, series: str, comp: str, **kwargs) -> None:
 
 
 def main():
+    """Add a single entry to MIR database\n"""
     import argparse
 
-    from mir.json_cache import JSONCache
+    from mir.json_cache import JSONCache, MIR_PATH_NAMED  # pylint:disable=no-name-in-module
 
-    MIR_PATH = "mir.json"
-    config_file = JSONCache(MIR_PATH)
     parser = argparse.ArgumentParser(description="MIR database manager")
     parser.add_argument("-r", "--remove", action="store_true", help="Remove an item from the database (currently not implemented)")
     parser.add_argument("-d", "--domain", type=str, help=" Broad name of the type of data (model/ops/info/dev)")
@@ -322,16 +322,22 @@ def main():
 
     args = parser.parse_args()
 
-    @config_file.decorator
-    def read_data(data: Dict[str, int | float | str | list] = None) -> dict:
+    def add_data() -> dict:
         """Update MIR file with new entry
         :param data: existing dictionary
         """
-        data.update_cache(
+        mir_file = JSONCache(MIR_PATH_NAMED)
+
+        @mir_file.decorator
+        def _read_data(data: Dict[str, int | float | str | list] = None):
+            return data
+
+        mir_db = _read_data()
+        mir_db.update_cache(
             mir_entry(domain=args.domain, arch=args.arch, series=args.series, comp=args.compatibility, **args.kwargs),
         )
 
-    read_data()
+    add_data()
 
 
 if __name__ == "__main__":

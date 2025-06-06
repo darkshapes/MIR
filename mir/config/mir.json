@@ -22,10 +22,6 @@
             "weight_map": "weight_maps/model.unet.stable-diffusion-xl:base.json"
         },
         "refiner": {
-            "gen_kwargs": {
-                "num_inference_steps": 40,
-                "denoising_end": 0.8
-            },
             "layer_256": [
                 "8c2d0d32cff5a74786480bbaa932ee504bb140f97efdd1a3815f14a610cf6e4a"
             ],
@@ -82,25 +78,9 @@
     },
     "info.unet.kolors": {
         "diffusers": {
-            "gen_kwargs": {
-                "negative_prompt": "",
-                "guidance_scale": 5.0,
-                "num_inference_steps": 50
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.float16",
-                "variant": "fp16"
-            },
             "repo": [
                 "kwai-kolors/kolors-diffusers"
             ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "KolorsPipeline"
-                ]
-            }
         }
     },
     "info.unet.stable-cascade": {
@@ -120,13 +100,6 @@
             "repo": [
                 "stabilityai/stable-cascade"
             ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "StableCascadeCombinedPipeline"
-                ]
-            }
         },
         "prior": {
             "gen_kwargs": {
@@ -1278,717 +1251,329 @@
         }
     },
     "ops.scheduler.amused": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "AmusedScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.cmstochasticiterative": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "CMStochasticIterativeScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.cogvideoxddim": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "CogVideoXDDIMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.cogvideoxdpm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "CogVideoXDPMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.ddiminverse": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DDIMInverseScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.ddimparallel": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DDIMParallelScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.ddim": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DDIMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.ddpmparallel": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DDPMParallelScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.ddpm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DDPMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.ddpmwuerstchen": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DDPMWuerstchenScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.deis": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DEISMultistepScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.dpminverse": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DPMSolverMultistepInverseScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.dpm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DPMSolverMultistepScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.dpmsinglestep": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "DPMSolverSinglestepScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.edmdpm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "EDMDPMSolverMultistepScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.edmeuler": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "EDMEulerScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.eulerancestral": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "EulerAncestralDiscreteScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.euler": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "EulerDiscreteScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.flowmatcheuler": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "FlowMatchEulerDiscreteScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.flowmatchheun": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "FlowMatchHeunDiscreteScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.heun": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "HeunDiscreteScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.ipndm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "IPNDMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.karrasve": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "KarrasVeScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.kdpm2ancestral": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "KDPM2AncestralDiscreteScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.kdpm2": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "KDPM2DiscreteScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.lcm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "LCMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.pndm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "PNDMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.repaint": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "RePaintScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.sa": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "SASolverScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.mixin": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "SchedulerMixin"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.scm": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "SCMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.scoresdeve": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "ScoreSdeVeScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.tcd": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "TCDScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.unclip": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "UnCLIPScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.unipc": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "UniPCMultistepScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.vqdiffusion": {
-        "[init]": {
-            "requires": {
-                "diffusers": [
-                    "VQDiffusionScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
     "ops.scheduler.align-your-steps": {
         "stable-diffusion-xl": {}
     },
     "ops.precision.u8": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint8"
-                ]
-            }
+            "variant": "uint8"
         }
     },
     "ops.precision.i8": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int8"
-                ]
-            }
+            "variant": "int8"
         }
     },
     "ops.precision.i16": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int16"
-                ]
-            }
+            "variant": "int16"
         }
     },
     "ops.precision.i32": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int32"
-                ]
-            }
+            "variant": "int32"
         }
     },
     "ops.precision.i64": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int64"
-                ]
-            }
+            "variant": "int64"
         }
     },
     "ops.precision.f16": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float16"
-                ]
-            }
+            "variant": "fp16"
         }
     },
     "ops.precision.f32": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float32"
-                ]
-            }
+            "variant": "fp32"
         }
     },
     "ops.precision.f64": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float64"
-                ]
-            }
+            "variant": "fp64"
         }
     },
     "ops.precision.c32": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "complex32"
-                ]
-            }
+            "variant": "complex32"
         }
     },
     "ops.precision.c64": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "complex64"
-                ]
-            }
+            "variant": "complex64"
         }
     },
     "ops.precision.c128": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "complex128"
-                ]
-            }
+            "variant": "complex128"
         }
     },
     "ops.precision.bbool": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "bool"
-                ]
-            }
+            "variant": "bool"
         }
     },
     "ops.precision.q8": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "quint8"
-                ]
-            }
+            "variant": "quint8"
         }
     },
     "ops.precision.q32": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "qint32"
-                ]
-            }
+            "variant": "qint32"
         }
     },
     "ops.precision.b16": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "bits16"
-                ]
-            }
+            "variant": "bits16"
         }
     },
     "ops.precision.q4x2": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "quint4x2"
-                ]
-            }
+            "variant": "quint4x2"
         }
     },
     "ops.precision.q2x4": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "quint2x4"
-                ]
-            }
+            "variant": "quint2x4"
         }
     },
     "ops.precision.b1x8": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "bits1x8"
-                ]
-            }
+            "variant": "bits1x8"
         }
     },
     "ops.precision.b2x4": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "bits2x4"
-                ]
-            }
+            "variant": "bits2x4"
         }
     },
     "ops.precision.b4x2": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "bits4x2"
-                ]
-            }
+            "variant": "bits4x2"
         }
     },
     "ops.precision.b8": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "bits8"
-                ]
-            }
+            "variant": "bits8"
         }
     },
     "ops.precision.fe5m2": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float8_e5m2"
-                ]
-            }
+            "variant": "fp8_e5m2"
         }
     },
     "ops.precision.fe4m3fn": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float8_e4m3fn"
-                ]
-            }
+            "variant": "fp8_e4m3fn"
         }
     },
     "ops.precision.fe5m2fnuz": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float8_e5m2fnuz"
-                ]
-            }
+            "variant": "fp8_e5m2fnuz"
         }
     },
     "ops.precision.fe4m3fnuz": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float8_e4m3fnuz"
-                ]
-            }
+            "variant": "fp8_e4m3fnuz"
         }
     },
     "ops.precision.u16": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint16"
-                ]
-            }
+            "variant": "uint16"
         }
     },
     "ops.precision.u32": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint32"
-                ]
-            }
+            "variant": "uint32"
         }
     },
     "ops.precision.u64": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint64"
-                ]
-            }
+            "variant": "uint64"
         }
     },
     "ops.precision.u1": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint1"
-                ]
-            }
+            "variant": "uint1"
         }
     },
     "ops.precision.u2": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint2"
-                ]
-            }
+            "variant": "uint2"
         }
     },
     "ops.precision.u3": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint3"
-                ]
-            }
+            "variant": "uint3"
         }
     },
     "ops.precision.u4": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint4"
-                ]
-            }
+            "variant": "uint4"
         }
     },
     "ops.precision.u5": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint5"
-                ]
-            }
+            "variant": "uint5"
         }
     },
     "ops.precision.u6": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint6"
-                ]
-            }
+            "variant": "uint6"
         }
     },
     "ops.precision.u7": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "uint7"
-                ]
-            }
+            "variant": "uint7"
         }
     },
     "ops.precision.i1": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int1"
-                ]
-            }
+            "variant": "int1"
         }
     },
     "ops.precision.i2": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int2"
-                ]
-            }
+            "variant": "int2"
         }
     },
     "ops.precision.i3": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int3"
-                ]
-            }
+            "variant": "int3"
         }
     },
     "ops.precision.i4": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int4"
-                ]
-            }
+            "variant": "int4"
         }
     },
     "ops.precision.i5": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int5"
-                ]
-            }
+            "variant": "int5"
         }
     },
     "ops.precision.i6": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int6"
-                ]
-            }
+            "variant": "int6"
         }
     },
     "ops.precision.i7": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "int7"
-                ]
-            }
+            "variant": "int7"
         }
     },
     "ops.precision.fe8m0fnu": {
         "[init]": {
-            "requires": {
-                "torch": [
-                    "float8_e8m0fnu"
-                ]
-            }
+            "variant": "fp8_e8m0fnu"
         }
     },
     "ops.patch.hidiffusion": {

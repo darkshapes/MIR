@@ -1,6 +1,4 @@
-nnll@ git+https://github.com/darkshapes/nnll@main
-pydantic>=2.11.5
-tqdm>=4.67.1
+nnll@ /Users/unauthorized/Documents/GitHub/darkshapes/nnll
 
 [dev]
 pytest>=8.3.5

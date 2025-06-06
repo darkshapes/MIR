@@ -1,35 +1,35 @@
-### <!-- // /*  SPDX-License-Identifier: LAL-1.3 */ -->
-### <!-- // /*  d a r k s h a p e s */ -->
+# ### <!-- // /*  SPDX-License-Identifier: LAL-1.3 */ -->
+# ### <!-- // /*  d a r k s h a p e s */ -->
 
-"""动态函数工厂"""
+# """动态函数工厂"""
 
-# pylint: disable=unsubscriptable-object, import-outside-toplevel, unused-argument, line-too-long
-import os
-from typing import Callable  # , List, Union
-from nnll.monitor.file import debug_monitor, dbug, nfo
+# # pylint: disable=unsubscriptable-object, import-outside-toplevel, unused-argument, line-too-long
+# import os
+# from typing import Callable  # , List, Union
+# from nnll.monitor.file import debug_monitor, dbug, nfo
 
-from mir.constants import ChipType, PkgType
-from mir.mir_maid import MIRDatabase
-
-
-# turn repo into class based on pkg/chip
-PkgType.check_type("MFLUX") + ChipType.MPS
-PkgType.DIFFUSERS
-PkgType.BITSANDBYTES
-PkgType.TORCH
-
-check = {LibType.HUB}
+# from mir.constants import ChipType, PkgType
+# from mir.mir_maid import MIRDatabase
 
 
-def filter_dependencies(model_path: str, mir_db: Callable = MIRDatabase()):
-    mir_tag = mir_db.find_path(field="repo", target=model_path)
-    if "".join(mir_tag).find("flux") > 0 and LibType.check_type("MFLUX") and "MPS" in ChipType._show_ready("mps"):
-        nfo("HAS MFLUX")
-    # pylint:disable=no-member
-    return mir_tag
-    # if LibType.HUB:
+# # turn repo into class based on pkg/chip
+# PkgType.check_type("MFLUX") + ChipType.MPS
+# PkgType.DIFFUSERS
+# PkgType.BITSANDBYTES
+# PkgType.TORCH
+
+# check = {LibType.HUB}
 
 
+# def filter_dependencies(model_path: str, mir_db: Callable = MIRDatabase()):
+#     mir_tag = mir_db.find_path(field="repo", target=model_path)
+#     if "".join(mir_tag).find("flux") > 0 and LibType.check_type("MFLUX") and "MPS" in ChipType._show_ready("mps"):
+#         nfo("HAS MFLUX")
+#     # pylint:disable=no-member
+#     return mir_tag
+#     # if LibType.HUB:
+
+# from transformers.models.auto.modeling_auto import MODEL_MAPPING_NAMES
 #     from huggingface_hub import hf_hub_download
 #     from diffusers.loaders.single_file_utils import DIFFUSERS_DEFAULT_PIPELINE_PATHS
 #     SINGLE_FILE_CHECKPOINT_TEXT2IMAGE_PIPELINE_MAPPING = OrderedDict(

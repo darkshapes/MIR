@@ -159,6 +159,8 @@ class PkgType(BaseEnum):
     TORCHVISION: tuple = (has_api("TORCHVISION"), "TORCHVISION")
     TORCHAUDIO: tuple = (has_api("TORCHAUDIO"), "TORCHAUDIO")
     BITSANDBYTES: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES")
+    OUTETTS: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES")
+    SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS")
 
 
 class ChipType(Enum):

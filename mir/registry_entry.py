@@ -5,11 +5,13 @@
 
 # pylint: disable=line-too-long, import-outside-toplevel, protected-access, unsubscriptable-object
 
-from typing import Dict, List, Tuple, Optional, Union
+from enum import Enum
+from pathlib import Path
+from typing import List, Tuple, Optional
 from pydantic import BaseModel, computed_field
 
-from nnll.monitor.file import dbug, debug_monitor, nfo
-from mir.constants import LIBTYPE_CONFIG, VALID_CONVERSIONS, VALID_TASKS, LibType, has_api, PkgType
+from nnll.monitor.file import dbug, debug_monitor
+from mir.constants import LIBTYPE_CONFIG, VALID_CONVERSIONS, VALID_TASKS, LibType, PkgType
 from mir.mir_maid import MIRDatabase
 
 
@@ -23,8 +25,8 @@ class RegistryEntry(BaseModel):
     timestamp: int
     mir: Optional[list[str]] = None
     api_kwargs: Optional[dict] = None
-    package: Optional[Union[PkgType, LibType]] = None
-    # tokenizer: None
+    package: Optional[Enum] = None
+    tokenizer: Optional[Path] = None
 
     @computed_field
     @property
@@ -43,7 +45,7 @@ class RegistryEntry(BaseModel):
         if self.library in [x for x in list(LibType) if x != LibType.HUB]:
             default_task = ("text", "text")  # usually these are txt gen libraries
         elif self.library == LibType.HUB:
-            print(self.library)  # pair tags from the hub such 'x-to-y' such as 'text-to-text' etc
+            # print(self.library)  # pair tags from the hub such 'x-to-y' such as 'text-to-text' etc
             pattern = re.compile(r"(\w+)-to-(\w+)")
             for tag in self.tags:
                 match = pattern.search(tag)
@@ -91,7 +93,14 @@ class RegistryEntry(BaseModel):
                     except ValueError as error_log:
                         dbug(error_log)
                     else:
+                        package_name = meta.get("library_name")
+                        if package_name:
+                            package_name = package_name.replace("-", "_").upper()
+                            if hasattr(PkgType, package_name):
+                                package_name = getattr(PkgType, package_name.upper())
                         tags = []
+                        tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
+                        tokenizer = None if not tokenizer_models else tokenizer_models[-1]
                         if hasattr(meta, "tags"):
                             tags.extend(meta.tags)
                         if hasattr(meta, "pipeline_tag"):
@@ -102,9 +111,10 @@ class RegistryEntry(BaseModel):
                             tags=tags,
                             library=LibType.HUB,
                             mir=mir_db.find_path("repo", repo.repo_id.lower()),
-                            package=PkgType.check_type(meta.get("library_name")),
+                            package=package_name,
                             api_kwargs=None,
                             timestamp=int(repo.last_modified),
+                            tokenizer=tokenizer,
                         )  # pylint: disable=undefined-loop-variable
                         entries.append(entry)
             except CacheNotFound as error_log:
@@ -121,10 +131,11 @@ class RegistryEntry(BaseModel):
                     size=model.size.real,
                     tags=[model.details.family],
                     library=LibType.OLLAMA,
-                    mir=None,
+                    mir=[series for series, comp in mir_db.database.items() if model.details.family in str(comp)],
                     package=LibType.OLLAMA,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.modified_at.timestamp()),
+                    tokenizer=(model.model),
                 )
                 entries.append(entry)
 

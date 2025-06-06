@@ -760,7 +760,7 @@ requires-dist = [
     { name = "lmstudio", marker = "extra == 'lmstudio'", specifier = ">=1.3.1" },
     { name = "mir", extras = ["full"], marker = "extra == 'dev'" },
     { name = "mir", extras = ["lmstudio", "ollama", "openai"], marker = "extra == 'full'" },
-    { name = "nnll", directory = "../nnll" },
+    { name = "nnll", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "ollama", marker = "extra == 'ollama'", specifier = ">=0.5.1" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.84.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
@@ -907,7 +907,8 @@ wheels = [
 
 [[package]]
 name = "nnll"
-source = { directory = "../nnll" }
+version = "0.1.dev554+g74579bb.d20250606"
+source = { git = "https://github.com/darkshapes/nnll?rev=main#74579bb734b63e5a2e45ddfafe9c8d9beb692f8e" }
 dependencies = [
     { name = "accelerate" },
     { name = "aiofiles" },
@@ -928,72 +929,6 @@ dependencies = [
     { name = "structlog" },
     { name = "tqdm" },
     { name = "transformers" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "accelerate", specifier = ">=1.7.0" },
-    { name = "aiofiles", specifier = ">=24.1.0" },
-    { name = "aiohttp", specifier = ">=3.12.6" },
-    { name = "aioresponses", marker = "extra == 'dev'", specifier = ">=0.7.8" },
-    { name = "diffusers", specifier = ">=0.33.1" },
-    { name = "flash-attn", marker = "sys_platform == 'Linux' and extra == 'cu128'" },
-    { name = "flash-attn", marker = "sys_platform == 'Linux' and extra == 'rocm'" },
-    { name = "hidiffusion", specifier = ">=0.1.10" },
-    { name = "huggingface-hub", extras = ["cli", "hf-transfer", "hf-xet"], specifier = ">=0.32.3" },
-    { name = "llama-cpp-python", specifier = ">=0.3.9" },
-    { name = "nnll", extras = ["dev"], marker = "extra == 'dev'" },
-    { name = "numpy", specifier = ">=2.2.6" },
-    { name = "peft", specifier = ">=0.15.2" },
-    { name = "pillow", specifier = ">=11.2.1" },
-    { name = "protobuf", specifier = ">=5.29.5" },
-    { name = "pydantic", specifier = ">=2.11.5" },
-    { name = "pydantic-core", specifier = ">=2.33.2" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
-    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.0.0" },
-    { name = "pytest-tornasync", marker = "extra == 'dev'", specifier = ">=0.6.0.post2" },
-    { name = "pytest-trio", marker = "extra == 'dev'", specifier = ">=0.8.0" },
-    { name = "pytorch-triton-rocm", marker = "extra == 'rocm'" },
-    { name = "rich", specifier = ">=14.0.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.12" },
-    { name = "safetensors", specifier = ">=0.5.3" },
-    { name = "sageattention", marker = "sys_platform != 'darwin' and extra == 'cu128'" },
-    { name = "sageattention", marker = "sys_platform != 'darwin' and extra == 'rocm'" },
-    { name = "sentencepiece", git = "https://github.com/google/sentencepiece.git?subdirectory=python" },
-    { name = "structlog", specifier = ">=25.4.0" },
-    { name = "torch", marker = "extra == 'cpu'" },
-    { name = "torch", marker = "extra == 'cu126'" },
-    { name = "torch", marker = "extra == 'cu128'" },
-    { name = "torch", marker = "extra == 'nightly'" },
-    { name = "torch", marker = "extra == 'rocm'" },
-    { name = "torchaudio", marker = "extra == 'cpu'" },
-    { name = "torchaudio", marker = "extra == 'cu126'" },
-    { name = "torchaudio", marker = "extra == 'cu128'" },
-    { name = "torchaudio", marker = "extra == 'nightly'" },
-    { name = "torchaudio", marker = "extra == 'rocm'" },
-    { name = "torchvision", marker = "extra == 'cpu'" },
-    { name = "torchvision", marker = "extra == 'cu126'" },
-    { name = "torchvision", marker = "extra == 'cu128'" },
-    { name = "torchvision", marker = "extra == 'nightly'" },
-    { name = "torchvision", marker = "extra == 'rocm'" },
-    { name = "tqdm", specifier = ">=4.67.1" },
-    { name = "transformers", specifier = ">=4.52.4" },
-    { name = "triton", marker = "sys_platform == 'Linux' and extra == 'cu126'" },
-    { name = "triton", marker = "sys_platform == 'Linux' and extra == 'cu128'" },
-    { name = "triton-windows", marker = "sys_platform == 'win32' and extra == 'cu126'" },
-    { name = "triton-windows", marker = "sys_platform == 'win32' and extra == 'cu128'" },
-]
-provides-extras = ["cpu", "nightly", "cu126", "cu128", "rocm", "dev"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "aioresponses", specifier = ">=0.7.8" },
-    { name = "nnll", extras = ["dev"] },
-    { name = "pytest", specifier = ">=8.3.5" },
-    { name = "pytest-asyncio", specifier = ">=1.0.0" },
-    { name = "pytest-tornasync", specifier = ">=0.6.0.post2" },
-    { name = "pytest-trio", specifier = ">=0.8.0" },
-    { name = "ruff", specifier = ">=0.11.12" },
 ]
 
 [[package]]

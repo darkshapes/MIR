@@ -4,13 +4,14 @@
 """神经网络的数据注册"""
 
 # pylint: disable=possibly-used-before-assignment, line-too-long
-from typing import Any, Callable, OrderedDict, Union, List, Optional
+from typing import Any, Callable, List, Optional
 import os
 
 # from mir.constants import LibType
 from nnll.monitor.file import debug_monitor, dbug, nfo
-from mir.json_cache import JSONCache, MIR_PATH_NAMED
+from mir.json_cache import JSONCache, MIR_PATH_NAMED  # pylint:disable=no-name-in-module
 from mir.mir import mir_entry
+# from pkg_detect import root_class
 
 
 class MIRDatabase:
@@ -157,8 +158,7 @@ def build_mir_unet(mir_db: MIRDatabase):
             repo=["stabilityai/stable-diffusion-xl-refiner-1.0"],
             layer_256=["8c2d0d32cff5a74786480bbaa932ee504bb140f97efdd1a3815f14a610cf6e4a"],
             weight_map="weight_maps/stable-diffusion-xl-refiner.json",
-            dep_alt={"diffusers": ["DiffusionPipeline"]},
-            gen_kwargs={"num_inference_steps": 40, "denoising_end": 0.8},
+            package={"diffusers": "DiffusionPipeline", "num_inference_steps": 40, "denoising_end": 0.8},
         )
     )
     mir_db.add(
@@ -168,9 +168,8 @@ def build_mir_unet(mir_db: MIRDatabase):
             series="kolors",
             comp="diffusers",
             repo=["kwai-kolors/kolors-diffusers"],
-            gen_kwargs={"negative_prompt": "", "guidance_scale": 5.0, "num_inference_steps": 50},
-            init_kwargs={"torch_dtype": "torch.float16", "variant": "fp16"},
-            dep_pkg={"diffusers": ["KolorsPipeline"]},
+            fits=["ops.precision.f16"],
+            package={"diffusers": "KolorsPipeline", "negative_prompt": "", "guidance_scale": 5.0, "num_inference_steps": 50},
         )
     )
     mir_db.add(
@@ -180,7 +179,7 @@ def build_mir_unet(mir_db: MIRDatabase):
             series="stable-cascade",
             comp="combined",
             repo=["stabilityai/stable-cascade"],
-            dep_pkg={"diffusers": ["StableCascadeCombinedPipeline"]},
+            package={"diffusers": ["StableCascadeCombinedPipeline"]},
             gen_kwargs={"negative_prompt": "", "num_inference_steps": 10, "prior_num_inference_steps": 20, "prior_guidance_scale": 3.0, "width": 1024, "height": 1024},
             init_kwargs={"variant": "bf16", "torch_dtype": "torch.bfloat16"},
         )
@@ -722,6 +721,7 @@ def build_mir_art(mir_db: MIRDatabase):
 
 
 def build_mir_seq2seq(mir_db: MIRDatabase):
+    """Sequence to sequence models"""
     mir_db.add(
         mir_entry(
             domain="info",
@@ -1166,7 +1166,7 @@ def build_mir_dtype(mir_db: MIRDatabase):
                 series=series_name,
                 comp="[init]",
                 variant=variant_name,
-                requires={dep_name.lower(): [class_name.lower()]},
+                package={dep_name.lower(): class_name.lower()},
             )
         )
 
@@ -1187,7 +1187,7 @@ def build_mir_scheduler(mir_db: MIRDatabase):
                     arch="scheduler",
                     series=series_name,
                     comp="[init]",
-                    requires={"diffusers": {class_name}},
+                    requires={"diffusers": class_name},
                 )
             )
     except (ImportError, ModuleNotFoundError) as error_log:
@@ -1207,6 +1207,7 @@ def build_mir_scheduler(mir_db: MIRDatabase):
 
 
 def main(mir_db: Callable = MIRDatabase()) -> None:
+    """Build the database"""
     # current_dir = os.path.dirname(os.path.abspath(__file__))
     # root_path = os.path.dirname(current_dir)
     # sys.path.append(root_path)

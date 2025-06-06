@@ -1,19 +1,17 @@
 {
     "info.unet.stable-diffusion-xl": {
         "base": {
-            "dep_alt": {
-                "diffusers": [
-                    "DiffusionPipeline"
-                ]
-            },
             "gen_kwargs": {
-                "num_inference_steps": 40,
-                "denoising_end": 0.8,
-                "output_type": "latent",
-                "safety_checker": false
+                "diffusers": {
+                    "num_inference_steps": 40,
+                    "denoising_end": 0.8,
+                    "output_type": "latent"
+                }
             },
             "init_kwargs": {
-                "use_safetensors": true
+                "diffusers": {
+                    "use_safetensors": true
+                }
             },
             "layer_256": [
                 "62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"
@@ -23,23 +21,7 @@
             ],
             "weight_map": "weight_maps/model.unet.stable-diffusion-xl:base.json"
         },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "StableDiffusionXLPipeline"
-                ]
-            }
-        },
         "refiner": {
-            "dep_alt": {
-                "diffusers": [
-                    "DiffusionPipeline"
-                ]
-            },
-            "gen_kwargs": {
-                "num_inference_steps": 40,
-                "denoising_end": 0.8
-            },
             "layer_256": [
                 "8c2d0d32cff5a74786480bbaa932ee504bb140f97efdd1a3815f14a610cf6e4a"
             ],
@@ -49,11 +31,6 @@
             "weight_map": "weight_maps/stable-diffusion-xl-refiner.json"
         },
         "pony-diffusion": {
-            "dep_alt": {
-                "diffusers": [
-                    "DiffusionPipeline"
-                ]
-            },
             "layer_256": [
                 "d4fc7682a4ea9f2dfa0133fafb068f03fdb479158a58260dcaa24dcf33608c16"
             ]
@@ -77,21 +54,11 @@
             ]
         },
         "playground-2.5-base": {
-            "dep_alt": {
-                "diffusers": [
-                    "DiffusionPipeline"
-                ]
-            },
             "layer_256": [
                 "a6f31493ceeb51c88c5239188b9078dc64ba66d3fc5958ad48c119115b06120c"
             ]
         },
         "playground-2.5-aesthetic": {
-            "dep_alt": {
-                "diffusers": [
-                    "DiffusionPipeline"
-                ]
-            },
             "gen_kwargs": {
                 "num_inference_steps": 50,
                 "guidance_scale": 3
@@ -111,25 +78,9 @@
     },
     "info.unet.kolors": {
         "diffusers": {
-            "gen_kwargs": {
-                "negative_prompt": "",
-                "guidance_scale": 5.0,
-                "num_inference_steps": 50
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.float16",
-                "variant": "fp16"
-            },
             "repo": [
                 "kwai-kolors/kolors-diffusers"
             ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "KolorsPipeline"
-                ]
-            }
         }
     },
     "info.unet.stable-cascade": {
@@ -150,19 +101,7 @@
                 "stabilityai/stable-cascade"
             ]
         },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "StableCascadeCombinedPipeline"
-                ]
-            }
-        },
         "prior": {
-            "dep_alt": {
-                "diffusers": [
-                    "StableCascadePriorPipeline"
-                ]
-            },
             "gen_kwargs": {
                 "height": 1024,
                 "width": 1024,
@@ -323,11 +262,6 @@
             }
         },
         "shuttle-3.1-aesthetic": {
-            "dep_alt": {
-                "diffusers": [
-                    "DiffusionPipeline"
-                ]
-            },
             "gen_kwargs": {
                 "height": 1024,
                 "width": 1024,
@@ -343,11 +277,6 @@
             ]
         },
         "shuttle-3-diffusion": {
-            "dep_alt": {
-                "diffusers": [
-                    "DiffusionPipeline"
-                ]
-            },
             "gen_kwargs": {
                 "height": 1024,
                 "width": 1024,
@@ -383,11 +312,6 @@
             ]
         },
         "f-lite-8b": {
-            "dep_alt": {
-                "f_lite": [
-                    "FLitePipeline"
-                ]
-            },
             "gen_kwargs": {
                 "num_inference_steps": 28,
                 "guidance_scale": 3.5,
@@ -402,11 +326,6 @@
             ]
         },
         "f-lite-7b": {
-            "dep_alt": {
-                "f_lite": [
-                    "FLitePipeline"
-                ]
-            },
             "gen_kwargs": {
                 "num_inference_steps": 28,
                 "guidance_scale": 3.5,
@@ -421,11 +340,6 @@
             ]
         },
         "lite-texture": {
-            "dep_alt": {
-                "f_lite": [
-                    "FLitePipeline"
-                ]
-            },
             "gen_kwargs": {
                 "num_inference_steps": 28,
                 "guidance_scale": 3.5,
@@ -446,11 +360,6 @@
             ]
         },
         "mini": {
-            "dep_alt": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            },
             "layer_256": [
                 "e4a0d8cf2034da094518ab058da1d4aea14e00d132c6152a266ec196ffef02d0"
             ],
@@ -463,9 +372,7 @@
         "0": {
             "gen_kwargs": {
                 "width": 1536,
-                "height": 768,
-                "num_inference_steps": 50,
-                "guidance_scale": 3.5
+                "height": 768
             },
             "repo": [
                 "fal/AuraFlow-v0.3",
@@ -484,7 +391,6 @@
     "info.dit.hunyuandit": {
         "diffusers": {
             "gen_kwargs": {
-                "num_inference_steps": 50,
                 "guidance_scale": 6
             },
             "repo": [
@@ -528,10 +434,7 @@
     "info.dit.cogview-3": {
         "plus-3b": {
             "gen_kwargs": {
-                "height": 1024,
-                "width": 1024,
-                "guidance_scale": 4.0,
-                "num_inference_steps": 50
+                "guidance_scale": 4.0
             },
             "init_kwargs": {
                 "torch_dtype": "torch.bfloat16"
@@ -551,11 +454,8 @@
     "info.dit.cogview-4": {
         "6b": {
             "gen_kwargs": {
-                "height": 1024,
-                "width": 1024,
                 "guidance_scale": 3.5,
-                "num_images_per_prompt": 1,
-                "num_inference_steps": 50
+                "num_images_per_prompt": 1
             },
             "init_kwargs": {
                 "torch_dtype": "torch.bfloat16"
@@ -1350,254 +1250,330 @@
             ]
         }
     },
-    "ops.scheduler.euler": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "EulerDiscreteScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.amused": {
+        "[init]": {}
     },
-    "ops.scheduler.euler-ancestral": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "EulerAncestralDiscreteScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.cmstochasticiterative": {
+        "[init]": {}
     },
-    "ops.scheduler.flow-match": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "FlowMatchEulerDiscreteScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.cogvideoxddim": {
+        "[init]": {}
     },
-    "ops.scheduler.edm": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "EDMDPMSolverMultistepScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.cogvideoxdpm": {
+        "[init]": {}
     },
-    "ops.scheduler.dpm": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "DPMSolverMultistepScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.ddiminverse": {
+        "[init]": {}
+    },
+    "ops.scheduler.ddimparallel": {
+        "[init]": {}
     },
     "ops.scheduler.ddim": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "DDIMScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
-    "ops.scheduler.lcm": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "LCMScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.ddpmparallel": {
+        "[init]": {}
     },
-    "ops.scheduler.tcd": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "TCDScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.ddpm": {
+        "[init]": {}
     },
-    "ops.scheduler.heun": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "HeunDiscreteScheduler"
-                ]
-            }
-        }
-    },
-    "ops.scheduler.uni-pc": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "UniPCMultistepScheduler"
-                ]
-            }
-        }
-    },
-    "ops.scheduler.lms": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "LMSDiscreteScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.ddpmwuerstchen": {
+        "[init]": {}
     },
     "ops.scheduler.deis": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "DEISMultistepScheduler"
-                ]
-            }
-        }
+        "[init]": {}
     },
-    "ops.scheduler.ddpm_wuerstchen": {
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "DDPMWuerstchenScheduler"
-                ]
-            }
-        }
+    "ops.scheduler.dpminverse": {
+        "[init]": {}
+    },
+    "ops.scheduler.dpm": {
+        "[init]": {}
+    },
+    "ops.scheduler.dpmsinglestep": {
+        "[init]": {}
+    },
+    "ops.scheduler.edmdpm": {
+        "[init]": {}
+    },
+    "ops.scheduler.edmeuler": {
+        "[init]": {}
+    },
+    "ops.scheduler.eulerancestral": {
+        "[init]": {}
+    },
+    "ops.scheduler.euler": {
+        "[init]": {}
+    },
+    "ops.scheduler.flowmatcheuler": {
+        "[init]": {}
+    },
+    "ops.scheduler.flowmatchheun": {
+        "[init]": {}
+    },
+    "ops.scheduler.heun": {
+        "[init]": {}
+    },
+    "ops.scheduler.ipndm": {
+        "[init]": {}
+    },
+    "ops.scheduler.karrasve": {
+        "[init]": {}
+    },
+    "ops.scheduler.kdpm2ancestral": {
+        "[init]": {}
+    },
+    "ops.scheduler.kdpm2": {
+        "[init]": {}
+    },
+    "ops.scheduler.lcm": {
+        "[init]": {}
+    },
+    "ops.scheduler.pndm": {
+        "[init]": {}
+    },
+    "ops.scheduler.repaint": {
+        "[init]": {}
+    },
+    "ops.scheduler.sa": {
+        "[init]": {}
+    },
+    "ops.scheduler.mixin": {
+        "[init]": {}
+    },
+    "ops.scheduler.scm": {
+        "[init]": {}
+    },
+    "ops.scheduler.scoresdeve": {
+        "[init]": {}
+    },
+    "ops.scheduler.tcd": {
+        "[init]": {}
+    },
+    "ops.scheduler.unclip": {
+        "[init]": {}
+    },
+    "ops.scheduler.unipc": {
+        "[init]": {}
+    },
+    "ops.scheduler.vqdiffusion": {
+        "[init]": {}
     },
     "ops.scheduler.align-your-steps": {
         "stable-diffusion-xl": {}
     },
-    "ops.float.bf16": {
-        "pytorch": {},
+    "ops.precision.u8": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "bfloat16"
-                ]
-            }
+            "variant": "uint8"
         }
     },
-    "ops.float.f16": {
-        "pytorch": {
+    "ops.precision.i8": {
+        "[init]": {
+            "variant": "int8"
+        }
+    },
+    "ops.precision.i16": {
+        "[init]": {
+            "variant": "int16"
+        }
+    },
+    "ops.precision.i32": {
+        "[init]": {
+            "variant": "int32"
+        }
+    },
+    "ops.precision.i64": {
+        "[init]": {
+            "variant": "int64"
+        }
+    },
+    "ops.precision.f16": {
+        "[init]": {
             "variant": "fp16"
-        },
-        "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "float16"
-                ]
-            }
         }
     },
-    "ops.float.f32": {
-        "pytorch": {
+    "ops.precision.f32": {
+        "[init]": {
             "variant": "fp32"
-        },
-        "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "float32"
-                ]
-            }
         }
     },
-    "ops.float.f64": {
-        "pytorch": {
+    "ops.precision.f64": {
+        "[init]": {
             "variant": "fp64"
-        },
-        "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "float64"
-                ]
-            }
         }
     },
-    "ops.float.f8_e4m3": {
-        "pytorch": {
-            "variant": "fp8e4m3fn"
-        },
+    "ops.precision.c32": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "float8_e4m3fn"
-                ]
-            }
+            "variant": "complex32"
         }
     },
-    "ops.float.f8_e5m2": {
-        "pytorch": {
-            "variant": "fp8e5m2"
-        },
+    "ops.precision.c64": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "float8_e5m2"
-                ]
-            }
+            "variant": "complex64"
         }
     },
-    "ops.float.i16": {
-        "pytorch": {},
+    "ops.precision.c128": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "int16"
-                ]
-            }
+            "variant": "complex128"
         }
     },
-    "ops.float.i32": {
-        "pytorch": {},
+    "ops.precision.bbool": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "int32"
-                ]
-            }
+            "variant": "bool"
         }
     },
-    "ops.float.i64": {
-        "pytorch": {},
+    "ops.precision.q8": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "int64"
-                ]
-            }
+            "variant": "quint8"
         }
     },
-    "ops.float.i8": {
-        "pytorch": {},
+    "ops.precision.q32": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "int8"
-                ]
-            }
+            "variant": "qint32"
         }
     },
-    "ops.float.nf4": {
-        "pytorch": {},
+    "ops.precision.b16": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "nf4"
-                ]
-            }
+            "variant": "bits16"
         }
     },
-    "ops.float.u8": {
-        "pytorch": {},
+    "ops.precision.q4x2": {
         "[init]": {
-            "dep_pkg": {
-                "torch": [
-                    "uint8"
-                ]
-            }
+            "variant": "quint4x2"
+        }
+    },
+    "ops.precision.q2x4": {
+        "[init]": {
+            "variant": "quint2x4"
+        }
+    },
+    "ops.precision.b1x8": {
+        "[init]": {
+            "variant": "bits1x8"
+        }
+    },
+    "ops.precision.b2x4": {
+        "[init]": {
+            "variant": "bits2x4"
+        }
+    },
+    "ops.precision.b4x2": {
+        "[init]": {
+            "variant": "bits4x2"
+        }
+    },
+    "ops.precision.b8": {
+        "[init]": {
+            "variant": "bits8"
+        }
+    },
+    "ops.precision.fe5m2": {
+        "[init]": {
+            "variant": "fp8_e5m2"
+        }
+    },
+    "ops.precision.fe4m3fn": {
+        "[init]": {
+            "variant": "fp8_e4m3fn"
+        }
+    },
+    "ops.precision.fe5m2fnuz": {
+        "[init]": {
+            "variant": "fp8_e5m2fnuz"
+        }
+    },
+    "ops.precision.fe4m3fnuz": {
+        "[init]": {
+            "variant": "fp8_e4m3fnuz"
+        }
+    },
+    "ops.precision.u16": {
+        "[init]": {
+            "variant": "uint16"
+        }
+    },
+    "ops.precision.u32": {
+        "[init]": {
+            "variant": "uint32"
+        }
+    },
+    "ops.precision.u64": {
+        "[init]": {
+            "variant": "uint64"
+        }
+    },
+    "ops.precision.u1": {
+        "[init]": {
+            "variant": "uint1"
+        }
+    },
+    "ops.precision.u2": {
+        "[init]": {
+            "variant": "uint2"
+        }
+    },
+    "ops.precision.u3": {
+        "[init]": {
+            "variant": "uint3"
+        }
+    },
+    "ops.precision.u4": {
+        "[init]": {
+            "variant": "uint4"
+        }
+    },
+    "ops.precision.u5": {
+        "[init]": {
+            "variant": "uint5"
+        }
+    },
+    "ops.precision.u6": {
+        "[init]": {
+            "variant": "uint6"
+        }
+    },
+    "ops.precision.u7": {
+        "[init]": {
+            "variant": "uint7"
+        }
+    },
+    "ops.precision.i1": {
+        "[init]": {
+            "variant": "int1"
+        }
+    },
+    "ops.precision.i2": {
+        "[init]": {
+            "variant": "int2"
+        }
+    },
+    "ops.precision.i3": {
+        "[init]": {
+            "variant": "int3"
+        }
+    },
+    "ops.precision.i4": {
+        "[init]": {
+            "variant": "int4"
+        }
+    },
+    "ops.precision.i5": {
+        "[init]": {
+            "variant": "int5"
+        }
+    },
+    "ops.precision.i6": {
+        "[init]": {
+            "variant": "int6"
+        }
+    },
+    "ops.precision.i7": {
+        "[init]": {
+            "variant": "int7"
+        }
+    },
+    "ops.precision.fe8m0fnu": {
+        "[init]": {
+            "variant": "fp8_e8m0fnu"
         }
     },
     "ops.patch.hidiffusion": {

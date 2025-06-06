@@ -182,9 +182,7 @@ Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: nnll@ git+https://github.com/darkshapes/nnll@main
-Requires-Dist: pydantic>=2.11.5
-Requires-Dist: tqdm>=4.67.1
+Requires-Dist: nnll@ /Users/unauthorized/Documents/GitHub/darkshapes/nnll
 Provides-Extra: dev
 Requires-Dist: pytest>=8.3.5; extra == "dev"
 Requires-Dist: pytest-asyncio>=1.0.0; extra == "dev"
@@ -226,7 +224,7 @@ The work is inspired by:
 >  [URI]:[Domain].[Architecture].[Series]:[Compatibility]
 > ```
 
-[![Python application](https://github.com/darkshapes/MIR/actions/workflows/python-app.yml/badge.svg)](https://github.com/darkshapes/MIR/actions/workflows/python-app.yml)<br>
+[![Python application](https://github.com/darkshapes/MIR/actions/workflows/mir.yml/badge.svg)](https://github.com/darkshapes/MIR/actions/workflows/python-app.yml)<br>
 ![commits per month](https://img.shields.io/github/commit-activity/m/darkshapes/MIR?color=indigo)<br>
 ![code size](https://img.shields.io/github/languages/code-size/darkshapes/MIR?color=navy)<br>
 ![Discord](https://img.shields.io/discord/1266757128249675867?color=black)<br><br>

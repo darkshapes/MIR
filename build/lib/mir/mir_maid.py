@@ -4,19 +4,21 @@
 """神经网络的数据注册"""
 
 # pylint: disable=possibly-used-before-assignment, line-too-long
-from typing import Any, Callable, Union, List, Optional
+from typing import Any, Callable, List, Optional
 import os
 
-from nnll.monitor.file import debug_monitor, nfo  # , dbug
-from mir.json_cache import JSONCache, MIR_PATH
+# from mir.constants import LibType
+from nnll.monitor.file import debug_monitor, dbug, nfo
+from mir.json_cache import JSONCache, MIR_PATH_NAMED  # pylint:disable=no-name-in-module
 from mir.mir import mir_entry
+# from pkg_detect import root_class
 
 
 class MIRDatabase:
     """Machine Intelligence Resource Database"""
 
     database: Optional[dict[str, Any]]
-    mir_file = JSONCache(MIR_PATH)
+    mir_file = JSONCache(MIR_PATH_NAMED)
 
     def __init__(self) -> None:
         self.read_from_disk()
@@ -37,7 +39,7 @@ class MIRDatabase:
     def write_to_disk(self, data: Optional[dict] = None) -> None:  # pylint:disable=unused-argument
         """Save data to JSON file\n"""
         # from pprint import pprint
-
+        self.mir_file.update_cache({"..": ".."}, replace=True)
         self.mir_file.update_cache(self.database, replace=True)
         self.database = self.read_from_disk()
         # nfo(self.database)
@@ -115,13 +117,14 @@ class MIRDatabase:
                         matches.extend(match_results)
         best_match = self.grade_char_match(matches, target)
         if best_match:
-            nfo(best_match)
+            dbug(best_match)
             return best_match
         raise KeyError(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
 
 
 def build_mir_unet(mir_db: MIRDatabase):
     """Create mir unet info database"""
+
     mir_db.add(
         mir_entry(
             domain="info",
@@ -129,19 +132,21 @@ def build_mir_unet(mir_db: MIRDatabase):
             series="stable-diffusion-xl",
             comp="base",
             gen_kwargs={
-                "num_inference_steps": 40,
-                "denoising_end": 0.8,
-                "output_type": "latent",
-                "safety_checker": False,
+                "diffusers": {
+                    "num_inference_steps": 40,
+                    "denoising_end": 0.8,
+                    "output_type": "latent",
+                }
             },
             init_kwargs={
-                "use_safetensors": True,
+                "diffusers": {
+                    "use_safetensors": True,
+                }
             },
-            dep_pkg={"diffusers": ["StableDiffusionXLPipeline"]},
             layer_256=["62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"],
             weight_map="weight_maps/model.unet.stable-diffusion-xl:base.json",
             repo=["stabilityai/stable-diffusion-xl-base-1.0"],
-            dep_alt={"diffusers": ["DiffusionPipeline"]},
+            alt_pipe={"diffusers": ["DiffusionPipeline"]},
         )
     )
     mir_db.add(
@@ -153,8 +158,7 @@ def build_mir_unet(mir_db: MIRDatabase):
             repo=["stabilityai/stable-diffusion-xl-refiner-1.0"],
             layer_256=["8c2d0d32cff5a74786480bbaa932ee504bb140f97efdd1a3815f14a610cf6e4a"],
             weight_map="weight_maps/stable-diffusion-xl-refiner.json",
-            dep_alt={"diffusers": ["DiffusionPipeline"]},
-            gen_kwargs={"num_inference_steps": 40, "denoising_end": 0.8},
+            package={"diffusers": "DiffusionPipeline", "num_inference_steps": 40, "denoising_end": 0.8},
         )
     )
     mir_db.add(
@@ -164,9 +168,8 @@ def build_mir_unet(mir_db: MIRDatabase):
             series="kolors",
             comp="diffusers",
             repo=["kwai-kolors/kolors-diffusers"],
-            gen_kwargs={"negative_prompt": "", "guidance_scale": 5.0, "num_inference_steps": 50},
-            init_kwargs={"torch_dtype": "torch.float16", "variant": "fp16"},
-            dep_pkg={"diffusers": ["KolorsPipeline"]},
+            fits=["ops.precision.f16"],
+            package={"diffusers": "KolorsPipeline", "negative_prompt": "", "guidance_scale": 5.0, "num_inference_steps": 50},
         )
     )
     mir_db.add(
@@ -176,7 +179,7 @@ def build_mir_unet(mir_db: MIRDatabase):
             series="stable-cascade",
             comp="combined",
             repo=["stabilityai/stable-cascade"],
-            dep_pkg={"diffusers": ["StableCascadeCombinedPipeline"]},
+            package={"diffusers": ["StableCascadeCombinedPipeline"]},
             gen_kwargs={"negative_prompt": "", "num_inference_steps": 10, "prior_num_inference_steps": 20, "prior_guidance_scale": 3.0, "width": 1024, "height": 1024},
             init_kwargs={"variant": "bf16", "torch_dtype": "torch.bfloat16"},
         )
@@ -288,6 +291,29 @@ def build_mir_unet(mir_db: MIRDatabase):
 
 def build_mir_dit(mir_db: MIRDatabase):
     """Create mir diffusion transformer info database"""
+
+    # from nnll.configure.init_gpu import first_available
+
+    # if "mps" in first_available(assign=False):
+    #     try:
+    #         from mflux import _import_structure
+
+    #         for class_name in _import_structure["schedulers"]:
+    #             for minor in ["Discrete", "Scheduler", "Multistep", "Solver"]:
+    #                 series_name = class_name.replace(minor, "")
+    #             series_name.lower()
+    #             mir_db.add(
+    #                 mir_entry(
+    #                     domain="ops",
+    #                     arch="scheduler",
+    #                     series=series_name,
+    #                     comp="[init]",
+    #                     requires={"mflux": {class_name}},
+    #                 )
+    #             )
+    #     except (ImportError, ModuleNotFoundError) as error_log:
+    #         dbug(error_log)
+
     mir_db.add(
         mir_entry(
             domain="info",
@@ -493,7 +519,7 @@ def build_mir_dit(mir_db: MIRDatabase):
                 "diffusers": ["AuraFlowPipeline"],
             },
             repo=["fal/AuraFlow-v0.3", "fal/AuraFlow-v0.2", "fal/AuraFlow"],
-            gen_kwargs={"width": 1536, "height": 768, "num_inference_steps": 50, "guidance_scale": 3.5},
+            gen_kwargs={"width": 1536, "height": 768},
         )
     )
     mir_db.add(
@@ -504,7 +530,7 @@ def build_mir_dit(mir_db: MIRDatabase):
             comp="diffusers",
             dep_pkg={"diffusers": ["HunyuanDiTPipeline"]},
             repo=["Tencent-Hunyuan/HunyuanDiT-v1.2-Diffusers"],
-            gen_kwargs={"num_inference_steps": 50, "guidance_scale": 6},
+            gen_kwargs={"guidance_scale": 6},
         )
     )
     mir_db.add(
@@ -536,7 +562,9 @@ def build_mir_dit(mir_db: MIRDatabase):
             comp="plus-3b",
             repo=["THUDM/CogView3-Plus-3B"],
             dep_pkg={"diffusers": ["CogView3PlusPipeline"]},
-            gen_kwargs={"height": 1024, "width": 1024, "guidance_scale": 4.0, "num_inference_steps": 50},
+            gen_kwargs={
+                "guidance_scale": 4.0,
+            },
             init_kwargs={"torch_dtype": "torch.bfloat16"},
         )
     )
@@ -548,7 +576,7 @@ def build_mir_dit(mir_db: MIRDatabase):
             comp="6b",
             repo=["THUDM/CogView4-6B"],
             dep_pkg={"diffusers": ["CogView4Pipeline"]},
-            gen_kwargs={"height": 1024, "width": 1024, "guidance_scale": 3.5, "num_images_per_prompt": 1, "num_inference_steps": 50},
+            gen_kwargs={"guidance_scale": 3.5, "num_images_per_prompt": 1},
             init_kwargs={"torch_dtype": "torch.bfloat16"},
         )
     )
@@ -693,6 +721,7 @@ def build_mir_art(mir_db: MIRDatabase):
 
 
 def build_mir_seq2seq(mir_db: MIRDatabase):
+    """Sequence to sequence models"""
     mir_db.add(
         mir_entry(
             domain="info",
@@ -1117,37 +1146,53 @@ def build_mir_other(mir_db: MIRDatabase):
     )
 
 
-def build_mir_float(mir_db: MIRDatabase):
+def build_mir_dtype(mir_db: MIRDatabase):
     """Create mir info database"""
-    mir_db.add(mir_entry(domain="ops", arch="float", series="BF16", comp="pytorch", dep_pkg={"torch": ["bfloat16"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="F16", comp="pytorch", variant="fp16", dep_pkg={"torch": ["float16"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="F32", comp="pytorch", variant="fp32", dep_pkg={"torch": ["float32"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="F64", comp="pytorch", variant="fp64", dep_pkg={"torch": ["float64"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="F8_E4M3", comp="pytorch", variant="fp8e4m3fn", dep_pkg={"torch": ["float8_e4m3fn"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="F8_E5M2", comp="pytorch", variant="fp8e5m2", dep_pkg={"torch": ["float8_e5m2"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="I16", comp="pytorch", dep_pkg={"torch": ["int16"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="I32", comp="pytorch", dep_pkg={"torch": ["int32"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="I64", comp="pytorch", dep_pkg={"torch": ["int64"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="I8", comp="pytorch", dep_pkg={"torch": ["int8"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="NF4", comp="pytorch", dep_pkg={"torch": ["nf4"]}))
-    mir_db.add(mir_entry(domain="ops", arch="float", series="U8", comp="pytorch", dep_pkg={"torch": ["uint8"]}))
+    import torch
+    from nnll.metadata.helpers import slice_number
+
+    available_dtypes = [dtype for dtype in torch.__dict__.values() if isinstance(dtype, torch.dtype)]
+    for precision in available_dtypes:
+        dep_name, class_name = str(precision).split(".")
+        if "_" in class_name:
+            series_name = class_name[0].upper() + class_name.split("_")[1].upper()
+        else:
+            series_name = class_name[0].upper() + str(slice_number(class_name))
+        variant_name = class_name.replace("float", "fp")
+        mir_db.add(
+            mir_entry(
+                domain="ops",
+                arch="precision",
+                series=series_name,
+                comp="[init]",
+                variant=variant_name,
+                package={dep_name.lower(): class_name.lower()},
+            )
+        )
 
 
 def build_mir_scheduler(mir_db: MIRDatabase):
     """Create mir info database"""
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="euler", comp="[init]", dep_pkg={"diffusers": ["EulerDiscreteScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="euler-ancestral", comp="[init]", dep_pkg={"diffusers": ["EulerAncestralDiscreteScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="flow-match", comp="[init]", dep_pkg={"diffusers": ["FlowMatchEulerDiscreteScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="edm", comp="[init]", dep_pkg={"diffusers": ["EDMDPMSolverMultistepScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="dpm", comp="[init]", dep_pkg={"diffusers": ["DPMSolverMultistepScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="ddim", comp="[init]", dep_pkg={"diffusers": ["DDIMScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="lcm", comp="[init]", dep_pkg={"diffusers": ["LCMScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="tcd", comp="[init]", dep_pkg={"diffusers": ["TCDScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="heun", comp="[init]", dep_pkg={"diffusers": ["HeunDiscreteScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="uni-pc", comp="[init]", dep_pkg={"diffusers": ["UniPCMultistepScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="lms", comp="[init]", dep_pkg={"diffusers": ["LMSDiscreteScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="deis", comp="[init]", dep_pkg={"diffusers": ["DEISMultistepScheduler"]}))
-    mir_db.add(mir_entry(domain="ops", arch="scheduler", series="ddpm_wuerstchen", comp="[init]", dep_pkg={"diffusers": ["DDPMWuerstchenScheduler"]}))
+    try:
+        from diffusers import _import_structure
+
+        for series_name in _import_structure["schedulers"]:
+            class_name = series_name
+            for minor in ["Discrete", "Scheduler", "Multistep", "Solver"]:
+                series_name = series_name.replace(minor, "")
+            series_name.lower()
+            mir_db.add(
+                mir_entry(
+                    domain="ops",
+                    arch="scheduler",
+                    series=series_name,
+                    comp="[init]",
+                    requires={"diffusers": class_name},
+                )
+            )
+    except (ImportError, ModuleNotFoundError) as error_log:
+        dbug(error_log)
+
     mir_db.add(
         mir_entry(
             domain="ops",
@@ -1162,6 +1207,7 @@ def build_mir_scheduler(mir_db: MIRDatabase):
 
 
 def main(mir_db: Callable = MIRDatabase()) -> None:
+    """Build the database"""
     # current_dir = os.path.dirname(os.path.abspath(__file__))
     # root_path = os.path.dirname(current_dir)
     # sys.path.append(root_path)
@@ -1176,7 +1222,7 @@ def main(mir_db: Callable = MIRDatabase()) -> None:
     build_mir_mix(mir_db)
     build_mir_lora(mir_db)
     build_mir_scheduler(mir_db)
-    build_mir_float(mir_db)
+    build_mir_dtype(mir_db)
     build_mir_other(mir_db)
     mir_db.write_to_disk()
 

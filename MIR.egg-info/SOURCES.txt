@@ -1,5 +1,6 @@
 .gitignore
 .python-version
+.test.json
 LICENSE
 README.md
 pyproject.toml

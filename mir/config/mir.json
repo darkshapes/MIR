@@ -6,7 +6,7 @@
                     "diffusers": "AllegroPipeline"
                 }
             },
-            "repo": "\"rhymes-ai/Allegro"
+            "repo": "rhymes-ai/Allegro"
         }
     },
     "info.dit.amused": {
@@ -16,27 +16,27 @@
                     "diffusers": "AmusedPipeline"
                 }
             },
-            "repo": "\"amused/amused-512"
+            "repo": "amused/amused-512"
         }
     },
-    "info.unet.audioldm-s-full-v2\"": {
-        "base": {
+    "info.unet.audioldm-s-full-": {
+        "v2": {
             "pkg": {
                 "0": {
                     "diffusers": "AudioLDMPipeline"
                 }
             },
-            "repo": "\"cvssp/audioldm-s-full-v2\""
+            "repo": "cvssp/audioldm-s-full-v2"
         }
     },
-    "info.unet.audioldm2\"": {
+    "info.unet.audioldm2": {
         "base": {
             "pkg": {
                 "0": {
                     "diffusers": "AudioLDM2Pipeline"
                 }
             },
-            "repo": "\"cvssp/audioldm2\""
+            "repo": "cvssp/audioldm2"
         }
     },
     "info.dit.auraflow": {
@@ -46,7 +46,7 @@
                     "diffusers": "AuraFlowPipeline"
                 }
             },
-            "repo": "\"fal/AuraFlow"
+            "repo": "fal/AuraFlow"
         }
     },
     "info.unet.blipdiffusion": {
@@ -56,7 +56,7 @@
                     "diffusers": "BlipDiffusionPipeline"
                 }
             },
-            "repo": "\"Salesforce/blipdiffusion"
+            "repo": "Salesforce/blipdiffusion"
         }
     },
     "info.dit.cogvideox": {
@@ -66,7 +66,7 @@
                     "diffusers": "CogVideoXPipeline"
                 }
             },
-            "repo": "\"THUDM/CogVideoX-2b"
+            "repo": "THUDM/CogVideoX-2b"
         }
     },
     "info.dit.cogview3-plus": {
@@ -76,7 +76,7 @@
                     "diffusers": "CogView3PlusPipeline"
                 }
             },
-            "repo": "\"THUDM/CogView3-Plus-3B"
+            "repo": "THUDM/CogView3-Plus-3B"
         }
     },
     "info.dit.cogview4": {
@@ -86,7 +86,7 @@
                     "diffusers": "CogView4Pipeline"
                 }
             },
-            "repo": "\"THUDM/CogView4-6B"
+            "repo": "THUDM/CogView4-6B"
         }
     },
     "info.dit.consisid": {
@@ -96,17 +96,17 @@
                     "diffusers": "ConsisIDPipeline"
                 }
             },
-            "repo": "\"BestWishYsh/ConsisID-preview"
+            "repo": "BestWishYsh/ConsisID-preview"
         }
     },
-    "info.unet.diffusers-cd-imagenet64-l2\"": {
+    "info.unet.diffusers-cd-imagenet64-l2": {
         "base": {
             "pkg": {
                 "0": {
                     "diffusers": "ConsistencyModelPipeline"
                 }
             },
-            "repo": "\"openai/diffusers-cd_imagenet64_l2\""
+            "repo": "openai/diffusers-cd_imagenet64_l2"
         }
     },
     "info.unet.if-i-xl-v1-0": {
@@ -116,7 +116,7 @@
                     "diffusers": "IFPipeline"
                 }
             },
-            "repo": "\"DeepFloyd/IF-I-XL-v1.0"
+            "repo": "DeepFloyd/IF-I-XL-v1.0"
         }
     },
     "info.dit.easyanimatev5-1-7b-zh": {
@@ -126,7 +126,7 @@
                     "diffusers": "EasyAnimatePipeline"
                 }
             },
-            "repo": "\"alibaba-pai/EasyAnimateV5.1-7b-zh-diffusers"
+            "repo": "alibaba-pai/EasyAnimateV5.1-7b-zh-diffusers"
         }
     },
     "info.dit.flux-1": {
@@ -139,17 +139,38 @@
                     "mflux": "Flux1"
                 }
             },
-            "repo": "\"black-forest-labs/FLUX.1-schnell"
+            "repo": "black-forest-labs/FLUX.1-schnell"
+        },
+        "dev": {
+            "pkg": {
+                "0": {
+                    "diffusers": "FluxPipeline"
+                },
+                "1": {
+                    "mflux": "Flux1"
+                }
+            },
+            "repo": "black-forest-labs/FLUX.1-dev"
         }
     },
-    "info.dit.hunyuanvideo\"": {
+    "info.dit.hidream-i1": {
+        "full": {
+            "pkg": {
+                "0": {
+                    "diffusers": "HiDreamImagePipeline"
+                }
+            },
+            "repo": "HiDream-ai/HiDream-I1-Full"
+        }
+    },
+    "info.dit.hunyuanvideo": {
         "base": {
             "pkg": {
                 "0": {
                     "diffusers": "HunyuanVideoPipeline"
                 }
             },
-            "repo": "\"hunyuanvideo-community/HunyuanVideo\""
+            "repo": "hunyuanvideo-community/HunyuanVideo"
         }
     },
     "info.dit.hunyuandit": {
@@ -159,7 +180,7 @@
                     "diffusers": "HunyuanDiTPipeline"
                 }
             },
-            "repo": "\"Tencent-Hunyuan/HunyuanDiT-Diffusers"
+            "repo": "Tencent-Hunyuan/HunyuanDiT-Diffusers"
         }
     },
     "info.unet.i2vgen-xl": {
@@ -169,7 +190,7 @@
                     "diffusers": "I2VGenXLPipeline"
                 }
             },
-            "repo": "\"ali-vilab/i2vgen-xl"
+            "repo": "ali-vilab/i2vgen-xl"
         }
     },
     "info.unet.kandinsky-2-1": {
@@ -179,7 +200,7 @@
                     "diffusers": "KandinskyPriorPipeline"
                 }
             },
-            "repo": "\"kandinsky-community/Kandinsky-2-1-prior"
+            "repo": "kandinsky-community/Kandinsky-2-1-prior"
         }
     },
     "info.unet.kandinsky-2-2": {
@@ -189,7 +210,7 @@
                     "diffusers": "KandinskyV22PriorPipeline"
                 }
             },
-            "repo": "\"kandinsky-community/kandinsky-2-2-prior"
+            "repo": "kandinsky-community/kandinsky-2-2-prior"
         }
     },
     "info.unet.kandinsky-3": {
@@ -199,7 +220,7 @@
                     "diffusers": "AutoPipelineForText2Image"
                 }
             },
-            "repo": "\"kandinsky-community/kandinsky-3"
+            "repo": "kandinsky-community/kandinsky-3"
         }
     },
     "info.unet.kolors": {
@@ -209,7 +230,7 @@
                     "diffusers": "KolorsPipeline"
                 }
             },
-            "repo": "\"Kwai-Kolors/Kolors-diffusers"
+            "repo": "Kwai-Kolors/Kolors-diffusers"
         }
     },
     "info.dit.latte-1": {
@@ -219,7 +240,7 @@
                     "diffusers": "LattePipeline"
                 }
             },
-            "repo": "\"maxin-cn/Latte-1"
+            "repo": "maxin-cn/Latte-1"
         }
     },
     "info.dit.ltx-video": {
@@ -229,7 +250,7 @@
                     "diffusers": "LTXPipeline"
                 }
             },
-            "repo": "\"Lightricks/LTX-Video"
+            "repo": "Lightricks/LTX-Video"
         }
     },
     "info.dit.lumina-next-sft": {
@@ -239,7 +260,7 @@
                     "diffusers": "LuminaPipeline"
                 }
             },
-            "repo": "\"Alpha-VLLM/Lumina-Next-SFT-diffusers"
+            "repo": "Alpha-VLLM/Lumina-Next-SFT-diffusers"
         }
     },
     "info.dit.lumina-image-2-0": {
@@ -249,7 +270,7 @@
                     "diffusers": "Lumina2Pipeline"
                 }
             },
-            "repo": "\"Alpha-VLLM/Lumina-Image-2.0"
+            "repo": "Alpha-VLLM/Lumina-Image-2.0"
         }
     },
     "info.dit.mochi-1": {
@@ -259,17 +280,17 @@
                     "diffusers": "MochiPipeline"
                 }
             },
-            "repo": "\"genmo/mochi-1-preview"
+            "repo": "genmo/mochi-1-preview"
         }
     },
-    "info.unet.musicldm\"": {
+    "info.unet.musicldm": {
         "base": {
             "pkg": {
                 "0": {
                     "diffusers": "MusicLDMPipeline"
                 }
             },
-            "repo": "\"ucsd-reach/musicldm\""
+            "repo": "ucsd-reach/musicldm"
         }
     },
     "info.dit.pixart-xl-2": {
@@ -279,7 +300,7 @@
                     "diffusers": "PixArtAlphaPipeline"
                 }
             },
-            "repo": "\"PixArt-alpha/PixArt-XL-2-1024-MS"
+            "repo": "PixArt-alpha/PixArt-XL-2-1024-MS"
         }
     },
     "info.dit.sana-1600m": {
@@ -289,27 +310,27 @@
                     "diffusers": "SanaPipeline"
                 }
             },
-            "repo": "\"Efficient-Large-Model/Sana_1600M_1024px_BF16_diffusers"
+            "repo": "Efficient-Large-Model/Sana_1600M_1024px_BF16_diffusers"
         }
     },
-    "info.unet.shap-e\"": {
+    "info.unet.shap-e": {
         "base": {
             "pkg": {
                 "0": {
                     "diffusers": "DiffusionPipeline"
                 }
             },
-            "repo": "\"openai/shap-e\""
+            "repo": "openai/shap-e"
         }
     },
-    "info.dit.stable-audio-open-1-0\"": {
+    "info.dit.stable-audio-open-1-0": {
         "base": {
             "pkg": {
                 "0": {
                     "diffusers": "StableAudioPipeline"
                 }
             },
-            "repo": "\"stabilityai/stable-audio-open-1.0\""
+            "repo": "stabilityai/stable-audio-open-1.0"
         }
     },
     "info.unet.stable-cascade": {
@@ -319,7 +340,7 @@
                     "diffusers": "StableCascadePriorPipeline"
                 }
             },
-            "repo": "\"stabilityai/stable-cascade-prior"
+            "repo": "stabilityai/stable-cascade-prior"
         },
         "base": {
             "pkg": {
@@ -337,7 +358,7 @@
                     "diffusers": "StableDiffusionPipeline"
                 }
             },
-            "repo": "\"stable-diffusion-v1-5/stable-diffusion-v1-5"
+            "repo": "stable-diffusion-v1-5/stable-diffusion-v1-5"
         }
     },
     "info.dit.stable-diffusion-3-5": {
@@ -365,7 +386,7 @@
                     "diffusers": "StableDiffusionGLIGENPipeline"
                 }
             },
-            "repo": "\"masterful/gligen-1-4-inpainting-text-box"
+            "repo": "masterful/gligen-1-4-inpainting-text-box"
         }
     },
     "info.unet.ldm3d-4c": {
@@ -375,7 +396,7 @@
                     "diffusers": "StableDiffusionLDM3DPipeline"
                 }
             },
-            "repo": "\"Intel/ldm3d-4c"
+            "repo": "Intel/ldm3d-4c"
         }
     },
     "info.unet.stable-diffusion-xl": {
@@ -385,7 +406,7 @@
                     "diffusers": "StableDiffusionXLPipeline"
                 }
             },
-            "repo": "\"stabilityai/stable-diffusion-xl-base-1.0"
+            "repo": "stabilityai/stable-diffusion-xl-base-1.0"
         }
     },
     "info.unet.stable-video-diffusion-img2vid": {
@@ -395,17 +416,17 @@
                     "diffusers": "StableVideoDiffusionPipeline"
                 }
             },
-            "repo": "\"stabilityai/stable-video-diffusion-img2vid-xt"
+            "repo": "stabilityai/stable-video-diffusion-img2vid-xt"
         }
     },
-    "info.dit.wan2-1-t2v-14b-diffusers\"": {
-        "base": {
+    "info.dit.wan2-1-t2v-14b": {
+        "diffusers": {
             "pkg": {
                 "0": {
                     "diffusers": "WanPipeline"
                 }
             },
-            "repo": "\"Wan-AI/Wan2.1-T2V-14B-Diffusers\""
+            "repo": "Wan-AI/Wan2.1-T2V-14B-Diffusers"
         }
     },
     "info.unet.wuerstchen": {
@@ -415,7 +436,7 @@
                     "diffusers": "WuerstchenPriorPipeline"
                 }
             },
-            "repo": "\"warp-ai/wuerstchen-prior"
+            "repo": "warp-ai/wuerstchen-prior"
         },
         "base": {
             "pkg": {
@@ -1183,6 +1204,15 @@
             "pkg": {
                 "0": {
                     "diffusers": "FlowMatchHeunDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.flowmatchlcm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "FlowMatchLCMScheduler"
                 }
             }
         }

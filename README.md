@@ -7,9 +7,12 @@ license_name: LGPL-3.0-only
 
 # MIR (Machine Intelligence Resource)<br><sub>A naming schema for AIGC/ML work.</sub>
 
+
 The MIR classification format seeks to standardize and complete a hyperlinked network of model information, improving accessibility and reproducibility across the AI community.<br>
 
-The work is inspired by:
+This repo is a live development implementation, an example of autogenerating model inference parameters and code with the MIR schema. This is the sister repo to our [🤗HuggingFace MIR project](https://huggingface.co/darkshapes/MIR) which is an archive of model state dict layer information that also uses the MIR schema.
+
+MIR is inspired by:
 - [AIR-URN](https://github.com/civitai/civitai/wiki/AIR-%E2%80%90-Uniform-Resource-Names-for-AI) project by [CivitAI](https://civitai.com/)
 - [Spandrel](https://github.com/chaiNNer-org/spandrel/blob/main/libs/spandrel/spandrel/__helpers/registry.py) library's super-resolution registry
 
@@ -23,6 +26,7 @@ The work is inspired by:
 >   ↑      ↑         ↑               ↑            ↑
 >  [URI]:[Domain].[Architecture].[Series]:[Compatibility]
 > ```
+
 
 [![Python application](https://github.com/darkshapes/MIR/actions/workflows/mir.yml/badge.svg)](https://github.com/darkshapes/MIR/actions/workflows/python-app.yml)<br>
 ![commits per month](https://img.shields.io/github/commit-activity/m/darkshapes/MIR?color=indigo)<br>

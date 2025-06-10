@@ -1,6 +1,14 @@
 ### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
+import os
+import shutil
+
+from mir.json_cache import MIR_PATH_NAMED
+
+
+os.remove(MIR_PATH_NAMED)
+
 
 def test_mir_creation():
     from nnll.monitor.file import nfo
@@ -55,8 +63,6 @@ def test_mir_creation():
     )
     pprint(entry)
 
-
-# eta only works with ddim!!!
 
 if __name__ == "__main__":
     test_mir_creation()

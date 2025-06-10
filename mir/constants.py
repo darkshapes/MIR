@@ -1,5 +1,5 @@
-### <!-- // /*  SPDX-License-Identifier: MPL-2.0  */ -->
-### <!-- // /*  d a r k s h a p e s */ -->
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
+### <!-- // /*  d a r k s h a p e s */ -->### <!-- // /*  d a r k s h a p e s */ -->
 
 
 from enum import Enum

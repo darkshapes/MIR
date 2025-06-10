@@ -3,7 +3,7 @@ import pytest
 
 def test_mir_maid():
     from mir.mir_maid import MIRDatabase, main
-    from mir.json_cache import MIR_PATH_NAMED
+    from mir.json_cache import MIR_PATH_NAMED  #
     import json
 
     expected = {"empty": "101010101010101010"}
@@ -44,10 +44,10 @@ def test_restore_mir():
 
 @pytest.fixture
 def mock_test_database():
-    from mir.mir_maid import MIRDatabase
+    from mir.mir_maid import MIRDatabase, main
 
     mir_db = MIRDatabase()
-
+    main(mir_db)
     return mir_db
 
 

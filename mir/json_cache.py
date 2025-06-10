@@ -1,7 +1,7 @@
-### <!-- // /*  SPDX-License-Identifier: MPL-2.0  */ -->
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
-"""JSONCache, HASH_PATH_NAMED,CONFIG_PATH_NAMED,CHAIN_PATH_NAMED USER_PATH_NAMED"""
+"""JSONCache, [ MIR / HASHES / LIBTYPE / HYPERCHAIN ] _PATH_NAMED"""
 
 import os
 import sys

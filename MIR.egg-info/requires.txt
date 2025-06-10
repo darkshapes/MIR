@@ -10,6 +10,18 @@ mir[mflux]
 [cu128:sys_platform != "darwin"]
 nnll[bitsandbytes,cu126,cu128,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main
 
+[dev]
+pytest>=8.3.5
+pytest-asyncio>=1.0.0
+ruff>=0.11.12
+mir[hidiffusion,lmstudio,ollama,openai,outetts]
+
+[dev:sys_platform != "darwin"]
+nnll[bitsandbytes,cu126,cu128,dev,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main
+
+[dev:sys_platform == "darwin"]
+nnll[dev,diffusers,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main
+
 [full]
 mir[cu128,hidiffusion,lmstudio,mflux,ollama,openai,outetts]
 

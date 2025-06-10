@@ -30,9 +30,23 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=8.3.5", "pytest-asyncio>=1.0.0", "ruff>=0.11.12", "mir[full]"]
-
+dev = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.11.12",
+    "mir[lmstudio,ollama,openai,outetts,hidiffusion]",
+    "nnll[nightly,mflux,diffusers,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[rocm,cu128,cu126,bitsandbytes,diffusers,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+]
 [project.optional-dependencies]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.11.12",
+    "mir[lmstudio,ollama,openai,outetts,hidiffusion]",
+    "nnll[nightly,mflux,diffusers,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[rocm,cu128,cu126,bitsandbytes,diffusers,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+]
 cu128 = [
     "nnll[rocm,cu128,cu126,bitsandbytes,diffusers] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
 ]

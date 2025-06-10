@@ -184,6 +184,13 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: mir[mflux]; sys_platform == "darwin"
 Requires-Dist: mir[cu128]; sys_platform != "darwin"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3.5; extra == "dev"
+Requires-Dist: pytest-asyncio>=1.0.0; extra == "dev"
+Requires-Dist: ruff>=0.11.12; extra == "dev"
+Requires-Dist: mir[hidiffusion,lmstudio,ollama,openai,outetts]; extra == "dev"
+Requires-Dist: nnll[dev,diffusers,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main ; sys_platform == "darwin" and extra == "dev"
+Requires-Dist: nnll[bitsandbytes,cu126,cu128,dev,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main ; sys_platform != "darwin" and extra == "dev"
 Provides-Extra: cu128
 Requires-Dist: nnll[bitsandbytes,cu126,cu128,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main ; sys_platform != "darwin" and extra == "cu128"
 Provides-Extra: mflux

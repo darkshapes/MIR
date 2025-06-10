@@ -97,6 +97,19 @@ wheels = [
 ]
 
 [[package]]
+name = "aioresponses"
+version = "0.7.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "aiohttp" },
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/de/03/532bbc645bdebcf3b6af3b25d46655259d66ce69abba7720b71ebfabbade/aioresponses-0.7.8.tar.gz", hash = "sha256:b861cdfe5dc58f3b8afac7b0a6973d5d7b2cb608dd0f6253d16b8ee8eaf6df11", size = 40253, upload-time = "2025-01-19T18:14:03.222Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/12/b7/584157e43c98aa89810bc2f7099e7e01c728ecf905a66cf705106009228f/aioresponses-0.7.8-py2.py3-none-any.whl", hash = "sha256:b73bd4400d978855e55004b23a3a84cb0f018183bcf066a85ad392800b5b9a94", size = 12518, upload-time = "2025-01-19T18:13:59.633Z" },
+]
+
+[[package]]
 name = "aiosignal"
 version = "1.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1307,6 +1320,19 @@ dependencies = [
 cu128 = [
     { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
 ]
+dev = [
+    { name = "lmstudio" },
+    { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
+    { name = "nnll", extra = ["dev"] },
+    { name = "nnll", extra = ["mflux", "nightly"], marker = "sys_platform == 'darwin'" },
+    { name = "ollama" },
+    { name = "openai" },
+    { name = "openai-whisper" },
+    { name = "outetts" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "ruff" },
+]
 full = [
     { name = "lmstudio" },
     { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
@@ -1336,7 +1362,10 @@ outetts = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "mir", extra = ["full"] },
+    { name = "mir", extra = ["lmstudio", "ollama", "openai", "outetts"] },
+    { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
+    { name = "nnll", extra = ["dev"] },
+    { name = "nnll", extra = ["mflux", "nightly"], marker = "sys_platform == 'darwin'" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "ruff" },
@@ -1347,19 +1376,27 @@ requires-dist = [
     { name = "lmstudio", marker = "extra == 'lmstudio'", specifier = ">=1.3.1" },
     { name = "mir", extras = ["cu128"], marker = "sys_platform != 'darwin'" },
     { name = "mir", extras = ["lmstudio", "ollama", "openai", "mflux", "outetts", "hidiffusion", "cu128"], marker = "extra == 'full'" },
+    { name = "mir", extras = ["lmstudio", "ollama", "openai", "outetts", "hidiffusion"], marker = "extra == 'dev'" },
     { name = "mir", extras = ["mflux"], marker = "sys_platform == 'darwin'" },
     { name = "nnll", extras = ["nightly", "mflux", "diffusers"], marker = "sys_platform == 'darwin' and extra == 'mflux'", git = "https://github.com/darkshapes/nnll?rev=main" },
+    { name = "nnll", extras = ["nightly", "mflux", "diffusers", "dev"], marker = "sys_platform == 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "nnll", extras = ["rocm", "cu128", "cu126", "bitsandbytes", "diffusers"], marker = "sys_platform != 'darwin' and extra == 'cu128'", git = "https://github.com/darkshapes/nnll?rev=main" },
+    { name = "nnll", extras = ["rocm", "cu128", "cu126", "bitsandbytes", "diffusers", "dev"], marker = "sys_platform != 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "ollama", marker = "extra == 'ollama'", specifier = ">=0.5.1" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.84.0" },
     { name = "openai-whisper", marker = "extra == 'outetts'", git = "https://github.com/openai/whisper.git" },
     { name = "outetts", marker = "extra == 'outetts'" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
+    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.0.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.12" },
 ]
-provides-extras = ["cu128", "mflux", "full", "lmstudio", "ollama", "openai", "outetts"]
+provides-extras = ["dev", "cu128", "mflux", "full", "lmstudio", "ollama", "openai", "outetts"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "mir", extras = ["full"] },
+    { name = "mir", extras = ["lmstudio", "ollama", "openai", "outetts", "hidiffusion"] },
+    { name = "nnll", extras = ["nightly", "mflux", "diffusers", "dev"], marker = "sys_platform == 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
+    { name = "nnll", extras = ["rocm", "cu128", "cu126", "bitsandbytes", "diffusers", "dev"], marker = "sys_platform != 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-asyncio", specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.11.12" },
@@ -1632,6 +1669,19 @@ cu128 = [
     { name = "torchvision", marker = "sys_platform != 'darwin'" },
     { name = "triton", marker = "sys_platform == 'Linux'" },
     { name = "triton-windows", marker = "sys_platform == 'win32'" },
+]
+dev = [
+    { name = "aioresponses" },
+    { name = "mflux", version = "0.2.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' and platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "mflux", version = "0.7.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' and platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-tornasync" },
+    { name = "pytest-trio" },
+    { name = "ruff" },
+    { name = "torch" },
+    { name = "torchaudio" },
+    { name = "torchvision" },
 ]
 mflux = [
     { name = "mflux", version = "0.2.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' and platform_machine == 'arm64' and sys_platform == 'darwin'" },
@@ -1917,6 +1967,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/17/06/68c27a523103dad5837dc5b87e71285280c4f098c60e4fe8a8db6486ab09/opencv-python-4.11.0.86.tar.gz", hash = "sha256:03d60ccae62304860d232272e4a4fda93c39d595780cb40b161b310244b736a4", size = 95171956, upload-time = "2025-01-16T13:52:24.737Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/05/4d/53b30a2a3ac1f75f65a59eb29cf2ee7207ce64867db47036ad61743d5a23/opencv_python-4.11.0.86-cp37-abi3-macosx_13_0_arm64.whl", hash = "sha256:432f67c223f1dc2824f5e73cdfcd9db0efc8710647d4e813012195dc9122a52a", size = 37326322, upload-time = "2025-01-16T13:52:25.887Z" },
+]
+
+[[package]]
+name = "outcome"
+version = "1.3.0.post0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "attrs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/98/df/77698abfac98571e65ffeb0c1fba8ffd692ab8458d617a0eed7d9a8d38f2/outcome-1.3.0.post0.tar.gz", hash = "sha256:9dcf02e65f2971b80047b377468e72a268e15c0af3cf1238e6ff14f7f91143b8", size = 21060, upload-time = "2023-10-26T04:26:04.361Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/55/8b/5ab7257531a5d830fc8000c476e63c935488d74609b50f9384a643ec0a62/outcome-1.3.0.post0-py2.py3-none-any.whl", hash = "sha256:e771c5ce06d1415e356078d3bdd68523f284b4ce5419828922b6871e65eda82b", size = 10692, upload-time = "2023-10-26T04:26:02.532Z" },
 ]
 
 [[package]]
@@ -2374,6 +2436,33 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-tornasync"
+version = "0.6.0.post2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+    { name = "tornado" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/54/a0/e096d3609793ea1c3bbf255f923da453b83728cfc9f10bcbab98d6932d74/pytest-tornasync-0.6.0.post2.tar.gz", hash = "sha256:d781b6d951a2e7c08843141d3ff583610b4ea86bfa847714c76edefb576bbe5d", size = 6201, upload-time = "2019-07-15T08:41:13.921Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/50/b9/3615ebfc3120bb949c3725b50793f42c3230d0175d6cfd358ea8bb6928ff/pytest_tornasync-0.6.0.post2-py3-none-any.whl", hash = "sha256:4b165b6ba76b5b228933598f456b71ba233f127991a52889788db0a950ad04ba", size = 6634, upload-time = "2019-07-15T08:41:12.234Z" },
+]
+
+[[package]]
+name = "pytest-trio"
+version = "0.8.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "outcome" },
+    { name = "pytest" },
+    { name = "trio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/13/08/056279526554c6c6e6ad6d4a479a338d14dc785ac30be8bdc6ca0153c1be/pytest-trio-0.8.0.tar.gz", hash = "sha256:8363db6336a79e6c53375a2123a41ddbeccc4aa93f93788651641789a56fb52e", size = 46525, upload-time = "2022-11-01T17:24:29.352Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e9/22/71953f47e0da5852c899f58cd7a31e6100f37c632b7b9ee52d067613a844/pytest_trio-0.8.0-py3-none-any.whl", hash = "sha256:e6a7e7351ae3e8ec3f4564d30ee77d1ec66e1df611226e5618dbb32f9545c841", size = 27221, upload-time = "2022-11-01T17:24:27.501Z" },
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -2716,6 +2805,15 @@ wheels = [
 ]
 
 [[package]]
+name = "sortedcontainers"
+version = "2.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88", size = 30594, upload-time = "2021-05-16T22:03:42.897Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0", size = 29575, upload-time = "2021-05-16T22:03:41.177Z" },
+]
+
+[[package]]
 name = "sounddevice"
 version = "0.5.2"
 source = { registry = "https://pypi.org/simple" }
@@ -3046,6 +3144,25 @@ wheels = [
 ]
 
 [[package]]
+name = "tornado"
+version = "6.5.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/51/89/c72771c81d25d53fe33e3dca61c233b665b2780f21820ba6fd2c6793c12b/tornado-6.5.1.tar.gz", hash = "sha256:84ceece391e8eb9b2b95578db65e920d2a61070260594819589609ba9bc6308c", size = 509934, upload-time = "2025-05-22T18:15:38.788Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/77/89/f4532dee6843c9e0ebc4e28d4be04c67f54f60813e4bf73d595fe7567452/tornado-6.5.1-cp39-abi3-macosx_10_9_universal2.whl", hash = "sha256:d50065ba7fd11d3bd41bcad0825227cc9a95154bad83239357094c36708001f7", size = 441948, upload-time = "2025-05-22T18:15:20.862Z" },
+    { url = "https://files.pythonhosted.org/packages/15/9a/557406b62cffa395d18772e0cdcf03bed2fff03b374677348eef9f6a3792/tornado-6.5.1-cp39-abi3-macosx_10_9_x86_64.whl", hash = "sha256:9e9ca370f717997cb85606d074b0e5b247282cf5e2e1611568b8821afe0342d6", size = 440112, upload-time = "2025-05-22T18:15:22.591Z" },
+    { url = "https://files.pythonhosted.org/packages/55/82/7721b7319013a3cf881f4dffa4f60ceff07b31b394e459984e7a36dc99ec/tornado-6.5.1-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b77e9dfa7ed69754a54c89d82ef746398be82f749df69c4d3abe75c4d1ff4888", size = 443672, upload-time = "2025-05-22T18:15:24.027Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/42/d11c4376e7d101171b94e03cef0cbce43e823ed6567ceda571f54cf6e3ce/tornado-6.5.1-cp39-abi3-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:253b76040ee3bab8bcf7ba9feb136436a3787208717a1fb9f2c16b744fba7331", size = 443019, upload-time = "2025-05-22T18:15:25.735Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/f7/0c48ba992d875521ac761e6e04b0a1750f8150ae42ea26df1852d6a98942/tornado-6.5.1-cp39-abi3-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:308473f4cc5a76227157cdf904de33ac268af770b2c5f05ca6c1161d82fdd95e", size = 443252, upload-time = "2025-05-22T18:15:27.499Z" },
+    { url = "https://files.pythonhosted.org/packages/89/46/d8d7413d11987e316df4ad42e16023cd62666a3c0dfa1518ffa30b8df06c/tornado-6.5.1-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:caec6314ce8a81cf69bd89909f4b633b9f523834dc1a352021775d45e51d9401", size = 443930, upload-time = "2025-05-22T18:15:29.299Z" },
+    { url = "https://files.pythonhosted.org/packages/78/b2/f8049221c96a06df89bed68260e8ca94beca5ea532ffc63b1175ad31f9cc/tornado-6.5.1-cp39-abi3-musllinux_1_2_i686.whl", hash = "sha256:13ce6e3396c24e2808774741331638ee6c2f50b114b97a55c5b442df65fd9692", size = 443351, upload-time = "2025-05-22T18:15:31.038Z" },
+    { url = "https://files.pythonhosted.org/packages/76/ff/6a0079e65b326cc222a54720a748e04a4db246870c4da54ece4577bfa702/tornado-6.5.1-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:5cae6145f4cdf5ab24744526cc0f55a17d76f02c98f4cff9daa08ae9a217448a", size = 443328, upload-time = "2025-05-22T18:15:32.426Z" },
+    { url = "https://files.pythonhosted.org/packages/49/18/e3f902a1d21f14035b5bc6246a8c0f51e0eef562ace3a2cea403c1fb7021/tornado-6.5.1-cp39-abi3-win32.whl", hash = "sha256:e0a36e1bc684dca10b1aa75a31df8bdfed656831489bc1e6a6ebed05dc1ec365", size = 444396, upload-time = "2025-05-22T18:15:34.205Z" },
+    { url = "https://files.pythonhosted.org/packages/7b/09/6526e32bf1049ee7de3bebba81572673b19a2a8541f795d887e92af1a8bc/tornado-6.5.1-cp39-abi3-win_amd64.whl", hash = "sha256:908e7d64567cecd4c2b458075589a775063453aeb1d2a1853eedb806922f568b", size = 444840, upload-time = "2025-05-22T18:15:36.1Z" },
+    { url = "https://files.pythonhosted.org/packages/55/a7/535c44c7bea4578e48281d83c615219f3ab19e6abc67625ef637c73987be/tornado-6.5.1-cp39-abi3-win_arm64.whl", hash = "sha256:02420a0eb7bf617257b9935e2b754d1b63897525d8a289c9d65690d580b4dcf7", size = 443596, upload-time = "2025-05-22T18:15:37.433Z" },
+]
+
+[[package]]
 name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
@@ -3082,6 +3199,23 @@ wheels = [
 sentencepiece = [
     { name = "protobuf" },
     { name = "sentencepiece" },
+]
+
+[[package]]
+name = "trio"
+version = "0.30.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "attrs" },
+    { name = "cffi", marker = "implementation_name != 'pypy' and os_name == 'nt' and sys_platform != 'darwin'" },
+    { name = "idna" },
+    { name = "outcome" },
+    { name = "sniffio" },
+    { name = "sortedcontainers" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/01/c1/68d582b4d3a1c1f8118e18042464bb12a7c1b75d64d75111b297687041e3/trio-0.30.0.tar.gz", hash = "sha256:0781c857c0c81f8f51e0089929a26b5bb63d57f927728a5586f7e36171f064df", size = 593776, upload-time = "2025-04-21T00:48:19.507Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/69/8e/3f6dfda475ecd940e786defe6df6c500734e686c9cd0a0f8ef6821e9b2f2/trio-0.30.0-py3-none-any.whl", hash = "sha256:3bf4f06b8decf8d3cf00af85f40a89824669e2d033bb32469d34840edcfc22a5", size = 499194, upload-time = "2025-04-21T00:48:17.167Z" },
 ]
 
 [[package]]

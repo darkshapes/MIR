@@ -15,6 +15,7 @@ def mir_diffusion(mir_db: MIRDatabase):
     from mir.generators import mir_index
 
     mir_data = mir_index()
+    print(mir_data)
     for series, comp_name in mir_data.items():
         id_segment = series.split(".")
         for compatibility in comp_name:

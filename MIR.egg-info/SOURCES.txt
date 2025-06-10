@@ -12,7 +12,9 @@ MIR.egg-info/entry_points.txt
 MIR.egg-info/requires.txt
 MIR.egg-info/top_level.txt
 mir/__init__.py
+mir/automata.py
 mir/constants.py
+mir/generators.py
 mir/hash_256.py
 mir/hyper_chain.py
 mir/json_cache.py
@@ -39,6 +41,7 @@ mir/model_detect/layer_pattern.py
 mir/model_detect/value_compare.py
 tests/__init__.py
 tests/test_gather_metadata.py
+tests/test_generators.py
 tests/test_hyper_chain.py
 tests/test_hyperlink_block.py
 tests/test_id_conductor.py

@@ -9,10 +9,20 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 from pydantic import BaseModel, create_model
-
 from nnll.monitor.file import debug_monitor
 
 T = TypeVar("T")
+
+PackageIndex = int
+TimestepType = List[int]  # never none
+ParameterField = Union[str, bool, int, float, TimestepType]  # never none
+
+PkgType = Dict[
+    PackageIndex,  # Outer key is an integer (e.g., 0)
+    Dict[ParameterField, Union[Dict, ParameterField]],
+]
+
+HashType = Optional[Union[List[str], Optional[Dict[str, Union[Any]]]]]
 
 
 class Info(BaseModel):
@@ -31,17 +41,11 @@ class Info(BaseModel):
     :param weight_map: Remote location of the weight map for the model
     """
 
-    file_256: Optional[Union[List[str], Dict[Any, Any]]] = None
-    gen_kwargs: Optional[Dict[str, Any]] = None
-    init_kwargs: Optional[Dict[str, Any]] = None
-    layer_256: Optional[List[str]] = None
-    module_alt: Optional[List[str]] = None
-    repo_pkg: Optional[List[str]] = None
-    repo: Optional[List[str]] = None
-    scheduler_alt: Optional[str] = None
-    scheduler_kwargs_alt: Optional[Dict[str, Any]] = None
-    tasks: Optional[List[str]] = None
-    weight_map: Optional[Union[urllib.parse.ParseResult, str]] = None
+    file_256: HashType = None
+    layer_256: HashType = None
+    pkg_alt: Optional[PkgType] = None
+    pkg: PkgType
+    repo: str
 
 
 class Ops(BaseModel):
@@ -59,12 +63,8 @@ class Ops(BaseModel):
     :param dtype: Alternate datatype name
     """
 
-    dtype: Optional[str] = None
-    gen_kwargs: Optional[Dict[str, int | str | float | list]] = None
-    init_kwargs: Optional[Dict[str, int | str | float | list]] = None
+    pkg: PkgType
     repo: Optional[List[str]] = None
-    scheduler_kwargs: Optional[Dict[str, Any]] = None
-    variant: Optional[str] = None
 
 
 class Model(BaseModel):
@@ -94,13 +94,24 @@ class Dev(Info, Ops, Model):
     Inheriting attributes from Info, Ops, and Model to reduce duplication.
     """
 
+    # Experimental/Optional/Deprecated, maybe useful later
+    stage: str  # Where item fits in a chain
+    dtype: Optional[str] = None
     dep_pkg: Optional[Dict[str, list[str]]] = None
+    gen_kwargs: Optional[Dict[str, Any]] = None
     lora_kwargs: Optional[str] = None
-    scheduler: Optional[str] = None
-    scheduler_kwargs: Optional[Dict[str, Any]] = None
+    module_alt: Optional[List[str]] = None
     module_path: Optional[list[str]] = None
+    repo_pkg: Optional[List[str]] = None
     requires: Optional[Dict[str, list[str]]] = None
-    # :param stage: Where item fits in a chain
+    scheduler_alt: Optional[str] = None
+    scheduler_kwargs_alt: Optional[Dict[str, Any]] = None
+    scheduler_kwargs: Optional[Dict[str, Any]] = None
+    scheduler: Optional[str] = None
+    tasks: Optional[List[str]] = None
+    weight_map: Optional[Union[urllib.parse.ParseResult, str]] = None
+    # gen_kwargs: Optional[Dict[str, int | str | float | list]] = None
+    # init_kwargs: Optional[Dict[str, int | str | float | list]] = None
 
 
 def add_mir_fields(domain: str, **kwargs):
@@ -131,22 +142,23 @@ def build_comp(comp: str, domain: str, kwargs: dict) -> Callable:
         comp: (Union[Info, Model, Ops, Dev], ...),
     }
     data = {}
-    module_key = "[init]"
-    base_modules = [
-        "scheduler",  # name of a scheduler package
-        "scheduler_kwargs",  # dictionary of scheduler arguments
-        "dep_pkg",  # deprecated
-        "requires",  # a dictionary of dependency modules mapped to a list of module path, last work with from_single_file, single or multi-length listt
-    ]
-    for module_name in base_modules:
-        if module_name in kwargs and domain != Dev:
-            value = kwargs.pop(module_name)
-            if value is not None:
-                data.get(module_key, data.setdefault(module_key, {module_name: value})).update({module_name: value})
-                field.setdefault(
-                    module_key,
-                    (Dict[str, Union[str, Dict[str, Any], List[str], None]], ...),
-                )
+    # class override moves items to specific modules
+    # module_key = "[init]"
+    # base_modules = [
+    #     "scheduler",  # name of a scheduler package
+    #     "scheduler_kwargs",  # dictionary of scheduler arguments
+    #     "dep_pkg",  # deprecated
+    #     "requires",  # a dictionary of dependency modules mapped to a list of module path, last work with from_single_file, single or multi-length listt
+    # ]
+    # for module_name in base_modules:
+    #     if module_name in kwargs and domain != Dev:
+    #         value = kwargs.pop(module_name)
+    #         if value is not None:
+    #             data.get(module_key, data.setdefault(module_key, {module_name: value})).update({module_name: value})
+    #             field.setdefault(
+    #                 module_key,
+    #                 (Dict[str, Union[str, Dict[str, Any], List[str], None]], ...),
+    #             )
     data.setdefault(comp, add_mir_fields(domain=domain, **kwargs))
 
     DynamicModel = create_model("Compatibility", **field)  # pylint: disable=invalid-name

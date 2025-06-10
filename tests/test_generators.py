@@ -3,11 +3,11 @@
 
 import pytest
 from unittest import mock
-from nnll.tensor_pipe.deconstructors import process_docs
+from mir.generators import mir_index
 
 
 def test_list_diffusers_models():
-    process_docs()
+    print(mir_index())
 
 
 # @pytest.fixture

@@ -11,7 +11,8 @@ sys.path.append(os.getcwd())
 from pathlib import Path
 from functools import cache
 from nnll.monitor.file import dbug
-from nnll.configure import ensure_path, set_home_stable
+from nnll.integrity import ensure_path
+from nnll.configure import set_home_stable
 
 
 def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__), prefix: str = "config") -> Path:

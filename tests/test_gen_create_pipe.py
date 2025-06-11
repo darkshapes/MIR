@@ -20,8 +20,7 @@ def mock_diffusers():
         return mocked
 
 
-# Test case 1: Basic test with a standard pipeline class and no special keywords
-def test_create_pipe_entry_standard_case_prior_underscore():
+def test_create_unet():
     repo_path = "standard_org/standard_repo-prior"
     pipe_class = "StableDiffusionPipeline"
 
@@ -37,25 +36,7 @@ def test_create_pipe_entry_standard_case_prior_underscore():
     assert prefixed_data["prior"]["pkg"][0]["diffusers"] == pipe_class
 
 
-# Test case 2: Test with a pipeline class that includes 'unet' in sub_classes
-def test_create_pipe_entry_unet_case():
-    # from unittest.mock import patch, MagicMock
-    # import diffusers
-
-    repo_path = "standard_org/default_series"
-    pipe_class = "ConsisIDPipeline"
-
-    result = create_pipe_entry(repo_path, pipe_class)
-
-    assert len(result) == 2
-    mir_series, prefixed_data = result
-
-    assert mir_series == "info.dit.default-series"
-    assert prefixed_data["base"]["repo"] == repo_path
-    assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
-
-
-def test_create_pipe_entry_transformer_case():
+def test_create_transformer():
     repo_path = "default_series/default_repo"
     pipe_class = "HunyuanDiTPipeline"
 
@@ -68,8 +49,7 @@ def test_create_pipe_entry_transformer_case():
     assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
 
 
-# # Test case 4: Test with a pipeline class that includes 'kandinsky' in the repo path
-def test_create_pipe_entry_kandinsky_case():
+def test_create_kandinsky():
     repo_path = "kandinsky_series/kandinsky_repo-v1"
     pipe_class = "KandinskyPipeline"
 
@@ -82,7 +62,7 @@ def test_create_pipe_entry_kandinsky_case():
     assert prefixed_data["v1"]["pkg"][0]["diffusers"] == pipe_class
 
 
-def test_create_pipe_entry_shap_e_case():
+def test_create_shap_e():
     repo_path = "openai/shap-e_40496"
     pipe_class = "ShapEPipeline"
 
@@ -95,8 +75,7 @@ def test_create_pipe_entry_shap_e_case():
     assert prefixed_data["40496"]["pkg"][0]["diffusers"] == pipe_class
 
 
-# Test case 6: Test with a pipeline class that is 'FluxPipeline'
-def test_create_pipe_entry_flux_case():
+def test_create_flux():
     repo_path = "cocktailpeanut/xulf-schnell"
     pipe_class = "FluxPipeline"
 
@@ -111,8 +90,7 @@ def test_create_pipe_entry_flux_case():
     assert prefixed_data["schnell"]["pkg"][1]["mflux"] == "Flux1"
 
 
-# # Test case 7: Edge case with an empty repo path and a non-standard pipeline class
-def test_create_pipe_entry_edge_case():
+def test_create_empty():
     repo_path = ""
     pipe_class = "StableDiffusionPipeline"
     with pytest.raises(TypeError) as exc_info:
@@ -122,8 +100,7 @@ def test_create_pipe_entry_edge_case():
     assert exc_info.value.args == ("'repo_path'  or 'pipe_class' StableDiffusionPipeline unset",)
 
 
-# # Test case 8: Test with a pipeline class that includes 'prior' in sub_classes
-def test_create_pipe_entry_prior_case():
+def test_create_prior():
     repo_path = "babalityai/finish_him_.kascade_prior"
     pipe_class = "StableCascadePriorPipeline"
 
@@ -136,8 +113,7 @@ def test_create_pipe_entry_prior_case():
     assert prefixed_data["prior"]["pkg"][0]["diffusers"] == pipe_class
 
 
-# # Test case 9: Test with a pipeline class that includes 'decoder' in sub_classes
-def test_create_pipe_entry_decoder_case():
+def test_create_decoder():
     repo_path = "babalityai/finish_him_.kascade"
     pipe_class = "StableCascadeDecoderPipeline"
 
@@ -150,8 +126,24 @@ def test_create_pipe_entry_decoder_case():
     assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
 
 
-# # Test case 11: Test with a pipeline class that includes multiple sub_classes (e.g., 'unet' and 'transformer')
-# def test_create_pipe_entry_multiple_subclasses_case():
+# def test_create_consisid():
+#     # from unittest.mock import patch, MagicMock
+#     # import diffusers
+
+#     repo_path = "standard_org/default_series"
+#     pipe_class = "ConsisIDPipeline"
+
+#     result = create_pipe_entry(repo_path, pipe_class)
+
+#     assert len(result) == 2
+#     mir_series, prefixed_data = result
+
+#     assert mir_series == "info.dit.default-series"
+#     assert prefixed_data["base"]["repo"] == repo_path
+#     assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
+
+
+# def test_create_hypothetical_shared_unet_transformer():
 #     # This is a hypothetical scenario since the root_class function would return only one type
 
 #     repo_path = "pretenderz/pretend_repo"

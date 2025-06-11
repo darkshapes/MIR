@@ -5,7 +5,11 @@
 
 from typing import Any, Callable, Dict, List, Tuple
 import os
+import sys
 from nnll.monitor.file import nfo, dbug
+
+if "pytest" in sys.modules:
+    import diffusers
 
 # from nnll.metadata.helpers import snake_caseify
 from nnll.tensor_pipe.deconstructors import scrape_docs, cut_docs, root_class
@@ -25,7 +29,7 @@ def mir_label(mir_prefix: str, repo_path: str) -> Tuple[str]:
         r"-\d{4,}[px].*",  # "-" and 4 digits
         r"-\d{4,}.*",  # "-" and 4 digits
         r"-\d{1,2}[bBmM]$",  # "-" one or two digit number and "b" or "B" parameter model
-        r"v\d{1,2}$",  # "v" followed by one or two digits
+        r"-v\d{1,2}$",  # "v" followed by one or two digits
         r"-dev$",
         r"-large$",
         r"-medium$",
@@ -81,8 +85,10 @@ def mir_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
 
 
 def create_pipe_entry(repo_path, pipe_class):
-    import diffusers
+    import diffusers  # pylint:disable=redefined-outer-name
 
+    if not repo_path and pipe_class:
+        raise TypeError(f"'repo_path' {repo_path} or 'pipe_class' {pipe_class} unset")
     mir_prefix = "info."
     pipe_data = getattr(diffusers, pipe_class)
     sub_classes = root_class(pipe_data)
@@ -90,10 +96,6 @@ def create_pipe_entry(repo_path, pipe_class):
         mir_prefix = "info.unet."
     elif "transformer" in sub_classes:
         mir_prefix = "info.dit."
-    # elif "motion_adapter" in sub_classes:
-    #     mir_prefix = "info.adapter"  # return to this if it becomes important
-    # if mir_prefix == "info.":
-    #     """Do something diagnostic"""
     mir_series, mir_comp = mir_label(mir_prefix, repo_path)
     prefixed_data = {
         "repo": repo_path,

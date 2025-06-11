@@ -83,10 +83,14 @@ class RegistryEntry(BaseModel):
         mir_db = MIRDatabase()
         api_data = _read_data()
         if LibType.check_type("HUB"):
-            from huggingface_hub import scan_cache_dir, repocard, HFCacheInfo, CacheNotFound  # type: ignore
+            from huggingface_hub import scan_cache_dir, repocard, HFCacheInfo, CacheNotFound
+            from huggingface_hub.errors import OfflineModeIsEnabled, LocalEntryNotFoundError  # type: ignore
 
             try:
                 model_data: HFCacheInfo = scan_cache_dir()
+            except (CacheNotFound, OfflineModeIsEnabled, LocalEntryNotFoundError) as error_log:
+                dbug(error_log)
+            else:
                 for repo in model_data.repos:
                     try:
                         meta = repocard.RepoCard.load(repo.repo_id).data
@@ -117,8 +121,6 @@ class RegistryEntry(BaseModel):
                             tokenizer=tokenizer,
                         )  # pylint: disable=undefined-loop-variable
                         entries.append(entry)
-            except CacheNotFound as error_log:
-                dbug(error_log)
 
         if LibType.check_type("OLLAMA"):  # check that server is still up!
             from ollama import ListResponse, list as ollama_list

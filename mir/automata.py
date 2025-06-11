@@ -3,7 +3,7 @@
 
 """自動化索引"""
 
-from nnll.monitor.file import dbug
+from nnll.monitor.file import dbug, nfo
 from mir.mir_maid import MIRDatabase
 from mir.mir import mir_entry
 from typing import List
@@ -18,16 +18,20 @@ def mir_diffusion(mir_db: MIRDatabase):
     for series, comp_name in mir_data.items():
         id_segment = series.split(".")
         for compatibility in comp_name:
-            print(id_segment)
-            mir_db.add(
-                mir_entry(
-                    domain=id_segment[0],
-                    arch=id_segment[1],
-                    series=id_segment[2],
-                    comp=compatibility,
-                    **mir_data[series][compatibility],
-                ),
-            )
+            dbug(id_segment)
+            try:
+                mir_db.add(
+                    mir_entry(
+                        domain=id_segment[0],
+                        arch=id_segment[1],
+                        series=id_segment[2],
+                        comp=compatibility,
+                        **mir_data[series][compatibility],
+                    ),
+                )
+            except IndexError as error_log:
+                nfo("Failed to create series: {series}  compatibility: {comp_name}  ")
+                dbug(error_log)
 
 
 def mir_dtype(mir_db: MIRDatabase):

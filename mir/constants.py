@@ -1,5 +1,5 @@
-### <!-- // /*  SPDX-License-Identifier: MPL-2.0  */ -->
-### <!-- // /*  d a r k s h a p e s */ -->
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
+### <!-- // /*  d a r k s h a p e s */ -->### <!-- // /*  d a r k s h a p e s */ -->
 
 
 from enum import Enum
@@ -160,15 +160,21 @@ example_str = ("function_name", "import.function_name")
 class PkgType(BaseEnum):
     """Package dependency constants"""
 
-    MFLUX: tuple = (has_api("MFLUX"), "MFLUX")  # pylint:disable=no-member
-    DIFFUSERS: tuple = (has_api("DIFFUSERS"), "DIFFUSERS")
-    TRANSFORMERS: tuple = (has_api("TRANSFORMERS"), "TRANSFORMERS")
-    TORCH: tuple = (has_api("TORCH"), "TORCH")
-    TORCHVISION: tuple = (has_api("TORCHVISION"), "TORCHVISION")
-    TORCHAUDIO: tuple = (has_api("TORCHAUDIO"), "TORCHAUDIO")
+    AUDIOCRAFT: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT")
+    BAGEL: tuple = (has_api("BAGEL"), "BAGEL")
     BITSANDBYTES: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES")
-    OUTETTS: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES")
+    DIFFUSERS: tuple = (has_api("DIFFUSERS"), "DIFFUSERS")
+    F_LITE: tuple = (has_api("F_LITE"), "F_LITE")
+    HIDIFFUSION: tuple = (has_api("HIDIFFUSION"), "HIDIFFUSION")
+    INFERENCE_SOLVER: tuple = (has_api("INFERENCE_SOLVER"), "INFERENCE_SOLVER")  # Alpha vllm
+    MFLUX: tuple = (has_api("MFLUX"), "MFLUX")  # pylint:disable=no-member
+    ORPHEUS_TTS: tuple = (has_api("ORPHEUS_TTS"), "ORPHEUS_TTS")
+    OUTETTS: tuple = (has_api("OUTETTS"), "OUTETTS")
     SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS")
+    TORCH: tuple = (has_api("TORCH"), "TORCH")
+    TORCHAUDIO: tuple = (has_api("TORCHAUDIO"), "TORCHAUDIO")
+    TORCHVISION: tuple = (has_api("TORCHVISION"), "TORCHVISION")
+    TRANSFORMERS: tuple = (has_api("TRANSFORMERS"), "TRANSFORMERS")
 
 
 class ChipType(Enum):
@@ -313,6 +319,6 @@ VALID_TASKS = {
         ("text", "text"): ["chat", "conversational", "text-generation", "text2text-generation"],
         ("text", "video"): ["video generation"],
         ("speech", "text"): ["speech-translation", "speech-summarization", "automatic-speech-recognition"],
-        ("image", "video"): ["reference-to-video", "refernce-to-video"],
+        ("image", "video"): ["reference-to-video", "refernce-to-video"],  # typos: ignore
     },
 }

@@ -1,705 +1,1364 @@
 {
-    "info.unet.stable-diffusion-xl": {
+    "info.dit.allegro": {
         "base": {
-            "gen_kwargs": {
-                "diffusers": {
-                    "num_inference_steps": 40,
-                    "denoising_end": 0.8,
-                    "output_type": "latent"
+            "pkg": {
+                "0": {
+                    "diffusers": "AllegroPipeline"
                 }
             },
-            "init_kwargs": {
-                "diffusers": {
-                    "use_safetensors": true
-                }
-            },
-            "layer_256": [
-                "62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"
-            ],
-            "repo": [
-                "stabilityai/stable-diffusion-xl-base-1.0"
-            ],
-            "weight_map": "weight_maps/model.unet.stable-diffusion-xl:base.json"
-        },
-        "refiner": {
-            "layer_256": [
-                "8c2d0d32cff5a74786480bbaa932ee504bb140f97efdd1a3815f14a610cf6e4a"
-            ],
-            "repo": [
-                "stabilityai/stable-diffusion-xl-refiner-1.0"
-            ],
-            "weight_map": "weight_maps/stable-diffusion-xl-refiner.json"
-        },
-        "pony-diffusion": {
-            "layer_256": [
-                "d4fc7682a4ea9f2dfa0133fafb068f03fdb479158a58260dcaa24dcf33608c16"
-            ]
-        },
-        "animagine": {
-            "layer_256": [
-                "31164c11db41b007f15c94651a8b1fa4d24097c18782d20fabe13c59ee07aa3a"
-            ]
-        },
-        "illustrious": {
-            "layer_256": [
-                "c4a8d365e7fe07c6dbdd52be922aa6dc23215142342e3e7f8f967f1a123a6982"
-            ]
-        },
-        "turbo": {
-            "file_256": [
-                "a599c42a9f4f7494c7f410dbc0fd432cf0242720509e9d52fa41aac7a88d1b69"
-            ],
-            "layer_256": [
-                "fc94481f0c52b21c5ac1fdade8d9c5b210f7239253f86ef21e6198fe393ed60e"
-            ]
-        },
-        "playground-2.5-base": {
-            "layer_256": [
-                "a6f31493ceeb51c88c5239188b9078dc64ba66d3fc5958ad48c119115b06120c"
-            ]
-        },
-        "playground-2.5-aesthetic": {
-            "gen_kwargs": {
-                "num_inference_steps": 50,
-                "guidance_scale": 3
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.float16",
-                "variant": "fp16"
-            },
-            "layer_256": [
-                "fe2e9edf7e3923a80e64c2552139d8bae926cc3b028ca4773573a6ba60e67c20",
-                "d4813e9f984aa76cb4ac9bf0972d55442923292d276e97e95cb2f49a57227843"
-            ],
-            "repo": [
-                "playgroundai/playground-v2.5-1024px-aesthetic"
-            ]
+            "repo": "rhymes-ai/Allegro"
         }
     },
-    "info.unet.kolors": {
+    "info.dit.amused": {
+        "512": {
+            "pkg": {
+                "0": {
+                    "diffusers": "AmusedPipeline"
+                }
+            },
+            "repo": "amused/amused-512"
+        }
+    },
+    "info.unet.audioldm-s-full-": {
+        "v2": {
+            "pkg": {
+                "0": {
+                    "diffusers": "AudioLDMPipeline"
+                }
+            },
+            "repo": "cvssp/audioldm-s-full-v2"
+        }
+    },
+    "info.unet.audioldm2": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "AudioLDM2Pipeline"
+                }
+            },
+            "repo": "cvssp/audioldm2"
+        }
+    },
+    "info.dit.auraflow": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "AuraFlowPipeline"
+                }
+            },
+            "repo": "fal/AuraFlow"
+        }
+    },
+    "info.unet.blipdiffusion": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "BlipDiffusionPipeline"
+                }
+            },
+            "repo": "Salesforce/blipdiffusion"
+        }
+    },
+    "info.dit.cogvideox": {
+        "2b": {
+            "pkg": {
+                "0": {
+                    "diffusers": "CogVideoXPipeline"
+                }
+            },
+            "repo": "THUDM/CogVideoX-2b"
+        }
+    },
+    "info.dit.cogview3-plus": {
+        "3b": {
+            "pkg": {
+                "0": {
+                    "diffusers": "CogView3PlusPipeline"
+                }
+            },
+            "repo": "THUDM/CogView3-Plus-3B"
+        }
+    },
+    "info.dit.cogview4": {
+        "6b": {
+            "pkg": {
+                "0": {
+                    "diffusers": "CogView4Pipeline"
+                }
+            },
+            "repo": "THUDM/CogView4-6B"
+        }
+    },
+    "info.dit.consisid": {
+        "preview": {
+            "pkg": {
+                "0": {
+                    "diffusers": "ConsisIDPipeline"
+                }
+            },
+            "repo": "BestWishYsh/ConsisID-preview"
+        }
+    },
+    "info.unet.diffusers-cd-imagenet64-l2": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "ConsistencyModelPipeline"
+                }
+            },
+            "repo": "openai/diffusers-cd_imagenet64_l2"
+        }
+    },
+    "info.unet.if-i-xl-v1-0": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "IFPipeline"
+                }
+            },
+            "repo": "DeepFloyd/IF-I-XL-v1.0"
+        }
+    },
+    "info.dit.easyanimatev5-1-7b-zh": {
         "diffusers": {
-            "repo": [
-                "kwai-kolors/kolors-diffusers"
-            ]
-        }
-    },
-    "info.unet.stable-cascade": {
-        "combined": {
-            "gen_kwargs": {
-                "negative_prompt": "",
-                "num_inference_steps": 10,
-                "prior_num_inference_steps": 20,
-                "prior_guidance_scale": 3.0,
-                "width": 1024,
-                "height": 1024
+            "pkg": {
+                "0": {
+                    "diffusers": "EasyAnimatePipeline"
+                }
             },
-            "init_kwargs": {
-                "variant": "bf16",
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "stabilityai/stable-cascade"
-            ]
-        },
-        "prior": {
-            "gen_kwargs": {
-                "height": 1024,
-                "width": 1024,
-                "negative_prompt": "",
-                "guidance_scale": 4.0,
-                "num_images_per_prompt": 1,
-                "num_inference_steps": 20
-            },
-            "init_kwargs": {
-                "variant": "bf16",
-                "torch_dtype": "torch.bfloat16"
-            },
-            "layer_256": [
-                "2b6986954d9d2b0c702911504f78f5021843bd7050bb10444d70fa915cb495ea",
-                "2aa5a461c4cd0e2079e81554081854a2fa01f9b876d7124c8fff9bf1308b9df7",
-                "ce474fd5da12f1d465a9d236d61ea7e98458c1b9d58d35bb8412b2acb9594f08",
-                "1b035ba92da6bec0a9542219d12376c0164f214f222955024c884e1ab08ec611",
-                "22a49dc9d213d5caf712fbf755f30328bc2f4cbdc322bcef26dfcee82f02f147"
-            ],
-            "repo": [
-                "stabilityai/stable-cascade-prior"
-            ]
-        },
-        "decoder": {
-            "gen_kwargs": {
-                "guidance_scale": 0.0,
-                "output_type": "pil",
-                "num_inference_steps": 10
-            },
-            "init_kwargs": {
-                "variant": "bf16",
-                "torch_dtype": "torch.bfloat16"
-            },
-            "layer_256": [
-                "fde5a91a908e8cb969f97bcd20e852fb028cc039a19633b0e1559ae41edeb16f",
-                "24fa8b55d12bf904878b7f2cda47c04c1a92da702fe149e28341686c080dfd4f",
-                "a7c96afb54e60386b7d077bf3f00d04596f4b877d58e6a577f0e1a08dc4a0190",
-                "f1300b9ffe051640555bfeee245813e440076ef90b669332a7f9fb35fffb93e8",
-                "047fa405c9cd5ad054d8f8c8baa2294fbc663e4121828b22cb190f7057842a64"
-            ],
-            "repo": [
-                "stabilityai/stable-cascade"
-            ]
-        }
-    },
-    "info.dit.stable-diffusion-3": {
-        "medium": {
-            "gen_kwargs": {
-                "num_inference_steps": 40,
-                "guidance_scale": 4.5
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.float16"
-            },
-            "layer_256": [
-                "dee29a467c44cff413fcf1c2dda0b31f5f0a4e093029a8e5a05140f40ae061ee"
-            ],
-            "repo": [
-                "stabilityai/stable-diffusion-3.5-medium",
-                "adamo1139/stable-diffusion-3.5-medium-ungated"
-            ]
-        },
-        "[init]": {
-            "scheduler": [
-                "ops.scheduler.flow-match"
-            ],
-            "scheduler_kwargs": {
-                "shift": 5
-            }
-        },
-        "large": {
-            "gen_kwargs": {
-                "num_inference_steps": 28,
-                "guidance_scale": 3.5
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.float16"
-            },
-            "layer_256": [
-                "8c2e5bc99bc89290254142469411db66cb2ca2b89b129cd2f6982b30e26bd465"
-            ],
-            "repo": [
-                "stabilityai/stable-diffusion-3.5-large",
-                "adamo1139/stable-diffusion-3.5-large-ungated"
-            ]
-        },
-        "gguf": {
-            "layer_256": [
-                "e7eddc3cd09ccf7c9c03ceef70bbcd91d44d46673857d37c3abfe4e6ee240a96"
-            ]
-        },
-        "alchemist-large": {
-            "gen_kwargs": {
-                "num_inference_steps": 28,
-                "guidance_scale": 3.5
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "yandex/stable-diffusion-3.5-large-alchemist"
-            ]
-        },
-        "alchemist-medium": {
-            "gen_kwargs": {
-                "num_inference_steps": 40,
-                "guidance_scale": 4.5
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "yandex/stable-diffusion-3.5-medium-alchemist"
-            ]
-        },
-        "medium-turbo": {
-            "gen_kwargs": {
-                "num_inference_steps": 8,
-                "guidance_scale": 1.0
-            },
-            "repo": [
-                "tensorart/stable-diffusion-3.5-medium-turbo"
-            ]
-        },
-        "large-turbox": {
-            "gen_kwargs": {
-                "num_inference_steps": 8,
-                "guidance_scale": 1.0
-            },
-            "repo": [
-                "tensorart/stable-diffusion-3.5-large-TurboX"
-            ]
+            "repo": "alibaba-pai/EasyAnimateV5.1-7b-zh-diffusers"
         }
     },
     "info.dit.flux-1": {
         "schnell": {
-            "gen_kwargs": {
-                "guidance_scale": 0.0,
-                "num_inference_steps": 4,
-                "max_sequence_length": 256
+            "pkg": {
+                "0": {
+                    "diffusers": "FluxPipeline"
+                },
+                "1": {
+                    "mflux": "Flux1"
+                }
             },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "layer_256": [
-                "ef5c9cd1ebe6e3be5e8b1347eca0a6f0b138986c71220a7f1c2c14f29d01beed"
-            ],
-            "repo": [
-                "black-forest-labs/flux.1-schnell",
-                "cocktailpeanut/xulf-s"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "FluxPipeline"
-                ]
-            }
-        },
-        "shuttle-3.1-aesthetic": {
-            "gen_kwargs": {
-                "height": 1024,
-                "width": 1024,
-                "guidance_scale": 3.5,
-                "num_inference_steps": 4,
-                "max_sequence_length": 256
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "shuttleai/shuttle-3.1-aesthetic"
-            ]
-        },
-        "shuttle-3-diffusion": {
-            "gen_kwargs": {
-                "height": 1024,
-                "width": 1024,
-                "guidance_scale": 3.5,
-                "num_inference_steps": 4,
-                "max_sequence_length": 256
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "shuttleai/shuttle-3-diffusion"
-            ]
+            "repo": "black-forest-labs/FLUX.1-schnell"
         },
         "dev": {
-            "gen_kwargs": {
-                "height": 1024,
-                "width": 1024,
-                "guidance_scale": 3.5,
-                "num_inference_steps": 50,
-                "max_sequence_length": 512
+            "pkg": {
+                "0": {
+                    "diffusers": "FluxPipeline"
+                },
+                "1": {
+                    "mflux": "Flux1"
+                }
             },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "layer_256": [
-                "ad8763121f98e28bc4a3d5a8b494c1e8f385f14abe92fc0ca5e4ab3191f3a881",
-                "20d47474da0714979e543b6f21bd12be5b5f721119c4277f364a29e329e931b9"
-            ],
-            "repo": [
-                "black-forest-labs/flux.1-dev",
-                "cocktailpeanut/xulf-d"
-            ]
-        },
-        "f-lite-8b": {
-            "gen_kwargs": {
-                "num_inference_steps": 28,
-                "guidance_scale": 3.5,
-                "height": 1024,
-                "width": 1024
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "freepik/flux.1-lite-8b"
-            ]
-        },
-        "f-lite-7b": {
-            "gen_kwargs": {
-                "num_inference_steps": 28,
-                "guidance_scale": 3.5,
-                "height": 1024,
-                "width": 1024
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "freepik/f-lite-7b"
-            ]
-        },
-        "lite-texture": {
-            "gen_kwargs": {
-                "num_inference_steps": 28,
-                "guidance_scale": 3.5,
-                "height": 1024,
-                "width": 1024
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "freepik/f-lite-texture"
-            ]
-        },
-        "hybrid": {
-            "layer_256": [
-                "14d0e1b573023deb5a4feaddf85ebca10ab2abf3452c433e2e3ae93acb216443",
-                "14d0e1b573023deb5a4feaddf85ebca10ab2abf3452c433e2e3ae93acb216443"
-            ]
-        },
-        "mini": {
-            "layer_256": [
-                "e4a0d8cf2034da094518ab058da1d4aea14e00d132c6152a266ec196ffef02d0"
-            ],
-            "repo": [
-                "TencentARC/flux-mini"
-            ]
+            "repo": "black-forest-labs/FLUX.1-dev"
         }
     },
-    "info.dit.auraflow": {
-        "0": {
-            "gen_kwargs": {
-                "width": 1536,
-                "height": 768
+    "info.dit.hidream-i1": {
+        "full": {
+            "pkg": {
+                "0": {
+                    "diffusers": "HiDreamImagePipeline"
+                }
             },
-            "repo": [
-                "fal/AuraFlow-v0.3",
-                "fal/AuraFlow-v0.2",
-                "fal/AuraFlow"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "AuraFlowPipeline"
-                ]
-            }
+            "repo": "HiDream-ai/HiDream-I1-Full"
+        }
+    },
+    "info.dit.hunyuanvideo": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "HunyuanVideoPipeline"
+                }
+            },
+            "repo": "hunyuanvideo-community/HunyuanVideo"
         }
     },
     "info.dit.hunyuandit": {
         "diffusers": {
-            "gen_kwargs": {
-                "guidance_scale": 6
-            },
-            "repo": [
-                "Tencent-Hunyuan/HunyuanDiT-v1.2-Diffusers"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "HunyuanDiTPipeline"
-                ]
-            }
-        },
-        "distilled": {
-            "gen_kwargs": {
-                "num_inference_steps": 25
-            },
-            "repo": [
-                "Tencent-Hunyuan/HunyuanDiT-v1.2-Diffusers-Distilled"
-            ]
-        }
-    },
-    "info.dit.pixart-sigma": {
-        "xl-2-1024": {
-            "init_kwargs": {
-                "torch_dtype": "torch.float16",
-                "use_safetensors": true
-            },
-            "repo": [
-                "PixArt-alpha/PixArt-Sigma-XL-2-1024-MS"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "PixArtSigmaPipeline"
-                ]
-            }
-        }
-    },
-    "info.dit.cogview-3": {
-        "plus-3b": {
-            "gen_kwargs": {
-                "guidance_scale": 4.0
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "THUDM/CogView3-Plus-3B"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "CogView3PlusPipeline"
-                ]
-            }
-        }
-    },
-    "info.dit.cogview-4": {
-        "6b": {
-            "gen_kwargs": {
-                "guidance_scale": 3.5,
-                "num_images_per_prompt": 1
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "THUDM/CogView4-6B"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "CogView4Pipeline"
-                ]
-            }
-        }
-    },
-    "info.dit.lumina-image": {
-        "2.0": {
-            "gen_kwargs": {
-                "height": 1024,
-                "width": 1024,
-                "guidance_scale": 4.0,
-                "num_inference_steps": 50,
-                "cfg_trunc_ratio": 0.25,
-                "cfg_normalization": true
-            },
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "alpha-vllm/lumina-image-2.0"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "Lumina2Pipeline"
-                ]
-            }
-        }
-    },
-    "info.dit.fuse-dit": {
-        "2b": {
-            "gen_kwargs": {
-                "width": 512,
-                "height": 512,
-                "num_inference_steps": 25,
-                "guidance_scale": 6.0,
-                "use_cache": true
-            },
-            "repo": [
-                "ooutlierr/fuse-dit"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusion": [
-                    "pipelines.FuseDiTPipeline"
-                ]
-            }
-        }
-    },
-    "info.art.phi-4": {
-        "multimodal-instruct": {
-            "init_kwargs": {
-                "torch_dtype": "torch.bfloat16"
-            },
-            "repo": [
-                "microsoft/Phi-4-multimodal-instruct"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "transformers": [
-                    "AutoModelForCausalLM"
-                ]
-            }
-        }
-    },
-    "info.art.audiogen": {
-        "medium-1.5b": {
-            "repo": [
-                "facebook/audiogen-medium"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "audiocraft": [
-                    "models",
-                    "AudioGen"
-                ]
-            }
-        }
-    },
-    "info.art.parler-tts": {
-        "tiny-v1": {
-            "init_kwargs": {
-                "AutoTokenizer": {
-                    "return_tensors": "pt"
+            "pkg": {
+                "0": {
+                    "diffusers": "HunyuanDiTPipeline"
                 }
             },
-            "repo": [
-                "parler-tts/parler-tts-tiny-v1"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "parler_tts": [
-                    "ParlerTTSForConditionalGeneration"
-                ],
-                "transformers": [
-                    "AutoTokenizer"
-                ]
-            }
-        },
-        "large-v1": {
-            "init_kwargs": {
-                "AutoTokenizer": {
-                    "return_tensors": "pt"
+            "repo": "Tencent-Hunyuan/HunyuanDiT-Diffusers"
+        }
+    },
+    "info.unet.i2vgen-xl": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "I2VGenXLPipeline"
                 }
             },
-            "repo": [
-                "parler-tts/parler-tts-large-v1"
-            ]
+            "repo": "ali-vilab/i2vgen-xl"
         }
     },
-    "info.art.lumina-mgpt": {
-        "7B-768": {
-            "gen_kwargs": {
-                "images": [],
-                "qas": [
-                    [
-                        "q1",
-                        null
-                    ]
-                ],
-                "max_gen_len": 8192,
-                "temperature": 1.0
+    "info.unet.kandinsky-2-1": {
+        "prior": {
+            "pkg": {
+                "0": {
+                    "diffusers": "KandinskyPriorPipeline"
+                }
             },
-            "init_kwargs": {
-                "precision": "bf16",
-                "target_size": 768
+            "repo": "kandinsky-community/Kandinsky-2-1-prior"
+        }
+    },
+    "info.unet.kandinsky-2-2": {
+        "prior": {
+            "pkg": {
+                "0": {
+                    "diffusers": "KandinskyV22PriorPipeline"
+                }
             },
-            "repo": [
-                "Alpha-VLLM/Lumina-mGPT-7B-768"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "inference_solver": [
-                    "FlexARInferenceSolver"
-                ]
-            }
+            "repo": "kandinsky-community/kandinsky-2-2-prior"
         }
     },
-    "info.art.llama-3.1": {
-        "8b-instruct": {
-            "repo": [
-                "meta-llama/llama-3.1-8b-instruct"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "transformers": [
-                    "AutoModel"
-                ]
-            }
+    "info.unet.kandinsky-3": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "AutoPipelineForText2Image"
+                }
+            },
+            "repo": "kandinsky-community/kandinsky-3"
         }
     },
-    "info.art.orpheus": {
-        "3b-0.1-ft": {
-            "repo": [
-                "canopylabs/orpheus-3b-0.1-ft"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "orpheus_tts": [
-                    "OrpheusModel"
-                ]
-            }
+    "info.unet.kolors": {
+        "diffusers": {
+            "pkg": {
+                "0": {
+                    "diffusers": "KolorsPipeline"
+                }
+            },
+            "repo": "Kwai-Kolors/Kolors-diffusers"
         }
     },
-    "info.art.t5": {
+    "info.dit.latte-1": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "LattePipeline"
+                }
+            },
+            "repo": "maxin-cn/Latte-1"
+        }
+    },
+    "info.dit.ltx-video": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "LTXPipeline"
+                }
+            },
+            "repo": "Lightricks/LTX-Video"
+        }
+    },
+    "info.dit.lumina-next-sft": {
+        "diffusers": {
+            "pkg": {
+                "0": {
+                    "diffusers": "LuminaPipeline"
+                }
+            },
+            "repo": "Alpha-VLLM/Lumina-Next-SFT-diffusers"
+        }
+    },
+    "info.dit.lumina-image-2-0": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "Lumina2Pipeline"
+                }
+            },
+            "repo": "Alpha-VLLM/Lumina-Image-2.0"
+        }
+    },
+    "info.dit.mochi-1": {
+        "preview": {
+            "pkg": {
+                "0": {
+                    "diffusers": "MochiPipeline"
+                }
+            },
+            "repo": "genmo/mochi-1-preview"
+        }
+    },
+    "info.unet.musicldm": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "MusicLDMPipeline"
+                }
+            },
+            "repo": "ucsd-reach/musicldm"
+        }
+    },
+    "info.dit.pixart-xl-2": {
+        "1024-ms": {
+            "pkg": {
+                "0": {
+                    "diffusers": "PixArtAlphaPipeline"
+                }
+            },
+            "repo": "PixArt-alpha/PixArt-XL-2-1024-MS"
+        }
+    },
+    "info.dit.sana-1600m": {
+        "1024px-bf16-diffusers": {
+            "pkg": {
+                "0": {
+                    "diffusers": "SanaPipeline"
+                }
+            },
+            "repo": "Efficient-Large-Model/Sana_1600M_1024px_BF16_diffusers"
+        }
+    },
+    "info.unet.shap-e": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DiffusionPipeline"
+                }
+            },
+            "repo": "openai/shap-e"
+        }
+    },
+    "info.dit.stable-audio-open-1-0": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableAudioPipeline"
+                }
+            },
+            "repo": "stabilityai/stable-audio-open-1.0"
+        }
+    },
+    "info.unet.stable-cascade": {
+        "prior": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableCascadePriorPipeline"
+                }
+            },
+            "repo": "stabilityai/stable-cascade-prior"
+        },
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableCascadeDecoderPipeline"
+                }
+            },
+            "repo": "\"stabilityai/stable-cascade"
+        }
+    },
+    "info.unet.stable-diffusion-v1-5": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableDiffusionPipeline"
+                }
+            },
+            "repo": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+        }
+    },
+    "info.dit.stable-diffusion-3-5": {
+        "medium": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableDiffusion3Pipeline"
+                }
+            },
+            "repo": "stabilityai/stable-diffusion-3.5-medium"
+        },
         "large": {
-            "repo": [
-                "google-t5/t5-large"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": "StableDiffusion3Pipeline"
+                }
+            },
+            "repo": "stabilityai/stable-diffusion-3.5-large"
+        }
+    },
+    "info.unet.gligen-1-4-inpainting-text": {
+        "box": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableDiffusionGLIGENPipeline"
+                }
+            },
+            "repo": "masterful/gligen-1-4-inpainting-text-box"
+        }
+    },
+    "info.unet.ldm3d-4c": {
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableDiffusionLDM3DPipeline"
+                }
+            },
+            "repo": "Intel/ldm3d-4c"
+        }
+    },
+    "info.unet.stable-diffusion-xl": {
+        "base-1-0": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableDiffusionXLPipeline"
+                }
+            },
+            "repo": "stabilityai/stable-diffusion-xl-base-1.0"
+        }
+    },
+    "info.unet.stable-video-diffusion-img2vid": {
+        "xt": {
+            "pkg": {
+                "0": {
+                    "diffusers": "StableVideoDiffusionPipeline"
+                }
+            },
+            "repo": "stabilityai/stable-video-diffusion-img2vid-xt"
+        }
+    },
+    "info.dit.wan2-1-t2v-14b": {
+        "diffusers": {
+            "pkg": {
+                "0": {
+                    "diffusers": "WanPipeline"
+                }
+            },
+            "repo": "Wan-AI/Wan2.1-T2V-14B-Diffusers"
+        }
+    },
+    "info.unet.wuerstchen": {
+        "prior": {
+            "pkg": {
+                "0": {
+                    "diffusers": "WuerstchenPriorPipeline"
+                }
+            },
+            "repo": "warp-ai/wuerstchen-prior"
         },
-        "[init]": {
-            "dep_pkg": {
-                "transformers": [
-                    "pipeline"
-                ]
+        "base": {
+            "pkg": {
+                "0": {
+                    "diffusers": "WuerstchenDecoderPipeline"
+                }
+            },
+            "repo": "\"warp-ai/wuerstchen"
+        }
+    },
+    "ops.precision.u8": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint8": {
+                            "variant": "uint8"
+                        }
+                    }
+                }
             }
         }
     },
-    "info.art.outetts-0.3": {
-        "1b": {
-            "repo": [
-                "outeai/outetts-0.3-1b"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "outetts": [
-                    "InterfaceHF"
-                ]
+    "ops.precision.i8": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int8": {
+                            "variant": "int8"
+                        }
+                    }
+                }
             }
         }
     },
-    "info.seq2seq.utravox": {
-        "v0_5-llama-3_1-8b": {
-            "repo": [
-                "fixie-ai/ultravox-v0_5-llama-3_1-8b"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "transformers": [
-                    "pipeline"
-                ]
+    "ops.precision.i16": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int16": {
+                            "variant": "int16"
+                        }
+                    }
+                }
             }
         }
     },
-    "info.embedding.all-minilm": {
-        "L6-v2": {
-            "repo": [
-                "sentence-transformers/all-minilm-l6-v2"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "transformers": [
-                    "pipeline"
-                ]
+    "ops.precision.i32": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int32": {
+                            "variant": "int32"
+                        }
+                    }
+                }
             }
         }
     },
-    "info.mix.bagel": {
-        "7B-MoT": {
-            "repo": [
-                "ByteDance-Seed/BAGEL-7B-MoT"
-            ]
+    "ops.precision.i64": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int64": {
+                            "variant": "int64"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f16": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float16": {
+                            "variant": "fp16"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f32": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float32": {
+                            "variant": "fp32"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f64": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float64": {
+                            "variant": "fp64"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.c32": {
+        "complex": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "complex32": {
+                            "variant": "complex32"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.c64": {
+        "complex": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "complex64": {
+                            "variant": "complex64"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.c128": {
+        "complex": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "complex128": {
+                            "variant": "complex128"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.bbool": {
+        "bool": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "bool": {
+                            "variant": "bool"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.q8": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "qint8": {
+                            "variant": "qint8"
+                        }
+                    }
+                }
+            }
+        },
+        "quint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "quint8": {
+                            "variant": "quint8"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.q32": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "qint32": {
+                            "variant": "qint32"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.b16": {
+        "bfloat": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "bfloat16": {
+                            "variant": "bfp16"
+                        }
+                    }
+                }
+            }
+        },
+        "bits": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "bits16": {
+                            "variant": "bits16"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.q4x2": {
+        "quint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "quint4x2": {
+                            "variant": "quint4x2"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.q2x4": {
+        "quint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "quint2x4": {
+                            "variant": "quint2x4"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.b1x8": {
+        "bits": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "bits1x8": {
+                            "variant": "bits1x8"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.b2x4": {
+        "bits": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "bits2x4": {
+                            "variant": "bits2x4"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.b4x2": {
+        "bits": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "bits4x2": {
+                            "variant": "bits4x2"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.b8": {
+        "bits": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "bits8": {
+                            "variant": "bits8"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f8_e5m2": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float8_e5m2": {
+                            "variant": "fp8_e5m2"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f8_e4m3": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float8_e4m3fn": {
+                            "variant": "fp8_e4m3fn"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f8_e5m2fnuz": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float8_e5m2fnuz": {
+                            "variant": "fp8_e5m2fnuz"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f8_e4m3fnuz": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float8_e4m3fnuz": {
+                            "variant": "fp8_e4m3fnuz"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u16": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint16": {
+                            "variant": "uint16"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u32": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint32": {
+                            "variant": "uint32"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u64": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint64": {
+                            "variant": "uint64"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u1": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint1": {
+                            "variant": "uint1"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u2": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint2": {
+                            "variant": "uint2"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u3": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint3": {
+                            "variant": "uint3"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u4": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint4": {
+                            "variant": "uint4"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u5": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint5": {
+                            "variant": "uint5"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u6": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint6": {
+                            "variant": "uint6"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.u7": {
+        "uint": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "uint7": {
+                            "variant": "uint7"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.i1": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int1": {
+                            "variant": "int1"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.i2": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int2": {
+                            "variant": "int2"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.i3": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int3": {
+                            "variant": "int3"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.i4": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int4": {
+                            "variant": "int4"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.i5": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int5": {
+                            "variant": "int5"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.i6": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int6": {
+                            "variant": "int6"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.i7": {
+        "int": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "int7": {
+                            "variant": "int7"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.precision.f8_e8m0fnu": {
+        "float": {
+            "pkg": {
+                "0": {
+                    "torch": {
+                        "float8_e8m0fnu": {
+                            "variant": "fp8_e8m0fnu"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ops.scheduler.amused": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "AmusedScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.cmstochasticiterative": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "CMStochasticIterativeScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.cogvideoxddim": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "CogVideoXDDIMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.cogvideoxdpm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "CogVideoXDPMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.ddiminverse": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DDIMInverseScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.ddimparallel": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DDIMParallelScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.ddim": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DDIMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.ddpmparallel": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DDPMParallelScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.ddpm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DDPMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.ddpmwuerstchen": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DDPMWuerstchenScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.deis": {
+        "multistep": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DEISMultistepScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.dpminverse": {
+        "multistep": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DPMSolverMultistepInverseScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.dpm": {
+        "multistep": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DPMSolverMultistepScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.dpmsinglestep": {
+        "solver": {
+            "pkg": {
+                "0": {
+                    "diffusers": "DPMSolverSinglestepScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.edmdpm": {
+        "multistep": {
+            "pkg": {
+                "0": {
+                    "diffusers": "EDMDPMSolverMultistepScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.edmeuler": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "EDMEulerScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.eulerancestral": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "EulerAncestralDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.euler": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "EulerDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.flowmatcheuler": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "FlowMatchEulerDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.flowmatchheun": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "FlowMatchHeunDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.flowmatchlcm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "FlowMatchLCMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.heun": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "HeunDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.ipndm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "IPNDMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.karrasve": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "KarrasVeScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.kdpm2ancestral": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "KDPM2AncestralDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.kdpm2": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "KDPM2DiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.lcm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "LCMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.pndm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "PNDMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.repaint": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "RePaintScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.sa": {
+        "solver": {
+            "pkg": {
+                "0": {
+                    "diffusers": "SASolverScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.scm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "SCMScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.scoresdeve": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "ScoreSdeVeScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.tcd": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "TCDScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.unclip": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "UnCLIPScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.unipc": {
+        "multistep": {
+            "pkg": {
+                "0": {
+                    "diffusers": "UniPCMultistepScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.vqdiffusion": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "VQDiffusionScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.lms": {
+        "discrete": {
+            "pkg": {
+                "0": {
+                    "diffusers": "LMSDiscreteScheduler"
+                }
+            }
         }
     },
     "info.lora.dmd": {
@@ -708,28 +1367,27 @@
                 "b3d9173815a4b595991c3a7a0e0e63ad821080f314a0b2a3cc31ecd7fcf2cbb8",
                 "a374289e9446d7f14d2037c4b3770756b7b52c292142a691377c3c755010a1bb"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 4,
-                "guidance_scale": 0,
-                "timesteps": [
-                    999,
-                    749,
-                    499,
-                    249
-                ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "num_inference_steps": 4,
+                        "guidance_scale": 0,
+                        "timesteps": [
+                            999,
+                            749,
+                            499,
+                            249
+                        ]
+                    },
+                    "scheduler": {
+                        "ops.scheduler.lcm": ""
+                    }
+                }
             },
-            "repo": [
-                "tianweiy/DMD2/"
-            ]
-        },
-        "[init]": {
-            "scheduler": "ops.scheduler.lcm",
-            "scheduler_kwargs": {},
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "tianweiy/DMD2/"
         }
     },
     "info.lora.dpo": {
@@ -738,26 +1396,25 @@
                 "666f71a833fc41229ec7e8a264fb7b0fcb8bf47a80e366ae7486c18f38ec9fc0",
                 "6b1dcbfb234d7b6000948b5b95ccebc8f903450ce2ba1b50bc3456987c9087ad"
             ],
-            "gen_kwargs": {
-                "guidance_scale": 7.5,
-                "num_inference_steps": 4
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "guidance_scale": 7.5,
+                        "num_inference_steps": 4
+                    },
+                    "scheduler": {
+                        "ops.scheduler.dpm": {
+                            "algorithm_type": "sde-dpmsolver++",
+                            "use_karras_sigmas": true,
+                            "order": 2
+                        }
+                    }
+                }
             },
-            "repo": [
-                "radames/sdxl-DPO-LoRA"
-            ]
-        },
-        "[init]": {
-            "scheduler": "ops.scheduler.dpm",
-            "scheduler_kwargs": {
-                "algorithm_type": "sde-dpmsolver++",
-                "use_karras_sigmas": true,
-                "order": 2
-            },
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "radames/sdxl-DPO-LoRA"
         }
     },
     "info.lora.flash": {
@@ -765,46 +1422,58 @@
             "file_256": [
                 "afe2ca6e27c4c6087f50ef42772c45d7b0efbc471b76e422492403f9cae724d7"
             ],
-            "repo": [
-                "jasperai/flash-sdxl"
-            ]
-        },
-        "[init]": {
-            "scheduler": "ops.scheduler.lcm",
-            "scheduler_kwargs": {},
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "scheduler": "ops.scheduler.lcm"
+                }
+            },
+            "repo": "jasperai/flash-sdxl"
         },
         "pixart-alpha": {
             "file_256": [
                 "99ef037fe3c1fb6d6bbefdbb85ad60df434fcc0577d34c768d752d60cf69681b"
             ],
-            "repo": [
-                "jasperai/flash-pixart"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "jasperai/flash-pixart"
         },
         "stable-diffusion-3": {
             "file_256": [
                 "85fce13c36e3739aa42930f745eb9fceb6c53d53fb17e2a687e3234c1a58ee15"
             ],
-            "repo": [
-                "jasperai/flash-sd3"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "jasperai/flash-sd3"
         },
         "stable-diffusion-1": {
             "file_256": [
                 "99353444c1a0f40719a1b3037049dbd24800317979a73c312025c05af3574a5f"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 4,
-                "guidance_scale": 0
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "num_inference_steps": 4,
+                        "guidance_scale": 0
+                    }
+                }
             },
-            "repo": [
-                "jasperai/flash-sd"
-            ]
+            "repo": "jasperai/flash-sd"
         }
     },
     "info.lora.hyper": {
@@ -833,19 +1502,16 @@
                     "guidance_scale": 0.0
                 }
             },
-            "init_kwargs": {
-                "fuse": 1.0
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 1.0
+                        }
+                    }
+                }
             },
-            "repo": [
-                "ByteDance/Hyper-SD"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "ByteDance/Hyper-SD"
         },
         "flux-1:dev": {
             "file_256": {
@@ -858,12 +1524,16 @@
                     "guidance_scale": 0.0
                 }
             },
-            "init_kwargs": {
-                "fuse": 0.125
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 0.125
+                        }
+                    }
+                }
             },
-            "repo": [
-                "ByteDance/Hyper-SD"
-            ]
+            "repo": "ByteDance/Hyper-SD"
         },
         "stable-diffusion-3": {
             "file_256": {
@@ -877,12 +1547,16 @@
                     "num_inference_steps": 8
                 }
             },
-            "init_kwargs": {
-                "fuse": 0.125
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 0.125
+                        }
+                    }
+                }
             },
-            "repo": [
-                "ByteDance/Hyper-SD"
-            ]
+            "repo": "ByteDance/Hyper-SD"
         },
         "stable-diffusion-1": {
             "file_256": {
@@ -909,9 +1583,14 @@
                     "guidance_scale": 0.0
                 }
             },
-            "repo": [
-                "ByteDance/Hyper-SD"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "ByteDance/Hyper-SD"
         }
     },
     "info.lora.lcm": {
@@ -919,78 +1598,89 @@
             "file_256": [
                 "a764e6859b6e04047cd761c08ff0cee96413a8e004c9f07707530cd776b19141"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 8
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 1.0
+                        }
+                    },
+                    "scheduler": {
+                        "ops.scheduler.lcm": {
+                            "timestep_spacing": "trailing"
+                        }
+                    },
+                    "generation": {
+                        "num_inference_steps": 8
+                    }
+                }
             },
-            "init_kwargs": {
-                "fuse": 1.0
-            },
-            "repo": [
-                "latent-consistency/lcm-lora-sdxl"
-            ]
-        },
-        "[init]": {
-            "scheduler": "ops.scheduler.lcm",
-            "scheduler_kwargs": {
-                "timestep_spacing": "trailing"
-            },
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "latent-consistency/lcm-lora-sdxl"
         },
         "ssd-1b": {
             "file_256": [
                 "7adaaa69db6f011058a19fd1d5315fdf19ef79fcd513cdab30e173833fd5c59b"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 8
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "num_inference_steps": 8
+                    }
+                }
             },
-            "repo": [
-                "latent-consistency/lcm-lora-ssd-1b"
-            ]
+            "repo": "latent-consistency/lcm-lora-ssd-1b"
         },
         "vega": {
             "file_256": [
                 "9b6e8cd833fa205eaeeed391ca623a6f2546e447470bd1c5dcce3fa8d2f26afb"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 8
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "gen_kwargs": {
+                        "num_inference_steps": 8
+                    }
+                }
             },
-            "repo": [
-                "segmind/Segmind-VegaRT"
-            ]
+            "repo": "segmind/Segmind-VegaRT"
         },
         "stable-diffusion-1": {
             "file_256": [
                 "8f90d840e075ff588a58e22c6586e2ae9a6f7922996ee6649a7f01072333afe4",
                 "eaecb24a1cda4411eab67275b1d991071216ac93693e8fa0c9226c9df0386232"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 8
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "num_inference_steps": 8
+                    }
+                }
             },
-            "repo": [
-                "latent-consistency/lcm-lora-sdv1-5"
-            ]
+            "repo": "latent-consistency/lcm-lora-sdv1-5"
         }
     },
     "info.lora.lightning": {
         "stable-diffusion-xl": {
-            "gen_kwargs": {
-                "num_inference_steps": 4,
-                "guidance_scale": 0
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "num_inference_steps": 4,
+                        "guidance_scale": 0
+                    }
+                }
             },
-            "repo": [
-                "ByteDance/SDXL-Lightning"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "ByteDance/SDXL-Lightning"
         }
     },
     "info.lora.pcm": {
@@ -1051,9 +1741,14 @@
                     "guidance_scale": 0.0
                 }
             },
-            "repo": [
-                "wangfuyun/PCM_Weights"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "wangfuyun/PCM_Weights"
         },
         "stable-diffusion-1": {
             "file_256": {
@@ -1087,9 +1782,14 @@
                     "guidance_scale": 0.0
                 }
             },
-            "repo": [
-                "wangfuyun/PCM_Weights"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "wangfuyun/PCM_Weights"
         },
         "stable-diffusion-3": {
             "file_256": {
@@ -1110,9 +1810,14 @@
                     "guidance_scale": 1.2
                 }
             },
-            "repo": [
-                "wangfuyun/PCM_Weights"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "wangfuyun/PCM_Weights"
         }
     },
     "info.lora.slam": {
@@ -1120,29 +1825,33 @@
             "file_256": [
                 "22569a946b0db645aa3b8eb782c674c8e726a7cc0d655887c21fecf6dfe6ad91"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 4,
-                "guidance_scale": 1
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "scheduler": {
+                        "ops.scheduler.lcm": {
+                            "timestep_spacing": "trailing"
+                        }
+                    },
+                    "generation": {
+                        "num_inference_steps": 4,
+                        "guidance_scale": 1
+                    }
+                }
             },
-            "repo": [
-                "alimama-creative/slam-lora-sdxl/"
-            ]
-        },
-        "[init]": {
-            "scheduler": "ops.scheduler.lcm",
-            "scheduler_kwargs": {
-                "timestep_spacing": "trailing"
-            },
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "alimama-creative/slam-lora-sdxl/"
         },
         "stable-diffusion-1": {
-            "repo": [
-                "alimama-creative/slam-sd1.5"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "alimama-creative/slam-sd1.5"
         }
     },
     "info.lora.spo": {
@@ -1150,30 +1859,33 @@
             "file_256": [
                 "0b9896f30d29daa5eedcfc9e7ad03304df6efc5114508f6ca9c328c0b4f057df"
             ],
-            "gen_kwargs": {
-                "guidance_scale": 5.0
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "guidance_scale": 5.0
+                    }
+                }
             },
-            "repo": [
-                "SPO-Diffusion-Models/SPO-SDXL_4k-p_10ep_LoRA"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "SPO-Diffusion-Models/SPO-SDXL_4k-p_10ep_LoRA"
         },
         "stable-diffusion-1": {
             "file_256": [
                 "1be130c5be2de0beacadd3bf0bafe3bedd7e7a380729932a1e369fb29efa86f4"
             ],
-            "gen_kwargs": {
-                "guidance_scale": 7.5
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "guidance_scale": 7.5
+                    }
+                }
             },
-            "repo": [
-                "SPO-Diffusion-Models/SPO-SD-v1-5_4k-p_10ep_LoRA"
-            ]
+            "repo": "SPO-Diffusion-Models/SPO-SD-v1-5_4k-p_10ep_LoRA"
         }
     },
     "info.lora.tcd": {
@@ -1181,31 +1893,35 @@
             "file_256": [
                 "2c777bc60abf41d3eb0fe405d23d73c280a020eea5adf97a82a141592c33feba"
             ],
-            "gen_kwargs": {
-                "num_inference_steps": 4,
-                "guidance_scale": 0,
-                "eta": 0.3
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    },
+                    "generation": {
+                        "num_inference_steps": 4,
+                        "guidance_scale": 0,
+                        "eta": 0.3
+                    },
+                    "scheduler": {
+                        "ops.scheduler.tcd": {}
+                    }
+                }
             },
-            "repo": [
-                "h1t/TCD-SDXL-LoRA"
-            ]
-        },
-        "[init]": {
-            "scheduler": "ops.scheduler.tcd",
-            "scheduler_kwargs": {},
-            "dep_pkg": {
-                "diffusers": [
-                    "diffusers"
-                ]
-            }
+            "repo": "h1t/TCD-SDXL-LoRA"
         },
         "stable-diffusion-1": {
             "file_256": [
                 "eaecb24a1cda4411eab67275b1d991071216ac93693e8fa0c9226c9df0386232"
             ],
-            "repo": [
-                "h1t/TCD-SD15-LoRA"
-            ]
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
+            "repo": "h1t/TCD-SD15-LoRA"
         }
     },
     "info.lora.turbo": {
@@ -1213,387 +1929,197 @@
             "file_256": [
                 "77f7523a5e9c3da6cfc730c6b07461129fa52997ea06168e9ed5312228aa0bff"
             ],
-            "gen_kwargs": {
-                "guidance_scale": 3.5,
-                "num_inference_steps": 8,
-                "max_sequence_length": 512
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 0.125
+                        }
+                    },
+                    "generation": {
+                        "guidance_scale": 3.5,
+                        "num_inference_steps": 8,
+                        "max_sequence_length": 512
+                    }
+                }
             },
-            "init_kwargs": {
-                "fuse": 0.125
-            },
-            "repo": [
-                "alimama-creative/FLUX.1-Turbo-Alpha"
-            ]
-        },
-        "[init]": {
-            "scheduler": [
-                "ops.scheduler.flow-match"
-            ],
-            "scheduler_kwargs": {
-                "shift": 5
-            }
+            "repo": "alimama-creative/FLUX.1-Turbo-Alpha"
         },
         "stable-diffusion-3.5-medium": {
-            "init_kwargs": {
-                "fuse": 1.0
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 1.0
+                        }
+                    },
+                    "scheduler": {
+                        "ops.scheduler.flow-match": {
+                            "shift": 5
+                        }
+                    }
+                }
             },
-            "repo": [
-                "tensorart/stable-diffusion-3.5-medium-turbo"
-            ]
+            "repo": "tensorart/stable-diffusion-3.5-medium-turbo"
         },
         "stable-diffusion-3.5-large": {
-            "init_kwargs": {
-                "fuse": 1.0
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 1.0
+                        }
+                    },
+                    "scheduler": {
+                        "ops.scheduler.flow-match": {
+                            "shift": 5
+                        }
+                    }
+                }
             },
-            "repo": [
-                "tensorart/stable-diffusion-3.5-large-TurboX"
-            ]
+            "repo": "tensorart/stable-diffusion-3.5-large-TurboX"
         }
     },
-    "ops.scheduler.amused": {
-        "[init]": {}
-    },
-    "ops.scheduler.cmstochasticiterative": {
-        "[init]": {}
-    },
-    "ops.scheduler.cogvideoxddim": {
-        "[init]": {}
-    },
-    "ops.scheduler.cogvideoxdpm": {
-        "[init]": {}
-    },
-    "ops.scheduler.ddiminverse": {
-        "[init]": {}
-    },
-    "ops.scheduler.ddimparallel": {
-        "[init]": {}
-    },
-    "ops.scheduler.ddim": {
-        "[init]": {}
-    },
-    "ops.scheduler.ddpmparallel": {
-        "[init]": {}
-    },
-    "ops.scheduler.ddpm": {
-        "[init]": {}
-    },
-    "ops.scheduler.ddpmwuerstchen": {
-        "[init]": {}
-    },
-    "ops.scheduler.deis": {
-        "[init]": {}
-    },
-    "ops.scheduler.dpminverse": {
-        "[init]": {}
-    },
-    "ops.scheduler.dpm": {
-        "[init]": {}
-    },
-    "ops.scheduler.dpmsinglestep": {
-        "[init]": {}
-    },
-    "ops.scheduler.edmdpm": {
-        "[init]": {}
-    },
-    "ops.scheduler.edmeuler": {
-        "[init]": {}
-    },
-    "ops.scheduler.eulerancestral": {
-        "[init]": {}
-    },
-    "ops.scheduler.euler": {
-        "[init]": {}
-    },
-    "ops.scheduler.flowmatcheuler": {
-        "[init]": {}
-    },
-    "ops.scheduler.flowmatchheun": {
-        "[init]": {}
-    },
-    "ops.scheduler.heun": {
-        "[init]": {}
-    },
-    "ops.scheduler.ipndm": {
-        "[init]": {}
-    },
-    "ops.scheduler.karrasve": {
-        "[init]": {}
-    },
-    "ops.scheduler.kdpm2ancestral": {
-        "[init]": {}
-    },
-    "ops.scheduler.kdpm2": {
-        "[init]": {}
-    },
-    "ops.scheduler.lcm": {
-        "[init]": {}
-    },
-    "ops.scheduler.pndm": {
-        "[init]": {}
-    },
-    "ops.scheduler.repaint": {
-        "[init]": {}
-    },
-    "ops.scheduler.sa": {
-        "[init]": {}
-    },
-    "ops.scheduler.mixin": {
-        "[init]": {}
-    },
-    "ops.scheduler.scm": {
-        "[init]": {}
-    },
-    "ops.scheduler.scoresdeve": {
-        "[init]": {}
-    },
-    "ops.scheduler.tcd": {
-        "[init]": {}
-    },
-    "ops.scheduler.unclip": {
-        "[init]": {}
-    },
-    "ops.scheduler.unipc": {
-        "[init]": {}
-    },
-    "ops.scheduler.vqdiffusion": {
-        "[init]": {}
-    },
-    "ops.scheduler.align-your-steps": {
-        "stable-diffusion-xl": {}
-    },
-    "ops.precision.u8": {
-        "[init]": {
-            "variant": "uint8"
+    "info.art.audiogen": {
+        "medium-1.5b": {
+            "pkg": {
+                "0": {
+                    "audiocraft.models": {
+                        "AudioGen": {
+                            "duration": 5
+                        }
+                    },
+                    "audiocraft.data.audio": {
+                        "audio_write": {
+                            "strategy": "loudness",
+                            "loudness_compressor": true
+                        }
+                    }
+                }
+            },
+            "repo": "facebook/audiogen-medium"
         }
     },
-    "ops.precision.i8": {
-        "[init]": {
-            "variant": "int8"
+    "info.art.parler-tts": {
+        "tiny-v1": {
+            "pkg": {
+                "0": {
+                    "parler_tts": "ParlerTTSForConditionalGeneration",
+                    "transformers": {
+                        "AutoTokenizer": {
+                            "return_tensors": "pt"
+                        }
+                    }
+                }
+            },
+            "repo": "parler-tts/parler-tts-tiny-v1"
+        },
+        "large-v1": {
+            "pkg": {
+                "0": {
+                    "parler_tts": "ParlerTTSForConditionalGeneration",
+                    "transformers": {
+                        "AutoTokenizer": {
+                            "return_tensors": "pt"
+                        }
+                    }
+                }
+            },
+            "repo": "parler-tts/parler-tts-large-v1"
         }
     },
-    "ops.precision.i16": {
-        "[init]": {
-            "variant": "int16"
+    "info.art.lumina-mgpt": {
+        "7B-768": {
+            "pkg": {
+                "0": {
+                    "inference_solver": {
+                        "FlexARInferenceSolver": {
+                            "precision": "bf16",
+                            "target_size": 768
+                        }
+                    },
+                    "generation": {
+                        "images": [],
+                        "qas": [
+                            [
+                                "q1",
+                                null
+                            ]
+                        ],
+                        "max_gen_len": 8192,
+                        "temperature": 1.0
+                    }
+                }
+            },
+            "repo": "Alpha-VLLM/Lumina-mGPT-7B-768"
         }
     },
-    "ops.precision.i32": {
-        "[init]": {
-            "variant": "int32"
+    "info.art.orpheus": {
+        "3b-0.1-ft": {
+            "pkg": {
+                "0": {
+                    "orpheus_tts": {
+                        "OrpheusModel": {
+                            "max_model_len": 2048
+                        }
+                    }
+                }
+            },
+            "repo": "canopylabs/orpheus-3b-0.1-ft"
         }
     },
-    "ops.precision.i64": {
-        "[init]": {
-            "variant": "int64"
-        }
-    },
-    "ops.precision.f16": {
-        "[init]": {
-            "variant": "fp16"
-        }
-    },
-    "ops.precision.f32": {
-        "[init]": {
-            "variant": "fp32"
-        }
-    },
-    "ops.precision.f64": {
-        "[init]": {
-            "variant": "fp64"
-        }
-    },
-    "ops.precision.c32": {
-        "[init]": {
-            "variant": "complex32"
-        }
-    },
-    "ops.precision.c64": {
-        "[init]": {
-            "variant": "complex64"
-        }
-    },
-    "ops.precision.c128": {
-        "[init]": {
-            "variant": "complex128"
-        }
-    },
-    "ops.precision.bbool": {
-        "[init]": {
-            "variant": "bool"
-        }
-    },
-    "ops.precision.q8": {
-        "[init]": {
-            "variant": "quint8"
-        }
-    },
-    "ops.precision.q32": {
-        "[init]": {
-            "variant": "qint32"
-        }
-    },
-    "ops.precision.b16": {
-        "[init]": {
-            "variant": "bits16"
-        }
-    },
-    "ops.precision.q4x2": {
-        "[init]": {
-            "variant": "quint4x2"
-        }
-    },
-    "ops.precision.q2x4": {
-        "[init]": {
-            "variant": "quint2x4"
-        }
-    },
-    "ops.precision.b1x8": {
-        "[init]": {
-            "variant": "bits1x8"
-        }
-    },
-    "ops.precision.b2x4": {
-        "[init]": {
-            "variant": "bits2x4"
-        }
-    },
-    "ops.precision.b4x2": {
-        "[init]": {
-            "variant": "bits4x2"
-        }
-    },
-    "ops.precision.b8": {
-        "[init]": {
-            "variant": "bits8"
-        }
-    },
-    "ops.precision.fe5m2": {
-        "[init]": {
-            "variant": "fp8_e5m2"
-        }
-    },
-    "ops.precision.fe4m3fn": {
-        "[init]": {
-            "variant": "fp8_e4m3fn"
-        }
-    },
-    "ops.precision.fe5m2fnuz": {
-        "[init]": {
-            "variant": "fp8_e5m2fnuz"
-        }
-    },
-    "ops.precision.fe4m3fnuz": {
-        "[init]": {
-            "variant": "fp8_e4m3fnuz"
-        }
-    },
-    "ops.precision.u16": {
-        "[init]": {
-            "variant": "uint16"
-        }
-    },
-    "ops.precision.u32": {
-        "[init]": {
-            "variant": "uint32"
-        }
-    },
-    "ops.precision.u64": {
-        "[init]": {
-            "variant": "uint64"
-        }
-    },
-    "ops.precision.u1": {
-        "[init]": {
-            "variant": "uint1"
-        }
-    },
-    "ops.precision.u2": {
-        "[init]": {
-            "variant": "uint2"
-        }
-    },
-    "ops.precision.u3": {
-        "[init]": {
-            "variant": "uint3"
-        }
-    },
-    "ops.precision.u4": {
-        "[init]": {
-            "variant": "uint4"
-        }
-    },
-    "ops.precision.u5": {
-        "[init]": {
-            "variant": "uint5"
-        }
-    },
-    "ops.precision.u6": {
-        "[init]": {
-            "variant": "uint6"
-        }
-    },
-    "ops.precision.u7": {
-        "[init]": {
-            "variant": "uint7"
-        }
-    },
-    "ops.precision.i1": {
-        "[init]": {
-            "variant": "int1"
-        }
-    },
-    "ops.precision.i2": {
-        "[init]": {
-            "variant": "int2"
-        }
-    },
-    "ops.precision.i3": {
-        "[init]": {
-            "variant": "int3"
-        }
-    },
-    "ops.precision.i4": {
-        "[init]": {
-            "variant": "int4"
-        }
-    },
-    "ops.precision.i5": {
-        "[init]": {
-            "variant": "int5"
-        }
-    },
-    "ops.precision.i6": {
-        "[init]": {
-            "variant": "int6"
-        }
-    },
-    "ops.precision.i7": {
-        "[init]": {
-            "variant": "int7"
-        }
-    },
-    "ops.precision.fe8m0fnu": {
-        "[init]": {
-            "variant": "fp8_e8m0fnu"
+    "info.art.outetts-0.3": {
+        "1b": {
+            "pkg": {
+                "0": {
+                    "outetts": "InterfaceHF"
+                }
+            },
+            "repo": "outeai/outetts-0.3-1b"
         }
     },
     "ops.patch.hidiffusion": {
         "stable-diffusion-xl": {
-            "gen_kwargs": {
-                "height": 2048,
-                "width": 2048,
-                "eta": 1.0,
-                "guidance_scale": 7.5
-            },
-            "repo": [
-                "github.com/megvii-research/HiDiffusion/"
-            ]
-        },
-        "[init]": {
-            "dep_pkg": {
-                "hidiffusion": [
-                    "apply_hidiffusion"
-                ]
+            "pkg": {
+                "0": {
+                    "hidiffusion": {
+                        "apply_hidiffusion": {
+                            "timesteps": "StableDiffusionXLTimesteps"
+                        }
+                    },
+                    "generation": {
+                        "height": 2048,
+                        "width": 2048,
+                        "eta": 1.0,
+                        "guidance_scale": 7.5,
+                        "num_inference_steps": 10
+                    }
+                }
             }
+        }
+    },
+    "ops.scheduler.align-your-steps": {
+        "stable-diffusion-xl": {
+            "pkg": {
+                "0": {
+                    "diffusers.schedulers.scheduling_utils": {
+                        "AysSchedules": {
+                            "timesteps": "StableDiffusionXLTimesteps",
+                            "num_inference_steps": 10
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "info.mix.bagel": {
+        "7B-MoT": {
+            "pkg": {
+                "0": {
+                    "Bagel": "app"
+                }
+            },
+            "repo": "ByteDance-Seed/BAGEL-7B-MoT"
         }
     }
 }

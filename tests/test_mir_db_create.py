@@ -1,5 +1,13 @@
-### <!-- // /*  SPDX-License-Identifier: MPL-2.0  */ -->
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
+
+import os
+import shutil
+
+from mir.json_cache import MIR_PATH_NAMED
+
+
+os.remove(MIR_PATH_NAMED)
 
 
 def test_mir_creation():
@@ -7,9 +15,27 @@ def test_mir_creation():
     from mir.mir import mir_entry
     from pprint import pprint
 
-    entry = mir_entry(domain="info", arch="unet", series="stable-diffusion-xl", comp="base", gen_kwargs={"num_inference_steps": 40, "denoising_end": 0.8, "output_type": "latent", "safety_checker": False}, pipe_kwargs={"use_safetensors": True})
+    entry = mir_entry(
+        domain="info",
+        arch="unet",
+        series="stable-diffusion-xl",
+        comp="base",
+        repo="stabilityai/stable-diffusion-xl",
+        pkg={
+            0: {
+                "diffusers": "class_name",
+                "generation": {"num_inference_steps": 40, "denoising_end": 0.8, "output_type": "latent", "safety_checker": False},
+            }
+        },
+    )
     entry.update(
-        mir_entry(domain="model", arch="unet", series="stable-diffusion-xl", comp="base", file_path="/Users/nyan/Documents/models"),
+        mir_entry(
+            domain="model",
+            arch="unet",
+            series="stable-diffusion-xl",
+            comp="base",
+            file_path="/Users/nyan/Documents/models",
+        ),
     )
     entry.update(
         mir_entry(
@@ -17,10 +43,13 @@ def test_mir_creation():
             arch="scheduler",
             series="align-your-steps",
             comp="stable-diffusion-xl",
-            num_inference_steps=10,
-            timesteps="StableDiffusionXLTimesteps",
-            deps_pkg=["diffusers"],
-            module_path=["schedulers.scheduling_utils", "AysSchedules"],
+            pkg={
+                0: {
+                    "diffusers.schedulers.scheduling_utils": {
+                        "AysSchedules": {"num_inference_steps": 10, "timesteps": "StableDiffusionXLTimesteps"},
+                    }
+                }
+            },
         )
     )
     entry.update(
@@ -29,17 +58,11 @@ def test_mir_creation():
             arch="patch",
             series="hidiffusion",
             comp="stable-diffusion-xl",
-            num_inference_steps=10,
-            timesteps="StableDiffusionXLTimesteps",
-            deps_pkg='["hidiffusion"]',
-            gen_kwargs={"height": 2048, "width": 2048, "eta": 1.0, "guidance_scale": 7.5},
-            module_path=["apply_hidiffusion"],
+            pkg={0: {"hidiffusion": {"apply_hidiffusion": {"generation": {"height": 2048, "width": 2048, "eta": 1.0, "guidance_scale": 7.5}}}}},
         )
     )
     pprint(entry)
 
-
-# eta only works with ddim!!!
 
 if __name__ == "__main__":
     test_mir_creation()

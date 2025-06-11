@@ -1,19 +1,44 @@
-nnll@ /Users/unauthorized/Documents/GitHub/darkshapes/nnll
+
+[:sys_platform != "darwin"]
+mir[cu128]
+
+[:sys_platform == "darwin"]
+mir[mflux]
+
+[cu128]
+
+[cu128:sys_platform != "darwin"]
+nnll[bitsandbytes,cu126,cu128,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main
 
 [dev]
 pytest>=8.3.5
 pytest-asyncio>=1.0.0
 ruff>=0.11.12
-mir[full]
+mir[lmstudio,ollama,openai,outetts]
+
+[dev:sys_platform != "darwin"]
+nnll[cu126,cu128,dev,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main
+
+[dev:sys_platform == "darwin"]
+nnll[dev,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main
 
 [full]
-mir[lmstudio,ollama,openai]
+mir[cu128,hidiffusion,lmstudio,mflux,ollama,openai,outetts]
 
 [lmstudio]
 lmstudio>=1.3.1
+
+[mflux]
+
+[mflux:sys_platform == "darwin"]
+nnll[diffusers,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main
 
 [ollama]
 ollama>=0.5.1
 
 [openai]
 openai>=1.84.0
+
+[outetts]
+openai-whisper@ git+https://github.com/openai/whisper.git
+outetts

@@ -1,4 +1,4 @@
-### <!-- // /*  SPDX-License-Identifier: MPL-2.0  */ -->
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
 """test"""

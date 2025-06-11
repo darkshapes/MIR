@@ -1,13 +1,13 @@
-# ### <!-- // /*  SPDX-License-Identifier: LAL-1.3 */ -->
-# ### <!-- // /*  d a r k s h a p e s */ -->
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
+### <!-- // /*  d a r k s h a p e s */ -->
 
 import pytest
 from unittest import mock
-from nnll.tensor_pipe.deconstructors import process_docs
+from mir.generators import mir_index
 
 
 def test_list_diffusers_models():
-    process_docs()
+    print(mir_index())
 
 
 # @pytest.fixture

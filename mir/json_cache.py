@@ -1,7 +1,7 @@
-### <!-- // /*  SPDX-License-Identifier: MPL-2.0  */ -->
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
-"""JSONCache, HASH_PATH_NAMED,CONFIG_PATH_NAMED,CHAIN_PATH_NAMED USER_PATH_NAMED"""
+"""JSONCache, [ MIR / HASHES / LIBTYPE / HYPERCHAIN ] _PATH_NAMED"""
 
 import os
 import sys
@@ -11,7 +11,7 @@ sys.path.append(os.getcwd())
 from pathlib import Path
 from functools import cache
 from nnll.monitor.file import dbug
-from nnll.configure import ensure_path, set_home_stable
+from nnll.integrity import ensure_path
 
 
 def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__), prefix: str = "config") -> Path:
@@ -36,7 +36,7 @@ for const in constants:
 class JSONCache:
     """Manage input/output disk/mem for json and read-only toml files"""
 
-    def __init__(self, file_or_path: Union[str, Path]):
+    def __init__(self, file_path_named: Union[str, Path]):
         """Cache operations for .json and read-only .toml files. Example:
         ```
         cache_manager = JSONCache("path/to/file.json")
@@ -49,7 +49,7 @@ class JSONCache:
         `cache_manager.update({"new_key": "new_value"})`
         """
 
-        self.file: Union[str, Path] = file_or_path
+        self.file: Union[str, Path] = file_path_named
         self._cache: dict = {}
 
     def _load_cache(self):
@@ -97,11 +97,13 @@ class JSONCache:
         :param new_data: Updated dictionary
         :param replace: Force clear entire cache and replace with new_data, defaults to False
         """
-        self._load_cache()  # Ensure cache loaded / 確保快取載入
         if replace:
             self._cache = {"empty": ""}  # sanity check
             self._save_cache()
             self._cache.pop("empty")
+            os.remove(self.file)
+            ensure_path(os.path.dirname(self.file), os.path.basename(self.file))
+        self._load_cache()  # Ensure cache loaded / 確保快取載入
         original_cache_copy = self._cache.copy()  # Snapshot current state / 快照當前快取
         self._cache.update(new_data)  # Add the data to the cache / 將資料新增到快取中
         if original_cache_copy != self._cache:

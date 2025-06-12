@@ -766,7 +766,7 @@ wheels = [
 
 [[package]]
 name = "huggingface-hub"
-version = "0.32.6"
+version = "0.33.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "filelock" },
@@ -778,9 +778,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8f/fb/7fcbafabdf470ffb5457b756cc1f659b4e88a9ff37c108e6c7a5ab5e781e/huggingface_hub-0.32.6.tar.gz", hash = "sha256:8e960f23dc57519c6c2a0bbc7e9bc030eaa14e7f2d61f8e68fd3d025dabed2fa", size = 424961, upload-time = "2025-06-11T08:17:53.171Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/91/8a/1362d565fefabaa4185cf3ae842a98dbc5b35146f5694f7080f043a6952f/huggingface_hub-0.33.0.tar.gz", hash = "sha256:aa31f70d29439d00ff7a33837c03f1f9dd83971ce4e29ad664d63ffb17d3bb97", size = 426179, upload-time = "2025-06-11T17:08:07.913Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c5/42/dd58e603c5b069c4e4759c7c44e4f5ccdc2ce02185848232775f5d6d5d50/huggingface_hub-0.32.6-py3-none-any.whl", hash = "sha256:32cde9558c965477556edca72352621def7fbc42e167aaf33f4cdb9af65bb28b", size = 512800, upload-time = "2025-06-11T08:17:50.977Z" },
+    { url = "https://files.pythonhosted.org/packages/33/fb/53587a89fbc00799e4179796f51b3ad713c5de6bb680b2becb6d37c94649/huggingface_hub-0.33.0-py3-none-any.whl", hash = "sha256:e8668875b40c68f9929150d99727d39e5ebb8a05a98e4191b908dc7ded9074b3", size = 514799, upload-time = "2025-06-11T17:08:05.757Z" },
 ]
 
 [package.optional-dependencies]
@@ -1329,8 +1329,8 @@ name = "mir"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [
-    { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
     { name = "nnll" },
+    { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
     { name = "nnll", extra = ["mflux", "nightly"], marker = "sys_platform == 'darwin'" },
 ]
 
@@ -1353,8 +1353,8 @@ dev = [
 ]
 full = [
     { name = "lmstudio" },
-    { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
     { name = "nnll" },
+    { name = "nnll", extra = ["cu126", "cu128", "rocm"], marker = "sys_platform != 'darwin'" },
     { name = "nnll", extra = ["mflux", "nightly"], marker = "sys_platform == 'darwin'" },
     { name = "ollama" },
     { name = "openai" },
@@ -1396,10 +1396,10 @@ requires-dist = [
     { name = "mir", extras = ["lmstudio", "ollama", "openai", "mflux", "outetts", "hidiffusion", "cu128"], marker = "extra == 'full'" },
     { name = "mir", extras = ["lmstudio", "ollama", "openai", "outetts"], marker = "extra == 'dev'" },
     { name = "mir", extras = ["mflux"], marker = "sys_platform == 'darwin'" },
+    { name = "nnll", extras = ["nightly", "mflux"], marker = "sys_platform == 'darwin' and extra == 'mflux'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "nnll", extras = ["nightly", "mflux", "dev"], marker = "sys_platform == 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
-    { name = "nnll", extras = ["nightly", "mflux", "diffusers"], marker = "sys_platform == 'darwin' and extra == 'mflux'", git = "https://github.com/darkshapes/nnll?rev=main" },
-    { name = "nnll", extras = ["rocm", "cu128", "cu126", "bitsandbytes", "diffusers"], marker = "sys_platform != 'darwin' and extra == 'cu128'", git = "https://github.com/darkshapes/nnll?rev=main" },
-    { name = "nnll", extras = ["rocm", "cu128", "cu126", "diffusers", "dev"], marker = "sys_platform != 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
+    { name = "nnll", extras = ["rocm", "cu128", "cu126", "bitsandbytes"], marker = "sys_platform != 'darwin' and extra == 'cu128'", git = "https://github.com/darkshapes/nnll?rev=main" },
+    { name = "nnll", extras = ["rocm", "cu128", "cu126", "dev"], marker = "sys_platform != 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "ollama", marker = "extra == 'ollama'", specifier = ">=0.5.1" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.84.0" },
     { name = "openai-whisper", marker = "extra == 'outetts'", git = "https://github.com/openai/whisper.git" },
@@ -1414,7 +1414,7 @@ provides-extras = ["dev", "cu128", "mflux", "full", "lmstudio", "ollama", "opena
 dev = [
     { name = "mir", extras = ["lmstudio", "ollama", "openai", "outetts"] },
     { name = "nnll", extras = ["nightly", "mflux", "dev"], marker = "sys_platform == 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
-    { name = "nnll", extras = ["rocm", "cu128", "cu126", "diffusers", "dev"], marker = "sys_platform != 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
+    { name = "nnll", extras = ["rocm", "cu128", "cu126", "dev"], marker = "sys_platform != 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-asyncio", specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.11.12" },

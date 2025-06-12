@@ -42,6 +42,7 @@ mir/model_detect/layer_pattern.py
 mir/model_detect/value_compare.py
 tests/__init__.py
 tests/test_gather_metadata.py
+tests/test_gen_create_pipe.py
 tests/test_generators.py
 tests/test_hyper_chain.py
 tests/test_hyperlink_block.py

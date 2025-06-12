@@ -136,14 +136,14 @@ class MIRDatabase:
 
 def main(mir_db: Callable = MIRDatabase()) -> None:
     """Build the database"""
-    from mir.automata import mir_diffusion, mir_dtype, mir_scheduler, build_mir_lora, build_mir_custom
+    from mir.automata import mir_diffusion, mir_dtype, mir_scheduler, build_mir_lora, build_mir_custom, build_mir_additional
 
     mir_diffusion(mir_db)
     mir_dtype(mir_db)
     mir_scheduler(mir_db)
     build_mir_lora(mir_db)
     build_mir_custom(mir_db)
-
+    build_mir_additional(mir_db)
     mir_db.write_to_disk()
 
 

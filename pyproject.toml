@@ -36,7 +36,7 @@ dev = [
     "ruff>=0.11.12",
     "mir[lmstudio,ollama,openai,outetts]",
     "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
-    "nnll[rocm,cu128,cu126,diffusers,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+    "nnll[rocm,cu128,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
 ]
 [project.optional-dependencies]
 dev = [
@@ -45,13 +45,13 @@ dev = [
     "ruff>=0.11.12",
     "mir[lmstudio,ollama,openai,outetts]",
     "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
-    "nnll[rocm,cu128,cu126,diffusers,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+    "nnll[rocm,cu128,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
 ]
 cu128 = [
-    "nnll[rocm,cu128,cu126,bitsandbytes,diffusers] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+    "nnll[rocm,cu128,cu126,bitsandbytes] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
 ]
 mflux = [
-    "nnll[nightly,mflux,diffusers] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[nightly,mflux] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
 ]
 full = ["mir[lmstudio,ollama,openai,mflux,outetts,hidiffusion,cu128]"]
 lmstudio = ["lmstudio>=1.3.1"]

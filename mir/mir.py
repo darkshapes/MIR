@@ -41,11 +41,11 @@ class Info(BaseModel):
     :param weight_map: Remote location of the weight map for the model
     """
 
-    file_256: HashType = None
-    layer_256: HashType = None
+    repo: Optional[str] = None
+    pkg: Optional[PkgType] = None
+    file_256: Optional[HashType] = None
+    layer_256: Optional[HashType] = None
     pkg_alt: Optional[PkgType] = None
-    pkg: PkgType
-    repo: str
 
 
 class Ops(BaseModel):

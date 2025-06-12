@@ -6,7 +6,7 @@
 from nnll.monitor.file import dbug, nfo
 from mir.mir_maid import MIRDatabase
 from mir.mir import mir_entry
-from typing import List
+from typing import Dict, List, Tuple
 
 
 def mir_diffusion(mir_db: MIRDatabase):
@@ -103,124 +103,176 @@ def mir_scheduler(mir_db: MIRDatabase):
         dbug(error_log)
 
 
-def build_mir_unet(mir_db: MIRDatabase):
+def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> None:
+    for entry in data_tuple:
+        arch, series, new_data = entry
+        mir_data = mir_db.database[f"{arch}.{series}"]
+        for comp, field_data in new_data.items():
+            if isinstance(field_data, dict):
+                for field, definition_data in field_data.items():  # field = pkg
+                    nfo(f"{arch}.{series} : {comp} : {field}")
+                    if isinstance(definition_data, dict) and mir_data[comp].get(field):
+                        for definition, sub_def_data in definition_data.items():  # definition = 0
+                            if series == "stable-diffusion-xl":
+                                print(definition)
+                            if isinstance(sub_def_data, dict) and mir_data[comp].get(definition):
+                                for sub_def, nested_data in sub_def_data.items():  # sub def = diffusers
+                                    if isinstance(nested_data, dict) and mir_data[comp].get(sub_def):
+                                        for key, value in nested_data.items():
+                                            mir_data[comp][field][definition][sub_def].setdefault(key, value)
+                                    else:
+                                        mir_data[comp][field][definition].setdefault(sub_def, nested_data)
+                            else:
+                                if series == "stable-diffusion-xl":
+                                    print(sub_def_data)
+                                mir_data[comp][field].get(definition, mir_data[comp][field])
+                                nfo(f"comp : {comp} field :{field} def {definition}")
+                    else:
+                        mir_data[comp].setdefault(field, definition_data)
+            else:
+                raise TypeError("Test")
+
+
+def build_mir_additional(mir_db: MIRDatabase):
     """Create mir unet info database"""
 
-    info_unet_stable_diffusion_xl = {
-        "base": {
-            "pkg": {
-                0: {
-                    "generation": {
-                        "denoising_end": 0.8,
-                        "output_type": "latent",
-                        "safety_checker": False,
-                        "width": 1024,
-                        "height": 1024,
+    data_tuple = [
+        (
+            "info.unet",
+            "stable-diffusion-xl",
+            {
+                "base": {
+                    "pkg": {
+                        0: {
+                            "generation": {
+                                "denoising_end": 0.8,
+                                "output_type": "latent",
+                                "safety_checker": False,
+                                "width": 1024,
+                                "height": 1024,
+                            },
+                        },
                     },
-                },
-            },
-            "layer_256": ["62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"],
-            "pkg_alt": {0: {"diffusers": ["DiffusionPipeline"]}},
-        }
-    }
-    info_unet_kolors = {
-        "base": {
-            "pkg": {
-                0: {
-                    "precision": "ops.precision.f16",
-                    "generation": {
-                        "negative_prompt": "",
-                        "guidance_scale": 5.0,
-                        "num_inference_steps": 50,
-                        "width": 1024,
-                        "height": 1024,
-                    },
+                    "layer_256": ["62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"],
+                    "pkg_alt": {0: {"diffusers": "DiffusionPipeline"}},
                 }
             },
-            "layer_256": ["62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"],
-            "pkg_alt": {0: {"diffusers": ["DiffusionPipeline"]}},
-        }
-    }
+        ),
+        (
+            "info.unet",
+            "kolors",
+            {
+                "diffusers": {
+                    "pkg": {
+                        0: {
+                            "precision": "ops.precision.f16",
+                            "generation": {
+                                "negative_prompt": "",
+                                "guidance_scale": 5.0,
+                                "num_inference_steps": 50,
+                                "width": 1024,
+                                "height": 1024,
+                            },
+                        }
+                    },
+                    "layer_256": ["62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"],
+                    "pkg_alt": {0: {"diffusers": "DiffusionPipeline"}},
+                }
+            },
+        ),
+        (
+            "info.unet",
+            "stable-cascade",
+            {
+                "prior": {
+                    "pkg": {
+                        0: {
+                            "precision": "ops.precision.bf16",
+                            "generation": {
+                                "negative_prompt": "",
+                                "num_images_per_prompt": 1,
+                                "num_inference_steps": 20,
+                                "guidance_scale": 4.0,
+                                "width": 1024,
+                                "height": 1024,
+                            },
+                        }
+                    },
+                    "layer_256": [
+                        "2b6986954d9d2b0c702911504f78f5021843bd7050bb10444d70fa915cb495ea",
+                        "2aa5a461c4cd0e2079e81554081854a2fa01f9b876d7124c8fff9bf1308b9df7",
+                        "ce474fd5da12f1d465a9d236d61ea7e98458c1b9d58d35bb8412b2acb9594f08",
+                        "1b035ba92da6bec0a9542219d12376c0164f214f222955024c884e1ab08ec611",
+                        "22a49dc9d213d5caf712fbf755f30328bc2f4cbdc322bcef26dfcee82f02f147",
+                    ],
+                }
+            },
+        ),
+        # (
+        #     "info.unet",
+        #     "stable-cascade",
+        #     {
+        #         "combined": {
+        #             "pkg": {
+        #                 0: {  # decoder=decoder_unet
+        #                     "precision": "ops.precision.bf16",
+        #                     "generation": {
+        #                         "negative_prompt": "",
+        #                         "num_inference_steps": 20,
+        #                         "guidance_scale": 4.0,
+        #                         "num_images_per_prompt": 1,
+        #                         "width": 1024,
+        #                         "height": 1024,
+        #                     },
+        #                 },
+        #                 "pkg_alt": {
+        #                     0: {
+        #                         "diffusers": {
+        #                             "StableCascadeCombinedPipeline": {
+        #                                 "negative_prompt": "",
+        #                                 "num_inference_steps": 10,
+        #                                 "prior_num_inference_steps": 20,
+        #                                 "prior_guidance_scale": 3.0,
+        #                             }
+        #                         },
+        #                     }
+        #                 },
+        #             }
+        #         }
+        #     },
+        # ),
+        (
+            "info.unet",
+            "stable-cascade",
+            {
+                "base": {
+                    "pkg": {  # prior=prior_unet
+                        0: {
+                            "generation": {  # image_embeddings=prior_output.image_embeddings,
+                                "negative_prompt": "",
+                                "guidance_scale": 0.0,
+                                "output_type": "pil",
+                                "num_inference_steps": 10,
+                            },
+                            "precision": "ops.precision.bf16",
+                        },
+                        "layer_256": [
+                            "fde5a91a908e8cb969f97bcd20e852fb028cc039a19633b0e1559ae41edeb16f",
+                            "24fa8b55d12bf904878b7f2cda47c04c1a92da702fe149e28341686c080dfd4f",
+                            "a7c96afb54e60386b7d077bf3f00d04596f4b877d58e6a577f0e1a08dc4a0190",
+                            "f1300b9ffe051640555bfeee245813e440076ef90b669332a7f9fb35fffb93e8",
+                            "047fa405c9cd5ad054d8f8c8baa2294fbc663e4121828b22cb190f7057842a64",
+                        ],
+                    }
+                }
+            },
+        ),
+    ]
+    merge_data(mir_db, data_tuple)
 
-    info_unet_stable_cascade_prior = {
-        "base": {
-            "pkg": {
-                0: {
-                    "precision": "ops.precision.bf16",
-                    "generation": {
-                        "negative_prompt": "",
-                        "num_images_per_prompt": 1,
-                        "num_inference_steps": 20,
-                        "guidance_scale": 4.0,
-                        "width": 1024,
-                        "height": 1024,
-                    },
-                }
-            },
-            "layer_256": [
-                "2b6986954d9d2b0c702911504f78f5021843bd7050bb10444d70fa915cb495ea",
-                "2aa5a461c4cd0e2079e81554081854a2fa01f9b876d7124c8fff9bf1308b9df7",
-                "ce474fd5da12f1d465a9d236d61ea7e98458c1b9d58d35bb8412b2acb9594f08",
-                "1b035ba92da6bec0a9542219d12376c0164f214f222955024c884e1ab08ec611",
-                "22a49dc9d213d5caf712fbf755f30328bc2f4cbdc322bcef26dfcee82f02f147",
-            ],
-        }
-    }
 
-    info_unet_stable_cascade = {
-        "base": {
-            "pkg": {
-                0: {
-                    "precision": "ops.precision.bf16",
-                    "generation": {
-                        "negative_prompt": "",
-                        "num_inference_steps": 10,
-                        "prior_num_inference_steps": 20,
-                        "prior_guidance_scale": 3.0,
-                        "width": 1024,
-                        "height": 1024,
-                    },
-                }
-            },
-        }
-    }
-    info_unet_stable_cascade = {
-        "base": {
-            "pkg": {
-                0: {
-                    "precision": "ops.precision.bf16",
-                    "generation": {
-                        "negative_prompt": "",
-                        "num_inference_steps": 10,
-                        "prior_num_inference_steps": 20,
-                        "prior_guidance_scale": 3.0,
-                        "width": 1024,
-                        "height": 1024,
-                    },
-                }
-            },
-        }
-    }
-
-    # mir_db.add(
-    #     mir_entry(
-    #         domain="info",
-    #         arch="unet",
-    #         series="stable-cascade",
-    #         comp="decoder",
-    #         repo="stabilityai/stable-cascade",
-    #         dep_apt={"diffusers": ["StableCascadeDecoderPipeline"]},
-    #         layer_256=[
-    #             "fde5a91a908e8cb969f97bcd20e852fb028cc039a19633b0e1559ae41edeb16f",
-    #             "24fa8b55d12bf904878b7f2cda47c04c1a92da702fe149e28341686c080dfd4f",
-    #             "a7c96afb54e60386b7d077bf3f00d04596f4b877d58e6a577f0e1a08dc4a0190",
-    #             "f1300b9ffe051640555bfeee245813e440076ef90b669332a7f9fb35fffb93e8",
-    #             "047fa405c9cd5ad054d8f8c8baa2294fbc663e4121828b22cb190f7057842a64",
-    #         ],
-    #         init_kwargs={"variant": "bf16", "torch_dtype": "torch.bfloat16"},
-    #         gen_kwargs={"guidance_scale": 0.0, "output_type": "pil", "num_inference_steps": 10},
-    #     )
-    # )
+def build_mir_custom(mir_db: MIRDatabase):
+    """Create mir database"""
     mir_db.add(
         mir_entry(
             domain="info",
@@ -279,7 +331,7 @@ def build_mir_unet(mir_db: MIRDatabase):
             domain="info",
             arch="unet",
             series="stable-diffusion-xl",
-            comp="playground-2.5-base",
+            comp="playground-2-5-base",
             layer_256=["a6f31493ceeb51c88c5239188b9078dc64ba66d3fc5958ad48c119115b06120c"],
         )
     )
@@ -288,7 +340,7 @@ def build_mir_unet(mir_db: MIRDatabase):
             domain="info",
             arch="unet",
             series="stable-diffusion-xl",
-            comp="playground-2.5-aesthetic",
+            comp="playground-2-5-aesthetic",
             repo="playgroundai/playground-v2.5-1024px-aesthetic",
             layer_256=[
                 "fe2e9edf7e3923a80e64c2552139d8bae926cc3b028ca4773573a6ba60e67c20",
@@ -303,15 +355,12 @@ def build_mir_unet(mir_db: MIRDatabase):
         )
     )
 
-
-def build_mir_custom(mir_db: MIRDatabase):
-    """Create mir database"""
     mir_db.add(
         mir_entry(
             domain="info",
             arch="art",
             series="audiogen",
-            comp="medium-1.5b",
+            comp="medium-1-5b",
             repo="facebook/audiogen-medium",
             pkg={
                 0: {
@@ -371,7 +420,7 @@ def build_mir_custom(mir_db: MIRDatabase):
             domain="info",
             arch="art",
             series="orpheus",
-            comp="3b-0.1-ft",
+            comp="3b-0-1-ft",
             repo="canopylabs/orpheus-3b-0.1-ft",
             pkg={0: {"orpheus_tts": {"OrpheusModel": {"max_model_len": 2048}}}},
         )
@@ -380,9 +429,9 @@ def build_mir_custom(mir_db: MIRDatabase):
         mir_entry(
             domain="info",
             arch="art",
-            series="outetts-0.3",
+            series="outetts-0-3",
             comp="1b",
-            repo="outeai/outetts-0.3-1b",
+            repo="outeai/outetts-0-3-1b",
             pkg={0: {"outetts": "InterfaceHF"}},
         )
     )
@@ -416,8 +465,8 @@ def build_mir_custom(mir_db: MIRDatabase):
             },
         )
     )
+    # possible mixed-type architecture?
 
-    """mixed-type architecture"""
     mir_db.add(
         mir_entry(
             domain="info",
@@ -550,7 +599,7 @@ def build_mir_lora(mir_db: MIRDatabase):
             domain="info",
             arch="lora",
             series="hyper",
-            comp="flux-1:dev",
+            comp="flux-1.dev",
             repo="ByteDance/Hyper-SD",
             pkg={0: {"diffusers": {"load_lora_weights": {"fuse": 0.125}}}},
             file_256={
@@ -813,7 +862,7 @@ def build_mir_lora(mir_db: MIRDatabase):
             domain="info",
             arch="lora",
             series="turbo",
-            comp="stable-diffusion-3.5-medium",
+            comp="stable-diffusion-3-5-medium",
             repo="tensorart/stable-diffusion-3.5-medium-turbo",
             pkg={0: {"diffusers": {"load_lora_weights": {"fuse": 1.0}}, "scheduler": {"ops.scheduler.flow-match": {"shift": 5}}}},
         )

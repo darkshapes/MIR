@@ -8,7 +8,7 @@ mir[mflux]
 [cu128]
 
 [cu128:sys_platform != "darwin"]
-nnll[bitsandbytes,cu126,cu128,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main
+nnll[bitsandbytes,cu126,cu128,rocm]@ git+https://github.com/darkshapes/nnll@main
 
 [dev]
 pytest>=8.3.5
@@ -17,7 +17,7 @@ ruff>=0.11.12
 mir[lmstudio,ollama,openai,outetts]
 
 [dev:sys_platform != "darwin"]
-nnll[cu126,cu128,dev,diffusers,rocm]@ git+https://github.com/darkshapes/nnll@main
+nnll[cu126,cu128,dev,rocm]@ git+https://github.com/darkshapes/nnll@main
 
 [dev:sys_platform == "darwin"]
 nnll[dev,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main
@@ -31,7 +31,7 @@ lmstudio>=1.3.1
 [mflux]
 
 [mflux:sys_platform == "darwin"]
-nnll[diffusers,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main
+nnll[mflux,nightly]@ git+https://github.com/darkshapes/nnll@main
 
 [ollama]
 ollama>=0.5.1

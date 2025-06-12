@@ -1,136 +1,137 @@
 {
     "info.dit.allegro": {
         "base": {
+            "repo": "rhymes-ai/Allegro",
             "pkg": {
                 "0": {
                     "diffusers": "AllegroPipeline"
                 }
-            },
-            "repo": "rhymes-ai/Allegro"
+            }
         }
     },
     "info.dit.amused": {
         "512": {
+            "repo": "amused/amused-512",
             "pkg": {
                 "0": {
                     "diffusers": "AmusedPipeline"
                 }
-            },
-            "repo": "amused/amused-512"
+            }
         }
     },
-    "info.unet.audioldm-s-full-": {
+    "info.unet.audioldm-s-full": {
         "v2": {
+            "repo": "cvssp/audioldm-s-full-v2",
             "pkg": {
                 "0": {
                     "diffusers": "AudioLDMPipeline"
                 }
-            },
-            "repo": "cvssp/audioldm-s-full-v2"
+            }
         }
     },
     "info.unet.audioldm2": {
         "base": {
+            "repo": "cvssp/audioldm2",
             "pkg": {
                 "0": {
                     "diffusers": "AudioLDM2Pipeline"
                 }
-            },
-            "repo": "cvssp/audioldm2"
+            }
         }
     },
     "info.dit.auraflow": {
         "base": {
+            "repo": "fal/AuraFlow",
             "pkg": {
                 "0": {
                     "diffusers": "AuraFlowPipeline"
                 }
-            },
-            "repo": "fal/AuraFlow"
+            }
         }
     },
     "info.unet.blipdiffusion": {
         "base": {
+            "repo": "Salesforce/blipdiffusion",
             "pkg": {
                 "0": {
                     "diffusers": "BlipDiffusionPipeline"
                 }
-            },
-            "repo": "Salesforce/blipdiffusion"
+            }
         }
     },
     "info.dit.cogvideox": {
         "2b": {
+            "repo": "THUDM/CogVideoX-2b",
             "pkg": {
                 "0": {
                     "diffusers": "CogVideoXPipeline"
                 }
-            },
-            "repo": "THUDM/CogVideoX-2b"
+            }
         }
     },
     "info.dit.cogview3-plus": {
         "3b": {
+            "repo": "THUDM/CogView3-Plus-3B",
             "pkg": {
                 "0": {
                     "diffusers": "CogView3PlusPipeline"
                 }
-            },
-            "repo": "THUDM/CogView3-Plus-3B"
+            }
         }
     },
     "info.dit.cogview4": {
         "6b": {
+            "repo": "THUDM/CogView4-6B",
             "pkg": {
                 "0": {
                     "diffusers": "CogView4Pipeline"
                 }
-            },
-            "repo": "THUDM/CogView4-6B"
+            }
         }
     },
     "info.dit.consisid": {
         "preview": {
+            "repo": "BestWishYsh/ConsisID-preview",
             "pkg": {
                 "0": {
                     "diffusers": "ConsisIDPipeline"
                 }
-            },
-            "repo": "BestWishYsh/ConsisID-preview"
+            }
         }
     },
     "info.unet.diffusers-cd-imagenet64-l2": {
         "base": {
+            "repo": "openai/diffusers-cd_imagenet64_l2",
             "pkg": {
                 "0": {
                     "diffusers": "ConsistencyModelPipeline"
                 }
-            },
-            "repo": "openai/diffusers-cd_imagenet64_l2"
+            }
         }
     },
-    "info.unet.if-i-xl-v1-0": {
+    "info.unet.if-i-xl-v": {
         "base": {
+            "repo": "DeepFloyd/IF-I-XL-v1.0",
             "pkg": {
                 "0": {
                     "diffusers": "IFPipeline"
                 }
-            },
-            "repo": "DeepFloyd/IF-I-XL-v1.0"
+            }
         }
     },
     "info.dit.easyanimatev5-1-7b-zh": {
         "diffusers": {
+            "repo": "alibaba-pai/EasyAnimateV5.1-7b-zh-diffusers",
             "pkg": {
                 "0": {
                     "diffusers": "EasyAnimatePipeline"
                 }
-            },
-            "repo": "alibaba-pai/EasyAnimateV5.1-7b-zh-diffusers"
+            }
         }
     },
     "info.dit.flux-1": {
         "schnell": {
+            "repo": "black-forest-labs/FLUX.1-schnell",
             "pkg": {
                 "0": {
                     "diffusers": "FluxPipeline"
@@ -138,10 +139,10 @@
                 "1": {
                     "mflux": "Flux1"
                 }
-            },
-            "repo": "black-forest-labs/FLUX.1-schnell"
+            }
         },
         "dev": {
+            "repo": "black-forest-labs/FLUX.1-dev",
             "pkg": {
                 "0": {
                     "diffusers": "FluxPipeline"
@@ -149,302 +150,373 @@
                 "1": {
                     "mflux": "Flux1"
                 }
-            },
-            "repo": "black-forest-labs/FLUX.1-dev"
-        }
-    },
-    "info.dit.hidream-i1": {
-        "full": {
-            "pkg": {
-                "0": {
-                    "diffusers": "HiDreamImagePipeline"
-                }
-            },
-            "repo": "HiDream-ai/HiDream-I1-Full"
+            }
         }
     },
     "info.dit.hunyuanvideo": {
         "base": {
+            "repo": "hunyuanvideo-community/HunyuanVideo",
             "pkg": {
                 "0": {
                     "diffusers": "HunyuanVideoPipeline"
                 }
-            },
-            "repo": "hunyuanvideo-community/HunyuanVideo"
+            }
         }
     },
     "info.dit.hunyuandit": {
         "diffusers": {
+            "repo": "Tencent-Hunyuan/HunyuanDiT-Diffusers",
             "pkg": {
                 "0": {
                     "diffusers": "HunyuanDiTPipeline"
                 }
-            },
-            "repo": "Tencent-Hunyuan/HunyuanDiT-Diffusers"
+            }
         }
     },
     "info.unet.i2vgen-xl": {
         "base": {
+            "repo": "ali-vilab/i2vgen-xl",
             "pkg": {
                 "0": {
                     "diffusers": "I2VGenXLPipeline"
                 }
-            },
-            "repo": "ali-vilab/i2vgen-xl"
+            }
         }
     },
     "info.unet.kandinsky-2-1": {
         "prior": {
+            "repo": "kandinsky-community/Kandinsky-2-1-prior",
             "pkg": {
                 "0": {
                     "diffusers": "KandinskyPriorPipeline"
                 }
-            },
-            "repo": "kandinsky-community/Kandinsky-2-1-prior"
+            }
         }
     },
     "info.unet.kandinsky-2-2": {
         "prior": {
+            "repo": "kandinsky-community/kandinsky-2-2-prior",
             "pkg": {
                 "0": {
                     "diffusers": "KandinskyV22PriorPipeline"
                 }
-            },
-            "repo": "kandinsky-community/kandinsky-2-2-prior"
+            }
         }
     },
     "info.unet.kandinsky-3": {
         "base": {
+            "repo": "kandinsky-community/kandinsky-3",
             "pkg": {
                 "0": {
                     "diffusers": "AutoPipelineForText2Image"
                 }
-            },
-            "repo": "kandinsky-community/kandinsky-3"
+            }
         }
     },
     "info.unet.kolors": {
         "diffusers": {
+            "repo": "Kwai-Kolors/Kolors-diffusers",
             "pkg": {
                 "0": {
                     "diffusers": "KolorsPipeline"
                 }
             },
-            "repo": "Kwai-Kolors/Kolors-diffusers"
+            "layer_256": [
+                "62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"
+            ],
+            "pkg_alt": {
+                "0": {
+                    "diffusers": "DiffusionPipeline"
+                }
+            }
         }
     },
     "info.dit.latte-1": {
         "base": {
+            "repo": "maxin-cn/Latte-1",
             "pkg": {
                 "0": {
                     "diffusers": "LattePipeline"
                 }
-            },
-            "repo": "maxin-cn/Latte-1"
+            }
         }
     },
     "info.dit.ltx-video": {
         "base": {
+            "repo": "Lightricks/LTX-Video",
             "pkg": {
                 "0": {
                     "diffusers": "LTXPipeline"
                 }
-            },
-            "repo": "Lightricks/LTX-Video"
+            }
         }
     },
     "info.dit.lumina-next-sft": {
         "diffusers": {
+            "repo": "Alpha-VLLM/Lumina-Next-SFT-diffusers",
             "pkg": {
                 "0": {
                     "diffusers": "LuminaPipeline"
                 }
-            },
-            "repo": "Alpha-VLLM/Lumina-Next-SFT-diffusers"
+            }
         }
     },
     "info.dit.lumina-image-2-0": {
         "base": {
+            "repo": "Alpha-VLLM/Lumina-Image-2.0",
             "pkg": {
                 "0": {
                     "diffusers": "Lumina2Pipeline"
                 }
-            },
-            "repo": "Alpha-VLLM/Lumina-Image-2.0"
+            }
         }
     },
     "info.dit.mochi-1": {
         "preview": {
+            "repo": "genmo/mochi-1-preview",
             "pkg": {
                 "0": {
                     "diffusers": "MochiPipeline"
                 }
-            },
-            "repo": "genmo/mochi-1-preview"
+            }
         }
     },
     "info.unet.musicldm": {
         "base": {
+            "repo": "ucsd-reach/musicldm",
             "pkg": {
                 "0": {
                     "diffusers": "MusicLDMPipeline"
                 }
-            },
-            "repo": "ucsd-reach/musicldm"
+            }
         }
     },
     "info.dit.pixart-xl-2": {
         "1024-ms": {
+            "repo": "PixArt-alpha/PixArt-XL-2-1024-MS",
             "pkg": {
                 "0": {
                     "diffusers": "PixArtAlphaPipeline"
                 }
-            },
-            "repo": "PixArt-alpha/PixArt-XL-2-1024-MS"
+            }
         }
     },
     "info.dit.sana-1600m": {
         "1024px-bf16-diffusers": {
+            "repo": "Efficient-Large-Model/Sana_1600M_1024px_BF16_diffusers",
             "pkg": {
                 "0": {
                     "diffusers": "SanaPipeline"
                 }
-            },
-            "repo": "Efficient-Large-Model/Sana_1600M_1024px_BF16_diffusers"
+            }
         }
     },
     "info.unet.shap-e": {
         "base": {
+            "repo": "openai/shap-e",
             "pkg": {
                 "0": {
                     "diffusers": "DiffusionPipeline"
                 }
-            },
-            "repo": "openai/shap-e"
+            }
         }
     },
-    "info.dit.stable-audio-open-1-0": {
+    "info.dit.stable-audio-open-": {
         "base": {
+            "repo": "stabilityai/stable-audio-open-1.0",
             "pkg": {
                 "0": {
                     "diffusers": "StableAudioPipeline"
                 }
-            },
-            "repo": "stabilityai/stable-audio-open-1.0"
+            }
         }
     },
     "info.unet.stable-cascade": {
         "prior": {
+            "repo": "stabilityai/stable-cascade-prior",
             "pkg": {
                 "0": {
                     "diffusers": "StableCascadePriorPipeline"
                 }
             },
-            "repo": "stabilityai/stable-cascade-prior"
+            "layer_256": [
+                "2b6986954d9d2b0c702911504f78f5021843bd7050bb10444d70fa915cb495ea",
+                "2aa5a461c4cd0e2079e81554081854a2fa01f9b876d7124c8fff9bf1308b9df7",
+                "ce474fd5da12f1d465a9d236d61ea7e98458c1b9d58d35bb8412b2acb9594f08",
+                "1b035ba92da6bec0a9542219d12376c0164f214f222955024c884e1ab08ec611",
+                "22a49dc9d213d5caf712fbf755f30328bc2f4cbdc322bcef26dfcee82f02f147"
+            ]
         },
         "base": {
+            "repo": "\"stabilityai/stable-cascade",
             "pkg": {
                 "0": {
                     "diffusers": "StableCascadeDecoderPipeline"
                 }
-            },
-            "repo": "\"stabilityai/stable-cascade"
+            }
         }
     },
     "info.unet.stable-diffusion-v1-5": {
         "base": {
+            "repo": "stable-diffusion-v1-5/stable-diffusion-v1-5",
             "pkg": {
                 "0": {
                     "diffusers": "StableDiffusionPipeline"
                 }
-            },
-            "repo": "stable-diffusion-v1-5/stable-diffusion-v1-5"
+            }
         }
     },
     "info.dit.stable-diffusion-3-5": {
         "medium": {
+            "repo": "stabilityai/stable-diffusion-3.5-medium",
             "pkg": {
                 "0": {
                     "diffusers": "StableDiffusion3Pipeline"
                 }
-            },
-            "repo": "stabilityai/stable-diffusion-3.5-medium"
+            }
         },
         "large": {
+            "repo": "stabilityai/stable-diffusion-3.5-large",
             "pkg": {
                 "0": {
                     "diffusers": "StableDiffusion3Pipeline"
                 }
-            },
-            "repo": "stabilityai/stable-diffusion-3.5-large"
+            }
         }
     },
     "info.unet.gligen-1-4-inpainting-text": {
         "box": {
+            "repo": "masterful/gligen-1-4-inpainting-text-box",
             "pkg": {
                 "0": {
                     "diffusers": "StableDiffusionGLIGENPipeline"
                 }
-            },
-            "repo": "masterful/gligen-1-4-inpainting-text-box"
+            }
         }
     },
     "info.unet.ldm3d-4c": {
         "base": {
+            "repo": "Intel/ldm3d-4c",
             "pkg": {
                 "0": {
                     "diffusers": "StableDiffusionLDM3DPipeline"
                 }
-            },
-            "repo": "Intel/ldm3d-4c"
+            }
         }
     },
     "info.unet.stable-diffusion-xl": {
-        "base-1-0": {
+        "base": {
+            "repo": "stabilityai/stable-diffusion-xl-base-1.0",
             "pkg": {
                 "0": {
                     "diffusers": "StableDiffusionXLPipeline"
                 }
             },
-            "repo": "stabilityai/stable-diffusion-xl-base-1.0"
+            "layer_256": [
+                "62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"
+            ],
+            "pkg_alt": {
+                "0": {
+                    "diffusers": "DiffusionPipeline"
+                }
+            }
+        },
+        "refiner": {
+            "repo": "stabilityai/stable-diffusion-xl-refiner-1.0",
+            "pkg": {
+                "0": {
+                    "diffusers": "DiffusionPipeline",
+                    "generation": {
+                        "num_inference_steps": 40,
+                        "denoising_end": 0.8
+                    }
+                }
+            },
+            "layer_256": [
+                "8c2d0d32cff5a74786480bbaa932ee504bb140f97efdd1a3815f14a610cf6e4a"
+            ]
+        },
+        "pony-diffusion": {
+            "layer_256": [
+                "d4fc7682a4ea9f2dfa0133fafb068f03fdb479158a58260dcaa24dcf33608c16"
+            ]
+        },
+        "animagine": {
+            "layer_256": [
+                "31164c11db41b007f15c94651a8b1fa4d24097c18782d20fabe13c59ee07aa3a"
+            ]
+        },
+        "illustrious": {
+            "layer_256": [
+                "c4a8d365e7fe07c6dbdd52be922aa6dc23215142342e3e7f8f967f1a123a6982"
+            ]
+        },
+        "turbo": {
+            "file_256": [
+                "a599c42a9f4f7494c7f410dbc0fd432cf0242720509e9d52fa41aac7a88d1b69"
+            ],
+            "layer_256": [
+                "fc94481f0c52b21c5ac1fdade8d9c5b210f7239253f86ef21e6198fe393ed60e"
+            ]
+        },
+        "playground-2-5-base": {
+            "layer_256": [
+                "a6f31493ceeb51c88c5239188b9078dc64ba66d3fc5958ad48c119115b06120c"
+            ]
+        },
+        "playground-2-5-aesthetic": {
+            "repo": "playgroundai/playground-v2.5-1024px-aesthetic",
+            "pkg": {
+                "0": {
+                    "precision": "ops.precision.f16",
+                    "generation": {
+                        "num_inference_steps": 50,
+                        "guidance_scale": 3
+                    }
+                }
+            },
+            "layer_256": [
+                "fe2e9edf7e3923a80e64c2552139d8bae926cc3b028ca4773573a6ba60e67c20",
+                "d4813e9f984aa76cb4ac9bf0972d55442923292d276e97e95cb2f49a57227843"
+            ]
         }
     },
     "info.unet.stable-video-diffusion-img2vid": {
         "xt": {
+            "repo": "stabilityai/stable-video-diffusion-img2vid-xt",
             "pkg": {
                 "0": {
                     "diffusers": "StableVideoDiffusionPipeline"
                 }
-            },
-            "repo": "stabilityai/stable-video-diffusion-img2vid-xt"
+            }
         }
     },
     "info.dit.wan2-1-t2v-14b": {
         "diffusers": {
+            "repo": "Wan-AI/Wan2.1-T2V-14B-Diffusers",
             "pkg": {
                 "0": {
                     "diffusers": "WanPipeline"
                 }
-            },
-            "repo": "Wan-AI/Wan2.1-T2V-14B-Diffusers"
+            }
         }
     },
     "info.unet.wuerstchen": {
         "prior": {
+            "repo": "warp-ai/wuerstchen-prior",
             "pkg": {
                 "0": {
                     "diffusers": "WuerstchenPriorPipeline"
                 }
-            },
-            "repo": "warp-ai/wuerstchen-prior"
+            }
         },
         "base": {
+            "repo": "\"warp-ai/wuerstchen",
             "pkg": {
                 "0": {
                     "diffusers": "WuerstchenDecoderPipeline"
                 }
-            },
-            "repo": "\"warp-ai/wuerstchen"
+            }
         }
     },
     "ops.precision.u8": {
@@ -1208,15 +1280,6 @@
             }
         }
     },
-    "ops.scheduler.flowmatchlcm": {
-        "scheduler": {
-            "pkg": {
-                "0": {
-                    "diffusers": "FlowMatchLCMScheduler"
-                }
-            }
-        }
-    },
     "ops.scheduler.heun": {
         "discrete": {
             "pkg": {
@@ -1363,10 +1426,7 @@
     },
     "info.lora.dmd": {
         "stable-diffusion-xl": {
-            "file_256": [
-                "b3d9173815a4b595991c3a7a0e0e63ad821080f314a0b2a3cc31ecd7fcf2cbb8",
-                "a374289e9446d7f14d2037c4b3770756b7b52c292142a691377c3c755010a1bb"
-            ],
+            "repo": "tianweiy/DMD2/",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1387,15 +1447,15 @@
                     }
                 }
             },
-            "repo": "tianweiy/DMD2/"
+            "file_256": [
+                "b3d9173815a4b595991c3a7a0e0e63ad821080f314a0b2a3cc31ecd7fcf2cbb8",
+                "a374289e9446d7f14d2037c4b3770756b7b52c292142a691377c3c755010a1bb"
+            ]
         }
     },
     "info.lora.dpo": {
         "stable-diffusion-xl": {
-            "file_256": [
-                "666f71a833fc41229ec7e8a264fb7b0fcb8bf47a80e366ae7486c18f38ec9fc0",
-                "6b1dcbfb234d7b6000948b5b95ccebc8f903450ce2ba1b50bc3456987c9087ad"
-            ],
+            "repo": "radames/sdxl-DPO-LoRA",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1414,14 +1474,15 @@
                     }
                 }
             },
-            "repo": "radames/sdxl-DPO-LoRA"
+            "file_256": [
+                "666f71a833fc41229ec7e8a264fb7b0fcb8bf47a80e366ae7486c18f38ec9fc0",
+                "6b1dcbfb234d7b6000948b5b95ccebc8f903450ce2ba1b50bc3456987c9087ad"
+            ]
         }
     },
     "info.lora.flash": {
         "stable-diffusion-xl": {
-            "file_256": [
-                "afe2ca6e27c4c6087f50ef42772c45d7b0efbc471b76e422492403f9cae724d7"
-            ],
+            "repo": "jasperai/flash-sdxl",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1430,25 +1491,25 @@
                     "scheduler": "ops.scheduler.lcm"
                 }
             },
-            "repo": "jasperai/flash-sdxl"
+            "file_256": [
+                "afe2ca6e27c4c6087f50ef42772c45d7b0efbc471b76e422492403f9cae724d7"
+            ]
         },
         "pixart-alpha": {
+            "repo": "jasperai/flash-pixart",
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
             "file_256": [
                 "99ef037fe3c1fb6d6bbefdbb85ad60df434fcc0577d34c768d752d60cf69681b"
-            ],
-            "pkg": {
-                "0": {
-                    "diffusers": {
-                        "load_lora_weights": {}
-                    }
-                }
-            },
-            "repo": "jasperai/flash-pixart"
+            ]
         },
         "stable-diffusion-3": {
-            "file_256": [
-                "85fce13c36e3739aa42930f745eb9fceb6c53d53fb17e2a687e3234c1a58ee15"
-            ],
+            "repo": "jasperai/flash-sd3",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1456,12 +1517,12 @@
                     }
                 }
             },
-            "repo": "jasperai/flash-sd3"
+            "file_256": [
+                "85fce13c36e3739aa42930f745eb9fceb6c53d53fb17e2a687e3234c1a58ee15"
+            ]
         },
         "stable-diffusion-1": {
-            "file_256": [
-                "99353444c1a0f40719a1b3037049dbd24800317979a73c312025c05af3574a5f"
-            ],
+            "repo": "jasperai/flash-sd",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1473,11 +1534,23 @@
                     }
                 }
             },
-            "repo": "jasperai/flash-sd"
+            "file_256": [
+                "99353444c1a0f40719a1b3037049dbd24800317979a73c312025c05af3574a5f"
+            ]
         }
     },
     "info.lora.hyper": {
         "stable-diffusion-xl": {
+            "repo": "ByteDance/Hyper-SD",
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 1.0
+                        }
+                    }
+                }
+            },
             "file_256": {
                 "0b97f447b5878323a28fbe7c51ba7acebd21f4d77552ba77b04b11c8911825b6": {
                     "num_inference_steps": 12
@@ -1501,29 +1574,10 @@
                     "num_inference_steps": 8,
                     "guidance_scale": 0.0
                 }
-            },
-            "pkg": {
-                "0": {
-                    "diffusers": {
-                        "load_lora_weights": {
-                            "fuse": 1.0
-                        }
-                    }
-                }
-            },
-            "repo": "ByteDance/Hyper-SD"
+            }
         },
-        "flux-1:dev": {
-            "file_256": {
-                "6461f67dfc1a967ae60344c3b3f350877149ccab758c273cc37f5e8a87b5842e": {
-                    "num_inference_steps": 16,
-                    "guidance_scale": 0.0
-                },
-                "e0ab0fdf569cd01a382f19bd87681f628879dea7ad51fe5a3799b6c18c7b2d03": {
-                    "num_inference_steps": 8,
-                    "guidance_scale": 0.0
-                }
-            },
+        "flux-1.dev": {
+            "repo": "ByteDance/Hyper-SD",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1533,9 +1587,28 @@
                     }
                 }
             },
-            "repo": "ByteDance/Hyper-SD"
+            "file_256": {
+                "6461f67dfc1a967ae60344c3b3f350877149ccab758c273cc37f5e8a87b5842e": {
+                    "num_inference_steps": 16,
+                    "guidance_scale": 0.0
+                },
+                "e0ab0fdf569cd01a382f19bd87681f628879dea7ad51fe5a3799b6c18c7b2d03": {
+                    "num_inference_steps": 8,
+                    "guidance_scale": 0.0
+                }
+            }
         },
         "stable-diffusion-3": {
+            "repo": "ByteDance/Hyper-SD",
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {
+                            "fuse": 0.125
+                        }
+                    }
+                }
+            },
             "file_256": {
                 "5b4d0b99d58deb811bdbbe521a06f4dbf56a2e9148ff3211c594e0502b656bc9": {
                     "num_inference_steps": 16
@@ -1546,19 +1619,17 @@
                 "fc6a3e73e14ed11e21e4820e960d7befcffe7e333850ada9545f239e9aa6027e": {
                     "num_inference_steps": 8
                 }
-            },
+            }
+        },
+        "stable-diffusion-1": {
+            "repo": "ByteDance/Hyper-SD",
             "pkg": {
                 "0": {
                     "diffusers": {
-                        "load_lora_weights": {
-                            "fuse": 0.125
-                        }
+                        "load_lora_weights": {}
                     }
                 }
             },
-            "repo": "ByteDance/Hyper-SD"
-        },
-        "stable-diffusion-1": {
             "file_256": {
                 "64b98437383537cd968fda6f87a05c33160ece9c79ff4757949a1e212ff78361": {
                     "num_inference_steps": 12
@@ -1582,22 +1653,12 @@
                     "num_inference_steps": 8,
                     "guidance_scale": 0.0
                 }
-            },
-            "pkg": {
-                "0": {
-                    "diffusers": {
-                        "load_lora_weights": {}
-                    }
-                }
-            },
-            "repo": "ByteDance/Hyper-SD"
+            }
         }
     },
     "info.lora.lcm": {
         "stable-diffusion-xl": {
-            "file_256": [
-                "a764e6859b6e04047cd761c08ff0cee96413a8e004c9f07707530cd776b19141"
-            ],
+            "repo": "latent-consistency/lcm-lora-sdxl",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1615,12 +1676,12 @@
                     }
                 }
             },
-            "repo": "latent-consistency/lcm-lora-sdxl"
+            "file_256": [
+                "a764e6859b6e04047cd761c08ff0cee96413a8e004c9f07707530cd776b19141"
+            ]
         },
         "ssd-1b": {
-            "file_256": [
-                "7adaaa69db6f011058a19fd1d5315fdf19ef79fcd513cdab30e173833fd5c59b"
-            ],
+            "repo": "latent-consistency/lcm-lora-ssd-1b",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1631,12 +1692,12 @@
                     }
                 }
             },
-            "repo": "latent-consistency/lcm-lora-ssd-1b"
+            "file_256": [
+                "7adaaa69db6f011058a19fd1d5315fdf19ef79fcd513cdab30e173833fd5c59b"
+            ]
         },
         "vega": {
-            "file_256": [
-                "9b6e8cd833fa205eaeeed391ca623a6f2546e447470bd1c5dcce3fa8d2f26afb"
-            ],
+            "repo": "segmind/Segmind-VegaRT",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1647,13 +1708,12 @@
                     }
                 }
             },
-            "repo": "segmind/Segmind-VegaRT"
+            "file_256": [
+                "9b6e8cd833fa205eaeeed391ca623a6f2546e447470bd1c5dcce3fa8d2f26afb"
+            ]
         },
         "stable-diffusion-1": {
-            "file_256": [
-                "8f90d840e075ff588a58e22c6586e2ae9a6f7922996ee6649a7f01072333afe4",
-                "eaecb24a1cda4411eab67275b1d991071216ac93693e8fa0c9226c9df0386232"
-            ],
+            "repo": "latent-consistency/lcm-lora-sdv1-5",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1664,11 +1724,15 @@
                     }
                 }
             },
-            "repo": "latent-consistency/lcm-lora-sdv1-5"
+            "file_256": [
+                "8f90d840e075ff588a58e22c6586e2ae9a6f7922996ee6649a7f01072333afe4",
+                "eaecb24a1cda4411eab67275b1d991071216ac93693e8fa0c9226c9df0386232"
+            ]
         }
     },
     "info.lora.lightning": {
         "stable-diffusion-xl": {
+            "repo": "ByteDance/SDXL-Lightning",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1679,12 +1743,19 @@
                         "guidance_scale": 0
                     }
                 }
-            },
-            "repo": "ByteDance/SDXL-Lightning"
+            }
         }
     },
     "info.lora.pcm": {
         "stable-diffusion-xl": {
+            "repo": "wangfuyun/PCM_Weights",
+            "pkg": {
+                "0": {
+                    "diffusers": {
+                        "load_lora_weights": {}
+                    }
+                }
+            },
             "file_256": {
                 "0365f6107250a4fed1b83e8ae6a070065e026a2ba54bff65f55a50284232bbe6": {
                     "num_inference_steps": 4,
@@ -1740,7 +1811,10 @@
                     "num_inference_steps": 8,
                     "guidance_scale": 0.0
                 }
-            },
+            }
+        },
+        "stable-diffusion-1": {
+            "repo": "wangfuyun/PCM_Weights",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1748,9 +1822,6 @@
                     }
                 }
             },
-            "repo": "wangfuyun/PCM_Weights"
-        },
-        "stable-diffusion-1": {
             "file_256": {
                 "b80b27dd6504f1c3a7637237dda86bc7e26fa5766da30c4fc853c0a1d46bad31": {
                     "num_inference_steps": 4,
@@ -1781,7 +1852,10 @@
                     "num_inference_steps": 8,
                     "guidance_scale": 0.0
                 }
-            },
+            }
+        },
+        "stable-diffusion-3": {
+            "repo": "wangfuyun/PCM_Weights",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1789,9 +1863,6 @@
                     }
                 }
             },
-            "repo": "wangfuyun/PCM_Weights"
-        },
-        "stable-diffusion-3": {
             "file_256": {
                 "8a45878ecc34e53855fe21146cb6ef32682053b7c4eacc013be89fb08c4c19d8": {
                     "num_inference_steps": 2,
@@ -1809,22 +1880,12 @@
                     "num_inference_steps": 4,
                     "guidance_scale": 1.2
                 }
-            },
-            "pkg": {
-                "0": {
-                    "diffusers": {
-                        "load_lora_weights": {}
-                    }
-                }
-            },
-            "repo": "wangfuyun/PCM_Weights"
+            }
         }
     },
     "info.lora.slam": {
         "stable-diffusion-xl": {
-            "file_256": [
-                "22569a946b0db645aa3b8eb782c674c8e726a7cc0d655887c21fecf6dfe6ad91"
-            ],
+            "repo": "alimama-creative/slam-lora-sdxl/",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1841,24 +1902,24 @@
                     }
                 }
             },
-            "repo": "alimama-creative/slam-lora-sdxl/"
+            "file_256": [
+                "22569a946b0db645aa3b8eb782c674c8e726a7cc0d655887c21fecf6dfe6ad91"
+            ]
         },
         "stable-diffusion-1": {
+            "repo": "alimama-creative/slam-sd1.5",
             "pkg": {
                 "0": {
                     "diffusers": {
                         "load_lora_weights": {}
                     }
                 }
-            },
-            "repo": "alimama-creative/slam-sd1.5"
+            }
         }
     },
     "info.lora.spo": {
         "stable-diffusion-xl": {
-            "file_256": [
-                "0b9896f30d29daa5eedcfc9e7ad03304df6efc5114508f6ca9c328c0b4f057df"
-            ],
+            "repo": "SPO-Diffusion-Models/SPO-SDXL_4k-p_10ep_LoRA",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1869,12 +1930,12 @@
                     }
                 }
             },
-            "repo": "SPO-Diffusion-Models/SPO-SDXL_4k-p_10ep_LoRA"
+            "file_256": [
+                "0b9896f30d29daa5eedcfc9e7ad03304df6efc5114508f6ca9c328c0b4f057df"
+            ]
         },
         "stable-diffusion-1": {
-            "file_256": [
-                "1be130c5be2de0beacadd3bf0bafe3bedd7e7a380729932a1e369fb29efa86f4"
-            ],
+            "repo": "SPO-Diffusion-Models/SPO-SD-v1-5_4k-p_10ep_LoRA",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1885,14 +1946,14 @@
                     }
                 }
             },
-            "repo": "SPO-Diffusion-Models/SPO-SD-v1-5_4k-p_10ep_LoRA"
+            "file_256": [
+                "1be130c5be2de0beacadd3bf0bafe3bedd7e7a380729932a1e369fb29efa86f4"
+            ]
         }
     },
     "info.lora.tcd": {
         "stable-diffusion-xl": {
-            "file_256": [
-                "2c777bc60abf41d3eb0fe405d23d73c280a020eea5adf97a82a141592c33feba"
-            ],
+            "repo": "h1t/TCD-SDXL-LoRA",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1908,12 +1969,12 @@
                     }
                 }
             },
-            "repo": "h1t/TCD-SDXL-LoRA"
+            "file_256": [
+                "2c777bc60abf41d3eb0fe405d23d73c280a020eea5adf97a82a141592c33feba"
+            ]
         },
         "stable-diffusion-1": {
-            "file_256": [
-                "eaecb24a1cda4411eab67275b1d991071216ac93693e8fa0c9226c9df0386232"
-            ],
+            "repo": "h1t/TCD-SD15-LoRA",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1921,14 +1982,14 @@
                     }
                 }
             },
-            "repo": "h1t/TCD-SD15-LoRA"
+            "file_256": [
+                "eaecb24a1cda4411eab67275b1d991071216ac93693e8fa0c9226c9df0386232"
+            ]
         }
     },
     "info.lora.turbo": {
         "flux-1": {
-            "file_256": [
-                "77f7523a5e9c3da6cfc730c6b07461129fa52997ea06168e9ed5312228aa0bff"
-            ],
+            "repo": "alimama-creative/FLUX.1-Turbo-Alpha",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1943,9 +2004,12 @@
                     }
                 }
             },
-            "repo": "alimama-creative/FLUX.1-Turbo-Alpha"
+            "file_256": [
+                "77f7523a5e9c3da6cfc730c6b07461129fa52997ea06168e9ed5312228aa0bff"
+            ]
         },
-        "stable-diffusion-3.5-medium": {
+        "stable-diffusion-3-5-medium": {
+            "repo": "tensorart/stable-diffusion-3.5-medium-turbo",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1959,10 +2023,10 @@
                         }
                     }
                 }
-            },
-            "repo": "tensorart/stable-diffusion-3.5-medium-turbo"
+            }
         },
         "stable-diffusion-3.5-large": {
+            "repo": "tensorart/stable-diffusion-3.5-large-TurboX",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -1976,12 +2040,12 @@
                         }
                     }
                 }
-            },
-            "repo": "tensorart/stable-diffusion-3.5-large-TurboX"
+            }
         }
     },
     "info.art.audiogen": {
-        "medium-1.5b": {
+        "medium-1-5b": {
+            "repo": "facebook/audiogen-medium",
             "pkg": {
                 "0": {
                     "audiocraft.models": {
@@ -1996,12 +2060,12 @@
                         }
                     }
                 }
-            },
-            "repo": "facebook/audiogen-medium"
+            }
         }
     },
     "info.art.parler-tts": {
         "tiny-v1": {
+            "repo": "parler-tts/parler-tts-tiny-v1",
             "pkg": {
                 "0": {
                     "parler_tts": "ParlerTTSForConditionalGeneration",
@@ -2011,10 +2075,10 @@
                         }
                     }
                 }
-            },
-            "repo": "parler-tts/parler-tts-tiny-v1"
+            }
         },
         "large-v1": {
+            "repo": "parler-tts/parler-tts-large-v1",
             "pkg": {
                 "0": {
                     "parler_tts": "ParlerTTSForConditionalGeneration",
@@ -2024,12 +2088,12 @@
                         }
                     }
                 }
-            },
-            "repo": "parler-tts/parler-tts-large-v1"
+            }
         }
     },
     "info.art.lumina-mgpt": {
         "7B-768": {
+            "repo": "Alpha-VLLM/Lumina-mGPT-7B-768",
             "pkg": {
                 "0": {
                     "inference_solver": {
@@ -2050,12 +2114,12 @@
                         "temperature": 1.0
                     }
                 }
-            },
-            "repo": "Alpha-VLLM/Lumina-mGPT-7B-768"
+            }
         }
     },
     "info.art.orpheus": {
-        "3b-0.1-ft": {
+        "3b-0-1-ft": {
+            "repo": "canopylabs/orpheus-3b-0.1-ft",
             "pkg": {
                 "0": {
                     "orpheus_tts": {
@@ -2064,18 +2128,17 @@
                         }
                     }
                 }
-            },
-            "repo": "canopylabs/orpheus-3b-0.1-ft"
+            }
         }
     },
-    "info.art.outetts-0.3": {
+    "info.art.outetts-0-3": {
         "1b": {
+            "repo": "outeai/outetts-0-3-1b",
             "pkg": {
                 "0": {
                     "outetts": "InterfaceHF"
                 }
-            },
-            "repo": "outeai/outetts-0.3-1b"
+            }
         }
     },
     "ops.patch.hidiffusion": {
@@ -2114,12 +2177,12 @@
     },
     "info.mix.bagel": {
         "7B-MoT": {
+            "repo": "ByteDance-Seed/BAGEL-7B-MoT",
             "pkg": {
                 "0": {
                     "Bagel": "app"
                 }
-            },
-            "repo": "ByteDance-Seed/BAGEL-7B-MoT"
+            }
         }
     }
 }

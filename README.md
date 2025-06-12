@@ -1,3 +1,13 @@
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="img_src/mir300_dark.png" width="50%">
+  <source media="(prefers-color-scheme: light)" srcset="img_src/mir300_light.png" width="50%">
+  <img alt="Futuristic, slanted wireframe block type spelling the word 'ZODIAC' using overlapping and interweaving shapes and triangles for the 'O' and 'A'." src="img_src/zodiac_dark_bg.png">
+</picture><br><br>
+
+</div>
+
 ---
 language:
 - en

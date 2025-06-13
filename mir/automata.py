@@ -366,7 +366,8 @@ def build_mir_custom(mir_db: MIRDatabase):
                 0: {
                     "audiocraft.models": {"AudioGen": {"duration": 5}},
                     "audiocraft.data.audio": {"audio_write": {"strategy": "loudness", "loudness_compressor": True}},
-                }
+                },
+                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
         )
     )
@@ -381,7 +382,8 @@ def build_mir_custom(mir_db: MIRDatabase):
                 0: {
                     "parler_tts": "ParlerTTSForConditionalGeneration",
                     "transformers": {"AutoTokenizer": {"return_tensors": "pt"}},
-                }
+                },
+                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
         )
     )
@@ -397,6 +399,7 @@ def build_mir_custom(mir_db: MIRDatabase):
                     "parler_tts": "ParlerTTSForConditionalGeneration",
                     "transformers": {"AutoTokenizer": {"return_tensors": "pt"}},
                 },
+                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
         )
     )
@@ -422,7 +425,10 @@ def build_mir_custom(mir_db: MIRDatabase):
             series="orpheus",
             comp="3b-0-1-ft",
             repo="canopylabs/orpheus-3b-0.1-ft",
-            pkg={0: {"orpheus_tts": {"OrpheusModel": {"max_model_len": 2048}}}},
+            pkg={
+                0: {"orpheus_tts": {"OrpheusModel": {"max_model_len": 2048}}},
+                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+            },
         )
     )
     mir_db.add(
@@ -432,7 +438,10 @@ def build_mir_custom(mir_db: MIRDatabase):
             series="outetts-0-3",
             comp="1b",
             repo="outeai/outetts-0-3-1b",
-            pkg={0: {"outetts": "InterfaceHF"}},
+            pkg={
+                0: {"outetts": "InterfaceHF"},
+                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+            },
         )
     )
     mir_db.add(

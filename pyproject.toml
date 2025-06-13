@@ -37,7 +37,7 @@ dev = [
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
     "mir[full]",
-    "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[mps,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
     "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
     "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
 ]
@@ -50,7 +50,7 @@ cu127 = [
     "nnll[rocm,cu126] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
 ]
 mflux = [
-    "nnll[nightly,mflux] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[mps] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
 ]
 lmstudio = ["lmstudio>=1.3.1"]
 ollama = ["ollama>=0.5.1"]
@@ -63,8 +63,17 @@ openai = [
     "numba>=0.61.2 ; python_version > '3.12'",
     "numba>=0.47.0 ; python_version <= '3.12'",
 ]
-outetts = ["mir[openai]", "outetts"]
-full = ["mir[lmstudio,ollama,outetts,hidiffusion,cu126,cu128,mflux]"]
+outetts = ["mir[openai]", "outetts ; sys_platform != 'darwin'"]
+mlx-audio = [
+    "mir[openai]",
+    "mlx-audio ; sys_platform == 'darwin'",
+    "mlx-vlm<=0.1.26",
+    "mlx-lm<=0.24.1",
+    "numpy<=2.3",
+    "misaki>=0.8.2 ; python_version < '3.13'",
+    "pip",
+]
+full = ["mir[lmstudio,ollama,outetts,hidiffusion,cu126,cu128,mflux,mlx-audio]"]
 dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
@@ -82,7 +91,7 @@ dev = [
 # orpheus_tts = ["orpheus_tts @ git+https://github.com/canopyai/Orpheus-TTS.git"]
 # parler_tts = ["parler-tts @ git+https://github.com/huggingface/parler-tts.git"]
 # xllmx = ["xllmx @ git+https://github.com/Alpha-VLLM/Lumina-mGPT"]
-# tts = [ "mir[audiocraft, bagel, parler_tts]", "mir[audiocraft, bagel, parler_tts,vllm] ; platform_system != 'Darwin'",]
+# tts = [ "mir[audiocraft, bagel, parler_tts]", "mir[audiocraft, bagel, parler_tts,vllm] ; platform_system != 'darwin'",]
 
 [project.urls]
 Homepage      = "https://github.com/darkshapes/MIR"
@@ -129,7 +138,7 @@ dev-dependencies = [
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
     "mir[full]",
-    "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[mps,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
     "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
     "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
 ]

@@ -49,5 +49,13 @@
             "api_key": "sk-no-key-required"
         },
         "prefix": "openai/"
+    },
+    "MLX_AUDIO": {
+        "module": "mlx_audio",
+        "api_url": "http://127.0.0.1:8000/",
+        "api_kwargs": {
+            "api_base": "http://127.0.0.1:8000/tts"
+        },
+        "prefix": "openai/"
     }
 }

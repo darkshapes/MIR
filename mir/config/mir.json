@@ -511,7 +511,7 @@
             }
         },
         "base": {
-            "repo": "\"warp-ai/wuerstchen",
+            "repo": "warp-ai/wuerstchen",
             "pkg": {
                 "0": {
                     "diffusers": "WuerstchenDecoderPipeline"
@@ -2059,6 +2059,15 @@
                             "loudness_compressor": true
                         }
                     }
+                },
+                "1": {
+                    "mlx_audio": {
+                        "generate_audio": {
+                            "audio_format": "wav",
+                            "join_audio": true,
+                            "verbose": false
+                        }
+                    }
                 }
             }
         }
@@ -2074,6 +2083,15 @@
                             "return_tensors": "pt"
                         }
                     }
+                },
+                "1": {
+                    "mlx_audio": {
+                        "generate_audio": {
+                            "audio_format": "wav",
+                            "join_audio": true,
+                            "verbose": false
+                        }
+                    }
                 }
             }
         },
@@ -2085,6 +2103,15 @@
                     "transformers": {
                         "AutoTokenizer": {
                             "return_tensors": "pt"
+                        }
+                    }
+                },
+                "1": {
+                    "mlx_audio": {
+                        "generate_audio": {
+                            "audio_format": "wav",
+                            "join_audio": true,
+                            "verbose": false
                         }
                     }
                 }
@@ -2127,6 +2154,15 @@
                             "max_model_len": 2048
                         }
                     }
+                },
+                "1": {
+                    "mlx_audio": {
+                        "generate_audio": {
+                            "audio_format": "wav",
+                            "join_audio": true,
+                            "verbose": false
+                        }
+                    }
                 }
             }
         }
@@ -2137,6 +2173,15 @@
             "pkg": {
                 "0": {
                     "outetts": "InterfaceHF"
+                },
+                "1": {
+                    "mlx_audio": {
+                        "generate_audio": {
+                            "audio_format": "wav",
+                            "join_audio": true,
+                            "verbose": false
+                        }
+                    }
                 }
             }
         }

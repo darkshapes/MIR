@@ -10,8 +10,11 @@ from pydantic import BaseModel, Field
 from nnll.monitor.file import dbug, nfo
 from nnll.configure.init_gpu import first_available
 from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED  # pylint:disable=no-name-in-module
+from nnll.monitor.console import pretty_tabled_output
 
 LIBTYPE_CONFIG = JSONCache(LIBTYPE_PATH_NAMED)
+
+print("\n\n\n\n")
 
 
 @LIBTYPE_CONFIG.decorator
@@ -26,8 +29,15 @@ def has_api(api_name: str, data: dict = None) -> bool:
     from json.decoder import JSONDecodeError
 
     def set_false(api_name):
-        nfo("|Ignorable| Source unavailable:", f"{api_name}")
+        pretty_tabled_output(
+            "api",
+            {"unavailable": api_name, "": ""},
+        )
         return False
+
+    def set_true(api_name):
+        pretty_tabled_output("api", {"found": api_name, "": ""})
+        return True
 
     def check_host(api_name) -> bool:
         import httpcore
@@ -41,22 +51,24 @@ def has_api(api_name: str, data: dict = None) -> bool:
                 request = requests.get(api_data.get("api_url"), timeout=(1, 1))
                 if request is not None:
                     if hasattr(request, "reason") and request.reason == "OK":  # The curious case of Ollama
-                        return True
+                        set_true(api_name)
                     status = request.json()
                     if status.get("result") == "OK":
-                        return True
-                return False
+                        nfo(f"Found {api_name}")
+                        set_true(api_name)
+                set_false(api_name)
         except JSONDecodeError as error_log:
             dbug(error_log)
             dbug(f"json for ! {api_data}")
             dbug(request.status_code)
             if request.ok:
-                return True
+                nfo(f"Found {api_name}")
+                set_true(api_name)
             try:
                 request.raise_for_status()
             except requests.HTTPError() as _error_log:
                 dbug(_error_log)
-                return False
+                set_false(api_name)
 
         except (
             requests.exceptions.ConnectionError,
@@ -71,7 +83,7 @@ def has_api(api_name: str, data: dict = None) -> bool:
             ConnectionError,
         ):
             set_false(api_name)
-        return False
+        set_false(api_name)
 
     try:
         api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
@@ -109,10 +121,9 @@ def has_api(api_name: str, data: dict = None) -> bool:
         try:
             __import__(api_data.get("module"))
             if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM"]:
-                return True
+                set_true(api_name)
         except (UnboundLocalError, ImportError, ModuleNotFoundError):
-            nfo("|Ignorable| Source unavailable:", f"{api_name}")
-            return False
+            set_false(api_name)
         return check_host(api_name)
 
 
@@ -141,7 +152,8 @@ class BaseEnum(Enum):
 
 
 class LibType(BaseEnum):
-    """API library constants"""
+    """API library constants
+    <NAME: (Availability, IMPORT_NAME)>"""
 
     # Integers are usedto differentiate boolean condition
     # GIVEN : The state of all library modules & servers are marked at launch
@@ -152,22 +164,25 @@ class LibType(BaseEnum):
     CORTEX: tuple = (has_api("CORTEX"), "CORTEX")
     LLAMAFILE: tuple = (has_api("LLAMAFILE"), "LLAMAFILE")
     VLLM: tuple = (has_api("VLLM"), "VLLM")
+    MLX_AUDIO: tuple = (has_api("MLX_AUDIO"), "MLX_AUDIO")
 
 
 example_str = ("function_name", "import.function_name")
 
 
 class PkgType(BaseEnum):
-    """Package dependency constants"""
+    """Package dependency constants
+    <NAME: (Availability, IMPORT_NAME)>"""
 
-    AUDIOCRAFT: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT")
+    AUDIOGEN: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT")
     BAGEL: tuple = (has_api("BAGEL"), "BAGEL")
     BITSANDBYTES: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES")
     DIFFUSERS: tuple = (has_api("DIFFUSERS"), "DIFFUSERS")
     F_LITE: tuple = (has_api("F_LITE"), "F_LITE")
     HIDIFFUSION: tuple = (has_api("HIDIFFUSION"), "HIDIFFUSION")
-    INFERENCE_SOLVER: tuple = (has_api("INFERENCE_SOLVER"), "INFERENCE_SOLVER")  # Alpha vllm
+    LUMINA_MGPT: tuple = (has_api("INFERENCE_SOLVER"), "INFERENCE_SOLVER")  # Alpha vllm
     MFLUX: tuple = (has_api("MFLUX"), "MFLUX")  # pylint:disable=no-member
+    MLX_AUDIO: tuple = LibType.MLX_AUDIO.value
     ORPHEUS_TTS: tuple = (has_api("ORPHEUS_TTS"), "ORPHEUS_TTS")
     OUTETTS: tuple = (has_api("OUTETTS"), "OUTETTS")
     SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS")

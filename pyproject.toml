@@ -40,18 +40,9 @@ dev = [
     "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
     "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
     "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
+]
 
-]
 [project.optional-dependencies]
-dev = [
-    "pytest>=8.3.5",
-    "pytest-asyncio>=1.0.0",
-    "ruff>=0.11.12",
-    "mir[full]",
-    "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
-    "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
-    "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
-]
 cu128 = [
     "nnll[rocm,cu128] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
 ]
@@ -69,8 +60,22 @@ openai = [
     "openai-whisper @ git+https://github.com/openai/whisper.git ; python_version <='3.12'",
 
 ]
-outetts = ["mir[openai]", "llvmlite", "outetts"]
+outetts = [
+    "mir[openai]",
+    "llvmlite>=0.44 ; python_version > '3.12'",
+    "llvmlite>=0.36 ; python_version <= '3.12'",
+    "outetts",
+]
 full = ["mir[lmstudio,ollama,outetts,hidiffusion,cu126,cu128,mflux]"]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.11.12",
+    "mir[full]",
+    "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
+    "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
+]
 
 # vllm = ["vllm>=0.9.0.1 ; sys_platform != 'darwin'"]
 
@@ -121,6 +126,16 @@ files.extend-exclude = ["^tests/.*$", "test.*$"]
 default.extend-words = { "ot" = "ot" }
 
 [tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.11.12",
+    "mir[full]",
+    "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
+    "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
+]
+
 no-build-isolation-package = [
     "parler_tts",
     "audiocraft",

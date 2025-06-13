@@ -2,6 +2,8 @@
 log/*
 log*
 .nnll*
+build*
+build/*
 build/lib/mir/automata.py
 build/lib/mir/constants.py
 build/lib/mir/generators.py

@@ -62,6 +62,8 @@ outetts
 
 [outetts:python_version <= "3.12"]
 llvmlite>=0.36
+numba>=0.47.0
 
 [outetts:python_version > "3.12"]
 llvmlite>=0.44
+numba>=0.61.2

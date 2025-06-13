@@ -889,8 +889,8 @@ name = "flash-attn"
 version = "2.7.4.post1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "einops", marker = "sys_platform != 'darwin'" },
-    { name = "torch", marker = "sys_platform != 'darwin'" },
+    { name = "einops", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "torch", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/11/34/9bf60e736ed7bbe15055ac2dab48ec67d9dbd088d2b4ae318fd77190ab4e/flash_attn-2.7.4.post1.tar.gz", hash = "sha256:f03485c9a49a4d68d0733acdcad80ab0e72afa025a777fdc2966ceccf9d51765", size = 5986610, upload-time = "2025-01-30T06:39:51.93Z" }
 
@@ -1912,9 +1912,7 @@ name = "mir"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [
-    { name = "nnll", marker = "python_full_version >= '3.12' or sys_platform == 'darwin'" },
     { name = "nnll", extra = ["cu128", "rocm"], marker = "python_full_version >= '3.12' and sys_platform != 'darwin'" },
-    { name = "nnll", extra = ["mps"], marker = "sys_platform == 'darwin'" },
 ]
 
 [package.optional-dependencies]
@@ -1954,9 +1952,7 @@ full = [
     { name = "mlx-audio", marker = "sys_platform == 'darwin'" },
     { name = "mlx-lm" },
     { name = "mlx-vlm" },
-    { name = "nnll", marker = "python_full_version >= '3.12' or sys_platform == 'darwin'" },
     { name = "nnll", extra = ["cu128", "rocm"], marker = "python_full_version >= '3.12' and sys_platform != 'darwin'" },
-    { name = "nnll", extra = ["mps"], marker = "sys_platform == 'darwin'" },
     { name = "numba" },
     { name = "numpy" },
     { name = "ollama" },
@@ -1967,9 +1963,6 @@ full = [
 ]
 lmstudio = [
     { name = "lmstudio" },
-]
-mflux = [
-    { name = "nnll", extra = ["mps"], marker = "sys_platform == 'darwin'" },
 ]
 mlx-audio = [
     { name = "llvmlite" },
@@ -2021,16 +2014,15 @@ requires-dist = [
     { name = "mir", extras = ["cu128"], marker = "python_full_version < '3.12' and sys_platform != 'darwin'" },
     { name = "mir", extras = ["cu128"], marker = "python_full_version >= '3.12' and sys_platform != 'darwin'" },
     { name = "mir", extras = ["full"], marker = "extra == 'dev'" },
-    { name = "mir", extras = ["lmstudio", "ollama", "outetts", "hidiffusion", "cu126", "cu128", "mflux", "mlx-audio"], marker = "extra == 'full'" },
-    { name = "mir", extras = ["mflux"], marker = "sys_platform == 'darwin'" },
+    { name = "mir", extras = ["lmstudio", "ollama", "outetts", "hidiffusion", "cu126", "cu128", "mps", "mlx-audio"], marker = "extra == 'full'" },
+    { name = "mir", extras = ["mps"], marker = "sys_platform == 'darwin'" },
     { name = "mir", extras = ["openai"], marker = "extra == 'mlx-audio'" },
     { name = "mir", extras = ["openai"], marker = "extra == 'outetts'" },
     { name = "misaki", marker = "python_full_version < '3.13' and extra == 'mlx-audio'", specifier = ">=0.8.2" },
     { name = "mlx-audio", marker = "sys_platform == 'darwin' and extra == 'mlx-audio'" },
     { name = "mlx-lm", marker = "extra == 'mlx-audio'", specifier = "<=0.24.1" },
     { name = "mlx-vlm", marker = "extra == 'mlx-audio'", specifier = "<=0.1.26" },
-    { name = "nnll", extras = ["mps"], marker = "sys_platform == 'darwin' and extra == 'mflux'", git = "https://github.com/darkshapes/nnll?rev=main" },
-    { name = "nnll", extras = ["nightly", "mflux", "dev"], marker = "sys_platform == 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
+    { name = "nnll", extras = ["mps", "dev"], marker = "sys_platform == 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "nnll", extras = ["rocm", "cu126"], marker = "python_full_version < '3.12' and sys_platform != 'darwin' and extra == 'cu127'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "nnll", extras = ["rocm", "cu126", "dev"], marker = "python_full_version < '3.12' and sys_platform != 'darwin' and extra == 'dev'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "nnll", extras = ["rocm", "cu128"], marker = "python_full_version >= '3.12' and sys_platform != 'darwin' and extra == 'cu128'", git = "https://github.com/darkshapes/nnll?rev=main" },
@@ -2048,13 +2040,12 @@ requires-dist = [
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.0.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.12" },
 ]
-provides-extras = ["cu128", "cu127", "mflux", "lmstudio", "ollama", "openai", "outetts", "mlx-audio", "full", "dev"]
+provides-extras = ["cu128", "cu127", "lmstudio", "ollama", "openai", "outetts", "mlx-audio", "full", "dev"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "mir", extras = ["full"] },
     { name = "nnll", extras = ["mps", "dev"], marker = "sys_platform == 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
-    { name = "nnll", extras = ["mps", "mflux", "dev"], marker = "sys_platform == 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "nnll", extras = ["rocm", "cu126", "dev"], marker = "python_full_version < '3.12' and sys_platform != 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "nnll", extras = ["rocm", "cu128", "dev"], marker = "python_full_version >= '3.12' and sys_platform != 'darwin'", git = "https://github.com/darkshapes/nnll?rev=main" },
     { name = "pytest", specifier = ">=8.3.5" },
@@ -4578,7 +4569,7 @@ name = "triton"
 version = "3.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "setuptools", marker = "sys_platform != 'darwin'" },
+    { name = "setuptools", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/21/2f/3e56ea7b58f80ff68899b1dbe810ff257c9d177d288c6b0f55bf2fe4eb50/triton-3.3.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:b31e3aa26f8cb3cc5bf4e187bf737cbacf17311e1112b781d4a059353dfd731b", size = 155689937, upload-time = "2025-05-29T23:39:44.182Z" },
@@ -4592,7 +4583,7 @@ name = "triton-windows"
 version = "3.3.1.post19"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "setuptools", marker = "sys_platform != 'darwin'" },
+    { name = "setuptools", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e5/77/7dfe26a49020824a75601eb4327f3245f17b409abf6a632a082eaadb50bf/triton_windows-3.3.1.post19-cp311-cp311-win_amd64.whl", hash = "sha256:f9d80e12b55a842b2ec0c029cc3df4cc1301f839c6396ec93ded35fc80e11a28", size = 41915203, upload-time = "2025-05-30T15:12:20.836Z" },

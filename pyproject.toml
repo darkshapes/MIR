@@ -25,7 +25,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "mir[mflux] ; sys_platform == 'darwin'",
+    "mir[mps] ; sys_platform == 'darwin'",
     "mir[cu128] ; sys_platform != 'darwin' and python_version >='3.12'",
     "mir[cu128] ; sys_platform != 'darwin' and python_version <'3.12'",
 
@@ -49,9 +49,6 @@ cu128 = [
 cu127 = [
     "nnll[rocm,cu126] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
 ]
-mflux = [
-    "nnll[mps] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
-]
 lmstudio = ["lmstudio>=1.3.1"]
 ollama = ["ollama>=0.5.1"]
 openai = [
@@ -73,13 +70,13 @@ mlx-audio = [
     "misaki>=0.8.2 ; python_version < '3.13'",
     "pip",
 ]
-full = ["mir[lmstudio,ollama,outetts,hidiffusion,cu126,cu128,mflux,mlx-audio]"]
+full = ["mir[lmstudio,ollama,outetts,hidiffusion,cu126,cu128,mps,mlx-audio]"]
 dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
     "mir[full]",
-    "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[mps,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
     "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
     "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
 ]
@@ -138,7 +135,7 @@ dev-dependencies = [
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
     "mir[full]",
-    "nnll[mps,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
+    "nnll[mps,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
     "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
     "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
 ]

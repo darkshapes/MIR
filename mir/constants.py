@@ -10,11 +10,8 @@ from pydantic import BaseModel, Field
 from nnll.monitor.file import dbug, nfo
 from nnll.configure.init_gpu import first_available
 from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED  # pylint:disable=no-name-in-module
-from nnll.monitor.console import pretty_tabled_output
 
 LIBTYPE_CONFIG = JSONCache(LIBTYPE_PATH_NAMED)
-
-print("\n\n\n\n")
 
 
 @LIBTYPE_CONFIG.decorator
@@ -29,14 +26,11 @@ def has_api(api_name: str, data: dict = None) -> bool:
     from json.decoder import JSONDecodeError
 
     def set_false(api_name):
-        pretty_tabled_output(
-            "api",
-            {"unavailable": api_name, "": ""},
-        )
+        dbug(f"Unavailable {api_name}")
         return False
 
     def set_true(api_name):
-        pretty_tabled_output("api", {"found": api_name, "": ""})
+        dbug(f"Detected : {api_name}")
         return True
 
     def check_host(api_name) -> bool:

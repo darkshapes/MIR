@@ -58,5 +58,10 @@ openai-whisper@ git+https://github.com/openai/whisper.git
 
 [outetts]
 mir[openai]
-llvmlite
 outetts
+
+[outetts:python_version <= "3.12"]
+llvmlite>=0.36
+
+[outetts:python_version > "3.12"]
+llvmlite>=0.44

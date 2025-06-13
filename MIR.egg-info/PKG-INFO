@@ -185,14 +185,6 @@ License-File: LICENSE
 Requires-Dist: mir[mflux]; sys_platform == "darwin"
 Requires-Dist: mir[cu128]; sys_platform != "darwin" and python_version >= "3.12"
 Requires-Dist: mir[cu128]; sys_platform != "darwin" and python_version < "3.12"
-Provides-Extra: dev
-Requires-Dist: pytest>=8.3.5; extra == "dev"
-Requires-Dist: pytest-asyncio>=1.0.0; extra == "dev"
-Requires-Dist: ruff>=0.11.12; extra == "dev"
-Requires-Dist: mir[full]; extra == "dev"
-Requires-Dist: nnll[dev,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main ; sys_platform == "darwin" and extra == "dev"
-Requires-Dist: nnll[cu126,dev,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version < "3.12") and extra == "dev"
-Requires-Dist: nnll[cu128,dev,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version >= "3.12") and extra == "dev"
 Provides-Extra: cu128
 Requires-Dist: nnll[cu128,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version >= "3.12") and extra == "cu128"
 Provides-Extra: cu127
@@ -209,10 +201,19 @@ Requires-Dist: openai-whisper@ git+https://github.com/openai/whisper.git ; pytho
 Requires-Dist: openai-whisper@ git+https://github.com/openai/whisper.git ; python_version <= "3.12" and extra == "openai"
 Provides-Extra: outetts
 Requires-Dist: mir[openai]; extra == "outetts"
-Requires-Dist: llvmlite; extra == "outetts"
+Requires-Dist: llvmlite>=0.44; python_version > "3.12" and extra == "outetts"
+Requires-Dist: llvmlite>=0.36; python_version <= "3.12" and extra == "outetts"
 Requires-Dist: outetts; extra == "outetts"
 Provides-Extra: full
 Requires-Dist: mir[cu126,cu128,hidiffusion,lmstudio,mflux,ollama,outetts]; extra == "full"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3.5; extra == "dev"
+Requires-Dist: pytest-asyncio>=1.0.0; extra == "dev"
+Requires-Dist: ruff>=0.11.12; extra == "dev"
+Requires-Dist: mir[full]; extra == "dev"
+Requires-Dist: nnll[dev,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main ; sys_platform == "darwin" and extra == "dev"
+Requires-Dist: nnll[cu126,dev,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version < "3.12") and extra == "dev"
+Requires-Dist: nnll[cu128,dev,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version >= "3.12") and extra == "dev"
 Dynamic: license-file
 
 ---

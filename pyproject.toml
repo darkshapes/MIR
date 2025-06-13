@@ -58,14 +58,12 @@ openai = [
     "openai>=1.84.0",
     "openai-whisper @ git+https://github.com/openai/whisper.git ; python_version >'3.12'",
     "openai-whisper @ git+https://github.com/openai/whisper.git ; python_version <='3.12'",
-
-]
-outetts = [
-    "mir[openai]",
     "llvmlite>=0.44 ; python_version > '3.12'",
     "llvmlite>=0.36 ; python_version <= '3.12'",
-    "outetts",
+    "numba>=0.61.2 ; python_version > '3.12'",
+    "numba>=0.47.0 ; python_version <= '3.12'",
 ]
+outetts = ["mir[openai]", "outetts"]
 full = ["mir[lmstudio,ollama,outetts,hidiffusion,cu126,cu128,mflux]"]
 dev = [
     "pytest>=8.3.5",

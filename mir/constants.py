@@ -26,12 +26,8 @@ def has_api(api_name: str, data: dict = None) -> bool:
     from json.decoder import JSONDecodeError
 
     def set_false(api_name):
-        dbug(f"Unavailable {api_name}")
+        nfo("|Ignorable| Source unavailable:", f"{api_name}")
         return False
-
-    def set_true(api_name):
-        dbug(f"Detected : {api_name}")
-        return True
 
     def check_host(api_name) -> bool:
         import httpcore
@@ -45,24 +41,22 @@ def has_api(api_name: str, data: dict = None) -> bool:
                 request = requests.get(api_data.get("api_url"), timeout=(1, 1))
                 if request is not None:
                     if hasattr(request, "reason") and request.reason == "OK":  # The curious case of Ollama
-                        set_true(api_name)
+                        return True
                     status = request.json()
                     if status.get("result") == "OK":
-                        nfo(f"Found {api_name}")
-                        set_true(api_name)
-                set_false(api_name)
+                        return True
+                return False
         except JSONDecodeError as error_log:
             dbug(error_log)
             dbug(f"json for ! {api_data}")
             dbug(request.status_code)
             if request.ok:
-                nfo(f"Found {api_name}")
-                set_true(api_name)
+                return True
             try:
                 request.raise_for_status()
             except requests.HTTPError() as _error_log:
                 dbug(_error_log)
-                set_false(api_name)
+                return False
 
         except (
             requests.exceptions.ConnectionError,
@@ -77,7 +71,7 @@ def has_api(api_name: str, data: dict = None) -> bool:
             ConnectionError,
         ):
             set_false(api_name)
-        set_false(api_name)
+        return False
 
     try:
         api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
@@ -115,9 +109,10 @@ def has_api(api_name: str, data: dict = None) -> bool:
         try:
             __import__(api_data.get("module"))
             if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM"]:
-                set_true(api_name)
+                return True
         except (UnboundLocalError, ImportError, ModuleNotFoundError):
-            set_false(api_name)
+            nfo("|Ignorable| Source unavailable:", f"{api_name}")
+            return False
         return check_host(api_name)
 
 
@@ -328,6 +323,6 @@ VALID_TASKS = {
         ("text", "text"): ["chat", "conversational", "text-generation", "text2text-generation"],
         ("text", "video"): ["video generation"],
         ("speech", "text"): ["speech-translation", "speech-summarization", "automatic-speech-recognition"],
-        ("image", "video"): ["reference-to-video", "refernce-to-video"],  # typos: ignore
+        ("image", "video"): ["reference-to-video", "refernce-to-video"],
     },
 }

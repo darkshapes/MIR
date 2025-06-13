@@ -86,48 +86,50 @@ class RegistryEntry(BaseModel):
         api_data = _read_data()
         if LibType.check_type("HUB"):
             from huggingface_hub import scan_cache_dir, repocard, HFCacheInfo, CacheNotFound
-            from huggingface_hub.errors import EntryNotFoundError, LocalEntryNotFoundError  # type: ignore
+            from huggingface_hub.errors import EntryNotFoundError, LocalEntryNotFoundError, OfflineModeIsEnabled  # type: ignore
 
             try:
                 model_data: HFCacheInfo = scan_cache_dir()
-            except CacheNotFound as error_log:
-                dbug(error_log)
-            else:
                 for repo in model_data.repos:
-                    try:
-                        meta = repocard.RepoCard.load(repo.repo_id).data
-                    except (EntryNotFoundError, LocalEntryNotFoundError, HTTPError, ValueError) as error_log:
-                        dbug(error_log)
+                    meta = repocard.RepoCard.load(repo.repo_id).data
+                    package_name = meta.get("library_name")
+                    if package_name:
+                        package_name = package_name.replace("-", "_").upper()
+                        if hasattr(PkgType, package_name):
+                            package_name = getattr(PkgType, package_name.upper())
+                    tags = []
+                    if repo.revisions:
+                        tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
                     else:
-                        package_name = meta.get("library_name")
-                        if package_name:
-                            package_name = package_name.replace("-", "_").upper()
-                            if hasattr(PkgType, package_name):
-                                package_name = getattr(PkgType, package_name.upper())
-                        tags = []
-                        if repo.revisions:
-                            tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
-                        else:
-                            tokenizer_models = None
-                        tokenizer = None if not tokenizer_models else tokenizer_models[-1]
-                        if hasattr(meta, "tags"):
-                            tags.extend(meta.tags)
-                        if hasattr(meta, "pipeline_tag"):
-                            tags.append(meta.pipeline_tag)
-                        entry = cls(
-                            model=repo.repo_id,
-                            size=repo.size_on_disk,
-                            tags=tags,
-                            library=LibType.HUB,
-                            mir=mir_db.find_path("repo", repo.repo_id.lower()),
-                            package=package_name,
-                            api_kwargs=None,
-                            timestamp=int(repo.last_modified),
-                            tokenizer=tokenizer,
-                        )  # pylint: disable=undefined-loop-variable
-                        entries.append(entry)
-
-        if LibType.check_type("OLLAMA"):  # check that server is still up!
+                        tokenizer_models = None
+                    tokenizer = None if not tokenizer_models else tokenizer_models[-1]
+                    if hasattr(meta, "tags"):
+                        tags.extend(meta.tags)
+                    if hasattr(meta, "pipeline_tag"):
+                        tags.append(meta.pipeline_tag)
+                    entry = cls(
+                        model=repo.repo_id,
+                        size=repo.size_on_disk,
+                        tags=tags,
+                        library=LibType.HUB,
+                        mir=mir_db.find_path("repo", repo.repo_id.lower()),
+                        package=package_name,
+                        api_kwargs=None,
+                        timestamp=int(repo.last_modified),
+                        tokenizer=tokenizer,
+                    )  # pylint: disable=undefined-loop-variable
+                    entries.append(entry)
+            except CacheNotFound:
+                pass
+            except LocalEntryNotFoundError:
+                pass
+            except EntryNotFoundError:
+                pass
+            except HTTPError:
+                pass
+            except OfflineModeIsEnabled:
+                pass
+        if LibType.check_type("OLLAMA", True):  # check that server is still up!
             from ollama import ListResponse, list as ollama_list
 
             config = api_data[LibType.OLLAMA.value[1]]
@@ -146,7 +148,7 @@ class RegistryEntry(BaseModel):
                 )
                 entries.append(entry)
 
-        if LibType.check_type("CORTEX"):
+        if LibType.check_type("CORTEX", True):
             import requests
             from datetime import datetime
 
@@ -166,7 +168,7 @@ class RegistryEntry(BaseModel):
                 )
                 entries.append(entry)
 
-        if LibType.check_type("LLAMAFILE"):
+        if LibType.check_type("LLAMAFILE", True):
             from openai import OpenAI
 
             model_data: OpenAI = OpenAI(base_url=api_data["LLAMAFILE"]["api_kwargs"]["api_base"], api_key="sk-no-key-required")
@@ -184,7 +186,7 @@ class RegistryEntry(BaseModel):
                 )
                 entries.append(entry)
 
-        if LibType.check_type("VLLM"):  # placeholder
+        if LibType.check_type("VLLM", True):  # placeholder
             # import vllm
             config = api_data[LibType.VLLM.value[1]]
             model_data = OpenAI(base_url=api_data["VLLM"]["api_kwargs"]["api_base"], api_key=api_data["VLLM"]["api_kwargs"]["api_key"])
@@ -201,7 +203,7 @@ class RegistryEntry(BaseModel):
                 )
                 entries.append(entry)
 
-        if LibType.check_type("LMSTUDIO"):
+        if LibType.check_type("LMSTUDIO", True):
             from lmstudio import list_downloaded_models  # pylint: disable=import-error, # type: ignore
 
             config = api_data[LibType.LM_STUDIO.value[1]]

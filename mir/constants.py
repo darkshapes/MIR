@@ -7,7 +7,7 @@ from typing import Annotated, Callable, List, Optional
 
 from pydantic import BaseModel, Field
 
-from nnll.monitor.file import dbug, nfo
+from nnll.monitor.file import dbuq
 from nnll.configure.init_gpu import first_available
 from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED  # pylint:disable=no-name-in-module
 
@@ -26,12 +26,8 @@ def has_api(api_name: str, data: dict = None) -> bool:
     from json.decoder import JSONDecodeError
 
     def set_false(api_name):
-        dbug(f"Unavailable {api_name}")
+        dbuq("|Ignorable| Source unavailable:", f"{api_name}")
         return False
-
-    def set_true(api_name):
-        dbug(f"Detected : {api_name}")
-        return True
 
     def check_host(api_name) -> bool:
         import httpcore
@@ -39,30 +35,28 @@ def has_api(api_name: str, data: dict = None) -> bool:
         from urllib3.exceptions import NewConnectionError, MaxRetryError
         import requests
 
-        dbug(f"Response from API  {api_data}")
+        dbuq(f"Response from API  {api_data}")
         try:
             if api_data.get("api_url", 0):
                 request = requests.get(api_data.get("api_url"), timeout=(1, 1))
                 if request is not None:
                     if hasattr(request, "reason") and request.reason == "OK":  # The curious case of Ollama
-                        set_true(api_name)
+                        return True
                     status = request.json()
                     if status.get("result") == "OK":
-                        nfo(f"Found {api_name}")
-                        set_true(api_name)
-                set_false(api_name)
+                        return True
+                return False
         except JSONDecodeError as error_log:
-            dbug(error_log)
-            dbug(f"json for ! {api_data}")
-            dbug(request.status_code)
+            dbuq(error_log)
+            dbuq(f"json for ! {api_data}")
+            dbuq(request.status_code)
             if request.ok:
-                nfo(f"Found {api_name}")
-                set_true(api_name)
+                return True
             try:
                 request.raise_for_status()
             except requests.HTTPError() as _error_log:
-                dbug(_error_log)
-                set_false(api_name)
+                dbuq(_error_log)
+                return False
 
         except (
             requests.exceptions.ConnectionError,
@@ -77,12 +71,12 @@ def has_api(api_name: str, data: dict = None) -> bool:
             ConnectionError,
         ):
             set_false(api_name)
-        set_false(api_name)
+        return False
 
     try:
         api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
     except JSONDecodeError as error_log:
-        dbug(error_log)
+        dbuq(error_log)
     if not api_data:
         api_data = {"module": api_name.lower()}
 
@@ -115,9 +109,10 @@ def has_api(api_name: str, data: dict = None) -> bool:
         try:
             __import__(api_data.get("module"))
             if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM"]:
-                set_true(api_name)
+                return True
         except (UnboundLocalError, ImportError, ModuleNotFoundError):
-            set_false(api_name)
+            dbuq("|Ignorable| Source unavailable:", f"{api_name}")
+            return False
         return check_host(api_name)
 
 
@@ -159,6 +154,8 @@ class LibType(BaseEnum):
     LLAMAFILE: tuple = (has_api("LLAMAFILE"), "LLAMAFILE")
     VLLM: tuple = (has_api("VLLM"), "VLLM")
     MLX_AUDIO: tuple = (has_api("MLX_AUDIO"), "MLX_AUDIO")
+    MLX_LM: tuple = (has_api("MLX_LM"), "MLX_LM")
+    MLX: tuple = (MLX_LM and MLX_AUDIO, "MLX")
 
 
 example_str = ("function_name", "import.function_name")
@@ -328,6 +325,6 @@ VALID_TASKS = {
         ("text", "text"): ["chat", "conversational", "text-generation", "text2text-generation"],
         ("text", "video"): ["video generation"],
         ("speech", "text"): ["speech-translation", "speech-summarization", "automatic-speech-recognition"],
-        ("image", "video"): ["reference-to-video", "refernce-to-video"],  # typos: ignore
+        ("image", "video"): ["reference-to-video", "refernce-to-video"],
     },
 }

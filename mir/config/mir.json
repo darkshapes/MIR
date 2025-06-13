@@ -2059,15 +2059,6 @@
                             "loudness_compressor": true
                         }
                     }
-                },
-                "1": {
-                    "mlx_audio": {
-                        "generate_audio": {
-                            "audio_format": "wav",
-                            "join_audio": true,
-                            "verbose": false
-                        }
-                    }
                 }
             }
         }
@@ -2083,15 +2074,6 @@
                             "return_tensors": "pt"
                         }
                     }
-                },
-                "1": {
-                    "mlx_audio": {
-                        "generate_audio": {
-                            "audio_format": "wav",
-                            "join_audio": true,
-                            "verbose": false
-                        }
-                    }
                 }
             }
         },
@@ -2105,15 +2087,16 @@
                             "return_tensors": "pt"
                         }
                     }
-                },
-                "1": {
-                    "mlx_audio": {
-                        "generate_audio": {
-                            "audio_format": "wav",
-                            "join_audio": true,
-                            "verbose": false
-                        }
-                    }
+                }
+            }
+        }
+    },
+    "info.gan.kokoro": {
+        "82m": {
+            "repo": "hexgrad/Kokoro-82M",
+            "pkg": {
+                "0": {
+                    "mlx_audio ": "tts.generate.generate_audio"
                 }
             }
         }
@@ -2154,10 +2137,15 @@
                             "max_model_len": 2048
                         }
                     }
-                },
-                "1": {
+                }
+            }
+        },
+        "3b-0-1-ft-4b": {
+            "repo": "mlx-community/orpheus-3b-0.1-ft-4bit",
+            "pkg": {
+                "0": {
                     "mlx_audio": {
-                        "generate_audio": {
+                        "tts.generate.generate_audio": {
                             "audio_format": "wav",
                             "join_audio": true,
                             "verbose": false
@@ -2173,10 +2161,17 @@
             "pkg": {
                 "0": {
                     "outetts": "InterfaceHF"
-                },
-                "1": {
+                }
+            }
+        }
+    },
+    "info.art.outetts-1.0-0": {
+        "6B-4bit": {
+            "repo": "/mlx-community/OuteTTS-1.0-0.6B-4bit",
+            "pkg": {
+                "0": {
                     "mlx_audio": {
-                        "generate_audio": {
+                        "tts.generate.generate_audio": {
                             "audio_format": "wav",
                             "join_audio": true,
                             "verbose": false

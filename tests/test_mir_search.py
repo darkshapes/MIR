@@ -69,11 +69,3 @@ def test_grade_field_change(mock_test_database):
 def test_grade_letter_case_change(mock_test_database):
     result = mock_test_database.find_path(field="pkg", sub_field=0, target="AuDiOCrAfT.MoDeLs")
     assert result == ["info.art.audiogen", "medium-1-5b"]
-
-
-def test_grade_cannot_find(mock_test_database):
-    test = "asdjfd"
-    field = ("pkg",)
-    with pytest.raises(KeyError) as excinfo:
-        result = mock_test_database.find_path(field=field, target=test)
-    assert str(excinfo.value) == f"\"Query '{test}' not found when searched {len(mock_test_database.database)}'{field}' options\""

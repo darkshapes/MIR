@@ -74,6 +74,8 @@ class RegistryEntry(BaseModel):
         If A is **True** AND B is **True**: Library index operations will be run\n
 
         """
+        from requests import HTTPError
+
         entries = []
 
         @LIBTYPE_CONFIG.decorator
@@ -83,14 +85,18 @@ class RegistryEntry(BaseModel):
         mir_db = MIRDatabase()
         api_data = _read_data()
         if LibType.check_type("HUB"):
-            from huggingface_hub import scan_cache_dir, repocard, HFCacheInfo, CacheNotFound  # type: ignore
+            from huggingface_hub import scan_cache_dir, repocard, HFCacheInfo, CacheNotFound
+            from huggingface_hub.errors import EntryNotFoundError, LocalEntryNotFoundError  # type: ignore
 
             try:
                 model_data: HFCacheInfo = scan_cache_dir()
+            except CacheNotFound as error_log:
+                dbug(error_log)
+            else:
                 for repo in model_data.repos:
                     try:
                         meta = repocard.RepoCard.load(repo.repo_id).data
-                    except ValueError as error_log:
+                    except (EntryNotFoundError, LocalEntryNotFoundError, HTTPError, ValueError) as error_log:
                         dbug(error_log)
                     else:
                         package_name = meta.get("library_name")
@@ -99,7 +105,10 @@ class RegistryEntry(BaseModel):
                             if hasattr(PkgType, package_name):
                                 package_name = getattr(PkgType, package_name.upper())
                         tags = []
-                        tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
+                        if repo.revisions:
+                            tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
+                        else:
+                            tokenizer_models = None
                         tokenizer = None if not tokenizer_models else tokenizer_models[-1]
                         if hasattr(meta, "tags"):
                             tags.extend(meta.tags)
@@ -117,8 +126,6 @@ class RegistryEntry(BaseModel):
                             tokenizer=tokenizer,
                         )  # pylint: disable=undefined-loop-variable
                         entries.append(entry)
-            except CacheNotFound as error_log:
-                dbug(error_log)
 
         if LibType.check_type("OLLAMA"):  # check that server is still up!
             from ollama import ListResponse, list as ollama_list

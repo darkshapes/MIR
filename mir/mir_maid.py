@@ -118,7 +118,7 @@ class MIRDatabase:
                 value = fields.get(field)
                 if value is not None:
                     if isinstance(value, dict) and isinstance(next(iter(value.keys()), None), int):
-                        for index, sub_field in value.items():
+                        for _, sub_field in value.items():
                             result = process_value(sub_field, series, compatibility)
                             if result:
                                 return result
@@ -128,10 +128,14 @@ class MIRDatabase:
                             return result
 
         best_match = self.grade_char_match(matches, target)
-        if best_match:
-            dbug(best_match)
-            return best_match
-        raise KeyError(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
+        try:
+            if best_match:
+                dbug(best_match)
+                return best_match
+            raise KeyError(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
+        except KeyError as error_log:
+            dbug(f"Query '{target}' not found when searched {len(self.database)}'{field}' options", error_log)
+            return None
 
 
 def main(mir_db: Callable = MIRDatabase()) -> None:

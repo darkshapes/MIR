@@ -199,12 +199,12 @@ Provides-Extra: openai
 Requires-Dist: openai>=1.84.0; extra == "openai"
 Requires-Dist: openai-whisper@ git+https://github.com/openai/whisper.git ; python_version > "3.12" and extra == "openai"
 Requires-Dist: openai-whisper@ git+https://github.com/openai/whisper.git ; python_version <= "3.12" and extra == "openai"
+Requires-Dist: llvmlite>=0.44; python_version > "3.12" and extra == "openai"
+Requires-Dist: llvmlite>=0.36; python_version <= "3.12" and extra == "openai"
+Requires-Dist: numba>=0.61.2; python_version > "3.12" and extra == "openai"
+Requires-Dist: numba>=0.47.0; python_version <= "3.12" and extra == "openai"
 Provides-Extra: outetts
 Requires-Dist: mir[openai]; extra == "outetts"
-Requires-Dist: llvmlite>=0.44; python_version > "3.12" and extra == "outetts"
-Requires-Dist: llvmlite>=0.36; python_version <= "3.12" and extra == "outetts"
-Requires-Dist: numba>=0.61.2; python_version > "3.12" and extra == "outetts"
-Requires-Dist: numba>=0.47.0; python_version <= "3.12" and extra == "outetts"
 Requires-Dist: outetts; extra == "outetts"
 Provides-Extra: full
 Requires-Dist: mir[cu126,cu128,hidiffusion,lmstudio,mflux,ollama,outetts]; extra == "full"

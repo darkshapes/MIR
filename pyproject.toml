@@ -26,7 +26,9 @@ classifiers = [
 
 dependencies = [
     "mir[mflux] ; sys_platform == 'darwin'",
-    "mir[cu128] ; sys_platform != 'darwin'",
+    "mir[cu128] ; sys_platform != 'darwin' and python_version >='3.12'",
+    "mir[cu128] ; sys_platform != 'darwin' and python_version <'3.12'",
+
 ]
 
 [dependency-groups]
@@ -34,33 +36,42 @@ dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
-    "mir[lmstudio,ollama,openai,outetts]",
+    "mir[full]",
     "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
-    "nnll[rocm,cu128,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+    "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
+    "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
+
 ]
 [project.optional-dependencies]
 dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=1.0.0",
     "ruff>=0.11.12",
-    "mir[lmstudio,ollama,openai,outetts]",
+    "mir[full]",
     "nnll[nightly,mflux,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
-    "nnll[rocm,cu128,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+    "nnll[rocm,cu126,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
+    "nnll[rocm,cu128,dev] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
 ]
 cu128 = [
-    "nnll[rocm,cu128,cu126,bitsandbytes] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin'",
+    "nnll[rocm,cu128] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version >='3.12'",
+]
+cu127 = [
+    "nnll[rocm,cu126] @ git+https://github.com/darkshapes/nnll@main ; sys_platform != 'darwin' and python_version <'3.12'",
 ]
 mflux = [
     "nnll[nightly,mflux] @ git+https://github.com/darkshapes/nnll@main ; sys_platform == 'darwin'",
 ]
-full = ["mir[lmstudio,ollama,openai,mflux,outetts,hidiffusion,cu128]"]
 lmstudio = ["lmstudio>=1.3.1"]
 ollama = ["ollama>=0.5.1"]
-openai = ["openai>=1.84.0"]
-outetts = [
-    "openai-whisper @ git+https://github.com/openai/whisper.git",
-    "outetts",
+openai = [
+    "openai>=1.84.0",
+    "openai-whisper @ git+https://github.com/openai/whisper.git ; python_version >'3.12'",
+    "openai-whisper @ git+https://github.com/openai/whisper.git ; python_version <='3.12'",
+
 ]
+outetts = ["mir[openai]", "llvmlite", "outetts"]
+full = ["mir[lmstudio,ollama,outetts,hidiffusion,cu126,cu128,mflux]"]
+
 # vllm = ["vllm>=0.9.0.1 ; sys_platform != 'darwin'"]
 
 # audiocraft = ["audiocraft @ git+https://github.com/exdysa/facebookresearch-audiocraft-revamp.git@x/dev"]

@@ -348,7 +348,7 @@
             ]
         },
         "base": {
-            "repo": "\"stabilityai/stable-cascade",
+            "repo": "stabilityai/stable-cascade",
             "pkg": {
                 "0": {
                     "diffusers": "StableCascadeDecoderPipeline"

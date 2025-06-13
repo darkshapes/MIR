@@ -52,18 +52,14 @@ openai>=1.84.0
 
 [openai:python_version <= "3.12"]
 openai-whisper@ git+https://github.com/openai/whisper.git
+llvmlite>=0.36
+numba>=0.47.0
 
 [openai:python_version > "3.12"]
 openai-whisper@ git+https://github.com/openai/whisper.git
+llvmlite>=0.44
+numba>=0.61.2
 
 [outetts]
 mir[openai]
 outetts
-
-[outetts:python_version <= "3.12"]
-llvmlite>=0.36
-numba>=0.47.0
-
-[outetts:python_version > "3.12"]
-llvmlite>=0.44
-numba>=0.61.2

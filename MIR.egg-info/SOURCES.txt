@@ -12,6 +12,8 @@ MIR.egg-info/dependency_links.txt
 MIR.egg-info/entry_points.txt
 MIR.egg-info/requires.txt
 MIR.egg-info/top_level.txt
+img_src/mir300_dark.png
+img_src/mir300_light.png
 mir/__init__.py
 mir/automata.py
 mir/constants.py

@@ -1,3 +1,10 @@
+---
+language:
+- en
+library_name: mir
+license_name: LGPL-3.0-only
+---
+
 <div align="center">
 
 <picture>
@@ -7,13 +14,6 @@
 </picture><br><br>
 
 </div>
-
----
-language:
-- en
-library_name: mir
-license_name: LGPL-3.0-only
----
 
 # MIR (Machine Intelligence Resource)<br><sub>A naming schema for AIGC/ML work.</sub>
 

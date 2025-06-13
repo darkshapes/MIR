@@ -37,10 +37,12 @@ class MIRDatabase:
     def write_to_disk(self, data: Optional[dict] = None) -> None:  # pylint:disable=unused-argument
         """Save data to JSON file\n"""
         # from nnll.integrity import ensure_path
-
+        try:
+            os.remove(MIR_PATH_NAMED)
+        except (FileNotFoundError, OSError) as error_log:
+            dbug(f"MIR file not found before write, regenerating... {error_log}")
         self.mir_file.update_cache(self.database, replace=True)
         self.database = self.read_from_disk()
-        # nfo(self.database)
         nfo(f"Wrote {len(self.database)} lines to MIR database file.")
 
     @mir_file.decorator
@@ -128,13 +130,11 @@ class MIRDatabase:
                             return result
 
         best_match = self.grade_char_match(matches, target)
-        try:
-            if best_match:
-                dbug(best_match)
-                return best_match
-            raise KeyError(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
-        except KeyError as error_log:
-            dbug(f"Query '{target}' not found when searched {len(self.database)}'{field}' options", error_log)
+        if best_match:
+            dbug(best_match)
+            return best_match
+        else:
+            dbug(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
             return None
 
 

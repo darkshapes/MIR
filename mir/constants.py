@@ -7,7 +7,7 @@ from typing import Annotated, Callable, List, Optional
 
 from pydantic import BaseModel, Field
 
-from nnll.monitor.file import dbug, nfo
+from nnll.monitor.file import dbuq
 from nnll.configure.init_gpu import first_available
 from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED  # pylint:disable=no-name-in-module
 
@@ -26,7 +26,7 @@ def has_api(api_name: str, data: dict = None) -> bool:
     from json.decoder import JSONDecodeError
 
     def set_false(api_name):
-        nfo("|Ignorable| Source unavailable:", f"{api_name}")
+        dbuq("|Ignorable| Source unavailable:", f"{api_name}")
         return False
 
     def check_host(api_name) -> bool:
@@ -35,7 +35,7 @@ def has_api(api_name: str, data: dict = None) -> bool:
         from urllib3.exceptions import NewConnectionError, MaxRetryError
         import requests
 
-        dbug(f"Response from API  {api_data}")
+        dbuq(f"Response from API  {api_data}")
         try:
             if api_data.get("api_url", 0):
                 request = requests.get(api_data.get("api_url"), timeout=(1, 1))
@@ -47,15 +47,15 @@ def has_api(api_name: str, data: dict = None) -> bool:
                         return True
                 return False
         except JSONDecodeError as error_log:
-            dbug(error_log)
-            dbug(f"json for ! {api_data}")
-            dbug(request.status_code)
+            dbuq(error_log)
+            dbuq(f"json for ! {api_data}")
+            dbuq(request.status_code)
             if request.ok:
                 return True
             try:
                 request.raise_for_status()
             except requests.HTTPError() as _error_log:
-                dbug(_error_log)
+                dbuq(_error_log)
                 return False
 
         except (
@@ -76,7 +76,7 @@ def has_api(api_name: str, data: dict = None) -> bool:
     try:
         api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
     except JSONDecodeError as error_log:
-        dbug(error_log)
+        dbuq(error_log)
     if not api_data:
         api_data = {"module": api_name.lower()}
 
@@ -111,7 +111,7 @@ def has_api(api_name: str, data: dict = None) -> bool:
             if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM"]:
                 return True
         except (UnboundLocalError, ImportError, ModuleNotFoundError):
-            nfo("|Ignorable| Source unavailable:", f"{api_name}")
+            dbuq("|Ignorable| Source unavailable:", f"{api_name}")
             return False
         return check_host(api_name)
 
@@ -154,6 +154,8 @@ class LibType(BaseEnum):
     LLAMAFILE: tuple = (has_api("LLAMAFILE"), "LLAMAFILE")
     VLLM: tuple = (has_api("VLLM"), "VLLM")
     MLX_AUDIO: tuple = (has_api("MLX_AUDIO"), "MLX_AUDIO")
+    MLX_LM: tuple = (has_api("MLX_LM"), "MLX_LM")
+    MLX: tuple = (MLX_LM and MLX_AUDIO, "MLX")
 
 
 example_str = ("function_name", "import.function_name")

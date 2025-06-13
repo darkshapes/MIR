@@ -110,11 +110,11 @@ def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> 
         for comp, field_data in new_data.items():
             if isinstance(field_data, dict):
                 for field, definition_data in field_data.items():  # field = pkg
-                    nfo(f"{arch}.{series} : {comp} : {field}")
+                    dbug(f"{arch}.{series} : {comp} : {field}")
                     if isinstance(definition_data, dict) and mir_data[comp].get(field):
                         for definition, sub_def_data in definition_data.items():  # definition = 0
                             if series == "stable-diffusion-xl":
-                                print(definition)
+                                dbug(definition)
                             if isinstance(sub_def_data, dict) and mir_data[comp].get(definition):
                                 for sub_def, nested_data in sub_def_data.items():  # sub def = diffusers
                                     if isinstance(nested_data, dict) and mir_data[comp].get(sub_def):
@@ -124,9 +124,9 @@ def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> 
                                         mir_data[comp][field][definition].setdefault(sub_def, nested_data)
                             else:
                                 if series == "stable-diffusion-xl":
-                                    print(sub_def_data)
+                                    dbug(sub_def_data)
                                 mir_data[comp][field].get(definition, mir_data[comp][field])
-                                nfo(f"comp : {comp} field :{field} def {definition}")
+                                dbug(f"comp : {comp} field :{field} def {definition}")
                     else:
                         mir_data[comp].setdefault(field, definition_data)
             else:
@@ -367,7 +367,7 @@ def build_mir_custom(mir_db: MIRDatabase):
                     "audiocraft.models": {"AudioGen": {"duration": 5}},
                     "audiocraft.data.audio": {"audio_write": {"strategy": "loudness", "loudness_compressor": True}},
                 },
-                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+                # 1: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
         )
     )
@@ -383,7 +383,7 @@ def build_mir_custom(mir_db: MIRDatabase):
                     "parler_tts": "ParlerTTSForConditionalGeneration",
                     "transformers": {"AutoTokenizer": {"return_tensors": "pt"}},
                 },
-                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+                # 1: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
         )
     )
@@ -399,7 +399,31 @@ def build_mir_custom(mir_db: MIRDatabase):
                     "parler_tts": "ParlerTTSForConditionalGeneration",
                     "transformers": {"AutoTokenizer": {"return_tensors": "pt"}},
                 },
-                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+                # 1: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+            },
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="gan",
+            series="kokoro",
+            comp="82m",
+            repo="hexgrad/Kokoro-82M",
+            pkg={
+                0: {"kokoro": "KPipeline"},
+            },
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="gan",
+            series="kokoro",
+            comp="82m",
+            repo="hexgrad/Kokoro-82M",
+            pkg={
+                0: {"mlx_audio ": "tts.generate.generate_audio"},
             },
         )
     )
@@ -427,10 +451,22 @@ def build_mir_custom(mir_db: MIRDatabase):
             repo="canopylabs/orpheus-3b-0.1-ft",
             pkg={
                 0: {"orpheus_tts": {"OrpheusModel": {"max_model_len": 2048}}},
-                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
         )
     )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="art",
+            series="orpheus",
+            comp="3b-0-1-ft-4b",
+            repo="mlx-community/orpheus-3b-0.1-ft-4bit",
+            pkg={
+                0: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+            },
+        )
+    )
+
     mir_db.add(
         mir_entry(
             domain="info",
@@ -440,7 +476,18 @@ def build_mir_custom(mir_db: MIRDatabase):
             repo="outeai/outetts-0-3-1b",
             pkg={
                 0: {"outetts": "InterfaceHF"},
-                1: {"mlx_audio": {"generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+            },
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="art",
+            series="OuteTTS-1.0-0",
+            comp="6B-4bit",
+            repo="/mlx-community/OuteTTS-1.0-0.6B-4bit",
+            pkg={
+                0: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
         )
     )

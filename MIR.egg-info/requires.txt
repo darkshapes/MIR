@@ -6,7 +6,7 @@ mir[cu128]
 mir[cu128]
 
 [:sys_platform == "darwin"]
-mir[mflux]
+mir[mps]
 
 [cu127]
 
@@ -31,18 +31,13 @@ nnll[cu126,dev,rocm]@ git+https://github.com/darkshapes/nnll@main
 nnll[cu128,dev,rocm]@ git+https://github.com/darkshapes/nnll@main
 
 [dev:sys_platform == "darwin"]
-nnll[dev,mflux,nightly]@ git+https://github.com/darkshapes/nnll@main
+nnll[dev,mps]@ git+https://github.com/darkshapes/nnll@main
 
 [full]
-mir[cu126,cu128,hidiffusion,lmstudio,mflux,mlx-audio,ollama,outetts]
+mir[cu126,cu128,hidiffusion,lmstudio,mlx-audio,mps,ollama,outetts]
 
 [lmstudio]
 lmstudio>=1.3.1
-
-[mflux]
-
-[mflux:sys_platform == "darwin"]
-nnll[mps]@ git+https://github.com/darkshapes/nnll@main
 
 [mlx-audio]
 mir[openai]

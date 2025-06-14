@@ -9,12 +9,12 @@ from pydantic import BaseModel, Field
 
 from nnll.monitor.file import dbuq
 from nnll.configure.init_gpu import first_available
-from mir.json_cache import JSONCache, LIBTYPE_PATH_NAMED  # pylint:disable=no-name-in-module
+from mir.json_cache import JSONCache, CUETYPE_PATH_NAMED  # pylint:disable=no-name-in-module
 
-LIBTYPE_CONFIG = JSONCache(LIBTYPE_PATH_NAMED)
+CUETYPE_CONFIG = JSONCache(CUETYPE_PATH_NAMED)
 
 
-@LIBTYPE_CONFIG.decorator
+@CUETYPE_CONFIG.decorator
 def has_api(api_name: str, data: dict = None) -> bool:
     """Check available modules, try to import dynamically.
     True for successful import, else False
@@ -122,7 +122,7 @@ class BaseEnum(Enum):
     @classmethod
     def show_all(cls) -> List:
         """Show all possible API types"""
-        return [x for x, y in LibType.__members__.items()]
+        return [x for x, y in CueType.__members__.items()]
 
     @classmethod
     def show_available(cls) -> bool:
@@ -140,12 +140,13 @@ class BaseEnum(Enum):
             return available
 
 
-class LibType(BaseEnum):
-    """API library constants
+class CueType(BaseEnum):
+    """Model Provider constants\n
+    Caches and servers\n
     <NAME: (Availability, IMPORT_NAME)>"""
 
-    # Integers are usedto differentiate boolean condition
-    # GIVEN : The state of all library modules & servers are marked at launch
+    # Dfferentiation of boolean conditions
+    # GIVEN : The state of all provider modules & servers are marked at launch
 
     OLLAMA: tuple = (has_api("OLLAMA"), "OLLAMA")
     HUB: tuple = (has_api("HUB"), "HUB")
@@ -154,15 +155,15 @@ class LibType(BaseEnum):
     LLAMAFILE: tuple = (has_api("LLAMAFILE"), "LLAMAFILE")
     VLLM: tuple = (has_api("VLLM"), "VLLM")
     MLX_AUDIO: tuple = (has_api("MLX_AUDIO"), "MLX_AUDIO")
-    MLX_LM: tuple = (has_api("MLX_LM"), "MLX_LM")
-    MLX: tuple = (MLX_LM and MLX_AUDIO, "MLX")
+    KAGGLE: tuple = (has_api("KAGGLE"), "KAGGLE")
 
 
 example_str = ("function_name", "import.function_name")
 
 
 class PkgType(BaseEnum):
-    """Package dependency constants
+    """Package dependency constants\n
+    Code
     <NAME: (Availability, IMPORT_NAME)>"""
 
     AUDIOGEN: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT")
@@ -172,8 +173,10 @@ class PkgType(BaseEnum):
     F_LITE: tuple = (has_api("F_LITE"), "F_LITE")
     HIDIFFUSION: tuple = (has_api("HIDIFFUSION"), "HIDIFFUSION")
     LUMINA_MGPT: tuple = (has_api("INFERENCE_SOLVER"), "INFERENCE_SOLVER")  # Alpha vllm
-    MFLUX: tuple = (has_api("MFLUX"), "MFLUX")  # pylint:disable=no-member
-    MLX_AUDIO: tuple = LibType.MLX_AUDIO.value
+    MFLUX: tuple = (has_api("MFLUX"), "MFLUX")
+    MLX_AUDIO: tuple = (CueType.check_type("MLX_AUDIO"), "MLX_AUDIO")
+    MLX_LM: tuple = (has_api("MLX_LM"), "MLX_LM")
+    MLX: tuple = (has_api("MFLUX") and has_api("MLX_LM") and CueType.check_type("MLX_AUDIO"), "MLX")
     ORPHEUS_TTS: tuple = (has_api("ORPHEUS_TTS"), "ORPHEUS_TTS")
     OUTETTS: tuple = (has_api("OUTETTS"), "OUTETTS")
     SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS")
@@ -214,11 +217,12 @@ for name, key in chip_types:
 setattr(ChipType, "CPU", (True, "CPU"))
 
 
-class PipeType(Enum):
-    MFLUX: tuple = (ChipType._show_ready("mps"), PkgType.check_type("MFLUX"), {"mir_tag": "flux"})  # pylint:disable=protected-access
-    # MFLUX: tuple = ("MPS" in ChipType._show_ready("mps"), PkgType.MFLUX, {"mir_tag": "flux"})  # pylint:disable=protected-access
+# class PipeType(Enum):
+#     MFLUX: tuple = (ChipType._show_ready("mps"), PkgType.check_type("MFLUX"), {"mir_tag": "flux"})  # pylint:disable=protected-access
+# MFLUX: tuple = ("MPS" in ChipType._show_ready("mps"), PkgType.MFLUX, {"mir_tag": "flux"})  # pylint:disable=protected-access
 
 
+# Experimental way to abstract/declarify complex process names
 class GenTypeC(BaseModel):
     """
     Generative inference types in ***C***-dimensional order\n
@@ -302,29 +306,29 @@ VALID_JUNCTIONS = [""]
 
 # note : decide on a way to keep paired tuples and sets together inside config dict
 VALID_TASKS = {
-    LibType.CORTEX: {
+    CueType.CORTEX: {
         ("text", "text"): ["text"],
     },
-    LibType.VLLM: {
+    CueType.VLLM: {
         ("text", "text"): ["text"],
         ("image", "text"): ["vision"],
     },
-    LibType.OLLAMA: {
+    CueType.OLLAMA: {
         ("text", "text"): ["mllama", "llava", "vllm"],
     },
-    LibType.LLAMAFILE: {
+    CueType.LLAMAFILE: {
         ("text", "text"): ["text"],
     },
-    LibType.LM_STUDIO: {
+    CueType.LM_STUDIO: {
         # ("image", "text"): [("vision", True)],
         ("text", "text"): ["llm"],
     },
-    LibType.HUB: {
+    CueType.HUB: {
         ("text", "image"): ["Kolors", "image-generation"],
         ("image", "text"): ["image-generation", "image-text-to-text", "visual-question-answering"],
         ("text", "text"): ["chat", "conversational", "text-generation", "text2text-generation"],
         ("text", "video"): ["video generation"],
-        ("speech", "text"): ["speech-translation", "speech-summarization", "automatic-speech-recognition"],
+        ("speech", "text"): ["speech-translation", "speech-summarization", "automatic-speech-recognition", "dictation"],
         ("image", "video"): ["reference-to-video", "refernce-to-video"],
     },
 }

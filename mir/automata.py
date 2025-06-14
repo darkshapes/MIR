@@ -366,8 +366,7 @@ def build_mir_custom(mir_db: MIRDatabase):
                 0: {
                     "audiocraft.models": {"AudioGen": {"duration": 5}},
                     "audiocraft.data.audio": {"audio_write": {"strategy": "loudness", "loudness_compressor": True}},
-                },
-                # 1: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+                }
             },
         )
     )
@@ -398,8 +397,7 @@ def build_mir_custom(mir_db: MIRDatabase):
                 0: {
                     "parler_tts": "ParlerTTSForConditionalGeneration",
                     "transformers": {"AutoTokenizer": {"return_tensors": "pt"}},
-                },
-                # 1: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
+                }
             },
         )
     )
@@ -485,7 +483,7 @@ def build_mir_custom(mir_db: MIRDatabase):
             arch="art",
             series="OuteTTS-1.0-0",
             comp="6B-4bit",
-            repo="/mlx-community/OuteTTS-1.0-0.6B-4bit",
+            repo="mlx-community/OuteTTS-1.0-0.6B-4bit",
             pkg={
                 0: {"mlx_audio": {"tts.generate.generate_audio": {"audio_format": "wav", "join_audio": True, "verbose": False}}},
             },
@@ -543,7 +541,7 @@ def build_mir_lora(mir_db: MIRDatabase):
             arch="lora",
             series="dmd",
             comp="stable-diffusion-xl",
-            repo="tianweiy/DMD2/",
+            repo="tianweiy/DMD2",
             pkg={
                 0: {
                     "diffusers": {"load_lora_weights": {}},

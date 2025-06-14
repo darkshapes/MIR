@@ -1,7 +1,7 @@
 ### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
-"""JSONCache, [ MIR / HASHES / LIBTYPE / HYPERCHAIN ] _PATH_NAMED"""
+"""JSONCache, [ MIR / HASHES / CUETYPE / HYPERCHAIN ] _PATH_NAMED"""
 
 import os
 import sys
@@ -10,7 +10,7 @@ from typing import Union
 sys.path.append(os.getcwd())
 from pathlib import Path
 from functools import cache
-from nnll.monitor.file import dbug
+from nnll.monitor.file import nfo, dbuq
 from nnll.integrity import ensure_path
 
 
@@ -25,7 +25,7 @@ def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__)
     return ensure_path(folder_path_named, file_name)
 
 
-constants = ["mir", "hashes", "libtype", "hyperchain"]
+constants = ["mir", "hashes", "cuetype", "hyperchain"]
 
 for const in constants:
     paths = {}
@@ -57,20 +57,22 @@ class JSONCache:
         import json
         import tomllib
 
+        nfo(f"loading_file {self.file}")
+
         if not self._cache:
             if Path(self.file).suffix.lower() == ".toml":
                 with open(self.file, "rb") as f:
                     try:
                         self._cache = tomllib.load(f)
                     except tomllib.TOMLDecodeError as error_log:
-                        dbug(f"Error decoding cache file. Using an empty cache. {error_log}")
+                        dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
                         self._cache = {}
             else:
                 try:
                     with open(self.file, "r", encoding="UTF-8") as f:
                         self._cache = json.load(f)
                 except (FileNotFoundError, json.JSONDecodeError) as error_log:
-                    dbug(f"Error decoding cache file. Using an empty cache. {error_log}")
+                    dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
                     self._cache = {}
 
     def _save_cache(self):

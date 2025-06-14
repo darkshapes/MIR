@@ -1426,7 +1426,7 @@
     },
     "info.lora.dmd": {
         "stable-diffusion-xl": {
-            "repo": "tianweiy/DMD2/",
+            "repo": "tianweiy/DMD2",
             "pkg": {
                 "0": {
                     "diffusers": {
@@ -2167,7 +2167,7 @@
     },
     "info.art.outetts-1.0-0": {
         "6B-4bit": {
-            "repo": "/mlx-community/OuteTTS-1.0-0.6B-4bit",
+            "repo": "mlx-community/OuteTTS-1.0-0.6B-4bit",
             "pkg": {
                 "0": {
                     "mlx_audio": {

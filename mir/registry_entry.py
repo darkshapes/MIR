@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import List, Tuple, Optional
 from pydantic import BaseModel, computed_field
 
-from nnll.monitor.file import dbug, debug_monitor
+from nnll.monitor.file import nfo, dbug, dbuq, debug_monitor
 from mir.constants import CUETYPE_CONFIG, VALID_CONVERSIONS, VALID_TASKS, CueType, PkgType
 from mir.mir_maid import MIRDatabase
 
@@ -18,13 +18,13 @@ from mir.mir_maid import MIRDatabase
 class RegistryEntry(BaseModel):
     """Validate Hub / Ollama / LMStudio model input"""
 
+    cuetype: CueType
     model: str
     size: int
     tags: list[str]
-    cuetype: CueType
     timestamp: int
-    mir: Optional[list[str]] = None
     api_kwargs: Optional[dict] = None
+    mir: Optional[List[str]] = None
     package: Optional[Enum] = None
     tokenizer: Optional[Path] = None
 
@@ -40,7 +40,8 @@ class RegistryEntry(BaseModel):
 
         default_task = None
         processed_tasks = []
-        if self.cuetype in [x for x in list(CueType) if x != CueType.HUB]:
+        # nfo(self.model)
+        if self.cuetype in [x for x in list(CueType) if x != CueType.HUB]:  # Literal list of CueType, must use list()
             default_task = ("text", "text")  # usually these are txt gen libraries
         elif self.cuetype == CueType.HUB:
             # print(self.cuetype)  # pair tags from the hub such 'x-to-y' such as 'text-to-text' etc
@@ -82,7 +83,7 @@ class RegistryEntry(BaseModel):
 
         mir_db = MIRDatabase()
         api_data = _read_data()
-        if CueType.check_type("HUB") or CueType.check_type("MLX_AUDIO") or CueType.check_type("MLX_LM"):
+        if CueType.check_type("HUB") or CueType.check_type("MLX_AUDIO", True):
             from huggingface_hub import scan_cache_dir, repocard, HFCacheInfo, CacheNotFound
             from huggingface_hub.errors import EntryNotFoundError, LocalEntryNotFoundError, OfflineModeIsEnabled  # type: ignore
 
@@ -90,44 +91,63 @@ class RegistryEntry(BaseModel):
                 model_data: HFCacheInfo = scan_cache_dir()
             except CacheNotFound:
                 pass
-            for repo in model_data.repos:
-                try:
-                    meta = repocard.RepoCard.load(repo.repo_id).data
-                    package_name = meta.get("library_name")
-                    if package_name:
-                        package_name = package_name.replace("-", "_").upper()
-                        if hasattr(PkgType, package_name):
-                            package_name = getattr(PkgType, package_name.upper())
+            else:
+                for repo in model_data.repos:
+                    meta = {}
                     tags = []
-                    if repo.revisions:
+                    package_name = None
+                    mir_entry = None
+                    tokenizer = None
+                    mir_entry = mir_db.find_path("repo", repo.repo_id.lower())
+                    try:
+                        meta = repocard.RepoCard.load(repo.repo_id).data
+                    except (LocalEntryNotFoundError, EntryNotFoundError, HTTPError, OfflineModeIsEnabled):
+                        pass
+                    if meta:
+                        if hasattr(meta, "tags"):
+                            tags.extend(meta.tags)
+                        if hasattr(meta, "pipeline_tag"):
+                            tags.append(meta.pipeline_tag)
+                        test_package: str = meta.get("library_name")
+                        if test_package:
+                            test_package = test_package.replace("-", "_")
+                            test_package.upper()
+                            if hasattr(PkgType, test_package.upper()):
+                                package_name = getattr(PkgType, test_package.upper())
+                    if not package_name:
+                        try:
+                            series = mir_entry[0]
+                            comp = mir_entry[1]
+                            module_name = mir_db.database.get(series)
+                            if module_name:
+                                sub_module_name = module_name.get(comp)
+                                if sub_module_name:
+                                    pkg_num = sub_module_name.get("pkg")
+                                    if pkg_num:
+                                        pkg_id = next(iter(list(pkg_num.get(0, "diffusers"))))
+                                        if hasattr(PkgType, pkg_id.upper()):
+                                            package_name = getattr(PkgType, pkg_id.get.upper())
+                        except (TypeError, KeyError, ValueError):
+                            pass
+                    if hasattr(repo, "revisions") and repo.revisions:
                         tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
                     else:
                         tokenizer_models = None
                     tokenizer = None if not tokenizer_models else tokenizer_models[-1]
-                    if hasattr(meta, "tags"):
-                        tags.extend(meta.tags)
-                    if hasattr(meta, "pipeline_tag"):
-                        tags.append(meta.pipeline_tag)
                     entry = cls(
                         model=repo.repo_id,
                         size=repo.size_on_disk,
                         tags=tags,
                         cuetype=CueType.HUB,
-                        mir=mir_db.find_path("repo", repo.repo_id.lower()),
+                        mir=mir_entry,
                         package=package_name,
                         api_kwargs=None,
                         timestamp=int(repo.last_modified),
                         tokenizer=tokenizer,
-                    )  # pylint: disable=undefined-loop-variable
+                    )
                     entries.append(entry)
-                except LocalEntryNotFoundError:
-                    pass
-                except EntryNotFoundError:
-                    pass
-                except HTTPError:
-                    pass
-                except OfflineModeIsEnabled:
-                    pass
+                    nfo(entry.model)
+
         if CueType.check_type("OLLAMA", True):  # check that server is still up!
             from ollama import ListResponse, list as ollama_list
 
@@ -143,9 +163,11 @@ class RegistryEntry(BaseModel):
                     package=CueType.OLLAMA,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.modified_at.timestamp()),
-                    # tokenizer=(model.model),
+                    tokenizer=(model.model),
                 )
                 entries.append(entry)
+
+                nfo(entry.model)
 
         if CueType.check_type("CORTEX", True):
             import requests
@@ -161,12 +183,13 @@ class RegistryEntry(BaseModel):
                     tags=[str(model_data.get("modalities", "text"))],
                     cuetype=CueType.CORTEX,
                     mir=None,
-                    package=CueType.CORTEX,
+                    package=None,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(datetime.timestamp(datetime.now())),  # no api for time data w openai
                     # tokenizer=None,
                 )
                 entries.append(entry)
+                nfo(entry.model)
 
         if CueType.check_type("LLAMAFILE", True):
             from openai import OpenAI
@@ -180,12 +203,13 @@ class RegistryEntry(BaseModel):
                     tags=["text"],
                     cuetype=CueType.LLAMAFILE,
                     mir=None,
-                    package=CueType.LLAMAFILE,
+                    package=None,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.created),  # no api for time data w openai
                     # tokenizer=None,
                 )
                 entries.append(entry)
+                nfo(entry.model)
 
         if CueType.check_type("VLLM", True):  # placeholder
             # import vllm
@@ -198,12 +222,13 @@ class RegistryEntry(BaseModel):
                     tags=["text"],
                     cuetype=CueType.VLLM,
                     mir=None,
-                    package=CueType.VLLM,
+                    package=None,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.created),  # no api for time data w openai
                     # tokenizer=None,
                 )
                 entries.append(entry)
+                nfo(entry.model)
 
         if CueType.check_type("LMSTUDIO", True):
             from lmstudio import list_downloaded_models  # pylint: disable=import-error, # type: ignore
@@ -222,12 +247,14 @@ class RegistryEntry(BaseModel):
                     tags=tags,
                     cuetype=CueType.LM_STUDIO,
                     mir=None,
-                    package=CueType.LM_STUDIO,
+                    package=None,
                     api_kwargs={**config["api_kwargs"]},
                     timestamp=int(model.modified_at.timestamp()),
                     # tokenizer=None,
                 )
                 entries.append(entry)
+                nfo(entry.model)
+
         return sorted(entries, key=lambda x: x.timestamp, reverse=True)
 
 
@@ -241,3 +268,16 @@ def from_cache() -> list[str, RegistryEntry]:
     models = RegistryEntry.from_model_data()
     dbug(f"REG_ENTRIES {models}")
     return models
+
+    # tokenizer = None if not tokenizer_models else tokenizer_models[-1]
+    #     if repo.revisions:
+    #         tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
+    #     else:
+    #         tokenizer_models = None
+    #     tokenizer = None if not tokenizer_models else tokenizer_models[-1]
+
+    # if hasattr(repo, "revisions") and repo.revisions:
+    #     tokenizer_models = [info.file_path for info in next(iter(repo.revisions)).files if "tokenizer.json" in str(info.file_path)]
+    # else:
+    #     tokenizer_models = None
+    # tokenizer = None if not tokenizer_models else tokenizer_models[-1]

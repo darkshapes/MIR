@@ -7,7 +7,7 @@
 from typing import Any, Callable, Iterable, List, Optional
 import os
 
-# from mir.constants import LibType
+# from mir.constants import CueType
 from nnll.monitor.file import debug_monitor, dbug, nfo
 from mir.json_cache import JSONCache, MIR_PATH_NAMED  # pylint:disable=no-name-in-module
 

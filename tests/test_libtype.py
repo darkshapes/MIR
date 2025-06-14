@@ -15,7 +15,7 @@ def has_api(name: str):
     return True
 
 
-class LibType(Enum):
+class CueType(Enum):
     """API library constants"""
 
     # Integers are used to differentiate boolean condition
@@ -37,13 +37,13 @@ async def mock_has_api():
 @pytest.mark.filterwarnings("ignore:open_text")
 @pytest.mark.filterwarnings("ignore::DeprecationWarning:")
 @patch("mir.constants.has_api", side_effect=lambda x: False)
-def test_libtype(mock_has_api):
-    assert LibType.OLLAMA.value[0] is True
-    assert LibType.HUB.value[0] is True
-    assert LibType.LM_STUDIO.value[0] is True
-    assert LibType.CORTEX.value[0] is True
-    assert LibType.LLAMAFILE.value[0] is True
-    assert LibType.VLLM.value[0] is True
+def test_cuetype(mock_has_api):
+    assert CueType.OLLAMA.value[0] is True
+    assert CueType.HUB.value[0] is True
+    assert CueType.LM_STUDIO.value[0] is True
+    assert CueType.CORTEX.value[0] is True
+    assert CueType.LLAMAFILE.value[0] is True
+    assert CueType.VLLM.value[0] is True
 
 
 @pytest_asyncio.fixture(loop_scope="session", name="mock_config")
@@ -65,25 +65,25 @@ def mock_deco():
     return decorator
 
 
-def libtype_config_fixture():
-    with patch("zodiac.chat_machine.LIBTYPE_CONFIG", MagicMock()):
+def cuetype_config_fixture():
+    with patch("zodiac.chat_machine.CUETYPE_CONFIG", MagicMock()):
         yield mock_deco
 
 
 @pytest.mark.asyncio(loop_scope="session")
-async def test_lookup_libtypes(mock_has_api):
+async def test_lookup_cuetypes(mock_has_api):
     from mir.json_cache import JSONCache
 
     import os
 
     model = "🤡"
 
-    for library in LibType.__members__.keys():
-        library = getattr(LibType, library)
-        # with patch("nnll_11.LibType", autocast=True):
+    for library in CueType.__members__.keys():
+        library = getattr(CueType, library)
+        # with patch("nnll_11.CueType", autocast=True):
         # req_form = await get_api(model, library)
         test_path = os.path.dirname(os.path.abspath(__file__))
-        data = JSONCache(os.path.join(os.path.dirname(test_path), "mir", "config", "libtype.json"))
+        data = JSONCache(os.path.join(os.path.dirname(test_path), "mir", "config", "cuetype.json"))
         data._load_cache()
         expected = vars(data).get("_cache")
         assert isinstance(expected, dict)

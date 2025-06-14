@@ -31,8 +31,6 @@ mir/config/config.toml
 mir/config/filter.json
 mir/config/hashes.json
 mir/config/hyperchain.json
-mir/config/libtype.json
-mir/config/mir.json
 mir/config/mir_template.json
 mir/model_detect/__init__.py
 mir/model_detect/gather_metadata.py

@@ -14,8 +14,6 @@
         ],
         "lora.turbo:stable-diffusion-3@8": [
             "fe37e611192cc232c805e10dda70b86586f3857338625faf4b24125034796d9e"
-        ],
-
-
+        ]
     }
 }

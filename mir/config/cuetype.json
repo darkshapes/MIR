@@ -58,7 +58,7 @@
         },
         "prefix": ""
     },
-    "KAGGLEHUB": {
+    "KAGGLE": {
         "module": "kagglehub",
         "api_kwargs": {
             "api_base": "http://127.0.0.1:8188"

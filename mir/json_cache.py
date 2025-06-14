@@ -57,7 +57,7 @@ class JSONCache:
         import json
         import tomllib
 
-        nfo(f"loading_file {self.file}")
+        dbuq(f"loading_file {self.file}")
 
         if not self._cache:
             if Path(self.file).suffix.lower() == ".toml":

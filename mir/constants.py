@@ -7,7 +7,7 @@ from typing import Annotated, Callable, List, Optional
 
 from pydantic import BaseModel, Field
 
-from nnll.monitor.file import dbuq
+from nnll.monitor.file import dbuq, nfo
 from nnll.configure.init_gpu import first_available
 from mir.json_cache import JSONCache, CUETYPE_PATH_NAMED  # pylint:disable=no-name-in-module
 
@@ -25,6 +25,10 @@ def has_api(api_name: str, data: dict = None) -> bool:
     """
     from json.decoder import JSONDecodeError
 
+    def set_true(api_name):
+        nfo(f"Available {api_name}")
+        return True
+
     def set_false(api_name):
         dbuq("|Ignorable| Source unavailable:", f"{api_name}")
         return False
@@ -41,17 +45,17 @@ def has_api(api_name: str, data: dict = None) -> bool:
                 request = requests.get(api_data.get("api_url"), timeout=(1, 1))
                 if request is not None:
                     if hasattr(request, "reason") and request.reason == "OK":  # The curious case of Ollama
-                        return True
+                        return set_true(api_name)
                     status = request.json()
                     if status.get("result") == "OK":
-                        return True
+                        return set_true(api_name)
                 return False
         except JSONDecodeError as error_log:
             dbuq(error_log)
             dbuq(f"json for ! {api_data}")
             dbuq(request.status_code)
             if request.ok:
-                return True
+                return set_true(api_name)
             try:
                 request.raise_for_status()
             except requests.HTTPError() as _error_log:
@@ -100,7 +104,7 @@ def has_api(api_name: str, data: dict = None) -> bool:
                 return set_false(api_name)
         except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
             return set_false(api_name)
-    elif api_name in ["OLLAMA"]:
+    elif api_name in ["OLLAMA", "KAGGLE"]:
         try:
             return check_host(api_name)
         except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
@@ -108,8 +112,8 @@ def has_api(api_name: str, data: dict = None) -> bool:
     else:
         try:
             __import__(api_data.get("module"))
-            if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM"]:
-                return True
+            if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM", "KAGGLE"]:
+                return set_true(api_name)
         except (UnboundLocalError, ImportError, ModuleNotFoundError):
             dbuq("|Ignorable| Source unavailable:", f"{api_name}")
             return False
@@ -121,17 +125,17 @@ class BaseEnum(Enum):
 
     @classmethod
     def show_all(cls) -> List:
-        """Show all possible API types"""
+        """Show all POSSIBLE API types of a given class"""
         return [x for x, y in CueType.__members__.items()]
 
     @classmethod
     def show_available(cls) -> bool:
-        """Show all available API types"""
+        """Show all AVAILABLE API types of a given class"""
         return [library.value[1] for library in list(cls) if library.value[0] is True]
 
     @classmethod
     def check_type(cls, type_name: str, server: bool = False) -> bool:
-        """Check for a single API"""
+        """Check for a SINGLE API availability"""
         type_name = type_name.upper()
         if hasattr(cls, type_name):
             available = next(iter(getattr(cls, type_name).value))
@@ -163,7 +167,7 @@ example_str = ("function_name", "import.function_name")
 
 class PkgType(BaseEnum):
     """Package dependency constants\n
-    Code
+    Collected info from hub model tags and dependencies
     <NAME: (Availability, IMPORT_NAME)>"""
 
     AUDIOGEN: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT")
@@ -177,6 +181,7 @@ class PkgType(BaseEnum):
     MLX_AUDIO: tuple = (CueType.check_type("MLX_AUDIO"), "MLX_AUDIO")
     MLX_LM: tuple = (has_api("MLX_LM"), "MLX_LM")
     MLX: tuple = (has_api("MFLUX") and has_api("MLX_LM") and CueType.check_type("MLX_AUDIO"), "MLX")
+    PARLER_TTS: tuple = (has_api("PARLER_TTS"), "PARLER_TTS")
     ORPHEUS_TTS: tuple = (has_api("ORPHEUS_TTS"), "ORPHEUS_TTS")
     OUTETTS: tuple = (has_api("OUTETTS"), "OUTETTS")
     SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS")
@@ -330,5 +335,8 @@ VALID_TASKS = {
         ("text", "video"): ["video generation"],
         ("speech", "text"): ["speech-translation", "speech-summarization", "automatic-speech-recognition", "dictation"],
         ("image", "video"): ["reference-to-video", "refernce-to-video"],
+    },
+    CueType.KAGGLE: {
+        ("text", "text"): ["text"],
     },
 }

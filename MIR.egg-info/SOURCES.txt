@@ -24,6 +24,7 @@ mir/json_cache.py
 mir/mir.py
 mir/mir_maid.py
 mir/pkg_detect.py
+mir/provider_pools.py
 mir/read_state_dict.py
 mir/registry_entry.py
 mir/config/__init__.py

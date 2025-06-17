@@ -3,13 +3,13 @@
 
 """自動化索引"""
 
-from nnll.monitor.file import dbug, nfo
+from nnll.monitor.file import dbug, nfo, dbuq
 from mir.mir_maid import MIRDatabase
 from mir.mir import mir_entry
 from typing import Dict, List, Tuple
 
 
-def mir_diffusion(mir_db: MIRDatabase):
+def gen_diffusers(mir_db: MIRDatabase):
     """Generate MIR Diffusion database"""
 
     from mir.generators import mir_index
@@ -34,7 +34,7 @@ def mir_diffusion(mir_db: MIRDatabase):
                 dbug(error_log)
 
 
-def mir_dtype(mir_db: MIRDatabase):
+def gen_torch_dtype(mir_db: MIRDatabase):
     """Create mir info database"""
     import re
     import torch
@@ -70,7 +70,7 @@ def mir_dtype(mir_db: MIRDatabase):
         )
 
 
-def mir_scheduler(mir_db: MIRDatabase):
+def gen_schedulers(mir_db: MIRDatabase):
     """Create mir info database"""
     import re
 
@@ -104,33 +104,46 @@ def mir_scheduler(mir_db: MIRDatabase):
 
 
 def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> None:
-    for entry in data_tuple:
-        arch, series, new_data = entry
-        mir_data = mir_db.database[f"{arch}.{series}"]
-        for comp, field_data in new_data.items():
-            if isinstance(field_data, dict):
-                for field, definition_data in field_data.items():  # field = pkg
-                    dbug(f"{arch}.{series} : {comp} : {field}")
-                    if isinstance(definition_data, dict) and mir_data[comp].get(field):
-                        for definition, sub_def_data in definition_data.items():  # definition = 0
-                            if series == "stable-diffusion-xl":
-                                dbug(definition)
-                            if isinstance(sub_def_data, dict) and mir_data[comp].get(definition):
-                                for sub_def, nested_data in sub_def_data.items():  # sub def = diffusers
-                                    if isinstance(nested_data, dict) and mir_data[comp].get(sub_def):
-                                        for key, value in nested_data.items():
-                                            mir_data[comp][field][definition][sub_def].setdefault(key, value)
-                                    else:
-                                        mir_data[comp][field][definition].setdefault(sub_def, nested_data)
-                            else:
-                                if series == "stable-diffusion-xl":
-                                    dbug(sub_def_data)
-                                mir_data[comp][field].get(definition, mir_data[comp][field])
-                                dbug(f"comp : {comp} field :{field} def {definition}")
-                    else:
-                        mir_data[comp].setdefault(field, definition_data)
+    """
+    Merge new data into a pre-generated MIR database, updating while preserving existing data structures.\n
+    :param mir_db: The MIRDatabase instance
+    :param data_tuple: A list of tuples, each containing:\n
+            - arch (str): The architecture name
+            - series (str): The series name
+            - `new_data`: New data to be merged into the database.
+    :raises TypeError: If any field in `new_data` is not a dictionary.
+    """
+
+    def update_nested_dict(target, source):
+        for key, value in source.items():
+            if isinstance(value, dict) and key in target:
+                if isinstance(target, dict):
+                    update_nested_dict(target[key], value)
             else:
+                if isinstance(source, dict):
+                    dbuq(target)
+                    target.setdefault(key, value)
+                else:
+                    target = {key: value}
+
+    for arch, series, new_data in data_tuple:
+        mir_data = mir_db.database[f"{arch}.{series}"]
+
+        for comp, field_data in new_data.items():
+            if not isinstance(field_data, dict):
                 raise TypeError("Test")
+
+            dbuq(f"{arch}.{series} : {comp}")
+            update_nested_dict(mir_data.setdefault(comp, {}), field_data)
+
+            if series == "stable-diffusion-xl":
+                for field, field_data in field_data.items():
+                    if isinstance(field_data, dict):
+                        for definition, sub_def_data in field_data.items():
+                            dbug(definition)
+                            if isinstance(sub_def_data, dict):
+                                mir_data[comp][field].setdefault(definition, {})
+                                update_nested_dict(mir_data[comp][field][definition], sub_def_data)
 
 
 def build_mir_additional(mir_db: MIRDatabase):
@@ -152,10 +165,10 @@ def build_mir_additional(mir_db: MIRDatabase):
                                 "height": 1024,
                             },
                         },
+                        1: {"diffusers": "DiffusionPipeline"},
                     },
                     "layer_256": ["62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"],
-                    "pkg_alt": {0: {"diffusers": "DiffusionPipeline"}},
-                }
+                },
             },
         ),
         (
@@ -173,10 +186,10 @@ def build_mir_additional(mir_db: MIRDatabase):
                                 "width": 1024,
                                 "height": 1024,
                             },
-                        }
+                        },
+                        1: {"diffusers": "DiffusionPipeline"},
                     },
                     "layer_256": ["62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"],
-                    "pkg_alt": {0: {"diffusers": "DiffusionPipeline"}},
                 }
             },
         ),
@@ -208,39 +221,67 @@ def build_mir_additional(mir_db: MIRDatabase):
                 }
             },
         ),
-        # (
-        #     "info.unet",
-        #     "stable-cascade",
-        #     {
-        #         "combined": {
-        #             "pkg": {
-        #                 0: {  # decoder=decoder_unet
-        #                     "precision": "ops.precision.bf16",
-        #                     "generation": {
-        #                         "negative_prompt": "",
-        #                         "num_inference_steps": 20,
-        #                         "guidance_scale": 4.0,
-        #                         "num_images_per_prompt": 1,
-        #                         "width": 1024,
-        #                         "height": 1024,
-        #                     },
-        #                 },
-        #                 "pkg_alt": {
-        #                     0: {
-        #                         "diffusers": {
-        #                             "StableCascadeCombinedPipeline": {
-        #                                 "negative_prompt": "",
-        #                                 "num_inference_steps": 10,
-        #                                 "prior_num_inference_steps": 20,
-        #                                 "prior_guidance_scale": 3.0,
-        #                             }
-        #                         },
-        #                     }
-        #                 },
-        #             }
-        #         }
-        #     },
-        # ),
+        (
+            "info.dit",
+            "flux-1-dev",
+            {
+                "base": {
+                    "pkg": {
+                        0: {
+                            "precision": "ops.precision.bf16",
+                            "generation": {
+                                "height": 1024,
+                                "width": 1024,
+                                "guidance_scale": 3.5,
+                                "num_inference_steps": 50,
+                                "max_sequence_length": 512,
+                            },
+                        },
+                        1: {
+                            "mflux": {"Flux1": {"model_name": "dev"}},
+                            "generation": {
+                                "height": 1024,
+                                "width": 1024,
+                                "gudance": 3.5,
+                                "steps": 25,
+                            },
+                        },
+                    },
+                    "layer_256": [
+                        "ad8763121f98e28bc4a3d5a8b494c1e8f385f14abe92fc0ca5e4ab3191f3a881",
+                        "20d47474da0714979e543b6f21bd12be5b5f721119c4277f364a29e329e931b9",
+                    ],
+                }
+            },
+        ),
+        (
+            "info.dit",
+            "flux-1-schnell",
+            {
+                "base": {
+                    "pkg": {
+                        0: {
+                            "precision": "ops.precision.bf16",
+                            "generation": {
+                                "height": 1024,
+                                "width": 1024,
+                                "guidance_scale": 0.0,
+                                "num_inference_steps": 4,
+                                "max_sequence_length": 256,
+                            },
+                        },
+                        1: {
+                            "mflux": {"Flux1": {"model_name": "schnell"}},
+                            "generation": {
+                                "height": 1024,
+                                "width": 1024,
+                                "steps": 4,
+                            },
+                        },
+                    }
+                }
+            },
+        ),
         (
             "info.unet",
             "stable-cascade",
@@ -269,6 +310,40 @@ def build_mir_additional(mir_db: MIRDatabase):
         ),
     ]
     merge_data(mir_db, data_tuple)
+
+    # (
+    #     "info.unet",
+    #     "stable-cascade",
+    #     {
+    #         "combined": {
+    #             "pkg": {
+    #                 0: {  # decoder=decoder_unet
+    #                     "precision": "ops.precision.bf16",
+    #                     "generation": {
+    #                         "negative_prompt": "",
+    #                         "num_inference_steps": 20,
+    #                         "guidance_scale": 4.0,
+    #                         "num_images_per_prompt": 1,
+    #                         "width": 1024,
+    #                         "height": 1024,
+    #                     },
+    #                 },
+    #                 "pkg_alt": {
+    #                     0: {
+    #                         "diffusers": {
+    #                             "StableCascadeCombinedPipeline": {
+    #                                 "negative_prompt": "",
+    #                                 "num_inference_steps": 10,
+    #                                 "prior_num_inference_steps": 20,
+    #                                 "prior_guidance_scale": 3.0,
+    #                             }
+    #                         },
+    #                     }
+    #                 },
+    #             }
+    #         }
+    #     },
+    # ),
 
 
 def build_mir_custom(mir_db: MIRDatabase):
@@ -354,7 +429,113 @@ def build_mir_custom(mir_db: MIRDatabase):
             },
         )
     )
-
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-schnell",
+            comp="shuttle-3.1-aesthetic",
+            repo="shuttleai/shuttle-3.1-aesthetic",
+            pkg={
+                0: {
+                    "diffusers": "DiffusionPipeline",
+                    "generation": {"guidance_scale": 3.5, "num_inference_steps": 4},
+                }
+            },
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-schnell",
+            comp="shuttle-3-diffusion",
+            repo="shuttleai/shuttle-3-diffusion",
+            pkg={
+                0: {
+                    "diffusers": "DiffusionPipeline",
+                    "generation": {"guidance_scale": 3.5, "num_inference_steps": 4},
+                }
+            },
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-schnell",
+            comp="shuttle-jaguar",
+            repo="shuttleai/shuttle-jaguar",
+            pkg={
+                0: {
+                    "diffusers": "DiffusionPipeline",
+                    "generation": {"guidance_scale": 3.5, "num_inference_steps": 4},
+                }
+            },
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-dev",
+            comp="f-lite-8b",
+            repo="freepik/flux.1-lite-8b",
+            pkg={0: {"generation": {"num_inference_steps": 28}}},
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-dev",
+            comp="f-lite-7b",
+            repo="freepik/f-lite-7b",
+            pkg={0: {"f_lite": "FLitePipeline", "generation": {"num_inference_steps": 28}}},
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-dev",
+            comp="f-lite-texture",
+            repo="freepik/f-lite-texture",
+            pkg={0: {"f_lite": "FLitePipeline", "generation": {"num_inference_steps": 28}}},
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-dev",
+            comp="f-lite",
+            repo="freepik/f-lite",
+            pkg={0: {"f_lite": "FLitePipeline", "generation": {"num_inference_steps": 28}}},
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-dev",
+            comp="hybrid",
+            layer_256=[
+                "14d0e1b573023deb5a4feaddf85ebca10ab2abf3452c433e2e3ae93acb216443",
+                "14d0e1b573023deb5a4feaddf85ebca10ab2abf3452c433e2e3ae93acb216443",
+            ],
+        )
+    )
+    mir_db.add(
+        mir_entry(
+            domain="info",
+            arch="dit",
+            series="flux-1-dev",
+            comp="mini",
+            repo="TencentARC/flux-mini",
+            layer_256=["e4a0d8cf2034da094518ab058da1d4aea14e00d132c6152a266ec196ffef02d0"],
+        ),
+    )
     mir_db.add(
         mir_entry(
             domain="info",

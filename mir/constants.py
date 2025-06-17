@@ -3,7 +3,7 @@
 
 
 from enum import Enum
-from typing import Annotated, Callable, List, Optional
+from typing import Annotated, Callable, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -49,7 +49,6 @@ def has_api(api_name: str, data: dict = None) -> bool:
                     status = request.json()
                     if status.get("result") == "OK":
                         return set_true(api_name)
-                return False
         except JSONDecodeError as error_log:
             dbuq(error_log)
             dbuq(f"json for ! {api_data}")
@@ -60,8 +59,6 @@ def has_api(api_name: str, data: dict = None) -> bool:
                 request.raise_for_status()
             except requests.HTTPError() as _error_log:
                 dbuq(_error_log)
-                return False
-
         except (
             requests.exceptions.ConnectionError,
             httpcore.ConnectError,
@@ -73,9 +70,8 @@ def has_api(api_name: str, data: dict = None) -> bool:
             OSError,
             RuntimeError,
             ConnectionError,
-        ):
-            set_false(api_name)
-        return False
+        ) as error_log:
+            dbuq(error_log)
 
     try:
         api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
@@ -90,25 +86,25 @@ def has_api(api_name: str, data: dict = None) -> bool:
 
             try:
                 return check_host(api_name)
-            except (LMStudioWebsocketError, APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError):
-                return set_false(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
-            return set_false(api_name)
+            except (LMStudioWebsocketError, APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError) as error_log:
+                dbuq(error_log)
+        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError) as error_log:
+            dbuq(error_log)
     elif api_name in ["LLAMAFILE", "CORTEX"]:
         try:
             from openai import APIConnectionError, APIStatusError, APITimeoutError
 
             try:
                 return check_host(api_name)
-            except (APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError):
-                return set_false(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
-            return set_false(api_name)
+            except (APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError) as error_log:
+                dbuq(error_log)
+        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError) as error_log:
+            dbuq(error_log)
     elif api_name in ["OLLAMA", "KAGGLE"]:
         try:
             return check_host(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError):
-            return set_false(api_name)
+        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError) as error_log:
+            dbuq(error_log)
     else:
         try:
             __import__(api_data.get("module"))
@@ -116,8 +112,9 @@ def has_api(api_name: str, data: dict = None) -> bool:
                 return set_true(api_name)
         except (UnboundLocalError, ImportError, ModuleNotFoundError):
             dbuq("|Ignorable| Source unavailable:", f"{api_name}")
-            return False
+            return set_false(api_name)
         return check_host(api_name)
+    return set_false(api_name)
 
 
 class BaseEnum(Enum):
@@ -167,59 +164,125 @@ example_str = ("function_name", "import.function_name")
 
 class PkgType(BaseEnum):
     """Package dependency constants\n
-    Collected info from hub model tags and dependencies
-    <NAME: (Availability, IMPORT_NAME)>"""
+    Collected info from hub model tags and dependencies\n
+    <NAME: (Availability, IMPORT_NAME, [Github repositories*]\n
+    *if applicable, otherwise IMPORT_NAME is pip package\n
+    NOTE: NAME is colloquial and does not always match IMPORT_NAME>"""
 
-    AUDIOGEN: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT")
-    BAGEL: tuple = (has_api("BAGEL"), "BAGEL")
-    BITSANDBYTES: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES")
-    DIFFUSERS: tuple = (has_api("DIFFUSERS"), "DIFFUSERS")
-    F_LITE: tuple = (has_api("F_LITE"), "F_LITE")
-    HIDIFFUSION: tuple = (has_api("HIDIFFUSION"), "HIDIFFUSION")
-    LUMINA_MGPT: tuple = (has_api("INFERENCE_SOLVER"), "INFERENCE_SOLVER")  # Alpha vllm
-    MFLUX: tuple = (has_api("MFLUX"), "MFLUX")
-    MLX_AUDIO: tuple = (CueType.check_type("MLX_AUDIO"), "MLX_AUDIO")
-    MLX_LM: tuple = (has_api("MLX_LM"), "MLX_LM")
-    MLX: tuple = (has_api("MFLUX") and has_api("MLX_LM") and CueType.check_type("MLX_AUDIO"), "MLX")
-    PARLER_TTS: tuple = (has_api("PARLER_TTS"), "PARLER_TTS")
-    ORPHEUS_TTS: tuple = (has_api("ORPHEUS_TTS"), "ORPHEUS_TTS")
-    OUTETTS: tuple = (has_api("OUTETTS"), "OUTETTS")
-    SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS")
-    TORCH: tuple = (has_api("TORCH"), "TORCH")
-    TORCHAUDIO: tuple = (has_api("TORCHAUDIO"), "TORCHAUDIO")
-    TORCHVISION: tuple = (has_api("TORCHVISION"), "TORCHVISION")
-    TRANSFORMERS: tuple = (has_api("TRANSFORMERS"), "TRANSFORMERS")
+    AUDIOGEN: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT", ["exdysa/facebookresearch-audiocraft-revamp"])  # this fork supports mps
+    BAGEL: tuple = (has_api("BAGEL"), "BAGEL", ["bytedance-seed/BAGEL"])
+    BITSANDBYTES: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES", [])  # bitsandbytes-foundation/bitsandbytes
+    DIFFUSERS: tuple = (has_api("DIFFUSERS"), "DIFFUSERS", [])
+    EXLLAMAV2: tuple = (has_api("EXLLAMAV2"), "EXLLAMAV2", [])  # turboderp-org/exllamav2
+    F_LITE: tuple = (has_api("F_LITE"), "F_LITE", ["fal-ai/f-lite"])
+    HIDIFFUSION: tuple = (has_api("HIDIFFUSION"), "HIDIFFUSION", ["megvii-research/HiDiffusion"])
+    LUMINA_MGPT: tuple = (has_api("INFERENCE_SOLVER"), "INFERENCE_SOLVER", "Alpha-VLLM/Lumina-mGPT")
+    MFLUX: tuple = (has_api("MFLUX"), "MFLUX", [])  # "filipstrand/mflux"
+    MLX_AUDIO: tuple = (CueType.check_type("MLX_AUDIO"), "MLX_AUDIO", [])  # Blaizzy/mlx-audio
+    MLX_LM: tuple = (has_api("MLX_LM"), "MLX_LM", [])  # "ml-explore/mlx-lm"
+    MLX: tuple = (
+        has_api("MFLUX") and has_api("MLX_LM") and CueType.check_type("MLX_AUDIO"),
+        "MLX",
+        [],
+    )
+    PARLER_TTS: tuple = (has_api("PARLER_TTS"), "PARLER_TTS", ["huggingface/parler-tts"])
+    PLEIAS: tuple = (has_api("PLEIAS"), "PLEIAS", ["exdysa/Pleias-Pleias-RAG-Library"])  # bypasses vllm for macos to avoid requiring gcc/AVIX
+    ORPHEUS_TTS: tuple = (has_api("ORPHEUS_TTS"), "ORPHEUS_TTS", ["canopyai/Orpheus-TTS"])
+    OUTETTS: tuple = (has_api("OUTETTS"), "OUTETTS", ["edwko/OuteTTS"])
+    SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS", [])  # UKPLab/sentence-transformers
+    TORCH: tuple = (has_api("TORCH"), "TORCH", [])  # Possible that torch is NOT needed (mlx_lm, or some other unforeseen future )
+    TORCHAUDIO: tuple = (has_api("TORCHAUDIO"), "TORCHAUDIO", [])
+    TORCHVISION: tuple = (has_api("TORCHVISION"), "TORCHVISION", [])
+    TRANSFORMERS: tuple = (has_api("TRANSFORMERS"), "TRANSFORMERS", [])
 
 
 class ChipType(Enum):
     """Device constants
-    CUDA, MPS, XPU, MTIA
+    CUDA, MPS, XPU, MTIA [Supported PkgTypes]\n
+    :param _show_all: ...
+    :param _show_ready: ...
+    : param _show_pkgs: ...
     """
 
     @classmethod
     def _show_all(cls) -> List:
+        """Show all POSSIBLE processor types"""
         atypes = [atype for atype in ChipType.__dict__ if "_" not in atype]
         return atypes
 
     @classmethod
-    def _show_ready(cls, api_name: Optional[str] = None):
+    def _show_ready(cls, api_name: Optional[str] = None) -> Union[List[str], bool]:
+        """Show all READY devices.\n
+        :param api_name: Boolean check for the specific API by name, defaults to None
+        :return: `bool
+        """
         atypes = cls._show_all()
         if api_name:
             return api_name.upper() in list(getattr(cls, x)[1] for x in atypes if getattr(cls, x)[0] is True)
         return [getattr(cls, x)[1] for x in atypes if getattr(cls, x)[0] is True]
 
+    @classmethod
+    def _show_pkgs(cls) -> Union[List[PkgType], str]:
+        """Return compatible PkgTypes for all available chipsets\n
+        If no chipsets are detected, returns onlyCPU compatibility options\n
+        :return: `PkgType`s for the available processors including CPU
+        """
+        pkg_names = getattr(cls, "CPU")[-1]
+        atypes = cls._show_ready()
+        if atypes not in ["CPU", "XPU", "MTIA"]:
+            pkg_names = getattr(cls, next(iter(atypes)))[-1] + pkg_names
+        return pkg_names
+
 
 chip_types = [
-    ("CUDA", "cuda"),
-    ("MPS", "mps"),
-    ("XPU", "xpu"),
-    ("MTIA", "mtia"),
+    (
+        "CUDA",
+        "cuda",
+        [
+            PkgType.BAGEL,
+            PkgType.BITSANDBYTES,
+            PkgType.EXLLAMAV2,
+            PkgType.F_LITE,
+            PkgType.LUMINA_MGPT,
+            PkgType.ORPHEUS_TTS,
+            PkgType.OUTETTS,
+        ],
+    ),
+    (
+        "MPS",
+        "mps",
+        [
+            PkgType.MFLUX,
+            PkgType.MLX_AUDIO,
+            PkgType.MLX_LM,
+            PkgType.MLX,
+            PkgType.BAGEL,
+        ],
+    ),
+    ("XPU", "xpu", []),
+    ("MTIA", "mtia", []),
 ]
-accelerator = first_available(assign=False)
-
-for name, key in chip_types:
-    setattr(ChipType, name, (key in accelerator, name))
-setattr(ChipType, "CPU", (True, "CPU"))
+setattr(ChipType, "_device", first_available)
+accelerator = ChipType._device(assign=True, init=True, clean=True)  # pylint:disable=no-member, protected-access
+for name, key, pkg_type in chip_types:
+    setattr(ChipType, name, (key in str(accelerator), name, pkg_type))
+setattr(
+    ChipType,
+    "CPU",
+    (
+        True,
+        "CPU",
+        [
+            PkgType.AUDIOGEN,
+            PkgType.PARLER_TTS,
+            PkgType.HIDIFFUSION,
+            PkgType.SENTENCE_TRANSFORMERS,
+            PkgType.DIFFUSERS,
+            PkgType.TRANSFORMERS,
+            PkgType.TORCH,
+        ],
+    ),
+)
 
 
 # class PipeType(Enum):

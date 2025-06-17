@@ -59,6 +59,16 @@
             }
         }
     },
+    "info.dit.chroma": {
+        "base": {
+            "repo": "lodestones/Chroma",
+            "pkg": {
+                "0": {
+                    "diffusers": "ChromaPipeline"
+                }
+            }
+        }
+    },
     "info.dit.cogvideox": {
         "2b": {
             "repo": "THUDM/CogVideoX-2b",
@@ -109,6 +119,16 @@
             }
         }
     },
+    "info.dit.cosmos-predict2-2b-text2image": {
+        "base": {
+            "repo": "nvidia/Cosmos-Predict2-2B-Text2Image",
+            "pkg": {
+                "0": {
+                    "diffusers": "Cosmos2TextToImagePipeline"
+                }
+            }
+        }
+    },
     "info.unet.if-i-xl-v": {
         "base": {
             "repo": "DeepFloyd/IF-I-XL-v1.0",
@@ -129,26 +149,160 @@
             }
         }
     },
-    "info.dit.flux-1": {
-        "schnell": {
+    "info.dit.flux-1-schnell": {
+        "base": {
             "repo": "black-forest-labs/FLUX.1-schnell",
             "pkg": {
                 "0": {
-                    "diffusers": "FluxPipeline"
+                    "diffusers": "FluxPipeline",
+                    "precision": "ops.precision.bf16",
+                    "generation": {
+                        "height": 1024,
+                        "width": 1024,
+                        "guidance_scale": 0.0,
+                        "num_inference_steps": 4,
+                        "max_sequence_length": 256
+                    }
                 },
                 "1": {
-                    "mflux": "Flux1"
+                    "mflux": "Flux1",
+                    "generation": {
+                        "height": 1024,
+                        "width": 1024,
+                        "steps": 4
+                    }
                 }
             }
         },
-        "dev": {
+        "shuttle-3.1-aesthetic": {
+            "repo": "shuttleai/shuttle-3.1-aesthetic",
+            "pkg": {
+                "0": {
+                    "diffusers": "DiffusionPipeline",
+                    "generation": {
+                        "guidance_scale": 3.5,
+                        "num_inference_steps": 4
+                    }
+                }
+            }
+        },
+        "shuttle-3-diffusion": {
+            "repo": "shuttleai/shuttle-3-diffusion",
+            "pkg": {
+                "0": {
+                    "diffusers": "DiffusionPipeline",
+                    "generation": {
+                        "guidance_scale": 3.5,
+                        "num_inference_steps": 4
+                    }
+                }
+            }
+        },
+        "shuttle-jaguar": {
+            "repo": "shuttleai/shuttle-jaguar",
+            "pkg": {
+                "0": {
+                    "diffusers": "DiffusionPipeline",
+                    "generation": {
+                        "guidance_scale": 3.5,
+                        "num_inference_steps": 4
+                    }
+                }
+            }
+        }
+    },
+    "info.dit.flux-1-dev": {
+        "base": {
             "repo": "black-forest-labs/FLUX.1-dev",
             "pkg": {
                 "0": {
-                    "diffusers": "FluxPipeline"
+                    "diffusers": "FluxPipeline",
+                    "precision": "ops.precision.bf16",
+                    "generation": {
+                        "height": 1024,
+                        "width": 1024,
+                        "guidance_scale": 3.5,
+                        "num_inference_steps": 50,
+                        "max_sequence_length": 512
+                    }
                 },
                 "1": {
-                    "mflux": "Flux1"
+                    "mflux": "Flux1",
+                    "generation": {
+                        "height": 1024,
+                        "width": 1024,
+                        "gudance": 3.5,
+                        "steps": 25
+                    }
+                }
+            },
+            "layer_256": [
+                "ad8763121f98e28bc4a3d5a8b494c1e8f385f14abe92fc0ca5e4ab3191f3a881",
+                "20d47474da0714979e543b6f21bd12be5b5f721119c4277f364a29e329e931b9"
+            ]
+        },
+        "f-lite-8b": {
+            "repo": "freepik/flux.1-lite-8b",
+            "pkg": {
+                "0": {
+                    "generation": {
+                        "num_inference_steps": 28
+                    }
+                }
+            }
+        },
+        "f-lite-7b": {
+            "repo": "freepik/f-lite-7b",
+            "pkg": {
+                "0": {
+                    "f_lite": "FLitePipeline",
+                    "generation": {
+                        "num_inference_steps": 28
+                    }
+                }
+            }
+        },
+        "f-lite-texture": {
+            "repo": "freepik/f-lite-texture",
+            "pkg": {
+                "0": {
+                    "f_lite": "FLitePipeline",
+                    "generation": {
+                        "num_inference_steps": 28
+                    }
+                }
+            }
+        },
+        "f-lite": {
+            "repo": "freepik/f-lite",
+            "pkg": {
+                "0": {
+                    "f_lite": "FLitePipeline",
+                    "generation": {
+                        "num_inference_steps": 28
+                    }
+                }
+            }
+        },
+        "hybrid": {
+            "layer_256": [
+                "14d0e1b573023deb5a4feaddf85ebca10ab2abf3452c433e2e3ae93acb216443",
+                "14d0e1b573023deb5a4feaddf85ebca10ab2abf3452c433e2e3ae93acb216443"
+            ]
+        },
+        "mini": {
+            "repo": "TencentARC/flux-mini",
+            "layer_256": [
+                "e4a0d8cf2034da094518ab058da1d4aea14e00d132c6152a266ec196ffef02d0"
+            ]
+        }
+    },
+    "info.dit.hidream-i1": {
+        "full": {
+            "repo": "HiDream-ai/HiDream-I1-Full",
+            "pkg": {
+                "0": {
+                    "diffusers": "HiDreamImagePipeline"
                 }
             }
         }
@@ -164,8 +318,8 @@
         }
     },
     "info.dit.hunyuandit": {
-        "diffusers": {
-            "repo": "Tencent-Hunyuan/HunyuanDiT-Diffusers",
+        "v1": {
+            "repo": "tencent-hunyuan/hunyuandiT-v1.2-diffusers",
             "pkg": {
                 "0": {
                     "diffusers": "HunyuanDiTPipeline"
@@ -218,17 +372,23 @@
             "repo": "Kwai-Kolors/Kolors-diffusers",
             "pkg": {
                 "0": {
-                    "diffusers": "KolorsPipeline"
+                    "diffusers": "KolorsPipeline",
+                    "precision": "ops.precision.f16",
+                    "generation": {
+                        "negative_prompt": "",
+                        "guidance_scale": 5.0,
+                        "num_inference_steps": 50,
+                        "width": 1024,
+                        "height": 1024
+                    }
+                },
+                "1": {
+                    "diffusers": "DiffusionPipeline"
                 }
             },
             "layer_256": [
                 "62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"
-            ],
-            "pkg_alt": {
-                "0": {
-                    "diffusers": "DiffusionPipeline"
-                }
-            }
+            ]
         }
     },
     "info.dit.latte-1": {
@@ -336,7 +496,16 @@
             "repo": "stabilityai/stable-cascade-prior",
             "pkg": {
                 "0": {
-                    "diffusers": "StableCascadePriorPipeline"
+                    "diffusers": "StableCascadePriorPipeline",
+                    "precision": "ops.precision.bf16",
+                    "generation": {
+                        "negative_prompt": "",
+                        "num_images_per_prompt": 1,
+                        "num_inference_steps": 20,
+                        "guidance_scale": 4.0,
+                        "width": 1024,
+                        "height": 1024
+                    }
                 }
             },
             "layer_256": [
@@ -351,13 +520,27 @@
             "repo": "stabilityai/stable-cascade",
             "pkg": {
                 "0": {
-                    "diffusers": "StableCascadeDecoderPipeline"
-                }
+                    "diffusers": "StableCascadeDecoderPipeline",
+                    "generation": {
+                        "negative_prompt": "",
+                        "guidance_scale": 0.0,
+                        "output_type": "pil",
+                        "num_inference_steps": 10
+                    },
+                    "precision": "ops.precision.bf16"
+                },
+                "layer_256": [
+                    "fde5a91a908e8cb969f97bcd20e852fb028cc039a19633b0e1559ae41edeb16f",
+                    "24fa8b55d12bf904878b7f2cda47c04c1a92da702fe149e28341686c080dfd4f",
+                    "a7c96afb54e60386b7d077bf3f00d04596f4b877d58e6a577f0e1a08dc4a0190",
+                    "f1300b9ffe051640555bfeee245813e440076ef90b669332a7f9fb35fffb93e8",
+                    "047fa405c9cd5ad054d8f8c8baa2294fbc663e4121828b22cb190f7057842a64"
+                ]
             }
         }
     },
-    "info.unet.stable-diffusion-v1-5": {
-        "base": {
+    "info.unet.stable-diffusion": {
+        "v1": {
             "repo": "stable-diffusion-v1-5/stable-diffusion-v1-5",
             "pkg": {
                 "0": {
@@ -409,17 +592,22 @@
             "repo": "stabilityai/stable-diffusion-xl-base-1.0",
             "pkg": {
                 "0": {
-                    "diffusers": "StableDiffusionXLPipeline"
+                    "diffusers": "StableDiffusionXLPipeline",
+                    "generation": {
+                        "denoising_end": 0.8,
+                        "output_type": "latent",
+                        "safety_checker": false,
+                        "width": 1024,
+                        "height": 1024
+                    }
+                },
+                "1": {
+                    "diffusers": "DiffusionPipeline"
                 }
             },
             "layer_256": [
                 "62a5ab1b5fdfa4fedb32323841298c6effe1af25be94a8583350b0a7641503ef"
-            ],
-            "pkg_alt": {
-                "0": {
-                    "diffusers": "DiffusionPipeline"
-                }
-            }
+            ]
         },
         "refiner": {
             "repo": "stabilityai/stable-diffusion-xl-refiner-1.0",
@@ -487,6 +675,16 @@
             "pkg": {
                 "0": {
                     "diffusers": "StableVideoDiffusionPipeline"
+                }
+            }
+        }
+    },
+    "info.dit.visualclozepipeline": {
+        "384": {
+            "repo": "VisualCloze/VisualClozePipeline-384",
+            "pkg": {
+                "0": {
+                    "diffusers": "VisualClozeGenerationPipeline"
                 }
             }
         }
@@ -1276,6 +1474,15 @@
             "pkg": {
                 "0": {
                     "diffusers": "FlowMatchHeunDiscreteScheduler"
+                }
+            }
+        }
+    },
+    "ops.scheduler.flowmatchlcm": {
+        "scheduler": {
+            "pkg": {
+                "0": {
+                    "diffusers": "FlowMatchLCMScheduler"
                 }
             }
         }

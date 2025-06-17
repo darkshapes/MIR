@@ -83,11 +83,11 @@ def test_create_flux():
 
     mir_series, prefixed_data = result
 
-    assert mir_series == "info.dit.xulf"
-    assert prefixed_data["schnell"]["repo"] == repo_path
-    assert prefixed_data["schnell"]["pkg"][0]["diffusers"] == pipe_class
-    assert 1 in prefixed_data["schnell"]["pkg"]
-    assert prefixed_data["schnell"]["pkg"][1]["mflux"] == "Flux1"
+    assert mir_series == "info.dit.xulf-schnell"
+    assert prefixed_data["base"]["repo"] == repo_path
+    assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
+    assert 1 in prefixed_data["base"]["pkg"]
+    assert prefixed_data["base"]["pkg"][1]["mflux"] == "Flux1"
 
 
 def test_create_empty():

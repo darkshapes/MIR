@@ -29,12 +29,10 @@ def mir_label(mir_prefix: str, repo_path: str, decoder=False) -> Tuple[str]:
         r"-\d{4,}[px].*",  # "-" and 4 digits
         r"-\d{4,}.*",  # "-" and 4 digits
         r"-\d{1,2}[bBmM]$",  # "-" one or two digit number and "b" or "B" parameter model
-        r"-v\d{1,2}$",  # "v" followed by one or two digits
+        r"-v\d{1,2}",  # "v" followed by one or two digits
         r"-diffusers$",
-        r"-dev$",
         r"-large$",
         r"-medium$",
-        r"-schnell$",
         r"-prior$",
         r"-full$",
         r"-xt$",
@@ -69,13 +67,15 @@ def mir_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
     for entry in pipes:
         pipe_class, repo_path, staged_class, staged_repo = entry
         if pipe_class == "StableDiffusion3Pipeline":
-            repo_path = "stabilityai/stable-diffusion-3.5-medium"
-        elif pipe_class == "tencent-hunyuan/hunyuandit-diffusers":
-            repo_path = "tencent-hunyuan/hunyuandiT-v1.2-diffusers"
+            repo_path = "stabilityai/stable-diffusion-3.5-medium"  # to avoid 3 and use 3.5
+        elif pipe_class == "HunyuanDiTPipeline":
+            repo_path = "tencent-hunyuan/hunyuandiT-v1.2-diffusers"  # to avoid 1 and use 1.2
+        elif pipe_class == "ChromaPipeline":
+            repo_path = "lodestones/Chroma"
         pipe_class = pipe_class.strip('"')
         series, comp_data = create_pipe_entry(repo_path, pipe_class)
         pipe_data.setdefault(series, {}).update(comp_data)  # update empty dict, preventing rewrite of others in series
-        if staged_repo or any(repo_path in case for case in special_cases):
+        if staged_repo or any(repo_path in case for case in special_cases):  # these share the same pipe, (missing their own docstring)
             test = special_cases.get(repo_path)
             if test:
                 staged_repo = test

@@ -12,9 +12,9 @@ from typing import Dict, List, Tuple
 def gen_diffusers(mir_db: MIRDatabase):
     """Generate MIR Diffusion database"""
 
-    from mir.generators import mir_index
+    from mir.generators import diffusers_index, transformers_index
 
-    mir_data = mir_index()
+    mir_data = diffusers_index() | transformers_index()
     for series, comp_name in mir_data.items():
         id_segment = series.split(".")
         for compatibility in comp_name:

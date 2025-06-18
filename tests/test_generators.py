@@ -3,11 +3,11 @@
 
 import pytest
 from unittest import mock
-from mir.generators import mir_index
 
 
 def test_list_diffusers_models():
-    print(mir_index())
+    __import__("mir").generators.diffusers_index()
+    __import__("mir").generators.transformers_index()
 
 
 # @pytest.fixture

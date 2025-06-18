@@ -6,7 +6,7 @@
 from typing import Any, Dict, Generator, List, Tuple
 import os
 import sys
-from nnll.monitor.file import dbug
+from nnll.monitor.file import dbug, nfo, dbuq
 from nnll.tensor_pipe.deconstructors import scrape_docs, cut_docs, root_class
 
 if "pytest" in sys.modules:
@@ -25,11 +25,11 @@ def mir_label(mir_prefix: str, repo_path: str, decoder=False) -> Tuple[str]:
 
     name = os.path.basename(repo_path).lower().replace("_", "-").replace("1.0", "").replace(".", "-")
     patterns = [
-        r"-\d{3,}$",  # "-" and 3 digits
-        r"-\d{4,}[px].*",  # "-" and 4 digits
-        r"-\d{4,}.*",  # "-" and 4 digits
-        r"-\d{1,2}[bBmM]$",  # "-" one or two digit number and "b" or "B" parameter model
+        r"-\d{1,2}[bBmMkK]",  # "-" one or two digit number and "b" or "B" parameter model
         r"-v\d{1,2}",  # "v" followed by one or two digits
+        r"-\d{3,}$",  # "-" and 3 digits
+        r"-\d{4,}.*",  # "-" and 4 digits
+        r"-\d{4,}[px].*",  # "-" and 4 digits
         r"-diffusers$",
         r"-large$",
         r"-medium$",
@@ -53,9 +53,9 @@ def mir_label(mir_prefix: str, repo_path: str, decoder=False) -> Tuple[str]:
     return mir_prefix + name, "base"
 
 
-def mir_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
-    """Generate diffusion model data for mir index\n
-    :return: Dictionary ready to be applied to mir data fields
+def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
+    """Generate diffusion model data for MIR index\n
+    :return: Dictionary ready to be applied to MIR data fields
     """
     special_cases = {
         "black-forest-labs/FLUX.1-schnell": "black-forest-labs/FLUX.1-dev",
@@ -100,10 +100,12 @@ def create_pipe_entry(repo_path: str, pipe_class: str) -> tuple[str, Dict[str, D
     pipe_data = getattr(diffusers, pipe_class)
     sub_classes = root_class(pipe_data)
     decoder = "decoder" in sub_classes
-    if "unet" in sub_classes or "prior" in sub_classes or decoder or "kandinsky" in repo_path or "shap-e" in repo_path:
+    dbuq(pipe_class)
+    dbuq(repo_path)
+    if repo_path in ["openai/shap-e", "kandinsky-community/kandinsky-3"]:
         mir_prefix = "info.unet."
-    elif "transformer" in sub_classes:
-        mir_prefix = "info.dit."
+    else:
+        mir_prefix = flag_config(**sub_classes)
     mir_series, mir_comp = mir_label(mir_prefix, repo_path, decoder)
     prefixed_data = {
         "repo": repo_path,
@@ -113,3 +115,119 @@ def create_pipe_entry(repo_path: str, pipe_class: str) -> tuple[str, Dict[str, D
         pipe_class = {1: {"mflux": "Flux1"}}
         prefixed_data["pkg"].update(pipe_class)
     return mir_series, {mir_comp: prefixed_data}
+
+
+def flag_config(transformers: bool = False, **kwargs):
+    """Set type of MIR prefix depending on model type\n
+    :param transformers: Use transformers data instead of diffusers data, defaults to False
+    :raises ValueError: Model type not detected
+    :return: _description_"""
+    xfmr_flags = {
+        "info.cnn.": ("bbox_cost",),
+        "info.rnn.": ("lru_width",),
+        "info.gan.": ("codebook_dim", "kernel_size", "kernel_predictor_conv_size"),
+        "info.mamba.": (
+            "mamba_expand",
+            "parallel_attn",
+        ),
+        "info.vit.": ("vlm_config", "crop_size", "out_indices", "logit_scale_init_value", "image_size", "vision_config", "hidden_sizes", "image_token_id"),
+        "info.autoencoder.": ("classifier_proj_size", "position_embedding_type", "separate_cls", "keypoint_detector_config", "local_attention"),
+        "info.transformer.": (
+            "encoder_attention_heads",
+            "encoder_layers",
+            "decoder_layers",
+            "decoder_hidden_size",
+            "encoder_hidden_size",
+            "is_encoder_decoder",
+            "encoder_config",
+            "audio_token_index",
+        ),
+        "info.autoregressive.": ("ffn_dim", "num_codebooks", "vq_config", "attn_config", "n_head", "rms_norm_eps", "rope_theta", "head_dim", "hidden_dropout_prob"),
+    }
+    diff_flags = {
+        "info.unet.": ("unet", "prior", "decoder"),
+        "info.dit.": ("transformer",),
+    }
+
+    if transformers:
+        flags = xfmr_flags
+    else:
+        flags = diff_flags
+    for mir_prefix, key_match in flags.items():
+        if any(kwargs.get(param) for param in key_match):
+            return mir_prefix
+    nfo(("Unsupported model type"))
+    dbuq(f"Unsupported model type {list(kwargs)}")
+
+
+def transformers_index():
+    """Generate LLM model data for MIR index\n
+    :return: Dictionary ready to be applied to MIR data fields"""
+
+    import re
+    import transformers
+    from nnll.tensor_pipe.deconstructors import stock_llm_data
+
+    corrections = {
+        "GraniteSpeechForConditionalGeneration": {
+            "repo_path": "ibm-granite/granite-speech-3.3-8b",
+            "sub_segments": {"encoder_layers": [""], "decoder_layers": [""]},
+        },
+        "GraniteModel": {
+            "repo_path": "ibm-granite/granite-3.3-2b-base",
+            "sub_segments": {
+                "rope_theta": [""],
+            },
+            "DPRQuestionEncoder": {
+                "repo_path": "facebook/dpr-question_encoder-single-nq-base",
+                "sub_segments": {"local_attention": [""], "classifier_proj_size": [""]},
+            },
+            "CohereModel": {
+                "repo_path": "CohereForAI/c4ai-command-r-v01",
+                "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
+            },
+            "Cohere2Model": {
+                "repo_path": "CohereLabs/c4ai-command-r7b-12-2024",
+                "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
+            },
+            "GraniteMoeHybridModel": {
+                "repo_path": "ibm-research/PowerMoE-3b",
+            },
+            "GraniteMoeModel": {
+                "repo_path": "ibm-research/PowerMoE-3b",
+            },
+            "AriaModel": {
+                "repo_path": "rhymes-ai/Aria-Chat",
+                "sub_segments": {"vision_config": [""], "text_config": [""]},
+            },
+        },
+    }
+    mir_data = {}
+    transformers_data = stock_llm_data()
+    for model_class, model_data in transformers_data.items():
+        class_name = model_class.__name__
+        if class_name in list(corrections):  # these are corrected because `root_class` doesn't return anything in these cases
+            repo_path = corrections[class_name]["repo_path"]
+            sub_segments = corrections[class_name].get("sub_segments", root_class(model_data["config"][-1], "transformers"))
+        else:
+            doc_string = getattr(transformers, model_data["config"][-1]).__doc__
+            matches = re.findall(r"\[([^\]]+)\]", doc_string)
+            if matches:
+                repo_path = matches[1] if "/" in matches[1] else matches[2]
+            else:
+                repo_path = ""
+            sub_segments = root_class(model_data["config"][-1], "transformers")
+        if sub_segments and list(sub_segments) != ["kwargs"] and list(sub_segments) != ["use_cache", "kwargs"] and repo_path is not None:
+            dbuq(class_name)
+            mir_prefix = flag_config(transformers=True, **sub_segments)
+            mir_series, mir_comp = mir_label(mir_prefix, repo_path)
+            mir_data.setdefault(
+                mir_series,
+                {
+                    mir_comp: {
+                        "repo": repo_path,
+                        "pkg": {0: {"transformers": class_name}},
+                    }
+                },
+            )
+    return mir_data

@@ -57,6 +57,7 @@ tests/test_layer_pattern.py
 tests/test_libtype.py
 tests/test_metadata_match.py
 tests/test_mir_db_create.py
+tests/test_mir_merge.py
 tests/test_mir_search.py
 tests/test_pkg_deps.py
 tests/test_read_state_dict.py

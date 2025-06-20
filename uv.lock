@@ -15,7 +15,7 @@ resolution-markers = [
 
 [[package]]
 name = "accelerate"
-version = "1.7.0"
+version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "huggingface-hub" },
@@ -26,9 +26,9 @@ dependencies = [
     { name = "safetensors" },
     { name = "torch" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/97/33/47bbd507e3a851d33d19ce7b2141c5ea3689bfae91ba168044d7db24b0e9/accelerate-1.7.0.tar.gz", hash = "sha256:e8a2a5503d6237b9eee73cc8d36cf543f9c2d8dd2c6713450b322f5e6d53a610", size = 376026, upload-time = "2025-05-15T10:00:52.117Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/bd/dedb0d8c5855120367e2d9f3c00504be4ee88df50e902e1039d85dbf714f/accelerate-1.8.0.tar.gz", hash = "sha256:8b56553d570f4787fd34a33dc4613f5444fe1ba3d0e81fedb9ce27bd81e91423", size = 381205, upload-time = "2025-06-19T13:12:10.305Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f8/bb/be8146c196ad6e4dec78385d91e92591f8a433576c4e04c342a636fcd811/accelerate-1.7.0-py3-none-any.whl", hash = "sha256:cf57165cca28769c6cf2650812371c81b18e05743dfa3c748524b1bb4f2b272f", size = 362095, upload-time = "2025-05-15T10:00:49.914Z" },
+    { url = "https://files.pythonhosted.org/packages/0f/26/6cfb83dc6eb6fbc18a167a86a239608827b4a133515713e5ef1ad64abfbd/accelerate-1.8.0-py3-none-any.whl", hash = "sha256:4c3460a8052e122fb124d92ec15618229951febbef1d7336a4c35371f78b72a1", size = 365314, upload-time = "2025-06-19T13:12:08.609Z" },
 ]
 
 [[package]]
@@ -699,7 +699,7 @@ wheels = [
 [[package]]
 name = "diffusers"
 version = "0.34.0.dev0"
-source = { git = "https://github.com/huggingface/diffusers#66394bf6c798a93a1e9536dac4999f77b690174c" }
+source = { git = "https://github.com/huggingface/diffusers#42077e6c734df2fc7bbed373abceab99635500ad" }
 dependencies = [
     { name = "filelock" },
     { name = "huggingface-hub" },
@@ -1045,16 +1045,16 @@ wheels = [
 
 [[package]]
 name = "gguf"
-version = "0.10.0"
+version = "0.17.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "pyyaml" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0e/c4/a159e9f842b0e8b8495b2689af6cf3426f002cf01207ca8134db82fc4088/gguf-0.10.0.tar.gz", hash = "sha256:52a30ef26328b419ffc47d9269fc580c238edf1c8a19b5ea143c323e04a038c1", size = 65704, upload-time = "2024-08-23T08:03:25.599Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/08/08/7de1ca4b71e7bf33b547f82bb22505e221b5fa42f67d635e200e0ad22ad6/gguf-0.17.1.tar.gz", hash = "sha256:36ad71aad900a3e75fc94ebe96ea6029f03a4e44be7627ef7ad3d03e8c7bcb53", size = 89338, upload-time = "2025-06-19T14:00:33.705Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1b/e4/c5f9bd71840ae9afb7e2b7c285ba209f2ef5e9cd83885f8c596c551d3026/gguf-0.10.0-py3-none-any.whl", hash = "sha256:706089fba756a06913227841b4a6c8398360fa991569fd974e663a92b224e33f", size = 71584, upload-time = "2024-08-23T08:03:24.088Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/31/6a93a887617ee7deeaa602ca3d02d1c12a6cb8a742a695de5d128f5fa46a/gguf-0.17.1-py3-none-any.whl", hash = "sha256:7bc5aa7eeb1931f7d39b48fdc5b38fda6b294b9dca75cf607ac69557840a3943", size = 96224, upload-time = "2025-06-19T14:00:32.88Z" },
 ]
 
 [[package]]
@@ -1073,7 +1073,7 @@ wheels = [
 
 [[package]]
 name = "gradio"
-version = "5.34.1"
+version = "5.34.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -1106,9 +1106,9 @@ dependencies = [
     { name = "urllib3", marker = "sys_platform == 'emscripten'" },
     { name = "uvicorn", marker = "sys_platform != 'emscripten'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f8/b9/e9c5113422eed97bb7692709775142e2f76259f0237652b544f459c503ef/gradio-5.34.1.tar.gz", hash = "sha256:26e3a01b0d3170e0ecc4757a0973aab78d5e1a15110b122c512ada116e137729", size = 65347644, upload-time = "2025-06-18T00:19:15.696Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2f/39/da989c62cbe787e19e452dcbd4cd0d19de22a47e390810ba75cef4b94eac/gradio-5.34.2.tar.gz", hash = "sha256:1bd729d268268ceec2826bb4ec900d7303de6e783e2a42e3f0f16daa4cab1027", size = 65345636, upload-time = "2025-06-19T18:20:05.17Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6e/4d/3883eaf9502c24a78f13ec755e28dc6e71f4f5b050cc9e04efecc5d2dcdd/gradio-5.34.1-py3-none-any.whl", hash = "sha256:399167c0dbf11abcbe6e281575614b105ff4bfaea9491aa2b06de64ffdd553c4", size = 54273535, upload-time = "2025-06-18T00:19:08.782Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/66/71e55221a5c41d4ebf885ee0cd6186673542fe8c76b5f2efdc8dbc037ace/gradio-5.34.2-py3-none-any.whl", hash = "sha256:3123a6e8fea8e1dfecac0742c3c0ba5683ebf0ae02ba684a37a372bd4ff26d97", size = 54274804, upload-time = "2025-06-19T18:20:00.105Z" },
 ]
 
 [[package]]
@@ -2381,8 +2381,8 @@ wheels = [
 
 [[package]]
 name = "nnll"
-version = "0.1.dev608+g0b11b56.d20250618"
-source = { git = "https://github.com/darkshapes/nnll?rev=main#0b11b56aaf91dabc279d0ea533748241bd5abced" }
+version = "0.1.dev614+g7dff405.d20250620"
+source = { git = "https://github.com/darkshapes/nnll?rev=main#7dff405f84c23eb25620eb06dcfe8472a548b97e" }
 dependencies = [
     { name = "accelerate" },
     { name = "aiofiles" },
@@ -4512,7 +4512,7 @@ wheels = [
 [[package]]
 name = "transformers"
 version = "4.53.0.dev0"
-source = { git = "https://github.com/huggingface/transformers#ea013348737fbd0efdefa38f9cad30443a810fd3" }
+source = { git = "https://github.com/huggingface/transformers#0725cd6953803b8aacfc85288cbfb83dea30c469" }
 dependencies = [
     { name = "filelock" },
     { name = "huggingface-hub" },

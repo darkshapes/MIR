@@ -30,7 +30,7 @@ def gen_diffusers(mir_db: MIRDatabase):
                     ),
                 )
             except IndexError as error_log:
-                nfo("Failed to create series: {series}  compatibility: {comp_name}  ")
+                nfo(f"Failed to create series: {series}  compatibility: {comp_name}  ")
                 dbug(error_log)
 
 
@@ -539,7 +539,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="audiogen",
             comp="medium-1-5b",
             repo="facebook/audiogen-medium",
@@ -554,7 +554,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="parler-tts",
             comp="tiny-v1",
             repo="parler-tts/parler-tts-tiny-v1",
@@ -570,7 +570,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="parler-tts",
             comp="large-v1",
             repo="parler-tts/parler-tts-large-v1",
@@ -609,7 +609,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="lumina-mgpt",
             comp="7B-768",
             repo="Alpha-VLLM/Lumina-mGPT-7B-768",
@@ -624,7 +624,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="orpheus",
             comp="3b-0-1-ft",
             repo="canopylabs/orpheus-3b-0.1-ft",
@@ -636,7 +636,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="orpheus",
             comp="3b-0-1-ft-4b",
             repo="mlx-community/orpheus-3b-0.1-ft-4bit",
@@ -649,7 +649,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="outetts-0-3",
             comp="1b",
             repo="outeai/outetts-0-3-1b",
@@ -661,7 +661,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="art",
+            arch="autoregressive",
             series="OuteTTS-1.0-0",
             comp="6B-4bit",
             repo="mlx-community/OuteTTS-1.0-0.6B-4bit",
@@ -1005,7 +1005,7 @@ def build_mir_lora(mir_db: MIRDatabase):
             arch="lora",
             series="slam",
             comp="stable-diffusion-xl",
-            repo="alimama-creative/slam-lora-sdxl/",
+            repo="alimama-creative/slam-lora-sdxl",
             pkg={
                 0: {
                     "diffusers": {"load_lora_weights": {}},

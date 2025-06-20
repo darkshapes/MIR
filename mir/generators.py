@@ -3,7 +3,7 @@
 
 """類發現和拆卸"""
 
-from typing import Any, Dict, Generator, List, Tuple
+from typing import Any, Dict, Tuple, Callable, List
 import os
 import sys
 from nnll.monitor.file import dbug, nfo, dbuq
@@ -47,10 +47,10 @@ def mir_label(mir_prefix: str, repo_path: str, decoder=False) -> Tuple[str]:
             if within:
                 suffix = within.strip("-")
                 split_name = name.split(within)
-                return mir_prefix + split_name[0], suffix
+                return mir_prefix + "." + split_name[0], suffix
 
     suffix = "decoder" if decoder else "base"
-    return mir_prefix + name, "base"
+    return mir_prefix + "." + name, "base"
 
 
 def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
@@ -96,14 +96,14 @@ def create_pipe_entry(repo_path: str, pipe_class: str) -> tuple[str, Dict[str, D
 
     if not repo_path and pipe_class:
         raise TypeError(f"'repo_path' {repo_path} or 'pipe_class' {pipe_class} unset")
-    mir_prefix = "info."
+    mir_prefix = "info"
     pipe_data = getattr(diffusers, pipe_class)
     sub_classes = root_class(pipe_data)
     decoder = "decoder" in sub_classes
     dbuq(pipe_class)
     dbuq(repo_path)
     if repo_path in ["openai/shap-e", "kandinsky-community/kandinsky-3"]:
-        mir_prefix = "info.unet."
+        mir_prefix = "info.unet"
     else:
         mir_prefix = flag_config(**sub_classes)
     mir_series, mir_comp = mir_label(mir_prefix, repo_path, decoder)
@@ -123,16 +123,28 @@ def flag_config(transformers: bool = False, **kwargs):
     :raises ValueError: Model type not detected
     :return: _description_"""
     xfmr_flags = {
-        "info.cnn.": ("bbox_cost",),
-        "info.rnn.": ("lru_width",),
-        "info.gan.": ("codebook_dim", "kernel_size", "kernel_predictor_conv_size"),
-        "info.mamba.": (
+        "info.detr": ("use_timm_backbone", "_resnet_"),
+        "info.cnn": ("bbox_cost",),
+        "info.rnn": ("lru_width",),
+        "info.gan": ("codebook_dim", "kernel_size", "kernel_predictor_conv_size"),
+        "info.mamba": (
             "mamba_expand",
             "parallel_attn",
         ),
-        "info.vit.": ("vlm_config", "crop_size", "out_indices", "logit_scale_init_value", "image_size", "vision_config", "hidden_sizes", "image_token_id"),
-        "info.autoencoder.": ("classifier_proj_size", "position_embedding_type", "separate_cls", "keypoint_detector_config", "local_attention"),
-        "info.transformer.": (
+        "info.vit": (
+            "use_swiglu_ffn",
+            "projection_dim",
+            "vlm_config",
+            "crop_size",
+            "out_indices",
+            "logit_scale_init_value",
+            "image_size",
+            "vision_config",
+            "hidden_sizes",
+            "image_token_id",
+        ),
+        "info.autoencoder": ("classifier_proj_size", "position_embedding_type", "separate_cls", "keypoint_detector_config", "local_attention"),
+        "info.transformer": (
             "encoder_attention_heads",
             "encoder_layers",
             "decoder_layers",
@@ -142,11 +154,11 @@ def flag_config(transformers: bool = False, **kwargs):
             "encoder_config",
             "audio_token_index",
         ),
-        "info.autoregressive.": ("ffn_dim", "num_codebooks", "vq_config", "attn_config", "n_head", "rms_norm_eps", "rope_theta", "head_dim", "hidden_dropout_prob"),
+        "info.autoregressive": ("ffn_dim", "num_codebooks", "vq_config", "attn_config", "n_head", "rms_norm_eps", "rope_theta", "head_dim", "hidden_dropout_prob"),
     }
     diff_flags = {
-        "info.unet.": ("unet", "prior", "decoder"),
-        "info.dit.": ("transformer",),
+        "info.unet": ("unet", "prior", "decoder"),
+        "info.dit": ("transformer",),
     }
 
     if transformers:
@@ -156,8 +168,8 @@ def flag_config(transformers: bool = False, **kwargs):
     for mir_prefix, key_match in flags.items():
         if any(kwargs.get(param) for param in key_match):
             return mir_prefix
-    nfo(("Unsupported model type"))
-    dbuq(f"Unsupported model type {list(kwargs)}")
+    nfo("Unrecognized model type")
+    dbuq("Unrecognized model type")
 
 
 def transformers_index():
@@ -175,51 +187,66 @@ def transformers_index():
         },
         "GraniteModel": {
             "repo_path": "ibm-granite/granite-3.3-2b-base",
+            "sub_segments": {"rope_theta": [""]},
+        },
+        "DPRQuestionEncoder": {
+            "repo_path": "facebook/dpr-question_encoder-single-nq-base",
+            "sub_segments": {"local_attention": [""], "classifier_proj_size": [""]},
+        },
+        "CohereModel": {
+            "repo_path": "CohereForAI/c4ai-command-r-v01",
+            "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
+        },
+        "Cohere2Model": {
+            "repo_path": "CohereLabs/c4ai-command-r7b-12-2024",
+            "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
+        },
+        "GraniteMoeHybridModel": {
+            "repo_path": "ibm-research/PowerMoE-3b",
+        },
+        "GraniteMoeModel": {
+            "repo_path": "ibm-research/PowerMoE-3b",
+        },
+        "AriaModel": {
+            "repo_path": "rhymes-ai/Aria-Chat",
+            "sub_segments": {"vision_config": [""], "text_config": [""]},
+        },
+        "TimmWrapperModel": {
+            "repo_path": "timm/resnet18.a1_in1k",
             "sub_segments": {
-                "rope_theta": [""],
-            },
-            "DPRQuestionEncoder": {
-                "repo_path": "facebook/dpr-question_encoder-single-nq-base",
-                "sub_segments": {"local_attention": [""], "classifier_proj_size": [""]},
-            },
-            "CohereModel": {
-                "repo_path": "CohereForAI/c4ai-command-r-v01",
-                "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
-            },
-            "Cohere2Model": {
-                "repo_path": "CohereLabs/c4ai-command-r7b-12-2024",
-                "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
-            },
-            "GraniteMoeHybridModel": {
-                "repo_path": "ibm-research/PowerMoE-3b",
-            },
-            "GraniteMoeModel": {
-                "repo_path": "ibm-research/PowerMoE-3b",
-            },
-            "AriaModel": {
-                "repo_path": "rhymes-ai/Aria-Chat",
-                "sub_segments": {"vision_config": [""], "text_config": [""]},
+                "_resnet_": [""],
             },
         },
     }
+
     mir_data = {}
-    transformers_data = stock_llm_data()
-    for model_class, model_data in transformers_data.items():
-        class_name = model_class.__name__
+    transformers_data: Dict[Callable, List[str]] = stock_llm_data()
+    for model_class_obj, model_data in transformers_data.items():
+        class_name = model_class_obj.__name__
+        dbuq(class_name)
         if class_name in list(corrections):  # these are corrected because `root_class` doesn't return anything in these cases
             repo_path = corrections[class_name]["repo_path"]
             sub_segments = corrections[class_name].get("sub_segments", root_class(model_data["config"][-1], "transformers"))
+            dbuq(repo_path)
+
         else:
-            doc_string = getattr(transformers, model_data["config"][-1]).__doc__
-            matches = re.findall(r"\[([^\]]+)\]", doc_string)
-            if matches:
-                repo_path = matches[1] if "/" in matches[1] else matches[2]
-            else:
-                repo_path = ""
-            sub_segments = root_class(model_data["config"][-1], "transformers")
+            repo_path = ""
+            doc_attempt = [getattr(transformers, model_data["config"][-1]), model_class_obj.forward]
+            for pattern in doc_attempt:
+                doc_string = pattern.__doc__
+                matches = re.findall(r"\[([^\]]+)\]", doc_string)
+                if matches:
+                    repo_path = next(iter(snip.strip('"').strip() for snip in matches if "/" in snip))
+                    repo_path
+                    break
+            sub_segments: Dict[str, List[str]] = root_class(model_data["config"][-1], "transformers")
         if sub_segments and list(sub_segments) != ["kwargs"] and list(sub_segments) != ["use_cache", "kwargs"] and repo_path is not None:
             dbuq(class_name)
             mir_prefix = flag_config(transformers=True, **sub_segments)
+            if mir_prefix is None:
+                nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
+                dbuq(class_name, sub_segments, model_class_obj, model_data)
+                continue
             mir_series, mir_comp = mir_label(mir_prefix, repo_path)
             mir_data.setdefault(
                 mir_series,

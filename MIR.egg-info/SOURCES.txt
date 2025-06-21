@@ -28,13 +28,14 @@ mir/provider_pools.py
 mir/read_state_dict.py
 mir/registry_entry.py
 mir/config/__init__.py
+mir/config/config.json
 mir/config/config.toml
 mir/config/cuetype.json
 mir/config/filter.json
 mir/config/hashes.json
 mir/config/hyperchain.json
 mir/config/mir.json
-mir/config/mir_template.json
+mir/config/template.json
 mir/model_detect/__init__.py
 mir/model_detect/gather_metadata.py
 mir/model_detect/id_conductor.py

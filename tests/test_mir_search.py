@@ -63,9 +63,9 @@ def test_grade_similar_match(mock_test_database):
 
 def test_grade_field_change(mock_test_database):
     result = mock_test_database.find_path(field="pkg", target="parler_tts")
-    assert result == ["info.autoregressive.parler-tts", "tiny-v1"]
+    assert result == ["info.artm.parler-tts", "tiny-v1"]
 
 
 def test_grade_letter_case_change(mock_test_database):
     result = mock_test_database.find_path(field="pkg", sub_field=0, target="AuDiOCrAfT.MoDeLs")
-    assert result == ["info.autoregressive.audiogen", "medium-1-5b"]
+    assert result == ["info.artm.audiogen", "medium-1-5b"]

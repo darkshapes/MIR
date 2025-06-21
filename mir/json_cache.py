@@ -1,7 +1,7 @@
 ### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
-"""JSONCache, [ MIR / HASHES / CUETYPE / HYPERCHAIN ] _PATH_NAMED"""
+"""JSONCache, [ MIR / HASHES / CUETYPE / HYPERCHAIN / TEMPLATE] _PATH_NAMED"""
 
 import os
 import sys
@@ -25,7 +25,12 @@ def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__)
     return ensure_path(folder_path_named, file_name)
 
 
-constants = ["mir", "hashes", "cuetype", "hyperchain"]
+constants = [
+    file_name.stem
+    for file_name in Path(os.path.join(os.path.dirname(__file__), "config")).iterdir()
+    if "__" not in Path(file_name).stem
+    # formatting
+]
 
 for const in constants:
     paths = {}

@@ -146,6 +146,9 @@ def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> 
                                 update_nested_dict(mir_data[comp][field][definition], sub_def_data)
 
 
+# ai-forever/Real-ESRGAN
+
+
 def build_mir_additional(mir_db: MIRDatabase):
     """Create mir unet info database"""
 
@@ -539,7 +542,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="audiogen",
             comp="medium-1-5b",
             repo="facebook/audiogen-medium",
@@ -554,7 +557,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="parler-tts",
             comp="tiny-v1",
             repo="parler-tts/parler-tts-tiny-v1",
@@ -570,7 +573,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="parler-tts",
             comp="large-v1",
             repo="parler-tts/parler-tts-large-v1",
@@ -609,7 +612,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="lumina-mgpt",
             comp="7B-768",
             repo="Alpha-VLLM/Lumina-mGPT-7B-768",
@@ -624,7 +627,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="orpheus",
             comp="3b-0-1-ft",
             repo="canopylabs/orpheus-3b-0.1-ft",
@@ -636,7 +639,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="orpheus",
             comp="3b-0-1-ft-4b",
             repo="mlx-community/orpheus-3b-0.1-ft-4bit",
@@ -649,7 +652,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="outetts-0-3",
             comp="1b",
             repo="outeai/outetts-0-3-1b",
@@ -661,7 +664,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="autoregressive",
+            arch="artm",
             series="OuteTTS-1.0-0",
             comp="6B-4bit",
             repo="mlx-community/OuteTTS-1.0-0.6B-4bit",
@@ -705,7 +708,7 @@ def build_mir_custom(mir_db: MIRDatabase):
     mir_db.add(
         mir_entry(
             domain="info",
-            arch="mix",
+            arch="aetm",
             series="bagel",
             comp="7B-MoT",
             repo="ByteDance-Seed/BAGEL-7B-MoT",

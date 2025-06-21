@@ -190,6 +190,10 @@ class PkgType(BaseEnum):
     ORPHEUS_TTS: tuple = (has_api("ORPHEUS_TTS"), "ORPHEUS_TTS", ["canopyai/Orpheus-TTS"])
     OUTETTS: tuple = (has_api("OUTETTS"), "OUTETTS", ["edwko/OuteTTS"])
     SENTENCE_TRANSFORMERS: tuple = (has_api("SENTENCE_TRANSFORMERS"), "SENTENCE_TRANSFORMERS", [])  # UKPLab/sentence-transformers
+    SHOW_O: tuple = (has_api("SHOW_O"), "SHOW_O", ["showlab/show-o"])
+    SPANDREL: tuple = (has_api("SPANDREL"), "SPANDREL", [])
+    SPANDREL_EXTRA_ARCHES: tuple = (has_api("SPANDREL_EXTRA_ARCHES"), "SPANDREL_EXTRA_ARCHES", [])
+    SVDQUANT: tuple = (has_api("NUNCHAKU"), "NUNCHAKU", ["mit-han-lab/nunchaku"])
     TORCH: tuple = (has_api("TORCH"), "TORCH", [])  # Possible that torch is NOT needed (mlx_lm, or some other unforeseen future )
     TORCHAUDIO: tuple = (has_api("TORCHAUDIO"), "TORCHAUDIO", [])
     TORCHVISION: tuple = (has_api("TORCHVISION"), "TORCHVISION", [])

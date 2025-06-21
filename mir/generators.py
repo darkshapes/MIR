@@ -3,12 +3,14 @@
 
 """類發現和拆卸"""
 
-from typing import Any, Dict, Tuple, Callable, List
+from typing import Any, Dict, Tuple, Callable, List, Optional
 import os
 import sys
 from nnll.monitor.file import dbug, nfo, dbuq
 from nnll.tensor_pipe.deconstructors import scrape_docs, cut_docs, root_class
+from mir.json_cache import JSONCache, TEMPLATE_PATH_NAMED  # pylint:disable=no-name-in-module
 
+TEMPLATE_FILE = JSONCache(TEMPLATE_PATH_NAMED)
 if "pytest" in sys.modules:
     import diffusers  # noqa # pyright:ignore[reportMissingImports] # pylint:disable=unused-import
 
@@ -85,35 +87,41 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
     return dict(pipe_data)
 
 
-def create_pipe_entry(repo_path: str, pipe_class: str) -> tuple[str, Dict[str, Dict[Any, Any]]]:
+def create_pipe_entry(repo_path: str, class_name: str) -> tuple[str, Dict[str, Dict[Any, Any]]]:
     """Create a pipeline article and generate corresponding information according to the provided repo path and pipeline category\n
     :param Repo_path (str): Repository path.
-    :param Pipe_class (str): pipe class name.
-    :raises TypeError: If 'repo_path' or 'pipe_class' are not set.
+    :param class_name (str): pipe class name.
+    :raises TypeError: If 'repo_path' or 'class_name' are not set.
     :return: Tuple: The data structure containing mir_series and mir_comp is used for subsequent processing.
     """
     import diffusers  # pyright: ignore[reportMissingImports] # pylint:disable=redefined-outer-name
 
-    if not repo_path and pipe_class:
-        raise TypeError(f"'repo_path' {repo_path} or 'pipe_class' {pipe_class} unset")
+    if not repo_path and class_name:
+        raise TypeError(f"'repo_path' {repo_path} or 'pipe_class' {class_name} unset")
     mir_prefix = "info"
-    pipe_data = getattr(diffusers, pipe_class)
-    sub_classes = root_class(pipe_data)
-    decoder = "decoder" in sub_classes
-    dbuq(pipe_class)
+    model_class_obj = getattr(diffusers, class_name)
+    sub_segments = root_class(model_class_obj)
+    decoder = "decoder" in sub_segments
+    dbuq(class_name)
     dbuq(repo_path)
     if repo_path in ["openai/shap-e", "kandinsky-community/kandinsky-3"]:
         mir_prefix = "info.unet"
     else:
-        mir_prefix = flag_config(**sub_classes)
+        mir_prefix = flag_config(**sub_segments)
+        if mir_prefix is None:
+            nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
+            dbuq(class_name, sub_segments, model_class_obj)
+            # return None
+        else:
+            mir_prefix = "info." + mir_prefix
     mir_series, mir_comp = mir_label(mir_prefix, repo_path, decoder)
     prefixed_data = {
         "repo": repo_path,
-        "pkg": {0: {"diffusers": pipe_class}},
+        "pkg": {0: {"diffusers": class_name}},
     }
-    if pipe_class == "FluxPipeline":
-        pipe_class = {1: {"mflux": "Flux1"}}
-        prefixed_data["pkg"].update(pipe_class)
+    if class_name == "FluxPipeline":
+        class_name = {1: {"mflux": "Flux1"}}
+        prefixed_data["pkg"].update(class_name)
     return mir_series, {mir_comp: prefixed_data}
 
 
@@ -122,49 +130,17 @@ def flag_config(transformers: bool = False, **kwargs):
     :param transformers: Use transformers data instead of diffusers data, defaults to False
     :raises ValueError: Model type not detected
     :return: _description_"""
-    xfmr_flags = {
-        "info.detr": ("use_timm_backbone", "_resnet_"),
-        "info.cnn": ("bbox_cost",),
-        "info.rnn": ("lru_width",),
-        "info.gan": ("codebook_dim", "kernel_size", "kernel_predictor_conv_size"),
-        "info.mamba": (
-            "mamba_expand",
-            "parallel_attn",
-        ),
-        "info.vit": (
-            "use_swiglu_ffn",
-            "projection_dim",
-            "vlm_config",
-            "crop_size",
-            "out_indices",
-            "logit_scale_init_value",
-            "image_size",
-            "vision_config",
-            "hidden_sizes",
-            "image_token_id",
-        ),
-        "info.autoencoder": ("classifier_proj_size", "position_embedding_type", "separate_cls", "keypoint_detector_config", "local_attention"),
-        "info.transformer": (
-            "encoder_attention_heads",
-            "encoder_layers",
-            "decoder_layers",
-            "decoder_hidden_size",
-            "encoder_hidden_size",
-            "is_encoder_decoder",
-            "encoder_config",
-            "audio_token_index",
-        ),
-        "info.autoregressive": ("ffn_dim", "num_codebooks", "vq_config", "attn_config", "n_head", "rms_norm_eps", "rope_theta", "head_dim", "hidden_dropout_prob"),
-    }
-    diff_flags = {
-        "info.unet": ("unet", "prior", "decoder"),
-        "info.dit": ("transformer",),
-    }
+
+    @TEMPLATE_FILE.decorator
+    def _read_data(data: Optional[Dict[str, str]] = None):
+        return data
+
+    template_data = _read_data()
 
     if transformers:
-        flags = xfmr_flags
+        flags = template_data["arch"]["xfmr"]  # pylint:disable=unsubscriptable-object
     else:
-        flags = diff_flags
+        flags = template_data["arch"]["diff"]  # pylint:disable=unsubscriptable-object
     for mir_prefix, key_match in flags.items():
         if any(kwargs.get(param) for param in key_match):
             return mir_prefix
@@ -237,7 +213,6 @@ def transformers_index():
                 matches = re.findall(r"\[([^\]]+)\]", doc_string)
                 if matches:
                     repo_path = next(iter(snip.strip('"').strip() for snip in matches if "/" in snip))
-                    repo_path
                     break
             sub_segments: Dict[str, List[str]] = root_class(model_data["config"][-1], "transformers")
         if sub_segments and list(sub_segments) != ["kwargs"] and list(sub_segments) != ["use_cache", "kwargs"] and repo_path is not None:
@@ -247,6 +222,8 @@ def transformers_index():
                 nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
                 dbuq(class_name, sub_segments, model_class_obj, model_data)
                 continue
+            else:
+                mir_prefix = "info." + mir_prefix
             mir_series, mir_comp = mir_label(mir_prefix, repo_path)
             mir_data.setdefault(
                 mir_series,

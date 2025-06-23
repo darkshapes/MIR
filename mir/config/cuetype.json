@@ -21,7 +21,14 @@
             "api_base": "http://localhost:1234/v1",
             "api_key": "lm-studio"
         },
-        "prefix": "lm_studio/"
+        "prefix": "lm_studio/",
+        "errors": [
+            "LMStudioWebsocketError",
+            "APIConnectionError",
+            "APITimeoutError",
+            "APIStatusError",
+            "JSONDecodeError"
+        ]
     },
     "CORTEX": {
         "module": "openai",
@@ -30,7 +37,13 @@
             "api_base": "http://127.0.0.1:39281/v1/chat/completions",
             "api_key": "sk-no-key-required"
         },
-        "prefix": "openai/"
+        "prefix": "openai/",
+        "errors": [
+            "APIConnectionError",
+            "APITimeoutError",
+            "APIStatusError",
+            "JSONDecodeError"
+        ]
     },
     "LLAMAFILE": {
         "module": "openai",
@@ -39,7 +52,13 @@
             "api_base": "http://localhost:8080/v1",
             "api_key": "sk-no-key-required"
         },
-        "prefix": "openai/"
+        "prefix": "openai/",
+        "errors": [
+            "APIConnectionError",
+            "APITimeoutError",
+            "APIStatusError",
+            "JSONDecodeError"
+        ],
     },
     "VLLM": {
         "module": "vllm",

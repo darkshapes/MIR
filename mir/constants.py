@@ -7,11 +7,60 @@ from typing import Annotated, Callable, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
-from nnll.monitor.file import dbuq, nfo
+from nnll.monitor.file import dbuq  # , nfo
 from nnll.configure.init_gpu import first_available
 from mir.json_cache import JSONCache, CUETYPE_PATH_NAMED  # pylint:disable=no-name-in-module
 
 CUETYPE_CONFIG = JSONCache(CUETYPE_PATH_NAMED)
+
+
+def check_host(api_name, api_data) -> bool:
+    """Perform network test to ensure a host server is running\n
+    :param api_name: Type of host API
+    :param api_data: The (default) configuration data for that API
+    :return: Whether the server is up or not
+    """
+    import httpcore
+    import httpx
+    from urllib3.exceptions import NewConnectionError, MaxRetryError
+    import requests
+    from json.decoder import JSONDecodeError
+
+    try:
+        print(api_name)
+        request = requests.get(api_data["api_url"], timeout=(1, 1))
+        if request is not None:
+            print(vars(request))
+            if hasattr(request, "status_code"):
+                status = request.status_code
+                print(status)
+            if (hasattr(request, "ok") and request.ok) or (hasattr(request, "reason") and request.reason == "OK"):
+                dbuq(f"Available {api_name}")
+                return True
+            elif hasattr(request, "json"):
+                status = request.json()
+                if status.get("result") == "OK":
+                    dbuq(f"Available {api_name}")
+                    return True
+            request.raise_for_status()
+            requests.HTTPError()
+    except (
+        requests.exceptions.InvalidURL,
+        requests.exceptions.ConnectionError,
+        requests.HTTPError,
+        httpcore.ConnectError,
+        httpx.ConnectError,
+        ConnectionRefusedError,
+        MaxRetryError,
+        NewConnectionError,
+        TimeoutError,
+        JSONDecodeError,
+        OSError,
+        RuntimeError,
+        ConnectionError,
+    ) as error_log:
+        dbuq(error_log)
+    return False
 
 
 @CUETYPE_CONFIG.decorator
@@ -23,98 +72,34 @@ def has_api(api_name: str, data: dict = None) -> bool:
     :param _data: filled by config decorator, ignore, defaults to None
     :return: _description_
     """
+    from importlib import import_module
     from json.decoder import JSONDecodeError
 
-    def set_true(api_name):
-        nfo(f"Available {api_name}")
-        return True
-
-    def set_false(api_name):
-        dbuq("|Ignorable| Source unavailable:", f"{api_name}")
-        return False
-
-    def check_host(api_name) -> bool:
-        import httpcore
-        import httpx
-        from urllib3.exceptions import NewConnectionError, MaxRetryError
-        import requests
-
-        dbuq(f"Response from API  {api_data}")
-        try:
-            if api_data.get("api_url", 0):
-                request = requests.get(api_data.get("api_url"), timeout=(1, 1))
-                if request is not None:
-                    if hasattr(request, "reason") and request.reason == "OK":  # The curious case of Ollama
-                        return set_true(api_name)
-                    status = request.json()
-                    if status.get("result") == "OK":
-                        return set_true(api_name)
-        except JSONDecodeError as error_log:
-            dbuq(error_log)
-            dbuq(f"json for ! {api_data}")
-            dbuq(request.status_code)
-            if request.ok:
-                return set_true(api_name)
-            try:
-                request.raise_for_status()
-            except requests.HTTPError() as _error_log:
-                dbuq(_error_log)
-        except (
-            requests.exceptions.ConnectionError,
-            httpcore.ConnectError,
-            httpx.ConnectError,
-            ConnectionRefusedError,
-            MaxRetryError,
-            NewConnectionError,
-            TimeoutError,
-            OSError,
-            RuntimeError,
-            ConnectionError,
-        ) as error_log:
-            dbuq(error_log)
-
     try:
-        api_data = data.get(api_name, False)  # pylint: disable=unsubscriptable-object
+        api_data = data.get(api_name, {"module": api_name.lower()})  # pylint: disable=unsubscriptable-object
     except JSONDecodeError as error_log:
         dbuq(error_log)
-    if not api_data:
-        api_data = {"module": api_name.lower()}
+        return False
+    try:
+        import_module(api_data.get("module"))
+        if api_name not in list(api_data.keys()):
+            return True
+        else:
+            from nnll.metadata.helpers import make_callable
 
-    if api_name == "LM_STUDIO":
-        try:
-            from lmstudio import APIConnectionError, APITimeoutError, APIStatusError, LMStudioWebsocketError
-
+            error_types = []
+            for error_type in api_data["errors"]:
+                error_type.append(make_callable(error_type, api_data["module"]))
             try:
-                return check_host(api_name)
-            except (LMStudioWebsocketError, APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError) as error_log:
+                dbuq(f"API request  {api_data}")
+                if bool(api_data.get("api_url", False)) and check_host(api_name, api_data.get("api_url")):
+                    return True
+            except error_types as error_log:
                 dbuq(error_log)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError) as error_log:
-            dbuq(error_log)
-    elif api_name in ["LLAMAFILE", "CORTEX"]:
-        try:
-            from openai import APIConnectionError, APIStatusError, APITimeoutError
-
-            try:
-                return check_host(api_name)
-            except (APIConnectionError, APITimeoutError, APIStatusError, JSONDecodeError) as error_log:
-                dbuq(error_log)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError) as error_log:
-            dbuq(error_log)
-    elif api_name in ["OLLAMA", "KAGGLE"]:
-        try:
-            return check_host(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError) as error_log:
-            dbuq(error_log)
-    else:
-        try:
-            __import__(api_data.get("module"))
-            if api_name not in ["OLLAMA", "LM_STUDIO", "CORTEX", "LLAMAFILE", "VLLM", "KAGGLE"]:
-                return set_true(api_name)
-        except (UnboundLocalError, ImportError, ModuleNotFoundError):
-            dbuq("|Ignorable| Source unavailable:", f"{api_name}")
-            return set_false(api_name)
-        return check_host(api_name)
-    return set_false(api_name)
+    except (UnboundLocalError, ImportError, ModuleNotFoundError, JSONDecodeError) as error_log:
+        dbuq(error_log)
+    dbuq("|Ignorable| Source unavailable:", f"{api_name}")
+    return False
 
 
 class BaseEnum(Enum):
@@ -171,11 +156,13 @@ class PkgType(BaseEnum):
 
     AUDIOGEN: tuple = (has_api("AUDIOCRAFT"), "AUDIOCRAFT", ["exdysa/facebookresearch-audiocraft-revamp"])  # this fork supports mps
     BAGEL: tuple = (has_api("BAGEL"), "BAGEL", ["bytedance-seed/BAGEL"])
+    BITNET: tuple = (has_api("BITNET"), "BITNET", ["microsoft/BitNet"])
     BITSANDBYTES: tuple = (has_api("BITSANDBYTES"), "BITSANDBYTES", [])  # bitsandbytes-foundation/bitsandbytes
     DIFFUSERS: tuple = (has_api("DIFFUSERS"), "DIFFUSERS", [])
     EXLLAMAV2: tuple = (has_api("EXLLAMAV2"), "EXLLAMAV2", [])  # turboderp-org/exllamav2
     F_LITE: tuple = (has_api("F_LITE"), "F_LITE", ["fal-ai/f-lite"])
     HIDIFFUSION: tuple = (has_api("HIDIFFUSION"), "HIDIFFUSION", ["megvii-research/HiDiffusion"])
+    IMAGE_GEN_AUX: tuple = (has_api("IMAGE_GEN_AUX"), "IMAGE_GEN_AUX", ["huggingface/image_gen_aux"])
     LUMINA_MGPT: tuple = (has_api("INFERENCE_SOLVER"), "INFERENCE_SOLVER", "Alpha-VLLM/Lumina-mGPT")
     MFLUX: tuple = (has_api("MFLUX"), "MFLUX", [])  # "filipstrand/mflux"
     MLX_AUDIO: tuple = (CueType.check_type("MLX_AUDIO"), "MLX_AUDIO", [])  # Blaizzy/mlx-audio

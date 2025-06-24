@@ -191,6 +191,7 @@ Requires-Dist: torch>=2.7.1
 Provides-Extra: dev
 Requires-Dist: pytest>=8.3.5; extra == "dev"
 Requires-Dist: ruff>=0.11.12; extra == "dev"
+Requires-Dist: ruff>=0.11.12; extra == "dev"
 Dynamic: license-file
 
 ---

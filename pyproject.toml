@@ -36,7 +36,7 @@ dependencies = [
 dev = ["pytest>=8.3.5", "pytest-mock>=3.14.1", "ruff>=0.11.12"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.3.5", "ruff>=0.11.12", "ruff>=0.11.12"]
+dev = ["pytest>=8.3.5", "ruff>=0.11.12", "pytest-mock>=3.14.1"]
 
 [project.urls]
 Homepage      = "https://github.com/darkshapes/MIR"
@@ -74,7 +74,7 @@ files.extend-exclude = ["^tests/.*$", "test.*$"]
 default.extend-words = { "ot" = "ot" }
 
 [tool.uv]
-dev-dependencies = ["pytest>=8.3.5", "ruff>=0.11.12"]
+dev-dependencies = ["pytest>=8.3.5", "ruff>=0.11.12", "pytest-mock>=3.14.1"]
 
 [tool.uv.sources]
 diffusers     = { git = "https://github.com/huggingface/diffusers" }

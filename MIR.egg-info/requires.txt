@@ -9,7 +9,55 @@ sentencepiece
 [:python_version >= "3.13"]
 sentencepiece@ git+https://github.com/google/sentencepiece.git#subdirectory=python
 
+[cpu]
+torch
+torchvision
+torchaudio
+
+[cu126]
+torch
+torchvision
+torchaudio
+
+[cu126:sys_platform == "Linux"]
+triton
+
+[cu126:sys_platform == "win32"]
+triton-windows
+
+[cu128]
+torch
+torchvision
+torchaudio
+
+[cu128:sys_platform != "darwin"]
+sageattention
+
+[cu128:sys_platform == "Linux"]
+triton
+flash_attn
+
+[cu128:sys_platform == "win32"]
+triton-windows
+
 [dev]
 pytest>=8.3.5
 ruff>=0.11.12
 pytest-mock>=3.14.1
+
+[mps]
+torch
+torchvision
+torchaudio
+
+[rocm]
+torch
+torchvision
+torchaudio
+pytorch-triton-rocm
+
+[rocm:sys_platform != "darwin"]
+sageattention
+
+[rocm:sys_platform == "Linux"]
+flash_attn

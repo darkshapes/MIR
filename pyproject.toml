@@ -33,6 +33,9 @@ dependencies = [
 ]
 
 [dependency-groups]
+dev = ["pytest>=8.3.5", "pytest-mock>=3.14.1", "ruff>=0.11.12"]
+
+[project.optional-dependencies]
 cpu = ["torch", "torchvision", "torchaudio"]
 
 mps = ["torch", "torchvision", "torchaudio"]
@@ -64,10 +67,80 @@ rocm = [
     "flash_attn ; sys_platform == 'Linux'",
 ]
 
-dev = ["pytest>=8.3.5", "pytest-mock>=3.14.1", "ruff>=0.11.12"]
-
-[project.optional-dependencies]
 dev = ["pytest>=8.3.5", "ruff>=0.11.12", "pytest-mock>=3.14.1"]
+
+
+[tool.uv]
+preview = true
+prerelease = "allow"
+conflicts = [
+    [
+        { extra = "cpu" },
+        { extra = "mps" },
+        { extra = "cu126" },
+        { extra = "cu128" },
+        { extra = "rocm" },
+        { extra = "attention" },
+
+    ],
+]
+
+[tool.uv.pip]
+torch-backend = "auto"
+
+[[tool.uv.index]]
+name     = "pytorch-cpu"
+url      = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name     = "pytorch-nightly"
+url      = "https://download.pytorch.org/whl/nightly/cpu"
+explicit = true
+
+
+[[tool.uv.index]]
+name     = "pytorch-cu126"
+url      = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[[tool.uv.index]]
+name     = "pytorch-cu128"
+url      = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name     = "pytorch-rocm"
+url      = "https://download.pytorch.org/whl/rocm6.3"
+explicit = true
+
+torch = [
+    { default-index = "pytorch-cpu", extra = "cpu", marker = "sys_platform != 'darwin'" },
+    { default-index = "pytorch-nightly", extra = "mps", marker = "sys_platform == 'darwin'" },
+    { default-index = "pytorch-cu126", extra = "cu126", marker = "python_version < '3.12' and sys_platform == 'Linux' or sys_platform == 'win32'" },
+    { default-index = "pytorch-cu128", extra = "cu128", marker = "sys_platform == 'Linux' or sys_platform == 'win32'" },
+    { default-index = "pytorch-rocm", extra = "rocm", marker = "sys_platform == 'Linux'" },
+]
+torchvision = [
+    { default-index = "pytorch-cpu", extra = "cpu", marker = "sys_platform != 'darwin'" },
+    { default-index = "pytorch-nightly", extra = "mps", marker = "sys_platform == 'darwin'" },
+    { default-index = "pytorch-cu126", extra = "cu126", marker = "python_version < '3.12' and sys_platform == 'Linux' or sys_platform == 'win32'" },
+    { default-index = "pytorch-cu128", extra = "cu128", marker = "sys_platform == 'Linux' or sys_platform == 'win32'" },
+    { default-index = "pytorch-rocm", extra = "rocm", marker = "sys_platform == 'Linux'" },
+]
+torchaudio = [
+    { default-index = "pytorch-cpu", extra = "cpu", marker = "sys_platform != 'darwin'" },
+    { default-index = "pytorch-nightly", extra = "mps", marker = "sys_platform == 'darwin'" },
+    { default-index = "pytorch-cu126", extra = "cu126", marker = "python_version < '3.12' and sys_platform == 'Linux' or sys_platform == 'win32'" },
+    { default-index = "pytorch-cu128", extra = "cu128", marker = "sys_platform == 'Linux' or sys_platform == 'win32'" },
+    { default-index = "pytorch-rocm", extra = "rocm", marker = "sys_platform == 'Linux'" },
+]
+
+[tool.uv.sources]
+diffusers     = { git = "https://github.com/huggingface/diffusers" }
+sentencepiece = { git = "https://github.com/google/sentencepiece.git", subdirectory = "python", marker = "python_version >= '3.13'" }
+transformers  = { git = "https://github.com/huggingface/transformers" }
+
 
 [project.urls]
 Homepage      = "https://github.com/darkshapes/MIR"
@@ -103,11 +176,3 @@ ignore-overlong-task-comments = true
 [tool.typos]
 files.extend-exclude = ["^tests/.*$", "test.*$"]
 default.extend-words = { "ot" = "ot" }
-
-[tool.uv]
-dev-dependencies = ["pytest>=8.3.5", "ruff>=0.11.12", "pytest-mock>=3.14.1"]
-
-[tool.uv.sources]
-diffusers     = { git = "https://github.com/huggingface/diffusers" }
-sentencepiece = { git = "https://github.com/google/sentencepiece.git", subdirectory = "python", marker = "python_version >= '3.13'" }
-transformers  = { git = "https://github.com/huggingface/transformers" }

@@ -33,6 +33,37 @@ dependencies = [
 ]
 
 [dependency-groups]
+cpu = ["torch", "torchvision", "torchaudio"]
+
+mps = ["torch", "torchvision", "torchaudio"]
+
+cu126 = [
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "triton ; sys_platform == 'Linux'",
+    "triton-windows ; sys_platform == 'win32'",
+]
+
+cu128 = [
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "triton ; sys_platform == 'Linux'",
+    "triton-windows ; sys_platform == 'win32'",
+    "flash_attn ; sys_platform == 'Linux'",
+    "sageattention; sys_platform != 'darwin'",
+]
+
+rocm = [
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "pytorch-triton-rocm",
+    "sageattention; sys_platform != 'darwin'",
+    "flash_attn ; sys_platform == 'Linux'",
+]
+
 dev = ["pytest>=8.3.5", "pytest-mock>=3.14.1", "ruff>=0.11.12"]
 
 [project.optional-dependencies]

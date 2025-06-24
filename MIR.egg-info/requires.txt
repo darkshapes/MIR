@@ -12,3 +12,4 @@ sentencepiece@ git+https://github.com/google/sentencepiece.git#subdirectory=pyth
 [dev]
 pytest>=8.3.5
 ruff>=0.11.12
+pytest-mock>=3.14.1

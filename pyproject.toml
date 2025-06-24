@@ -33,14 +33,10 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = [
-    "pytest>=8.3.5",
- "pytest-mock>=3.14.1",
- "ruff>=0.11.12",
-]
+dev = ["pytest>=8.3.5", "pytest-mock>=3.14.1", "ruff>=0.11.12"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.3.5", "ruff>=0.11.12"]
+dev = ["pytest>=8.3.5", "ruff>=0.11.12", "ruff>=0.11.12"]
 
 [project.urls]
 Homepage      = "https://github.com/darkshapes/MIR"

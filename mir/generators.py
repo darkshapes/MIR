@@ -124,8 +124,6 @@ def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Optional
     """
     import diffusers  # pyright: ignore[reportMissingImports] # pylint:disable=redefined-outer-name
 
-    import diffusers  # pyright: ignore[reportMissingImports] # pylint:disable=redefined-outer-name
-
     if not repo_path and class_name:
         raise TypeError(f"'repo_path' {repo_path} or 'pipe_class' {class_name} unset")
     mir_prefix = "info"

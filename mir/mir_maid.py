@@ -4,12 +4,16 @@
 """神经网络的数据注册"""
 
 # pylint: disable=possibly-used-before-assignment, line-too-long
-from typing import Any, Callable, Iterable, List, Optional
+from typing import Any, Callable, List, Optional
 import os
 
-# from mir.constants import CueType
-from nnll.monitor.file import debug_monitor, dbug, nfo
+# from nnll.monitor.file import debug_monitor, dbug
+# from nnll.monitor.console import nfo
 from mir.json_cache import JSONCache, MIR_PATH_NAMED  # pylint:disable=no-name-in-module
+from logging import Logger, INFO
+
+nfo_obj = Logger(INFO)
+nfo = nfo_obj.info
 
 
 class MIRDatabase:
@@ -21,7 +25,7 @@ class MIRDatabase:
     def __init__(self) -> None:
         self.read_from_disk()
 
-    @debug_monitor
+    # @debug_monitor
     def add(self, resource: dict[str, Any]) -> None:
         """Merge pre-existing MIR entries, or add new ones
         :param element: _description_
@@ -40,7 +44,7 @@ class MIRDatabase:
         try:
             os.remove(MIR_PATH_NAMED)
         except (FileNotFoundError, OSError) as error_log:
-            dbug(f"MIR file not found before write, regenerating... {error_log}")
+            nfo(f"MIR file not found before write, regenerating... {error_log}")
         self.mir_file.update_cache(self.database, replace=True)
         self.database = self.read_from_disk()
         nfo(f"Wrote {len(self.database)} lines to MIR database file.")
@@ -53,7 +57,7 @@ class MIRDatabase:
         self.database = data
         return self.database
 
-    @debug_monitor
+    # @debug_monitor
     def _ready_value(self, value: str, target: str, series: str, compatibility: str) -> List[str]:
         """Process a single value for matching against the target\n
         :param value: An unknown string value
@@ -96,7 +100,7 @@ class MIRDatabase:
                     best_match = [series, compatibility]
         return best_match
 
-    @debug_monitor
+    # @debug_monitor
     def find_path(self, field: str, target: str, sub_field: Optional[str] = None) -> list[str]:
         """Retrieve MIR path based on nested value search\n
         :param field: Known field to look within
@@ -131,10 +135,10 @@ class MIRDatabase:
 
         best_match = self.grade_char_match(matches, target)
         if best_match:
-            dbug(best_match)
+            # dbug(best_match)
             return best_match
         else:
-            dbug(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
+            nfo(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
             return None
 
 

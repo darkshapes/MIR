@@ -1,6 +1,6 @@
 import pytest
-from unittest.mock import patch, MagicMock
-from mir.generators import create_pipe_entry, mir_label  # Replace 'your_module' with the actual module name
+from unittest.mock import patch
+from mir.generators import create_pipe_entry  # Replace 'your_module' with the actual module name
 
 
 # Mocking the root_class and mir_label functions since they are not provided
@@ -94,7 +94,7 @@ def test_create_empty():
     repo_path = ""
     pipe_class = "StableDiffusionPipeline"
     with pytest.raises(TypeError) as exc_info:
-        result = create_pipe_entry(repo_path, pipe_class)
+        create_pipe_entry(repo_path, pipe_class)
 
     assert isinstance(exc_info.value, TypeError)
     assert exc_info.value.args == ("'repo_path'  or 'pipe_class' StableDiffusionPipeline unset",)

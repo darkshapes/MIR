@@ -9,7 +9,10 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 from pydantic import BaseModel, create_model
-from nnll.monitor.file import debug_monitor
+from logging import Logger, INFO
+
+nfo_obj = Logger(INFO)
+nfo = nfo_obj.info
 
 T = TypeVar("T")
 
@@ -253,7 +256,7 @@ class Domain:
         self.architectures = defaultdict(dict)
         self.flat_dict = defaultdict(dict)
 
-    @debug_monitor
+    # @debug_monitor
     def add_arch(self, arch_label: str, arch_obj: Architecture) -> None:
         """
         Add an architecture to subclass this Domain\n

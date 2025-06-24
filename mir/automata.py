@@ -3,10 +3,13 @@
 
 """自動化索引"""
 
-from nnll.monitor.file import dbug, nfo, dbuq
 from mir.mir_maid import MIRDatabase
 from mir.mir import mir_entry
 from typing import Dict, List, Tuple
+from logging import Logger, INFO
+
+nfo_obj = Logger(INFO)
+nfo = nfo_obj.info
 
 
 def gen_diffusers(mir_db: MIRDatabase):
@@ -18,7 +21,7 @@ def gen_diffusers(mir_db: MIRDatabase):
     for series, comp_name in mir_data.items():
         id_segment = series.split(".")
         for compatibility in comp_name:
-            dbug(id_segment)
+            # dbug(id_segment)
             try:
                 mir_db.add(
                     mir_entry(
@@ -29,9 +32,9 @@ def gen_diffusers(mir_db: MIRDatabase):
                         **mir_data[series][compatibility],
                     ),
                 )
-            except IndexError as error_log:
+            except IndexError:  # as error_log:
                 nfo(f"Failed to create series: {series}  compatibility: {comp_name}  ")
-                dbug(error_log)
+                # dbug(error_log)
 
 
 def gen_torch_dtype(mir_db: MIRDatabase):
@@ -136,8 +139,8 @@ def gen_schedulers(mir_db: MIRDatabase):
                         pkg={0: {"diffusers": class_name}},
                     )
                 )
-    except (ImportError, ModuleNotFoundError) as error_log:
-        dbug(error_log)
+    except (ImportError, ModuleNotFoundError):  # as error_log:
+        pass  # dbug(error_log)
 
 
 # def gen_attention_processors(mir_db: MIRDatabase): # upstream not quite ready for this yet
@@ -239,7 +242,7 @@ def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> 
                     update_nested_dict(target[key], value)
             else:
                 if isinstance(source, dict):
-                    dbuq(target)
+                    # dbuq(target)
                     target.setdefault(key, value)
                 else:
                     target = {key: value}
@@ -251,14 +254,14 @@ def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> 
             if not isinstance(field_data, dict):
                 raise TypeError("Test")
 
-            dbuq(f"{arch}.{series} : {comp}")
+            # dbuq(f"{arch}.{series} : {comp}")
             update_nested_dict(mir_data.setdefault(comp, {}), field_data)
 
             if series == "stable-diffusion-xl":
                 for field, field_data in field_data.items():
                     if isinstance(field_data, dict):
                         for definition, sub_def_data in field_data.items():
-                            dbug(definition)
+                            # dbug(definition)
                             if isinstance(sub_def_data, dict):
                                 mir_data[comp][field].setdefault(definition, {})
                                 update_nested_dict(mir_data[comp][field][definition], sub_def_data)

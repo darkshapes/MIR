@@ -2,7 +2,7 @@ import pytest
 
 
 def test_mir_maid():
-    from mir.mir_maid import MIRDatabase, main
+    from mir.mir_maid import MIRDatabase
     from mir.json_cache import MIR_PATH_NAMED  #
     import json
 

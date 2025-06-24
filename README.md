@@ -10,7 +10,7 @@ license_name: LGPL-3.0-only
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="img_src/mir300_dark.png" width="50%">
   <source media="(prefers-color-scheme: light)" srcset="img_src/mir300_light.png" width="50%">
-  <img alt="Futuristic, slanted wireframe block type spelling the word 'ZODIAC' using overlapping and interweaving shapes and triangles for the 'O' and 'A'." src="img_src/zodiac_dark_bg.png">
+  <img alt="A pixellated logo of superimposed letters M I R",src="img_src/mir300_dark.png">
 </picture><br><br>
 
 </div>
@@ -24,7 +24,8 @@ This repo is a live development implementation, an example of autogenerating mod
 
 MIR is inspired by:
 - [AIR-URN](https://github.com/civitai/civitai/wiki/AIR-%E2%80%90-Uniform-Resource-Names-for-AI) project by [CivitAI](https://civitai.com/)
-- [Spandrel](https://github.com/chaiNNer-org/spandrel/blob/main/libs/spandrel/spandrel/__helpers/registry.py) library's super-resolution registry
+- [Spandrel](https://github.com/chaiNNer-org/spandrel/blob/main/libs/spandrel/spandrel/__helpers/registry.py) super-resolution registry by [chaiNNer](https://github.com/chaiNNer-org/chaiNNer)
+- [SDWebUI Model Toolkit](https://github.com/silveroxides/stable-diffusion-webui-model-toolkit-revisited) by [silveroxides](https://github.com/silveroxides)
 
 > [!NOTE]
 > ## Example:

@@ -1,8 +1,6 @@
 # test_merge_data.py
 import pytest
-from typing import List, Tuple, Dict, Any
 from mir.automata import merge_data
-from unittest.mock import MagicMock
 
 
 class MIRDatabase:

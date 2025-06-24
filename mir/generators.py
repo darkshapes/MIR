@@ -3,12 +3,140 @@
 
 """類發現和拆卸"""
 
-from typing import Any, Dict, Tuple, Callable, List, Optional
+from typing import Any, Dict, Tuple, Callable, List, Optional, Generator
 import os
 import sys
-from nnll.monitor.file import dbug, nfo, dbuq
-from nnll.tensor_pipe.deconstructors import scrape_docs, cut_docs, root_class
+
+from nnll.tensor_pipe.deconstructors import root_class
 from mir.json_cache import JSONCache, TEMPLATE_PATH_NAMED  # pylint:disable=no-name-in-module
+from logging import Logger, INFO
+
+nfo_obj = Logger(INFO)
+nfo = nfo_obj.info
+
+
+def scrape_docs(doc_string: str) -> Tuple[str,]:
+    """Eat the 🤗Diffusers docstrings as a treat, leaving any tasty repo and class morsels neatly arranged as a dictionary.\n
+    Nom.
+    :param doc_string: String literal from library describing the class
+    :return: A yummy dictionary of relevant class and repo strings"""
+
+    pipe_prefix = [">>> adapter = ", ">>> pipe_prior = ", ">>> pipe = ", ">>> pipeline = ", ">>> blip_diffusion_pipe = ", ">>> gen_pipe = ", ">>> prior_pipe = "]
+    repo_prefixes = ["repo_id", "model_ckpt", "model_id_or_path", "model_id", "repo"]
+    class_method = [".from_pretrained(", ".from_single_file("]
+    staged_class_method = ".from_pretrain("
+    staged = None
+    staged_class = None
+    staged_repo = None
+    joined_docstring = " ".join(doc_string.splitlines())
+
+    for prefix in pipe_prefix:
+        pipe_doc = joined_docstring.partition(prefix)[2]  # get the string segment that follows pipe assignment
+        if prefix == pipe_prefix[-2]:  # continue until loop end [exhaust last two items in list above]
+            staged = pipe_doc
+        elif pipe_doc and not staged:
+            break
+    for method_name in class_method:
+        if method_name in pipe_doc:
+            pipe_class = pipe_doc.partition(method_name)[0]  # get the segment preceding the class' method call
+            repo_path = pipe_doc.partition(method_name)  # break segment at method
+            repo_path = repo_path[2].partition(")")[0]  # segment after is either a repo path or a reference to it, capture the part before the parenthesis
+            repo_path = repo_path.replace("...", "").strip()  # remove any ellipsis and empty space
+            repo_path = repo_path.partition('",')[0]  # partition at commas, repo is always the first argument
+            repo_path = repo_path.strip('"')  # strip remaining quotes
+            # * the star below could go here?
+            if staged:
+                staged_class = staged.partition(staged_class_method)[0]  # repeat with any secondary stages
+                staged_repo = staged.partition(staged_class_method)
+                staged_repo = staged_repo[2].partition(")")[0]
+                staged_repo = staged_repo.replace("...", "").strip()
+                staged_repo = staged_repo.partition('",')[0]
+                staged_repo = staged_repo.strip('"')
+            break
+        else:
+            continue
+    for prefix in repo_prefixes:  # * this could move up
+        if prefix in repo_path and not staged:  # if  don't have the repo path, but only a reference
+            repo_variable = f"{prefix} = "  # find the variable assignment
+            repo_path = next(line.partition(repo_variable)[2].split('",')[0] for line in doc_string.splitlines() if repo_variable in line).strip('"')
+            break
+    return pipe_class, repo_path, staged_class, staged_repo
+
+
+def cut_docs() -> Generator:
+    """Draw down docstrings from 🤗Diffusers library, minimizing internet requests\n
+    :return: Docstrings for common diffusers models"""
+
+    import pkgutil
+    from importlib import import_module
+    import diffusers.pipelines
+
+    non_standard = {
+        "cogvideo": "cogvideox",
+        "cogview3": "cogview3plus",
+        "deepfloyd_if": "if",
+        "cosmos": "cosmos2_text2image",  # search folder for all files containing 'EXAMPLE DOC STRING'
+        "visualcloze": "visualcloze_generation",
+    }
+
+    exclusion_list = [  # task specific, adapter, or no doc string. all can be be gathered by other means
+        # these will be handled eventually
+        "animatediff",  # adapter
+        "controlnet",
+        "controlnet_hunyuandit",  #: "hunyuandit_controlnet",
+        "controlnet_xs",
+        "controlnetxs",
+        "controlnet_hunyuandit",
+        "controlnet_sd3",
+        "pag",  #
+        "stable_diffusion_3_controlnet",
+        "stable_diffusion_attend_and_excite",
+        "stable_diffusion_sag",  #
+        "t2i_adapter",
+        "ledits_pp",  # "leditspp_stable_diffusion",
+        "latent_consistency_models",  # "latent_consistency_text2img",
+        "unclip",
+        # these are uncommon afaik
+        "dance_diffusion",  # no doc_string
+        "dit",
+        "ddim",
+        "ddpm",
+        "deprecated",
+        "latent_diffusion",  # no doc_string
+        "marigold",  # specific processing routines
+        "omnigen",  # tries to import torchvision
+        "paint_by_example",  # no docstring
+        "pia",  # lora adapter
+        "semantic_stable_diffusion",  # no_docstring
+        "stable_diffusion_diffedit",
+        "stable_diffusion_k_diffusion",  # tries to import k_diffusion
+        "stable_diffusion_panorama",
+        "stable_diffusion_safe",  # impossibru
+        "text_to_video_synthesis",
+        "unidiffuser",
+    ]
+
+    for _, name, is_pkg in pkgutil.iter_modules(diffusers.pipelines.__path__):
+        if is_pkg and name not in exclusion_list:
+            if name in non_standard:
+                file_specific = non_standard[name]
+            else:
+                file_specific = name
+            file_name = f"pipeline_{file_specific}"
+            try:
+                pipe_file = import_module(f"diffusers.pipelines.{name}.{file_name}")
+            except ModuleNotFoundError:  # as error_log:
+                nfo(f"Module Not Found for {name}")
+                # dbug(error_log)
+                pipe_file = None
+            try:
+                if pipe_file:
+                    yield pipe_file.EXAMPLE_DOC_STRING
+            except AttributeError:  # as error_log:
+                nfo(f"Doc String Not Found for {name}")
+                # dbug(error_log)
+                # print(sub_classes)
+
 
 TEMPLATE_FILE = JSONCache(TEMPLATE_PATH_NAMED)
 if "pytest" in sys.modules:
@@ -64,7 +192,7 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
         "stabilityai/stable-diffusion-3.5-medium": "stabilityai/stable-diffusion-3.5-large",
     }
     pipes = [scrape_docs(docstring) for docstring in list(cut_docs())]
-    dbug(pipes)
+    # dbug(pipes)
     pipe_data = {}
     for entry in pipes:
         pipe_class, repo_path, staged_class, staged_repo = entry
@@ -102,15 +230,15 @@ def create_pipe_entry(repo_path: str, class_name: str) -> tuple[str, Dict[str, D
     model_class_obj = getattr(diffusers, class_name)
     sub_segments = root_class(model_class_obj)
     decoder = "decoder" in sub_segments
-    dbuq(class_name)
-    dbuq(repo_path)
+    # dbuq(class_name)
+    # dbuq(repo_path)
     if repo_path in ["openai/shap-e", "kandinsky-community/kandinsky-3"]:
         mir_prefix = "info.unet"
     else:
         mir_prefix = flag_config(**sub_segments)
         if mir_prefix is None:
             nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
-            dbuq(class_name, sub_segments, model_class_obj)
+            # dbuq(class_name, sub_segments, model_class_obj)
             # return None
         else:
             mir_prefix = "info." + mir_prefix
@@ -145,7 +273,7 @@ def flag_config(transformers: bool = False, **kwargs):
         if any(kwargs.get(param) for param in key_match):
             return mir_prefix
     nfo("Unrecognized model type")
-    dbuq("Unrecognized model type")
+    # dbuq("Unrecognized model type")
 
 
 def transformers_index():
@@ -199,11 +327,11 @@ def transformers_index():
     transformers_data: Dict[Callable, List[str]] = stock_llm_data()
     for model_class_obj, model_data in transformers_data.items():
         class_name = model_class_obj.__name__
-        dbuq(class_name)
+        # dbuq(class_name)
         if class_name in list(corrections):  # these are corrected because `root_class` doesn't return anything in these cases
             repo_path = corrections[class_name]["repo_path"]
             sub_segments = corrections[class_name].get("sub_segments", root_class(model_data["config"][-1], "transformers"))
-            dbuq(repo_path)
+            # dbuq(repo_path)
 
         else:
             repo_path = ""
@@ -216,11 +344,11 @@ def transformers_index():
                     break
             sub_segments: Dict[str, List[str]] = root_class(model_data["config"][-1], "transformers")
         if sub_segments and list(sub_segments) != ["kwargs"] and list(sub_segments) != ["use_cache", "kwargs"] and repo_path is not None:
-            dbuq(class_name)
+            # dbuq(class_name)
             mir_prefix = flag_config(transformers=True, **sub_segments)
             if mir_prefix is None:
                 nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
-                dbuq(class_name, sub_segments, model_class_obj, model_data)
+                # dbuq(class_name, sub_segments, model_class_obj, model_data)
                 continue
             else:
                 mir_prefix = "info." + mir_prefix

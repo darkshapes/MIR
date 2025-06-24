@@ -4,14 +4,17 @@
 """JSONCache, [ MIR / HASHES / CUETYPE / HYPERCHAIN / TEMPLATE] _PATH_NAMED"""
 
 import os
-import sys
 from typing import Union
-
-sys.path.append(os.getcwd())
 from pathlib import Path
-from functools import cache
-from nnll.monitor.file import nfo, dbuq
-from nnll.integrity import ensure_path
+from logging import Logger, INFO
+
+nfo_obj = Logger(INFO)
+nfo = nfo_obj.info
+
+
+# from nnll.monitor.file import dbuq
+# from nnll.monitor.console import nfo
+# from nnll.integrity import ensure_path
 
 
 def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__), prefix: str = "config") -> Path:
@@ -21,8 +24,10 @@ def set_path_stable(file_name: str, folder_path: str = os.path.dirname(__file__)
     :param prefix: Optional folder between `folder_path` and `file_name`, defaults to "config"
     :return: A combined path string of the given values
     """
-    folder_path_named = os.path.join(folder_path, prefix)
-    return ensure_path(folder_path_named, file_name)
+    folder_path_named = os.path.join(folder_path, prefix, file_name)
+    Path(folder_path_named).touch()
+    return folder_path_named
+    # return ensure_path(folder_path_named, file_name)
 
 
 constants = [
@@ -36,6 +41,7 @@ for const in constants:
     paths = {}
     path_var = f"{const.upper()}_PATH_NAMED"
     globals()[path_var] = set_path_stable(const + ".json")
+    print(path_var)
 
 
 class JSONCache:
@@ -62,24 +68,24 @@ class JSONCache:
         import json
         import tomllib
 
-        dbuq(f"loading_file {self.file}")
+        # dbuq(f"loading_file {self.file}")
 
         if not self._cache:
             if Path(self.file).suffix.lower() == ".toml":
                 with open(self.file, "rb") as f:
                     try:
                         self._cache = tomllib.load(f)
-                    except tomllib.TOMLDecodeError as error_log:
+                    except tomllib.TOMLDecodeError:  ## as error_log:
                         nfo("Error decoding cache file", f" {self.file} Using an empty cache.")
-                        dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
+                        # dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
                         self._cache = {}
             else:
                 try:
                     with open(self.file, "r", encoding="UTF-8") as f:
                         self._cache = json.load(f)
-                except (FileNotFoundError, json.JSONDecodeError) as error_log:
+                except (FileNotFoundError, json.JSONDecodeError):  # as error_log:
                     nfo("Error decoding cache file", f" {self.file} Using an empty cache.")
-                    dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
+                    # dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
                     self._cache = {}
 
     def _save_cache(self):
@@ -111,7 +117,7 @@ class JSONCache:
             self._save_cache()
             self._cache.pop("empty")
             os.remove(self.file)
-            ensure_path(os.path.dirname(self.file), os.path.basename(self.file))
+            Path(self.file).touch()
         self._load_cache()  # Ensure cache loaded / 確保快取載入
         original_cache_copy = self._cache.copy()  # Snapshot current state / 快照當前快取
         self._cache.update(new_data)  # Add the data to the cache / 將資料新增到快取中

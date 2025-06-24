@@ -1,6 +1,3 @@
 [console_scripts]
 mir-add = mir.mir:main
-mir-find = mir.compare_layers:main
-mir-hash = mir.hash256:main
 mir-maid = mir.mir_maid:main
-mir-parse = mir.read_state_dict:main

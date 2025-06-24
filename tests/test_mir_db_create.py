@@ -2,16 +2,15 @@
 ### <!-- // /*  d a r k s h a p e s */ -->
 
 import os
-import shutil
-
+from pathlib import Path
 from mir.json_cache import MIR_PATH_NAMED
 
 
 os.remove(MIR_PATH_NAMED)
+Path(MIR_PATH_NAMED).touch()
 
 
 def test_mir_creation():
-    from nnll.monitor.file import nfo
     from mir.mir import mir_entry
     from pprint import pprint
 

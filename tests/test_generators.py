@@ -1,9 +1,6 @@
 ### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
-import pytest
-from unittest import mock
-
 
 def test_list_diffusers_models():
     __import__("mir").generators.diffusers_index()

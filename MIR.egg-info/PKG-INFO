@@ -182,46 +182,16 @@ Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: mir[mps]; sys_platform == "darwin"
-Requires-Dist: mir[cu128]; sys_platform != "darwin" and python_version >= "3.12"
-Requires-Dist: mir[cu128]; sys_platform != "darwin" and python_version < "3.12"
-Provides-Extra: cu128
-Requires-Dist: nnll[cu128,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version >= "3.12") and extra == "cu128"
-Provides-Extra: cu127
-Requires-Dist: nnll[cu126,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version < "3.12") and extra == "cu127"
-Provides-Extra: lmstudio
-Requires-Dist: lmstudio>=1.3.1; extra == "lmstudio"
-Provides-Extra: ollama
-Requires-Dist: ollama>=0.5.1; extra == "ollama"
-Provides-Extra: openai
-Requires-Dist: openai>=1.84.0; extra == "openai"
-Requires-Dist: openai-whisper@ git+https://github.com/openai/whisper.git ; python_version > "3.12" and extra == "openai"
-Requires-Dist: openai-whisper@ git+https://github.com/openai/whisper.git ; python_version <= "3.12" and extra == "openai"
-Requires-Dist: llvmlite>=0.44; python_version > "3.12" and extra == "openai"
-Requires-Dist: llvmlite>=0.36; python_version <= "3.12" and extra == "openai"
-Requires-Dist: numba>=0.61.2; python_version > "3.12" and extra == "openai"
-Requires-Dist: numba>=0.47.0; python_version <= "3.12" and extra == "openai"
-Provides-Extra: outetts
-Requires-Dist: mir[openai]; extra == "outetts"
-Requires-Dist: outetts; sys_platform != "darwin" and extra == "outetts"
-Provides-Extra: mlx-audio
-Requires-Dist: mir[openai]; extra == "mlx-audio"
-Requires-Dist: mlx-audio; sys_platform == "darwin" and extra == "mlx-audio"
-Requires-Dist: mlx-vlm<=0.1.26; extra == "mlx-audio"
-Requires-Dist: mlx-lm<=0.24.1; extra == "mlx-audio"
-Requires-Dist: numpy<=2.3; extra == "mlx-audio"
-Requires-Dist: misaki>=0.8.2; python_version < "3.13" and extra == "mlx-audio"
-Requires-Dist: pip; extra == "mlx-audio"
-Provides-Extra: full
-Requires-Dist: mir[cu126,cu128,hidiffusion,lmstudio,mlx-audio,mps,ollama,outetts]; extra == "full"
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: diffusers@ git+https://github.com/huggingface/diffusers
+Requires-Dist: sentencepiece; python_version < "3.13"
+Requires-Dist: sentencepiece@ git+https://github.com/google/sentencepiece.git#subdirectory=python ; python_version >= "3.13"
+Requires-Dist: transformers@ git+https://github.com/huggingface/transformers
+Requires-Dist: torch>=2.7.1
 Provides-Extra: dev
 Requires-Dist: pytest>=8.3.5; extra == "dev"
-Requires-Dist: pytest-asyncio>=1.0.0; extra == "dev"
 Requires-Dist: ruff>=0.11.12; extra == "dev"
-Requires-Dist: mir[full]; extra == "dev"
-Requires-Dist: nnll[dev,mps]@ git+https://github.com/darkshapes/nnll@main ; sys_platform == "darwin" and extra == "dev"
-Requires-Dist: nnll[cu126,dev,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version < "3.12") and extra == "dev"
-Requires-Dist: nnll[cu128,dev,rocm]@ git+https://github.com/darkshapes/nnll@main ; (sys_platform != "darwin" and python_version >= "3.12") and extra == "dev"
+Requires-Dist: ruff>=0.11.12; extra == "dev"
 Dynamic: license-file
 
 ---
@@ -236,7 +206,7 @@ license_name: LGPL-3.0-only
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="img_src/mir300_dark.png" width="50%">
   <source media="(prefers-color-scheme: light)" srcset="img_src/mir300_light.png" width="50%">
-  <img alt="Futuristic, slanted wireframe block type spelling the word 'ZODIAC' using overlapping and interweaving shapes and triangles for the 'O' and 'A'." src="img_src/zodiac_dark_bg.png">
+  <img alt="A pixellated logo of superimposed letters M I R",src="img_src/mir300_dark.png">
 </picture><br><br>
 
 </div>
@@ -250,7 +220,8 @@ This repo is a live development implementation, an example of autogenerating mod
 
 MIR is inspired by:
 - [AIR-URN](https://github.com/civitai/civitai/wiki/AIR-%E2%80%90-Uniform-Resource-Names-for-AI) project by [CivitAI](https://civitai.com/)
-- [Spandrel](https://github.com/chaiNNer-org/spandrel/blob/main/libs/spandrel/spandrel/__helpers/registry.py) library's super-resolution registry
+- [Spandrel](https://github.com/chaiNNer-org/spandrel/blob/main/libs/spandrel/spandrel/__helpers/registry.py) super-resolution registry by [chaiNNer](https://github.com/chaiNNer-org/chaiNNer)
+- [SDWebUI Model Toolkit](https://github.com/silveroxides/stable-diffusion-webui-model-toolkit-revisited) by [silveroxides](https://github.com/silveroxides)
 
 > [!NOTE]
 > ## Example:

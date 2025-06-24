@@ -3,18 +3,37 @@
 
 """類發現和拆卸"""
 
-from typing import Any, Dict, Tuple, Callable, List, Optional
+from typing import Any, Dict, Tuple, Callable, List, Optional, Union
 import os
 import sys
-from nnll.monitor.file import dbug, nfo, dbuq
-from nnll.tensor_pipe.deconstructors import scrape_docs, cut_docs, root_class
+import sys
 from mir.json_cache import JSONCache, TEMPLATE_PATH_NAMED  # pylint:disable=no-name-in-module
+from mir.inspectors import root_class, scrape_docs, cut_docs, make_callable
 
-TEMPLATE_FILE = JSONCache(TEMPLATE_PATH_NAMED)
 if "pytest" in sys.modules:
     import diffusers  # noqa # pyright:ignore[reportMissingImports] # pylint:disable=unused-import
 
 # from nnll.metadata.helpers import snake_caseify
+
+nfo = sys.stderr.write
+
+TEMPLATE_FILE = JSONCache(TEMPLATE_PATH_NAMED)
+
+
+def slice_number(text: str) -> Union[int, float, str]:
+    """Separate a numeral value appended to a string\n
+    :return: Converted value as int or float, or unmodified string
+    """
+    for index, char in enumerate(text):  # Traverse forwards
+        if char.isdigit():
+            numbers = text[index:]
+            if "." in numbers:
+                return float(numbers)
+            try:
+                return int(numbers)
+            except ValueError:
+                return numbers
+    return text
 
 
 def mir_label(mir_prefix: str, repo_path: str, decoder=False) -> Tuple[str]:
@@ -63,10 +82,14 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
         "black-forest-labs/FLUX.1-schnell": "black-forest-labs/FLUX.1-dev",
         "stabilityai/stable-diffusion-3.5-medium": "stabilityai/stable-diffusion-3.5-large",
     }
-    pipes = [scrape_docs(docstring) for docstring in list(cut_docs())]
-    dbug(pipes)
+    extracted_docs = list(cut_docs())
+    # if extracted_docs is not None:
+    #     if len(extracted_docs) > 3:
+    #         nfo(str(extracted_docs))
+    pipe_classes = [[name, file_name, scrape_docs(docs)] for name, file_name, docs in extracted_docs]
     pipe_data = {}
-    for entry in pipes:
+    for item in pipe_classes:
+        name, file_name, entry = item
         pipe_class, repo_path, staged_class, staged_repo = entry
         if pipe_class == "StableDiffusion3Pipeline":
             repo_path = "stabilityai/stable-diffusion-3.5-medium"  # to avoid 3 and use 3.5
@@ -75,6 +98,9 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
         elif pipe_class == "ChromaPipeline":
             repo_path = "lodestones/Chroma"
         pipe_class = pipe_class.strip('"')
+        model_class_obj = make_callable(pipe_class, f"diffusers.pipelines.{name}.{file_name}")
+        root_class(model_class_obj)
+        # nfo(f"{repo_path}, {model_class_obj}")
         series, comp_data = create_pipe_entry(repo_path, pipe_class)
         pipe_data.setdefault(series, {}).update(comp_data)  # update empty dict, preventing rewrite of others in series
         if staged_repo or any(repo_path in case for case in special_cases):  # these share the same pipe, (missing their own docstring)
@@ -82,15 +108,17 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
             if test:
                 staged_repo = test
                 staged_class = pipe_class
+            else:
+                model_class_obj = make_callable("staged_class", "diffusers")
             series, comp_data = create_pipe_entry(staged_repo, staged_class)
             pipe_data.setdefault(series, {}).update(comp_data)  # Update empty dict rather than entire series
     return dict(pipe_data)
 
 
-def create_pipe_entry(repo_path: str, class_name: str) -> tuple[str, Dict[str, Dict[Any, Any]]]:
+def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Optional[Callable] = None) -> tuple[str, Dict[str, Dict[Any, Any]]]:
     """Create a pipeline article and generate corresponding information according to the provided repo path and pipeline category\n
     :param Repo_path (str): Repository path.
-    :param class_name (str): pipe class name.
+    :param model_class_obj (str): The model class function
     :raises TypeError: If 'repo_path' or 'class_name' are not set.
     :return: Tuple: The data structure containing mir_series and mir_comp is used for subsequent processing.
     """
@@ -99,18 +127,17 @@ def create_pipe_entry(repo_path: str, class_name: str) -> tuple[str, Dict[str, D
     if not repo_path and class_name:
         raise TypeError(f"'repo_path' {repo_path} or 'pipe_class' {class_name} unset")
     mir_prefix = "info"
+    # if not model_class_obj and hasattr(diffusers, class_name):
     model_class_obj = getattr(diffusers, class_name)
     sub_segments = root_class(model_class_obj)
     decoder = "decoder" in sub_segments
-    dbuq(class_name)
-    dbuq(repo_path)
     if repo_path in ["openai/shap-e", "kandinsky-community/kandinsky-3"]:
         mir_prefix = "info.unet"
     else:
         mir_prefix = flag_config(**sub_segments)
         if mir_prefix is None:
             nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
-            dbuq(class_name, sub_segments, model_class_obj)
+            # /dbuq(class_name, sub_segments, model_class_obj)
             # return None
         else:
             mir_prefix = "info." + mir_prefix
@@ -145,7 +172,7 @@ def flag_config(transformers: bool = False, **kwargs):
         if any(kwargs.get(param) for param in key_match):
             return mir_prefix
     nfo("Unrecognized model type")
-    dbuq("Unrecognized model type")
+    # dbuq("Unrecognized model type")
 
 
 def transformers_index():
@@ -154,7 +181,7 @@ def transformers_index():
 
     import re
     import transformers
-    from nnll.tensor_pipe.deconstructors import stock_llm_data
+    from mir.inspectors import stock_llm_data
 
     corrections = {
         "GraniteSpeechForConditionalGeneration": {
@@ -199,11 +226,11 @@ def transformers_index():
     transformers_data: Dict[Callable, List[str]] = stock_llm_data()
     for model_class_obj, model_data in transformers_data.items():
         class_name = model_class_obj.__name__
-        dbuq(class_name)
+        # dbuq(class_name)
         if class_name in list(corrections):  # these are corrected because `root_class` doesn't return anything in these cases
             repo_path = corrections[class_name]["repo_path"]
             sub_segments = corrections[class_name].get("sub_segments", root_class(model_data["config"][-1], "transformers"))
-            dbuq(repo_path)
+            # dbuq(repo_path)
 
         else:
             repo_path = ""
@@ -216,11 +243,11 @@ def transformers_index():
                     break
             sub_segments: Dict[str, List[str]] = root_class(model_data["config"][-1], "transformers")
         if sub_segments and list(sub_segments) != ["kwargs"] and list(sub_segments) != ["use_cache", "kwargs"] and repo_path is not None:
-            dbuq(class_name)
+            # dbuq(class_name)
             mir_prefix = flag_config(transformers=True, **sub_segments)
             if mir_prefix is None:
                 nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
-                dbuq(class_name, sub_segments, model_class_obj, model_data)
+                # dbuq(class_name, sub_segments, model_class_obj, model_data)
                 continue
             else:
                 mir_prefix = "info." + mir_prefix

@@ -1,6 +1,6 @@
 import pytest
-from unittest.mock import patch, MagicMock
-from mir.generators import create_pipe_entry, mir_label  # Replace 'your_module' with the actual module name
+from unittest.mock import patch
+from mir.generators import create_pipe_entry  # Replace 'your_module' with the actual module name
 
 
 # Mocking the root_class and mir_label functions since they are not provided
@@ -22,9 +22,10 @@ def mock_diffusers():
 
 def test_create_unet():
     repo_path = "standard_org/standard_repo-prior"
-    pipe_class = "StableDiffusionPipeline"
+    from diffusers import StableDiffusionPipeline
 
-    result = create_pipe_entry(repo_path, pipe_class)
+    class_name = StableDiffusionPipeline.__name__
+    result = create_pipe_entry(repo_path, class_name)
 
     assert len(result) == 2
     mir_series, prefixed_data = result
@@ -33,68 +34,73 @@ def test_create_unet():
     assert "repo" in prefixed_data.get("prior")
     assert prefixed_data["prior"]["repo"] == repo_path
     assert "pkg" in prefixed_data.get("prior")
-    assert prefixed_data["prior"]["pkg"][0]["diffusers"] == pipe_class
+    assert prefixed_data["prior"]["pkg"][0]["diffusers"] == class_name
 
 
 def test_create_transformer():
     repo_path = "default_series/default_repo"
-    pipe_class = "HunyuanDiTPipeline"
+    from diffusers import HunyuanDiTPipeline
 
-    result = create_pipe_entry(repo_path, pipe_class)
+    class_name = HunyuanDiTPipeline.__name__
+    result = create_pipe_entry(repo_path, class_name)
 
     mir_series, prefixed_data = result
 
     assert mir_series == "info.dit.default-repo"
     assert prefixed_data["base"]["repo"] == repo_path
-    assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
+    assert prefixed_data["base"]["pkg"][0]["diffusers"] == class_name
 
 
 def test_create_kandinsky():
     repo_path = "kandinsky_series/kandinsky_repo-v1"
-    pipe_class = "KandinskyPipeline"
+    from diffusers import KandinskyPipeline
 
-    result = create_pipe_entry(repo_path, pipe_class)
+    class_name = KandinskyPipeline.__name__
+    result = create_pipe_entry(repo_path, class_name)
 
     mir_series, prefixed_data = result
 
     assert mir_series == "info.unet.kandinsky-repo"
     assert prefixed_data["v1"]["repo"] == repo_path
-    assert prefixed_data["v1"]["pkg"][0]["diffusers"] == pipe_class
+    assert prefixed_data["v1"]["pkg"][0]["diffusers"] == class_name
 
 
 def test_create_shap_e():
     repo_path = "openai/shap-e_40496"
-    pipe_class = "ShapEPipeline"
+    from diffusers import ShapEPipeline
 
-    result = create_pipe_entry(repo_path, pipe_class)
+    class_name = ShapEPipeline.__name__
+    result = create_pipe_entry(repo_path, class_name)
 
     mir_series, prefixed_data = result
 
     assert mir_series == "info.unet.shap-e"
     assert prefixed_data["40496"]["repo"] == repo_path
-    assert prefixed_data["40496"]["pkg"][0]["diffusers"] == pipe_class
+    assert prefixed_data["40496"]["pkg"][0]["diffusers"] == class_name
 
 
 def test_create_flux():
     repo_path = "cocktailpeanut/xulf-schnell"
-    pipe_class = "FluxPipeline"
+    from diffusers import FluxPipeline
 
-    result = create_pipe_entry(repo_path, pipe_class)
+    class_name = FluxPipeline.__name__
+    result = create_pipe_entry(repo_path, class_name)
 
     mir_series, prefixed_data = result
 
     assert mir_series == "info.dit.xulf-schnell"
     assert prefixed_data["base"]["repo"] == repo_path
-    assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
+    assert prefixed_data["base"]["pkg"][0]["diffusers"] == class_name
     assert 1 in prefixed_data["base"]["pkg"]
     assert prefixed_data["base"]["pkg"][1]["mflux"] == "Flux1"
 
 
 def test_create_empty():
     repo_path = ""
-    pipe_class = "StableDiffusionPipeline"
+    from diffusers import StableDiffusionPipeline
+
     with pytest.raises(TypeError) as exc_info:
-        result = create_pipe_entry(repo_path, pipe_class)
+        create_pipe_entry(repo_path, StableDiffusionPipeline.__name__)
 
     assert isinstance(exc_info.value, TypeError)
     assert exc_info.value.args == ("'repo_path'  or 'pipe_class' StableDiffusionPipeline unset",)
@@ -102,28 +108,30 @@ def test_create_empty():
 
 def test_create_prior():
     repo_path = "babalityai/finish_him_.kascade_prior"
-    pipe_class = "StableCascadePriorPipeline"
+    from diffusers import StableCascadePriorPipeline
 
-    result = create_pipe_entry(repo_path, pipe_class)
+    class_name = StableCascadePriorPipeline.__name__
+    result = create_pipe_entry(repo_path, class_name)
 
     mir_series, prefixed_data = result
 
     assert mir_series == "info.unet.finish-him--kascade"
     assert prefixed_data["prior"]["repo"] == repo_path
-    assert prefixed_data["prior"]["pkg"][0]["diffusers"] == pipe_class
+    assert prefixed_data["prior"]["pkg"][0]["diffusers"] == class_name
 
 
 def test_create_decoder():
     repo_path = "babalityai/finish_him_.kascade"
-    pipe_class = "StableCascadeDecoderPipeline"
+    from diffusers import StableCascadeDecoderPipeline
 
-    result = create_pipe_entry(repo_path, pipe_class)
+    class_name = StableCascadeDecoderPipeline.__name__
+    result = create_pipe_entry(repo_path, class_name)
 
     mir_series, prefixed_data = result
 
     assert mir_series == "info.unet.finish-him--kascade"
     assert prefixed_data["base"]["repo"] == repo_path
-    assert prefixed_data["base"]["pkg"][0]["diffusers"] == pipe_class
+    assert prefixed_data["base"]["pkg"][0]["diffusers"] == class_name
 
 
 # def test_create_consisid():

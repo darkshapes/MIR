@@ -25,10 +25,19 @@ classifiers = [
 ]
 dependencies = [
     "pydantic>=2.11.7",
+    "diffusers  @ git+https://github.com/huggingface/diffusers",
+    "sentencepiece ; python_version < '3.13' ",
+    "sentencepiece @ git+https://github.com/google/sentencepiece.git#subdirectory=python ; python_version >= '3.13' ",
+    "transformers  @ git+https://github.com/huggingface/transformers",
+    "torch>=2.7.1",
 ]
 
 [dependency-groups]
-dev = ["pytest>=8.3.5", "ruff>=0.11.12"]
+dev = [
+    "pytest>=8.3.5",
+ "pytest-mock>=3.14.1",
+ "ruff>=0.11.12",
+]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.3.5", "ruff>=0.11.12"]
@@ -70,3 +79,8 @@ default.extend-words = { "ot" = "ot" }
 
 [tool.uv]
 dev-dependencies = ["pytest>=8.3.5", "ruff>=0.11.12"]
+
+[tool.uv.sources]
+diffusers     = { git = "https://github.com/huggingface/diffusers" }
+sentencepiece = { git = "https://github.com/google/sentencepiece.git", subdirectory = "python", marker = "python_version >= '3.13'" }
+transformers  = { git = "https://github.com/huggingface/transformers" }

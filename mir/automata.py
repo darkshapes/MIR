@@ -41,7 +41,7 @@ def gen_torch_dtype(mir_db: MIRDatabase):
     """Create mir info database"""
     import re
     import torch
-    from nnll.metadata.helpers import slice_number
+    from mir.generators import slice_number
 
     available_dtypes: List[str] = [dtype for dtype in torch.__dict__.values() if isinstance(dtype, torch.dtype)]
     series_name = "_"

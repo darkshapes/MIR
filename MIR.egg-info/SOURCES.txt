@@ -16,6 +16,7 @@ img_src/mir300_light.png
 mir/__init__.py
 mir/automata.py
 mir/generators.py
+mir/inspectors.py
 mir/json_cache.py
 mir/mir.py
 mir/mir_maid.py
@@ -25,6 +26,8 @@ mir/config/cuetype.json
 mir/config/mir.json
 mir/config/template.json
 tests/__init__.py
+tests/test_deconstructors_cut.py
+tests/test_deconstructors_root.py
 tests/test_gen_create_pipe.py
 tests/test_generators.py
 tests/test_json_cache_read.py

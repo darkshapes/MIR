@@ -47,6 +47,9 @@ class TestHyperChain(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        import os
+
+        os.remove(cls.test_file)
         cls.patcher.stop()
 
 
@@ -107,4 +110,7 @@ class TestHyperChainValidation(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        import os
+
+        os.remove(cls.test_file)
         cls.patcher.stop()

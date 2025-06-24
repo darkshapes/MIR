@@ -142,23 +142,6 @@ def build_comp(comp: str, domain: str, kwargs: dict) -> Callable:
         comp: (Union[Info, Model, Ops, Dev], ...),
     }
     data = {}
-    # class override moves items to specific modules
-    # module_key = "[init]"
-    # base_modules = [
-    #     "scheduler",  # name of a scheduler package
-    #     "scheduler_kwargs",  # dictionary of scheduler arguments
-    #     "dep_pkg",  # deprecated
-    #     "requires",  # a dictionary of dependency modules mapped to a list of module path, last work with from_single_file, single or multi-length listt
-    # ]
-    # for module_name in base_modules:
-    #     if module_name in kwargs and domain != Dev:
-    #         value = kwargs.pop(module_name)
-    #         if value is not None:
-    #             data.get(module_key, data.setdefault(module_key, {module_name: value})).update({module_name: value})
-    #             field.setdefault(
-    #                 module_key,
-    #                 (Dict[str, Union[str, Dict[str, Any], List[str], None]], ...),
-    #             )
     data.setdefault(comp, add_mir_fields(domain=domain, **kwargs))
 
     DynamicModel = create_model("Compatibility", **field)  # pylint: disable=invalid-name

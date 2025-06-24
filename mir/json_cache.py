@@ -70,6 +70,7 @@ class JSONCache:
                     try:
                         self._cache = tomllib.load(f)
                     except tomllib.TOMLDecodeError as error_log:
+                        nfo("Error decoding cache file", f" {self.file} Using an empty cache.")
                         dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
                         self._cache = {}
             else:
@@ -77,6 +78,7 @@ class JSONCache:
                     with open(self.file, "r", encoding="UTF-8") as f:
                         self._cache = json.load(f)
                 except (FileNotFoundError, json.JSONDecodeError) as error_log:
+                    nfo("Error decoding cache file", f" {self.file} Using an empty cache.")
                     dbuq(f"Error decoding cache file. Using an empty cache. {error_log}")
                     self._cache = {}
 

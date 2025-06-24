@@ -41,15 +41,15 @@ def gen_torch_dtype(mir_db: MIRDatabase):
     from nnll.metadata.helpers import slice_number
 
     available_dtypes: List[str] = [dtype for dtype in torch.__dict__.values() if isinstance(dtype, torch.dtype)]
-    comp_name = "_"
+    series_name = "_"
     for precision in available_dtypes:
         dep_name, class_name = str(precision).split(".")
         if "_" in class_name:
-            series_name = class_name[0].upper() + "8_" + class_name.split("_")[1].upper()
-            if series_name.endswith("FN"):
-                series_name = series_name[:-2]
+            comp_name = class_name[0].upper() + "8_" + class_name.split("_")[1].upper()
+            if comp_name.endswith("FN"):
+                comp_name = comp_name[:-2]
         else:
-            series_name = class_name[0].upper() + str(slice_number(class_name))
+            comp_name = class_name[0].upper() + str(slice_number(class_name))
         variant_name = class_name.replace("bfloat", "bf")
         variant_name = class_name.replace("float", "fp")
         patterns = [r"complex", r"bits", r"quint", r"uint", r"int", r"bfloat", r"float", r"bool"]
@@ -57,8 +57,9 @@ def gen_torch_dtype(mir_db: MIRDatabase):
             compiled = re.compile(precision_name)
             dtype = re.search(compiled, class_name)
             if dtype:
-                comp_name = dtype.group()
+                series_name = dtype.group()
                 break
+
         mir_db.add(
             mir_entry(
                 domain="ops",
@@ -68,6 +69,42 @@ def gen_torch_dtype(mir_db: MIRDatabase):
                 pkg={0: {dep_name.lower(): {class_name.lower(): {"variant": variant_name}}}},
             )
         )
+
+
+# def gen_torch_dtype(mir_db: MIRDatabase):
+#     """Create mir info database"""
+#     import re
+#     import torch
+#     from nnll.metadata.helpers import slice_number
+
+#     available_dtypes: List[str] = [dtype for dtype in torch.__dict__.values() if isinstance(dtype, torch.dtype)]
+#     comp_name = "_"
+#     for precision in available_dtypes:
+#         patterns = [r"complex", r"bits", r"quint", r"uint", r"int", r"bfloat", r"float", r"bool"]
+#         for precision_name in patterns:
+#             compiled = re.compile(precision_name)
+#             dtype = re.search(compiled, class_name)
+#             if dtype:
+#                 series_name = dtype.group()
+#                 break
+#         dep_name, class_name = str(precision).split(".")
+#         if "_" in class_name:
+#             comp_name = class_name[0].upper() + "8_" + class_name.split("_")[1].upper()
+#             if comp_name.endswith("FN"):
+#                 comp_name = comp_name[:-2]
+#         else:
+#             comp_name = class_name[0].upper() + str(slice_number(class_name))
+#         variant_name = class_name.replace("bfloat", "bf")
+#         variant_name = class_name.replace("float", "fp")
+#         mir_db.add(
+#             mir_entry(
+#                 domain="ops",
+#                 arch="precision",
+#                 series=series_name,
+#                 comp=comp_name,
+#                 pkg={0: {dep_name.lower(): {class_name.lower(): {"variant": variant_name}}}},
+#             )
+#         )
 
 
 def gen_schedulers(mir_db: MIRDatabase):
@@ -101,6 +138,87 @@ def gen_schedulers(mir_db: MIRDatabase):
                 )
     except (ImportError, ModuleNotFoundError) as error_log:
         dbug(error_log)
+
+
+# def gen_attention_processors(mir_db: MIRDatabase): # upstream not quite ready for this yet
+#     from diffusers.models.attention_processor import AttentionProcessor
+
+#     mir_data
+#     for series, comp_name in mir_data.items():
+#     id_segment = series.split(".")
+#     for compatibility in comp_name:
+#         dbug(id_segment)
+#         try:
+#             mir_db.add(
+#                 mir_entry(
+#                     domain=id_segment[0],
+#                     arch=id_segment[1],
+#                     series=id_segment[2],
+#                     comp=compatibility,
+#                     **mir_data[series][compatibility],
+#                 ),
+#             )
+#         except IndexError as error_log:
+#             nfo(f"Failed to create series: {series}  compatibility: {comp_name}  ")
+#             dbug(error_log)
+
+
+# def gen_guiders(mir_db: MIRDatabase): #
+#     from nnll.metadata.helpers import snake_caseify
+#     from diffusers.guider import GuiderType
+
+#     guider_type = GuiderType
+#     for comp_name in guider_type.items():
+#         class_obj = comp_name.__name__
+#         mir_data = {"pkg": {0: {"diffusers": class_obj}}}
+#         try:
+#             mir_db.add(
+#                 mir_entry(
+#                     domain="ops",
+#                     arch="noise_prediction",
+#                     series="guider",
+#                     comp=snake_caseify(class_obj),
+#                     **mir_data,
+#                 ),
+#             )
+#         except IndexError as error_log:
+#             nfo(f"Failed to create compatibility: {class_obj}")
+#             dbug(error_log)
+
+
+# (
+#     "info.unet",
+#     "stable-cascade",
+#     {
+#         "combined": {
+#             "pkg": {
+#                 0: {  # decoder=decoder_unet
+#                     "precision": "ops.precision.bfloat.b16",
+#                     "generation": {
+#                         "negative_prompt": "",
+#                         "num_inference_steps": 20,
+#                         "guidance_scale": 4.0,
+#                         "num_images_per_prompt": 1,
+#                         "width": 1024,
+#                         "height": 1024,
+#                     },
+#                 },
+#                 "pkg_alt": {
+#                     0: {
+#                         "diffusers": {
+#                             "StableCascadeCombinedPipeline": {
+#                                 "negative_prompt": "",
+#                                 "num_inference_steps": 10,
+#                                 "prior_num_inference_steps": 20,
+#                                 "prior_guidance_scale": 3.0,
+#                             }
+#                         },
+#                     }
+#                 },
+#             }
+#         }
+#     },
+# ),
 
 
 def merge_data(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> None:
@@ -181,7 +299,7 @@ def build_mir_additional(mir_db: MIRDatabase):
                 "diffusers": {
                     "pkg": {
                         0: {
-                            "precision": "ops.precision.f16",
+                            "precision": "ops.precision.float.f16",
                             "generation": {
                                 "negative_prompt": "",
                                 "guidance_scale": 5.0,
@@ -203,7 +321,7 @@ def build_mir_additional(mir_db: MIRDatabase):
                 "prior": {
                     "pkg": {
                         0: {
-                            "precision": "ops.precision.bf16",
+                            "precision": "ops.precision.bfloat.b16",
                             "generation": {
                                 "negative_prompt": "",
                                 "num_images_per_prompt": 1,
@@ -231,7 +349,7 @@ def build_mir_additional(mir_db: MIRDatabase):
                 "base": {
                     "pkg": {
                         0: {
-                            "precision": "ops.precision.bf16",
+                            "precision": "ops.precision.bfloat.b16",
                             "generation": {
                                 "height": 1024,
                                 "width": 1024,
@@ -264,7 +382,7 @@ def build_mir_additional(mir_db: MIRDatabase):
                 "base": {
                     "pkg": {
                         0: {
-                            "precision": "ops.precision.bf16",
+                            "precision": "ops.precision.bfloat.b16",
                             "generation": {
                                 "height": 1024,
                                 "width": 1024,
@@ -298,7 +416,7 @@ def build_mir_additional(mir_db: MIRDatabase):
                                 "output_type": "pil",
                                 "num_inference_steps": 10,
                             },
-                            "precision": "ops.precision.bf16",
+                            "precision": "ops.precision.bfloat.b16",
                         },
                         "layer_256": [
                             "fde5a91a908e8cb969f97bcd20e852fb028cc039a19633b0e1559ae41edeb16f",
@@ -313,40 +431,6 @@ def build_mir_additional(mir_db: MIRDatabase):
         ),
     ]
     merge_data(mir_db, data_tuple)
-
-    # (
-    #     "info.unet",
-    #     "stable-cascade",
-    #     {
-    #         "combined": {
-    #             "pkg": {
-    #                 0: {  # decoder=decoder_unet
-    #                     "precision": "ops.precision.bf16",
-    #                     "generation": {
-    #                         "negative_prompt": "",
-    #                         "num_inference_steps": 20,
-    #                         "guidance_scale": 4.0,
-    #                         "num_images_per_prompt": 1,
-    #                         "width": 1024,
-    #                         "height": 1024,
-    #                     },
-    #                 },
-    #                 "pkg_alt": {
-    #                     0: {
-    #                         "diffusers": {
-    #                             "StableCascadeCombinedPipeline": {
-    #                                 "negative_prompt": "",
-    #                                 "num_inference_steps": 10,
-    #                                 "prior_num_inference_steps": 20,
-    #                                 "prior_guidance_scale": 3.0,
-    #                             }
-    #                         },
-    #                     }
-    #                 },
-    #             }
-    #         }
-    #     },
-    # ),
 
 
 def build_mir_custom(mir_db: MIRDatabase):
@@ -426,7 +510,7 @@ def build_mir_custom(mir_db: MIRDatabase):
             ],
             pkg={
                 0: {
-                    "precision": "ops.precision.f16",
+                    "precision": "ops.precision.float.f16",
                     "generation": {"num_inference_steps": 50, "guidance_scale": 3},
                 }
             },

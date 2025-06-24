@@ -7,9 +7,9 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
+from logging import Logger, INFO
 
 from pydantic import BaseModel, create_model
-from logging import Logger, INFO
 
 nfo_obj = Logger(INFO)
 nfo = nfo_obj.info

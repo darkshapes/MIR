@@ -3,16 +3,46 @@
 
 """類發現和拆卸"""
 
-from typing import Any, Dict, Tuple, Callable, List, Optional, Generator
+from typing import Any, Dict, Tuple, Callable, List, Optional, Generator, Union
 import os
 import sys
 
-from nnll.tensor_pipe.deconstructors import root_class
 from mir.json_cache import JSONCache, TEMPLATE_PATH_NAMED  # pylint:disable=no-name-in-module
 from logging import Logger, INFO
 
 nfo_obj = Logger(INFO)
 nfo = nfo_obj.info
+
+
+def root_class(module: Union[Callable, str], pkg_name: Optional[str] = None) -> Dict[str, List[str]]:
+    """Pick apart a Diffusers or Transformers pipeline class and find its constituent parts\n
+    :param module: Origin pipeline as a class or as a string
+    :param library: name of a library to import the class from, only if a string is provided
+    :return: Dictionary of sub-classes from the `module`"""
+
+    import inspect
+    from importlib import import_module
+
+    if pkg_name and isinstance(module, str):
+        module = import_module(module, pkg_name)
+    signature = inspect.signature(module.__init__)
+    class_names = {}
+    for folder, param in signature.parameters.items():
+        if folder != "self":
+            sub_module = str(param.annotation).split("'")
+            if len(sub_module) > 1 and sub_module[1] not in [
+                "bool",
+                "int",
+                "float",
+                "complex",
+                "str",
+                "list",
+                "tuple",
+                "dict",
+                "set",
+            ]:
+                class_names.setdefault(folder, sub_module[1].split("."))
+    return class_names
 
 
 def scrape_docs(doc_string: str) -> Tuple[str,]:
@@ -224,8 +254,6 @@ def create_pipe_entry(repo_path: str, class_name: str) -> tuple[str, Dict[str, D
     """
     import diffusers  # pyright: ignore[reportMissingImports] # pylint:disable=redefined-outer-name
 
-    if not repo_path and class_name:
-        raise TypeError(f"'repo_path' {repo_path} or 'pipe_class' {class_name} unset")
     mir_prefix = "info"
     model_class_obj = getattr(diffusers, class_name)
     sub_segments = root_class(model_class_obj)

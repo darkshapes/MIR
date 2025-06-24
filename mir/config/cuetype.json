@@ -58,7 +58,7 @@
             "APITimeoutError",
             "APIStatusError",
             "JSONDecodeError"
-        ],
+        ]
     },
     "VLLM": {
         "module": "vllm",

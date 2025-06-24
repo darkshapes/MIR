@@ -15,11 +15,10 @@ class TestBlock(unittest.TestCase):
     """Test blocks objects"""
 
     test_file = ".test.json"
-    file_name = ".test.json"
 
     def setUp(self):
         """Create block and save existing parameters"""
-        with open(self.file_name, "w", encoding="UTF-8") as doc:
+        with open(self.test_file, "w", encoding="UTF-8") as doc:
             json.dump({}, doc)
         self.block = Block.create(index=1, previous_hash="previous_hash_0", data="Sample Data")
 
@@ -46,6 +45,11 @@ class TestBlock(unittest.TestCase):
         expected_hash = hashlib.sha256(f"{self.block.index}{self.block.previous_hash}{self.block.data}{self.block.timestamp}".encode("utf-8")).hexdigest()
 
         self.assertEqual(self.block.block_hash, expected_hash)
+
+    def tearDown(self):
+        import os
+
+        os.remove(self.test_file)
 
 
 if __name__ == "__main__":

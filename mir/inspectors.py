@@ -1,6 +1,5 @@
 from typing import Dict, List, Union, Callable, Optional, Tuple, Generator
 
-# from importlib import import_module
 import pkgutil
 import diffusers.pipelines
 import sys
@@ -250,7 +249,7 @@ def class_parent(code_name: str, pkg_name: str) -> Optional[List[str]]:
     :raises KeyError: for invalid pkg_name
     """
     import os
-    # from importlib import import_module
+    from importlib import import_module
 
     pkg_paths = {
         "diffusers": "pipelines",

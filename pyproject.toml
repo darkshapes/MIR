@@ -29,7 +29,9 @@ dependencies = [
     "sentencepiece ; python_version < '3.13' ",
     "sentencepiece @ git+https://github.com/google/sentencepiece.git#subdirectory=python ; python_version >= '3.13' ",
     "transformers  @ git+https://github.com/huggingface/transformers",
-    "torch>=2.7.1",
+    "mir[mps]; sys_platform == 'darwin'",
+    "mir[cu128,rocm,cpu]; sys_platform != 'darwin' and python_version >= '3.12' ",
+    "mir[cu126,rocm,cpu]; sys_platform != 'darwin' and python_version < '3.12'",
 ]
 
 [dependency-groups]
@@ -85,7 +87,7 @@ conflicts = [
     ],
 ]
 
-[tool.uv.pip]
+[tool.uv.pip] #ignore: even-better-toml
 torch-backend = "auto"
 
 [[tool.uv.index]]

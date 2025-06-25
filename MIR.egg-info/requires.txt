@@ -1,13 +1,21 @@
 pydantic>=2.11.7
 diffusers@ git+https://github.com/huggingface/diffusers
 transformers@ git+https://github.com/huggingface/transformers
-torch>=2.7.1
 
 [:python_version < "3.13"]
 sentencepiece
 
 [:python_version >= "3.13"]
 sentencepiece@ git+https://github.com/google/sentencepiece.git#subdirectory=python
+
+[:sys_platform != "darwin" and python_version < "3.12"]
+mir[cpu,cu126,rocm]
+
+[:sys_platform != "darwin" and python_version >= "3.12"]
+mir[cpu,cu128,rocm]
+
+[:sys_platform == "darwin"]
+mir[mps]
 
 [cpu]
 torch

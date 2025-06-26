@@ -72,6 +72,14 @@ rocm = [
 dev = ["pytest>=8.3.5", "ruff>=0.11.12", "pytest-mock>=3.14.1"]
 
 
+[project.urls]
+Homepage      = "https://github.com/darkshapes/MIR"
+Documentation = "https://github.com/darkshapes/sdbx/wiki"
+
+[project.scripts]
+mir-maid = "mir.mir_maid:main"
+mir-add  = "mir.mir:main"
+
 [tool.uv]
 preview = true
 prerelease = "allow"
@@ -142,15 +150,6 @@ torchaudio = [
 diffusers     = { git = "https://github.com/huggingface/diffusers" }
 sentencepiece = { git = "https://github.com/google/sentencepiece.git", subdirectory = "python", marker = "python_version >= '3.13'" }
 transformers  = { git = "https://github.com/huggingface/transformers" }
-
-
-[project.urls]
-Homepage      = "https://github.com/darkshapes/MIR"
-Documentation = "https://github.com/darkshapes/sdbx/wiki"
-
-[project.scripts]
-mir-maid = "mir.mir_maid:main"
-mir-add  = "mir.mir:main"
 
 [tool.setuptools]
 packages = ["mir"]

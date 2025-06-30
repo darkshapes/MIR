@@ -4,7 +4,7 @@
 from typing import Annotated
 import pytest
 from typing import Generic
-from mir.inspectors import root_class
+from mir.mappers import root_class
 
 
 def test_root_class_with_builtin_types():

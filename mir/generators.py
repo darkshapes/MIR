@@ -8,7 +8,7 @@ import os
 import sys
 import sys
 from mir.json_cache import JSONCache, TEMPLATE_PATH_NAMED  # pylint:disable=no-name-in-module
-from mir.inspectors import root_class, scrape_docs, cut_docs, make_callable
+from mir.mappers import root_class, scrape_docs, cut_docs, make_callable
 
 if "pytest" in sys.modules:
     import diffusers  # noqa # pyright:ignore[reportMissingImports] # pylint:disable=unused-import
@@ -54,6 +54,7 @@ def mir_label(mir_prefix: str, repo_path: str, decoder=False) -> Tuple[str]:
         r"-diffusers$",
         r"-large$",
         r"-medium$",
+        r"-tiny$",
         r"-prior$",
         r"-full$",
         r"-xt$",
@@ -181,7 +182,7 @@ def transformers_index():
 
     import re
     import transformers
-    from mir.inspectors import stock_llm_data
+    from mir.mappers import stock_llm_data
 
     corrections = {
         "GraniteSpeechForConditionalGeneration": {

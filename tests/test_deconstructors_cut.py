@@ -5,7 +5,7 @@ from unittest import mock
 from unittest.mock import Mock, patch
 
 from torch._functorch.eager_transforms import assert_output_is_tensor_or_tensors
-from mir.inspectors import cut_docs
+from mir.mappers import cut_docs
 from unittest.mock import call
 
 
@@ -16,7 +16,7 @@ def test_list_diffusers_models():
 @pytest.fixture
 def mock_import_module(mocker):
     """Fixture to mock import_module and simulate different module scenarios."""
-    return mocker.patch("mir.inspectors.make_callable")
+    return mocker.patch("mir.mappers.make_callable")
 
 
 @pytest.fixture

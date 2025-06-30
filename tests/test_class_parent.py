@@ -2,7 +2,7 @@
 #  # # <!-- // /*  d a r k s h a p e s */ -->
 
 import pytest
-from mir.inspectors import class_parent  # Replace with the actual module name
+from mir.mappers import class_parent  # Replace with the actual module name
 
 
 def test_class_parent_diffusers():

@@ -58,7 +58,7 @@ class MIRDatabase:
         return self.database
 
     # @debug_monitor
-    def _ready_value(self, value: str, target: str, series: str, compatibility: str) -> List[str]:
+    def _stage_maybes(self, maybe_match: str, target: str, series: str, compatibility: str) -> List[str]:
         """Process a single value for matching against the target\n
         :param value: An unknown string value
         :param target: The search target
@@ -68,9 +68,9 @@ class MIRDatabase:
         :return: _description_
         """
         results = []
-        if isinstance(value, str):
-            value = [value]
-        for option in value:
+        if isinstance(maybe_match, str):
+            maybe_match = [maybe_match]
+        for option in maybe_match:
             option_lower = option.lower()
             if option_lower == target:
                 return [option, series, compatibility, True]
@@ -79,7 +79,7 @@ class MIRDatabase:
         return results
 
     @staticmethod
-    def grade_char_match(matches: List[List[str]], target: str) -> list[str, str]:
+    def grade_maybes(matches: List[List[str]], target: str) -> list[str, str]:
         """Evaluate and select the best match from a list of potential matches\n
         :param matches: Possible matches to compare
         :param target: Desired entry to match
@@ -91,7 +91,6 @@ class MIRDatabase:
         best_match = None
         for match in matches:
             option, series, compatibility, _ = match
-            print(_)
             if target in option or option in target:
                 max_len = len(os.path.commonprefix([option, target]))
                 gap = abs(len(option) - len(target)) + (len(option) - max_len)
@@ -99,6 +98,21 @@ class MIRDatabase:
                     min_gap = gap
                     best_match = [series, compatibility]
         return best_match
+
+    def ready_stage(self, maybe_match: str, target: str, series: str, compatibility: str) -> Optional[List[str]]:
+        """Orchestrate match checking, return for exact matches, and create a queue of potential match
+        :param maybe_match: The value of the requested search field
+        :param target: The requested information
+        :param series: Current MIR domain/arch/series tag
+        :param compatibility: MIR compatibility tag
+        :return: A list of exact matches or None
+        """
+        match_results = self._stage_maybes(maybe_match, target, series, compatibility)
+        if next(iter(match_results), 0):
+            if next(iter(match_results))[3]:
+                return [series, compatibility]
+            self.matches.extend(match_results)
+        return None
 
     # @debug_monitor
     def find_path(self, field: str, target: str, sub_field: Optional[str] = None) -> list[str]:
@@ -109,31 +123,23 @@ class MIRDatabase:
         :raises KeyError: Target string not found
         """
         target = target.lower()
-        matches = []
-
-        def process_value(value, series, compatibility):
-            match_results = self._ready_value(value, target, series, compatibility)
-            if next(iter(match_results), 0):
-                if next(iter(match_results))[3]:
-                    return [series, compatibility]
-                matches.extend(match_results)
-            return None
+        self.matches = []
 
         for series, comp in self.database.items():
             for compatibility, fields in comp.items():
-                value = fields.get(field)
-                if value is not None:
-                    if isinstance(value, dict) and isinstance(next(iter(value.keys()), None), int):
-                        for _, sub_field in value.items():
-                            result = process_value(sub_field, series, compatibility)
+                maybe_match = fields.get(field)
+                if maybe_match is not None:
+                    if isinstance(maybe_match, dict) and isinstance(next(iter(maybe_match.keys()), None), int):
+                        for _, sub_field in maybe_match.items():
+                            result = self.ready_stage(sub_field, target, series, compatibility)
                             if result:
                                 return result
                     else:
-                        result = process_value(value, series, compatibility)
+                        result = self.ready_stage(maybe_match, target, series, compatibility)
                         if result:
                             return result
 
-        best_match = self.grade_char_match(matches, target)
+        best_match = self.grade_maybes(self.matches, target)
         if best_match:
             # dbug(best_match)
             return best_match

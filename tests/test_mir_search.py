@@ -51,7 +51,7 @@ def mock_test_database():
     return mir_db
 
 
-def test_grade_char_match(mock_test_database):
+def test_grade_maybes(mock_test_database):
     result = mock_test_database.find_path(field="repo", target="table-cascade")
     assert result == ["info.unet.stable-cascade", "base"]
 

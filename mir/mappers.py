@@ -1,7 +1,7 @@
 ### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import Dict, List, Union, Callable, Optional, Tuple, Generator
+from typing import Dict, List, Union, Callable, Optional, Generator
 import pkgutil
 import diffusers.pipelines
 import sys
@@ -108,61 +108,11 @@ def stock_llm_data() -> Dict[str, List[str]]:
                 if isinstance(task_pipe, tuple):
                     task_pipe = task_pipe[0]
                 if task_pipe not in exclude_list:
-                    # dbuq(code_name)
-                    # dbuq(task_pipe)
                     model_class = getattr(__import__("transformers"), task_pipe)
                     model_data = root_class(model_class)
                     if model_data and "inspect" not in model_data["config"] and "deprecated" not in model_data["config"]:
                         transformer_data.setdefault(model_class, model_data)
     return transformer_data
-
-
-def scrape_docs(doc_string: str) -> Tuple[str,]:
-    """Eat the 🤗Diffusers docstrings as a treat, leaving any tasty repo and class morsels neatly arranged as a dictionary.\n
-    Nom.
-    :param doc_string: String literal from library describing the class
-    :return: A yummy dictionary of relevant class and repo strings"""
-
-    pipe_prefix = [">>> adapter = ", ">>> pipe_prior = ", ">>> pipe = ", ">>> pipeline = ", ">>> blip_diffusion_pipe = ", ">>> gen_pipe = ", ">>> prior_pipe = "]
-    repo_prefixes = ["repo_id", "model_ckpt", "model_id_or_path", "model_id", "repo"]
-    class_method = [".from_pretrained(", ".from_single_file("]
-    staged_class_method = ".from_pretrain("
-    staged = None
-    staged_class = None
-    staged_repo = None
-    joined_docstring = " ".join(doc_string.splitlines())
-
-    for prefix in pipe_prefix:
-        pipe_doc = joined_docstring.partition(prefix)[2]  # get the string segment that follows pipe assignment
-        if prefix == pipe_prefix[-2]:  # continue until loop end [exhaust last two items in list above]
-            staged = pipe_doc
-        elif pipe_doc and not staged:
-            break
-    for method_name in class_method:
-        if method_name in pipe_doc:
-            pipe_class = pipe_doc.partition(method_name)[0]  # get the segment preceding the class' method call
-            repo_path = pipe_doc.partition(method_name)  # break segment at method
-            repo_path = repo_path[2].partition(")")[0]  # segment after is either a repo path or a reference to it, capture the part before the parenthesis
-            repo_path = repo_path.replace("...", "").strip()  # remove any ellipsis and empty space
-            repo_path = repo_path.partition('",')[0]  # partition at commas, repo is always the first argument
-            repo_path = repo_path.strip('"')  # strip remaining quotes
-            # * the star below could go here?
-            if staged:
-                staged_class = staged.partition(staged_class_method)[0]  # repeat with any secondary stages
-                staged_repo = staged.partition(staged_class_method)
-                staged_repo = staged_repo[2].partition(")")[0]
-                staged_repo = staged_repo.replace("...", "").strip()
-                staged_repo = staged_repo.partition('",')[0]
-                staged_repo = staged_repo.strip('"')
-            break
-        else:
-            continue
-    for prefix in repo_prefixes:  # * this could move up
-        if prefix in repo_path and not staged:  # if  don't have the repo path, but only a reference
-            repo_variable = f"{prefix} = "  # find the variable assignment
-            repo_path = next(line.partition(repo_variable)[2].split('",')[0] for line in doc_string.splitlines() if repo_variable in line).strip('"')
-            break
-    return pipe_class, repo_path, staged_class, staged_repo
 
 
 def cut_docs() -> Generator:
@@ -180,15 +130,15 @@ def cut_docs() -> Generator:
 
     exclusion_list = [  # task specific, adapter, or no doc string. all can be be gathered by other means
         # these will be handled eventually
-        "animatediff",  # adapter
-        "controlnet",
-        "controlnet_hunyuandit",  #: "hunyuandit_controlnet",
-        "controlnet_xs",
-        "controlnetxs",
-        "controlnet_hunyuandit",
-        "controlnet_sd3",
-        "pag",  #
-        "stable_diffusion_3_controlnet",
+        # "animatediff",  # adapter
+        # "controlnet",
+        # "controlnet_hunyuandit",  #: "hunyuandit_controlnet",
+        # "controlnet_xs",
+        # "controlnetxs",
+        # "controlnet_hunyuandit",
+        # "controlnet_sd3",
+        "autopipeline",  #
+        # "stable_diffusion_3_controlnet",
         "stable_diffusion_attend_and_excite",
         "stable_diffusion_sag",  #
         "t2i_adapter",
@@ -210,37 +160,38 @@ def cut_docs() -> Generator:
         "stable_diffusion_diffedit",
         "stable_diffusion_k_diffusion",  # tries to import k_diffusion
         "stable_diffusion_panorama",
-        "stable_diffusion_safe",  # impossibru
+        "stable_diffusion_safe",  # impossible
         "text_to_video_synthesis",
         "unidiffuser",
     ]
 
-    for _, pkg_name, is_pkg in pkgutil.iter_modules(diffusers.pipelines.__path__):
-        if is_pkg and pkg_name not in exclusion_list:
-            if pkg_name in non_standard:
-                file_specific = non_standard[pkg_name]
+    for _, code_name, is_pkg in pkgutil.iter_modules(diffusers.pipelines.__path__):
+        if is_pkg and code_name not in exclusion_list:
+            if hasattr(diffusers.pipelines, str(code_name)):
+                folder_path = getattr(diffusers.pipelines, str(code_name))
+                if folder_path and hasattr(folder_path, "_import_structure"):
+                    file_names = list(getattr(folder_path, "_import_structure").keys())
             else:
-                file_specific = pkg_name
-            file_name = f"pipeline_{file_specific}"
-            try:
-                pkg_path = f"diffusers.pipelines.{pkg_name}"
-
-                pipe_file = make_callable(file_name, pkg_path)
-                # print(pipe_file)
-            except ModuleNotFoundError:  # as error_log:
-                nfo(f"Module Not Found for {pkg_name}")
-                pipe_file = None
-                # pipe_file = make_callable()
-            try:
-                if pipe_file and hasattr(pipe_file, "EXAMPLE_DOC_STRING"):
-                    yield (pkg_name, file_name, pipe_file.EXAMPLE_DOC_STRING)
-                else:
-                    # nfo(f"{pkg_path}.{file_name}")
-                    pipe_file = import_module(pkg_path)
-            except AttributeError:  # as error_log:
-                nfo(f"Doc String Not Found for {pipe_file} {pkg_name}")
-                # dbug(error_log)
-                # print(sub_classes)
+                file_specific = non_standard.get(code_name, code_name)
+                file_names = [f"pipeline_{file_specific}"]
+            for file_name in file_names:
+                try:
+                    pkg_path = f"diffusers.pipelines.{code_name}"
+                    pipe_file = make_callable(file_name, pkg_path)
+                except ModuleNotFoundError:  # as error_log:
+                    nfo(f"Module Not Found for {code_name}")
+                    pipe_file = None
+                    # pipe_file = make_callable()
+                try:
+                    if pipe_file and hasattr(pipe_file, "EXAMPLE_DOC_STRING"):
+                        yield (code_name, file_name, pipe_file.EXAMPLE_DOC_STRING)
+                    else:
+                        # nfo(f"{pkg_path}.{file_name}")
+                        pipe_file = import_module(pkg_path)
+                except AttributeError:  # as error_log:
+                    nfo(f"Doc String Not Found for {pipe_file} {code_name}")
+                    # dbug(error_log)
+                    # print(sub_classes)
 
 
 def class_parent(code_name: str, pkg_name: str) -> Optional[List[str]]:

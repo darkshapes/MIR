@@ -8,7 +8,8 @@ import os
 import sys
 import sys
 from mir.json_cache import JSONCache, TEMPLATE_PATH_NAMED  # pylint:disable=no-name-in-module
-from mir.mappers import root_class, scrape_docs, cut_docs, make_callable
+from mir.mappers import root_class, cut_docs, make_callable
+from mir.doc_parser import parse_docs
 
 if "pytest" in sys.modules:
     import diffusers  # noqa # pyright:ignore[reportMissingImports] # pylint:disable=unused-import
@@ -79,19 +80,24 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
     """Generate diffusion model data for MIR index\n
     :return: Dictionary ready to be applied to MIR data fields
     """
+    pipe_map = {}
     special_cases = {
         "black-forest-labs/FLUX.1-schnell": "black-forest-labs/FLUX.1-dev",
         "stabilityai/stable-diffusion-3.5-medium": "stabilityai/stable-diffusion-3.5-large",
     }
     extracted_docs = list(cut_docs())
-    # if extracted_docs is not None:
-    #     if len(extracted_docs) > 3:
-    #         nfo(str(extracted_docs))
-    pipe_classes = [[name, file_name, scrape_docs(docs)] for name, file_name, docs in extracted_docs]
+
+    for code_name, file_name, docs in extracted_docs:
+        parse_data = [parsed for parsed in parse_docs(docs) if parsed is not None]
+        file_data = {file_name: (parse_data)}
+        pipe_map.setdefault(code_name, file_data)
     pipe_data = {}
-    for item in pipe_classes:
-        name, file_name, entry = item
-        pipe_class, repo_path, staged_class, staged_repo = entry
+    print(pipe_map)
+
+    for code_name, file_data in pipe_map.items():
+        file_name = next(iter(file_data))
+        doc_data = file_data[file_name]
+        pipe_class, repo_path, staged_class, staged_repo = doc_data
         if pipe_class == "StableDiffusion3Pipeline":
             repo_path = "stabilityai/stable-diffusion-3.5-medium"  # to avoid 3 and use 3.5
         elif pipe_class == "HunyuanDiTPipeline":
@@ -99,7 +105,7 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
         elif pipe_class == "ChromaPipeline":
             repo_path = "lodestones/Chroma"
         pipe_class = pipe_class.strip('"')
-        model_class_obj = make_callable(pipe_class, f"diffusers.pipelines.{name}.{file_name}")
+        model_class_obj = make_callable(pipe_class, f"diffusers.pipelines.{code_name}.{file_name}")
         root_class(model_class_obj)
         # nfo(f"{repo_path}, {model_class_obj}")
         series, comp_data = create_pipe_entry(repo_path, pipe_class)
@@ -113,6 +119,8 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
                 model_class_obj = make_callable("staged_class", "diffusers")
             series, comp_data = create_pipe_entry(staged_repo, staged_class)
             pipe_data.setdefault(series, {}).update(comp_data)  # Update empty dict rather than entire series
+        else:
+            return None
     return dict(pipe_data)
 
 

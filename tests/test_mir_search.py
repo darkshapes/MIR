@@ -69,3 +69,13 @@ def test_grade_field_change(mock_test_database):
 def test_grade_letter_case_change(mock_test_database):
     result = mock_test_database.find_path(field="pkg", sub_field=0, target="AuDiOCrAfT.MoDeLs")
     assert result == ["info.artm.audiogen", "medium-1-5b"]
+
+
+def test_repo_case_change(mock_test_database):
+    result = mock_test_database.find_path(field="repo", target="outeAI/OuteTTS-0.3-1b")
+    assert result == ["info.artm.outetts-0-3", "1b"]
+
+
+def test_sub_module_detection(mock_test_database):
+    result = mock_test_database.find_path(field="repo", target="PixArt-alpha/PixArt-Sigma-XL-2-1024-MS")
+    assert result == ["info.dit.pixart-sigma-xl-2", "1024-MS"]

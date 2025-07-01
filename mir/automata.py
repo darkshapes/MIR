@@ -742,7 +742,7 @@ def build_mir_custom(mir_db: MIRDatabase):
             arch="artm",
             series="outetts-0-3",
             comp="1b",
-            repo="outeai/outetts-0-3-1b",
+            repo="OuteAI/OuteTTS-0.3-1B",
             pkg={
                 0: {"outetts": "InterfaceHF"},
             },
@@ -924,7 +924,7 @@ def build_mir_lora(mir_db: MIRDatabase):
             domain="info",
             arch="lora",
             series="hyper",
-            comp="flux-1.dev",
+            comp="flux-1-dev",
             repo="ByteDance/Hyper-SD",
             pkg={0: {"diffusers": {"load_lora_weights": {"fuse": 0.125}}}},
             file_256={

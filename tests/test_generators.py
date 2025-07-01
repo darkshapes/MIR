@@ -28,7 +28,7 @@ def test_list_diffusers_models():
 
 # @pytest.fixture
 # def mock_kandinsky():
-#     with mock.patch("diffusers.pipelines.kandinsky2_2.pipeline_kandinsky2_2", autocast=True) as mock_data:
+#     with mock.patch("diffusers.pipelines.kandinsky2_2.pipeline_kandinsky2_2", autospec=True) as mock_data:
 #         mock_data.return_value = """
 #     Examples:
 #         ```py

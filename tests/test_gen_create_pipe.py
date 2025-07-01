@@ -16,7 +16,7 @@ def root_class(pipe_data):
 
 @pytest.fixture
 def mock_diffusers():
-    with patch("diffusers", autocast=True) as mocked:
+    with patch("diffusers", autospec=True) as mocked:
         return mocked
 
 

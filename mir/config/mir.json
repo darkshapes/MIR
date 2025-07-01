@@ -3484,7 +3484,7 @@
                 }
             }
         },
-        "flux-1.dev": {
+        "flux-1-dev": {
             "repo": "ByteDance/Hyper-SD",
             "pkg": {
                 "0": {
@@ -3896,7 +3896,7 @@
         }
     },
     "info.lora.turbo": {
-        "flux-1": {
+        "flux-1-dev": {
             "repo": "alimama-creative/FLUX.1-Turbo-Alpha",
             "pkg": {
                 "0": {

@@ -1,6 +1,7 @@
-from typing import Dict, List, Union, Callable, Optional, Tuple, Generator
+### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
+### <!-- // /*  d a r k s h a p e s */ -->
 
-# from importlib import import_module
+from typing import Dict, List, Union, Callable, Optional, Tuple, Generator
 import pkgutil
 import diffusers.pipelines
 import sys
@@ -250,7 +251,7 @@ def class_parent(code_name: str, pkg_name: str) -> Optional[List[str]]:
     :raises KeyError: for invalid pkg_name
     """
     import os
-    # from importlib import import_module
+    from importlib import import_module
 
     pkg_paths = {
         "diffusers": "pipelines",
@@ -262,7 +263,7 @@ def class_parent(code_name: str, pkg_name: str) -> Optional[List[str]]:
     package_obj = import_module(pkg_name)
     folder_path_named = [folder_path, folder_name]
     pkg_folder = os.path.dirname(getattr(package_obj, "__file__"))
-    # print(os.path.exists(os.path.join(pkg_folder, *folder_path_named)))
+    # dbuq(os.path.exists(os.path.join(pkg_folder, *folder_path_named)))
     if os.path.exists(os.path.join(pkg_folder, *folder_path_named)) is True:
         import_path = [pkg_name]
         import_path.extend(folder_path_named)

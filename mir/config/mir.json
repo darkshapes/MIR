@@ -1067,12 +1067,12 @@
             }
         }
     },
-    "info.vit.mlcd-vit-bigg-patch14": {
-        "336": {
-            "repo": "DeepGlint-AI/mlcd-vit-bigG-patch14-336",
+    "info.vit.smolvlm2-2": {
+        "2b": {
+            "repo": "HuggingFaceTB/SmolVLM2-2.2B-Instruct",
             "pkg": {
                 "0": {
-                    "transformers": "MLCDVisionModel"
+                    "transformers": "SmolVLMModel"
                 }
             }
         }
@@ -1667,12 +1667,12 @@
             }
         }
     },
-    "info.detr.dab-detr": {
-        "base": {
-            "repo": "IDEA-Research/dab_detr-base",
+    "info.mamba.powermoe": {
+        "3b": {
+            "repo": "ibm-research/PowerMoE-3b",
             "pkg": {
                 "0": {
-                    "transformers": "DabDetrModel"
+                    "transformers": "GraniteMoeHybridModel"
                 }
             }
         }
@@ -1737,42 +1737,6 @@
             }
         }
     },
-    "info.artm.olmo2": {
-        "7b": {
-            "repo": "allenai/Olmo2-7B-1124-hf",
-            "pkg": {
-                "0": {
-                    "transformers": "Olmo2Model"
-                }
-            }
-        }
-    },
-    "info.gan.encodec": {
-        "24k": {
-            "repo": "facebook/encodec_24khz",
-            "pkg": {
-                "0": {
-                    "transformers": "EncodecModel"
-                }
-            }
-        }
-    },
-    "info.vit.dinov2-with-registers": {
-        "base": {
-            "repo": "facebook/dinov2-with-registers-base",
-            "pkg": {
-                "0": {
-                    "transformers": "Dinov2WithRegistersModel"
-                }
-            }
-        }
-    },
-    "info.ststm.fastspeech2-conformer": {
-        "base": {
-            "repo": "espnet/fastspeech2_conformer",
-            "pkg": {
-                "0": {
-                    "transformers": "FastSpeech2ConformerModel"
                 }
             }
         }
@@ -2317,12 +2281,12 @@
             }
         }
     },
-    "info.vit.colqwen2-v-hf": {
+    "info.ststm.m2m100-418m": {
         "base": {
-            "repo": "vidore/colqwen2-v1.0-hf",
+            "repo": "facebook/m2m100_418M",
             "pkg": {
                 "0": {
-                    "transformers": "ColQwen2ForRetrieval"
+                    "transformers": "M2M100Model"
                 }
             }
         }
@@ -3484,7 +3448,7 @@
                 }
             }
         },
-        "flux-1.dev": {
+        "flux-1-dev": {
             "repo": "ByteDance/Hyper-SD",
             "pkg": {
                 "0": {
@@ -3896,7 +3860,7 @@
         }
     },
     "info.lora.turbo": {
-        "flux-1": {
+        "flux-1-dev": {
             "repo": "alimama-creative/FLUX.1-Turbo-Alpha",
             "pkg": {
                 "0": {

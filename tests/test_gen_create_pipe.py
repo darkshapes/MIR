@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from mir.generators import create_pipe_entry  # Replace 'your_module' with the actual module name
+from mir.generators import create_pipe_entry
 
 
 # Mocking the root_class and mir_label functions since they are not provided
@@ -16,7 +16,7 @@ def root_class(pipe_data):
 
 @pytest.fixture
 def mock_diffusers():
-    with patch("diffusers", autocast=True) as mocked:
+    with patch("diffusers", autospec=True) as mocked:
         return mocked
 
 

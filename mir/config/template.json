@@ -87,6 +87,12 @@
             ],
             "dit": [
                 "transformer"
+            ],
+            "lora": [
+                "motion_adapter"
+            ],
+            "controlnet": [
+                "controlnet"
             ]
         }
     }

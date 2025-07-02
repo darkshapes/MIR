@@ -33,15 +33,23 @@ class DocParser(BaseModel):
 
     pipe_prefixes: List[str] = [
         ">>> motion_adapter = ",
-        ">>> adapter = ",
+        ">>> adapter = ",  # if this moves, also change motion_adapter check
         ">>> pipe_prior = ",
         ">>> pipe = ",
         ">>> pipeline = ",
         ">>> blip_diffusion_pipe = ",
-        ">>> gen_pipe = ",
         ">>> prior_pipe = ",
+        ">>> gen_pipe = ",
     ]
-    repo_variables: List[str] = ["repo_id", "base_model", "model_id_or_path", "model_ckpt", "model_id", "repo_base", "repo", "motion_adapter_id"]
+    repo_variables: List[str] = [
+        "base_model",
+        "model_id_or_path",
+        "model_ckpt",
+        "model_id",
+        "repo_base",
+        "repo",
+        "motion_adapter_id",
+    ]
 
     call_types: List[str] = [".from_pretrained(", ".from_single_file("]
     staged_call_types: List[str] = [
@@ -52,44 +60,67 @@ class DocParser(BaseModel):
     def normalize_doc(cls, docs: str) -> str:
         return " ".join(docs.splitlines())
 
-    def parse(self) -> DocParseData:
-        pipe_doc = ""
-        staged = ""
-        prior_candidate = ""
-        for i, prefix in enumerate(self.pipe_prefixes):
+    def doc_match(self, prefix_set: List[str] = pipe_prefixes):
+        candidate = None
+        staged = None
+        for prefix in prefix_set:
             candidate = self.doc_string.partition(prefix)[2]
-            prior_candidate = self.doc_string
+            prior_candidate = self.doc_string.partition(prefix)[0]
             if candidate:
-                if any([x for x in self.staged_call_types if x in candidate]):  # second-to-last
-                    staged = candidate
-                pipe_doc = candidate
+                staged = candidate if any(call_type in candidate for call_type in self.staged_call_types) else None
                 break
 
-        pipe_class, pipe_repo = self._extract_class_and_repo(
-            segment=pipe_doc,
-            call_types=self.call_types,
-            prior_text=prior_candidate,
-        )
-        # nfo(self.doc_string)
-        staged_class, staged_repo = (
-            self._extract_class_and_repo(
-                segment=staged,
-                call_types=self.staged_call_types,
+        return candidate, prior_candidate, staged
+
+    def parse(self) -> DocParseData:
+        candidate, prior_candidate, staged = self.doc_match(self.pipe_prefixes)
+        if candidate:
+            if prior_candidate:
+                print(candidate, prior_candidate)
+            pipe_class, pipe_repo = self._extract_class_and_repo(
+                segment=candidate,
+                call_types=self.call_types,
                 prior_text=prior_candidate,
             )
-            if staged
-            else (None, None)
-        )
-        if pipe_class:
-            return DocParseData(pipe_class=pipe_class, pipe_repo=pipe_repo, staged_class=staged_class, staged_repo=staged_repo)
+            motion_adapter = "motion_adapter=" in candidate
+            if motion_adapter and pipe_repo:
+                staged, prior_candidate, _ = self.doc_match(self.pipe_prefixes[2:])  # skip the adapter statements
+            staged_class, staged_repo = (
+                self._extract_class_and_repo(
+                    segment=staged,
+                    call_types=self.staged_call_types if not motion_adapter else self.call_types,
+                    prior_text=prior_candidate,
+                    prior_class=pipe_class,
+                )
+                if staged
+                else (None, None)
+            )
+            if motion_adapter and pipe_class:
+                pipe_class = staged_class
+                staged_repo = None
+                staged_class = None
 
-    def _extract_class_and_repo(self, segment: str, call_types: List[str], prior_text: str) -> Tuple[Optional[str], Optional[str]]:
+            if pipe_class:
+                nfo(f"{pipe_class}, {pipe_repo}, {staged_class}, {staged_repo} \n")
+                return DocParseData(pipe_class=pipe_class, pipe_repo=pipe_repo, staged_class=staged_class, staged_repo=staged_repo)
+
+    def _extract_class_and_repo(
+        self,
+        segment: str,
+        call_types: List[str],
+        prior_text: str,
+        prior_class: Optional[str] = None,
+    ) -> Tuple[Optional[str], Optional[str]]:
+        pipe_class = None
+        pipe_repo = None, None
         for call_type in call_types:
             if call_type in segment:
-                pipe_class = segment.partition(call_type)[0].strip()
-                if "=" in pipe_class:
-                    pipe_class = pipe_class.partition("= ")[2]
-                repo_segment = segment.partition(call_type)[2].partition(")")[0]
+                pipe_class = segment.partition(call_type)[0].strip().split("= ")[-1]
+                if prior_class == pipe_class:
+                    pipe_class = prior_text.partition(call_type)[0].strip().split("= ")[-1]
+                    repo_segment = segment.partition(call_type)[2].partition(")")[0]
+                else:
+                    repo_segment = segment.partition(call_type)[2].partition(")")[0]
                 pipe_repo = repo_segment.replace("...", "").partition('",')[0].strip('" ')
                 if not pipe_repo or "/" not in pipe_repo:
                     for reference in self.repo_variables:
@@ -100,7 +131,7 @@ class DocParser(BaseModel):
                     nfo(f"Warning: Unable to resolve repo path for {segment}")
                 return pipe_class, pipe_repo
 
-        return None, None
+        return pipe_class, pipe_repo
 
     def _resolve_variable(self, reference: str, prior_text: str) -> Optional[str]:
         """Try to find the variable from other lines / 嘗試從其他行中查找（例如多行定義）"""
@@ -128,13 +159,3 @@ class DocParser(BaseModel):
 
         nfo(f"Warning: {search} not found in docstring.")
         return None
-
-    # def _resolve_variable(self, reference: str, prior_text: str) -> Optional[str]:
-    #     var_name = reference
-    #     search = f"{var_name} ="
-
-    #     for line in prior_text.splitlines():
-    #         if search in line:
-    #             return line.partition(search)[2].partition('"')[0].strip('"').strip("'")
-    #     print(f"{search}\n\n{prior_text}")
-    #     return None

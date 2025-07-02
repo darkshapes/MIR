@@ -181,18 +181,9 @@ def cut_docs() -> Generator:
     }
 
     exclusion_list = [  # no doc string or other issues. all can be be gathered by other means
-        # these will be handled eventually
-        # "animatediff",  # adapter
-        # "controlnet",
-        # "controlnet_hunyuandit",  #: "hunyuandit_controlnet",
-        # "controlnet_xs",
-        # "controlnetxs", # these are just full models with control net i guess thats ok tho
-        # "controlnet_hunyuandit",
-        # "controlnet_sd3",
         "autopipeline",  #
         "diffusionpipeline",  #
         "pag",  # not model based
-        # "stable_diffusion_3_controlnet",
         "stable_diffusion_attend_and_excite",
         "stable_diffusion_sag",  #
         "t2i_adapter",

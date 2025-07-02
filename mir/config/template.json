@@ -80,6 +80,12 @@
             ]
         },
         "diff": {
+            "lora": [
+                "motion_adapter"
+            ],
+            "controlnet": [
+                "controlnet"
+            ],
             "unet": [
                 "unet",
                 "prior",
@@ -87,12 +93,6 @@
             ],
             "dit": [
                 "transformer"
-            ],
-            "lora": [
-                "motion_adapter"
-            ],
-            "controlnet": [
-                "controlnet"
             ]
         }
     }

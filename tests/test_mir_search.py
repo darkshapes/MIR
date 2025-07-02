@@ -53,7 +53,7 @@ def mock_test_database():
 
 def test_grade_maybes(mock_test_database):
     result = mock_test_database.find_path(field="repo", target="table-cascade")
-    assert result == ["info.unet.stable-cascade", "prior"]
+    assert result == ["info.unet.stable-cascade", "base"]
 
 
 def test_grade_similar_match(mock_test_database):

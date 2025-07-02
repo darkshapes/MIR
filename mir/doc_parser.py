@@ -3,25 +3,36 @@
 
 from pydantic import BaseModel, field_validator
 from typing import List, Optional, Tuple
+import sys
+
+nfo = sys.stderr.write
 
 
 def parse_docs(doc_string: str) -> Tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
     parser = DocParser(doc_string=doc_string)
     result = parser.parse()
-    return result.pipe_class, result.repo_path, result.staged_class, result.staged_repo
+    if result is not None:
+        return result
 
 
-class DocParseResult(BaseModel):
-    pipe_class: Optional[str]
-    repo_path: Optional[str]
+class DocParseData:
+    pipe_class: str
+    pipe_repo: str
     staged_class: Optional[str] = None
     staged_repo: Optional[str] = None
+
+    def __init__(self, pipe_class, pipe_repo, staged_class=None, staged_repo=None):
+        self.pipe_class: str = pipe_class
+        self.pipe_repo: str = pipe_repo
+        self.staged_class: str = staged_class
+        self.staged_repo: str = staged_repo
 
 
 class DocParser(BaseModel):
     doc_string: str
 
     pipe_prefixes: List[str] = [
+        ">>> motion_adapter = ",
         ">>> adapter = ",
         ">>> pipe_prior = ",
         ">>> pipe = ",
@@ -30,7 +41,7 @@ class DocParser(BaseModel):
         ">>> gen_pipe = ",
         ">>> prior_pipe = ",
     ]
-    repo_variables: List[str] = ["repo_id", "model_id_or_path", "model_ckpt", "model_id", "repo_base", "repo"]
+    repo_variables: List[str] = ["repo_id", "base_model", "model_id_or_path", "model_ckpt", "model_id", "repo_base", "repo", "motion_adapter_id"]
 
     call_types: List[str] = [".from_pretrained(", ".from_single_file("]
     staged_call_types: List[str] = [
@@ -41,7 +52,7 @@ class DocParser(BaseModel):
     def normalize_doc(cls, docs: str) -> str:
         return " ".join(docs.splitlines())
 
-    def parse(self) -> DocParseResult:
+    def parse(self) -> DocParseData:
         pipe_doc = ""
         staged = ""
         prior_candidate = ""
@@ -54,12 +65,12 @@ class DocParser(BaseModel):
                 pipe_doc = candidate
                 break
 
-        pipe_class, repo_path = self._extract_class_and_repo(
+        pipe_class, pipe_repo = self._extract_class_and_repo(
             segment=pipe_doc,
             call_types=self.call_types,
             prior_text=prior_candidate,
         )
-        # print(self.doc_string)
+        # nfo(self.doc_string)
         staged_class, staged_repo = (
             self._extract_class_and_repo(
                 segment=staged,
@@ -69,7 +80,8 @@ class DocParser(BaseModel):
             if staged
             else (None, None)
         )
-        return DocParseResult(pipe_class=pipe_class, repo_path=repo_path, staged_class=staged_class, staged_repo=staged_repo)
+        if pipe_class:
+            return DocParseData(pipe_class=pipe_class, pipe_repo=pipe_repo, staged_class=staged_class, staged_repo=staged_repo)
 
     def _extract_class_and_repo(self, segment: str, call_types: List[str], prior_text: str) -> Tuple[Optional[str], Optional[str]]:
         for call_type in call_types:
@@ -77,16 +89,16 @@ class DocParser(BaseModel):
                 pipe_class = segment.partition(call_type)[0].strip()
                 if "=" in pipe_class:
                     pipe_class = pipe_class.partition("= ")[2]
-                repo_part = segment.partition(call_type)[2].partition(")")[0]
-                repo_path = repo_part.replace("...", "").partition('",')[0].strip('" ')
-                if not repo_path or "/" not in repo_path:
+                repo_segment = segment.partition(call_type)[2].partition(")")[0]
+                pipe_repo = repo_segment.replace("...", "").partition('",')[0].strip('" ')
+                if not pipe_repo or "/" not in pipe_repo:
                     for reference in self.repo_variables:
                         if reference in segment:
-                            repo_path = self._resolve_variable(reference, prior_text)
+                            pipe_repo = self._resolve_variable(reference, prior_text)
                             break  # Not empty!! 確保解析後的路徑不為空!!
-                if not repo_path:
-                    print(f"Warning: Unable to resolve repo path for {segment}")
-                return pipe_class, repo_path
+                if not pipe_repo:
+                    nfo(f"Warning: Unable to resolve repo path for {segment}")
+                return pipe_class, pipe_repo
 
         return None, None
 
@@ -114,7 +126,7 @@ class DocParser(BaseModel):
                     if repo_id:
                         return repo_id
 
-        print(f"Warning: {search} not found in docstring.")
+        nfo(f"Warning: {search} not found in docstring.")
         return None
 
     # def _resolve_variable(self, reference: str, prior_text: str) -> Optional[str]:

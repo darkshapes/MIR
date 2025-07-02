@@ -80,47 +80,51 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
     """Generate diffusion model data for MIR index\n
     :return: Dictionary ready to be applied to MIR data fields
     """
-    pipe_map = {}
     special_cases = {
         "black-forest-labs/FLUX.1-schnell": "black-forest-labs/FLUX.1-dev",
         "stabilityai/stable-diffusion-3.5-medium": "stabilityai/stable-diffusion-3.5-large",
     }
+
     extracted_docs = list(cut_docs())
-
-    for code_name, file_name, docs in extracted_docs:
-        parse_data = [parsed for parsed in parse_docs(docs) if parsed is not None]
-        file_data = {file_name: (parse_data)}
-        pipe_map.setdefault(code_name, file_data)
     pipe_data = {}
-    print(pipe_map)
+    for code_name, file_name, docs in extracted_docs:
+        parse_result = parse_docs(docs)
 
-    for code_name, file_data in pipe_map.items():
-        file_name = next(iter(file_data))
-        doc_data = file_data[file_name]
-        pipe_class, repo_path, staged_class, staged_repo = doc_data
-        if pipe_class == "StableDiffusion3Pipeline":
-            repo_path = "stabilityai/stable-diffusion-3.5-medium"  # to avoid 3 and use 3.5
-        elif pipe_class == "HunyuanDiTPipeline":
-            repo_path = "tencent-hunyuan/hunyuandiT-v1.2-diffusers"  # to avoid 1 and use 1.2
-        elif pipe_class == "ChromaPipeline":
-            repo_path = "lodestones/Chroma"
-        pipe_class = pipe_class.strip('"')
-        model_class_obj = make_callable(pipe_class, f"diffusers.pipelines.{code_name}.{file_name}")
-        root_class(model_class_obj)
-        # nfo(f"{repo_path}, {model_class_obj}")
-        series, comp_data = create_pipe_entry(repo_path, pipe_class)
-        pipe_data.setdefault(series, {}).update(comp_data)  # update empty dict, preventing rewrite of others in series
-        if staged_repo or any(repo_path in case for case in special_cases):  # these share the same pipe, (missing their own docstring)
-            test = special_cases.get(repo_path)
-            if test:
-                staged_repo = test
-                staged_class = pipe_class
-            else:
-                model_class_obj = make_callable("staged_class", "diffusers")
-            series, comp_data = create_pipe_entry(staged_repo, staged_class)
-            pipe_data.setdefault(series, {}).update(comp_data)  # Update empty dict rather than entire series
-        else:
-            return None
+        if parse_result:
+            pipe_class = parse_result.pipe_class
+            pipe_repo = parse_result.pipe_repo
+            staged_class = parse_result.staged_class
+            staged_repo = parse_result.staged_repo
+            if pipe_class == "StableDiffusion3Pipeline":
+                pipe_repo = "stabilityai/stable-diffusion-3.5-medium"
+            elif pipe_class == "HunyuanDiTPipeline":
+                pipe_repo = "tencent-hunyuan/hunyuandiT-v1.2-diffusers"
+            elif pipe_class == "ChromaPipeline":
+                pipe_repo = "lodestones/Chroma"
+            model_class_obj = make_callable(pipe_class, f"diffusers.pipelines.{code_name}.{file_name}")
+            root_class(model_class_obj)
+            try:
+                series, comp_data = create_pipe_entry(pipe_repo, pipe_class)
+            except TypeError:
+                pass  # Attempt 1
+                # nfo(pipe_repo, pipe_class)
+            if pipe_data.get(series):
+                # nfo(pipe_class)
+                exclude_list = ["Img2Img", "Control", "Controlnet"]
+                if any(maybe for maybe in exclude_list if maybe.lower() in pipe_class.lower()):
+                    continue
+            pipe_data.setdefault(series, {}).update(comp_data)
+            if staged_class or pipe_repo in special_cases:
+                test = special_cases.get(pipe_repo)
+                if test:
+                    staged_repo = test
+                    staged_class = pipe_class
+                try:
+                    series, comp_data = create_pipe_entry(staged_repo or pipe_repo, staged_class or pipe_class)
+                except TypeError:
+                    continue  # Attempt 2,
+                    # nfo(pipe_repo, pipe_class)
+                pipe_data.setdefault(series, {}).update(comp_data)
     return dict(pipe_data)
 
 
@@ -142,12 +146,12 @@ def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Optional
     decoder = "decoder" in sub_segments
     if repo_path in ["openai/shap-e", "kandinsky-community/kandinsky-3"]:
         mir_prefix = "info.unet"
+    elif class_name == "MotionAdapter":
+        mir_prefix = "info.lora"
     else:
         mir_prefix = flag_config(**sub_segments)
-        if mir_prefix is None:
+        if mir_prefix is None and class_name not in ["AutoPipelineForImage2Image", "DiffusionPipeline"]:
             nfo(f"Failed to detect type for {class_name} {list(sub_segments)}")
-            # /dbuq(class_name, sub_segments, model_class_obj)
-            # return None
         else:
             mir_prefix = "info." + mir_prefix
     mir_series, mir_comp = mir_label(mir_prefix, repo_path, decoder)
@@ -180,8 +184,8 @@ def flag_config(transformers: bool = False, **kwargs):
     for mir_prefix, key_match in flags.items():
         if any(kwargs.get(param) for param in key_match):
             return mir_prefix
-    nfo("Unrecognized model type")
-    # dbuq("Unrecognized model type")
+    return None
+    # nfo(f"Unrecognized model type with {kwargs}\n" )
 
 
 def transformers_index():

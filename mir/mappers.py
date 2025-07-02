@@ -1,7 +1,7 @@
 ### <!-- // /*  SPDX-License-Identifier: LGPL-3.0  */ -->
 ### <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import Dict, List, Union, Callable, Optional, Generator
+from typing import Dict, List, Union, Callable, Optional, Generator, Iterator, Tuple
 import pkgutil
 import diffusers.pipelines
 import sys
@@ -115,10 +115,62 @@ def stock_llm_data() -> Dict[str, List[str]]:
     return transformer_data
 
 
+def process_with_folder_path(pkg_name: str, folder_path: bool) -> Iterator[Tuple[str, str, str]]:
+    """Processes package folder paths to yield example doc strings if available.\n
+    :param pkg_name: The name of the package under diffusers.pipelines.
+    :param file_specific: A flag indicating whether processing is specific to certain files.
+    :yield: A tuple containing (pkg_name, file_name, EXAMPLE_DOC_STRING) if found.
+    """
+    from importlib import import_module
+
+    file_names = list(getattr(folder_path, "_import_structure").keys())
+    for file_name in file_names:
+        try:
+            pkg_path = f"diffusers.pipelines.{pkg_name}.{file_name}"
+            pipe_file = make_callable(file_name, pkg_path)
+        except ModuleNotFoundError:
+            nfo(f"Module Not Found for {pkg_name}")
+            pipe_file = None
+
+        try:
+            if pipe_file and hasattr(pipe_file, "EXAMPLE_DOC_STRING"):
+                yield (pkg_name, file_name, pipe_file.EXAMPLE_DOC_STRING)
+            else:
+                pipe_file = import_module(pkg_path)
+        except AttributeError:
+            nfo(f"Doc String Not Found for {pipe_file} {pkg_name}")
+
+
+def process_with_file_name(pkg_name: str, file_specific: bool) -> Iterator[Tuple[str, str, str]]:
+    """Processes package using file name to yield example doc strings if available.\n
+    :param pkg_name: The name of the package under diffusers.pipelines.
+    :param file_specific: A flag indicating whether processing is specific to certain files.
+    :yield: A tuple containing (pkg_name, file_name, EXAMPLE_DOC_STRING) if found.
+    """
+    from importlib import import_module
+
+    file_name = f"pipeline_{file_specific}"
+    try:
+        pkg_path = f"diffusers.pipelines.{pkg_name}"
+        pipe_file = make_callable(file_name, pkg_path)
+    except ModuleNotFoundError:
+        nfo(f"Module Not Found for {pkg_name}")
+        pipe_file = None
+    try:
+        if pipe_file and hasattr(pipe_file, "EXAMPLE_DOC_STRING"):
+            yield (pkg_name, file_name, pipe_file.EXAMPLE_DOC_STRING)
+        else:
+            pipe_file = import_module(pkg_path)
+    except AttributeError:
+        nfo(f"Doc String Not Found for {pipe_file} {pkg_name}")
+
+
+# Refactored main loop
+
+
 def cut_docs() -> Generator:
     """Draw down docstrings from 🤗Diffusers library, minimizing internet requests\n
     :return: Docstrings for common diffusers models"""
-    from importlib import import_module
 
     non_standard = {
         "cogvideo": "cogvideox",
@@ -128,16 +180,18 @@ def cut_docs() -> Generator:
         "visualcloze": "visualcloze_generation",
     }
 
-    exclusion_list = [  # task specific, adapter, or no doc string. all can be be gathered by other means
+    exclusion_list = [  # no doc string or other issues. all can be be gathered by other means
         # these will be handled eventually
         # "animatediff",  # adapter
         # "controlnet",
         # "controlnet_hunyuandit",  #: "hunyuandit_controlnet",
         # "controlnet_xs",
-        # "controlnetxs",
+        # "controlnetxs", # these are just full models with control net i guess thats ok tho
         # "controlnet_hunyuandit",
         # "controlnet_sd3",
         "autopipeline",  #
+        "diffusionpipeline",  #
+        "pag",  # not model based
         # "stable_diffusion_3_controlnet",
         "stable_diffusion_attend_and_excite",
         "stable_diffusion_sag",  #
@@ -165,33 +219,14 @@ def cut_docs() -> Generator:
         "unidiffuser",
     ]
 
-    for _, code_name, is_pkg in pkgutil.iter_modules(diffusers.pipelines.__path__):
-        if is_pkg and code_name not in exclusion_list:
-            if hasattr(diffusers.pipelines, str(code_name)):
-                folder_path = getattr(diffusers.pipelines, str(code_name))
-                if folder_path and hasattr(folder_path, "_import_structure"):
-                    file_names = list(getattr(folder_path, "_import_structure").keys())
+    for _, pkg_name, is_pkg in pkgutil.iter_modules(diffusers.pipelines.__path__):
+        if is_pkg and pkg_name not in exclusion_list:
+            file_specific = non_standard.get(pkg_name, pkg_name)
+            folder_name = getattr(diffusers.pipelines, pkg_name)
+            if hasattr(folder_name, "_import_structure"):
+                yield from process_with_folder_path(pkg_name, folder_name)
             else:
-                file_specific = non_standard.get(code_name, code_name)
-                file_names = [f"pipeline_{file_specific}"]
-            for file_name in file_names:
-                try:
-                    pkg_path = f"diffusers.pipelines.{code_name}"
-                    pipe_file = make_callable(file_name, pkg_path)
-                except ModuleNotFoundError:  # as error_log:
-                    nfo(f"Module Not Found for {code_name}")
-                    pipe_file = None
-                    # pipe_file = make_callable()
-                try:
-                    if pipe_file and hasattr(pipe_file, "EXAMPLE_DOC_STRING"):
-                        yield (code_name, file_name, pipe_file.EXAMPLE_DOC_STRING)
-                    else:
-                        # nfo(f"{pkg_path}.{file_name}")
-                        pipe_file = import_module(pkg_path)
-                except AttributeError:  # as error_log:
-                    nfo(f"Doc String Not Found for {pipe_file} {code_name}")
-                    # dbug(error_log)
-                    # print(sub_classes)
+                yield from process_with_file_name(pkg_name, file_specific)
 
 
 def class_parent(code_name: str, pkg_name: str) -> Optional[List[str]]:

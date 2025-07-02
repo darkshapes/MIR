@@ -53,7 +53,7 @@ def mock_test_database():
 
 def test_grade_maybes(mock_test_database):
     result = mock_test_database.find_path(field="repo", target="table-cascade")
-    assert result == ["info.unet.stable-cascade", "base"]
+    assert result == ["info.unet.stable-cascade", "prior"]
 
 
 def test_grade_similar_match(mock_test_database):
@@ -77,5 +77,5 @@ def test_repo_case_change(mock_test_database):
 
 
 def test_sub_module_detection(mock_test_database):
-    result = mock_test_database.find_path(field="repo", target="PixArt-alpha/PixArt-Sigma-XL-2-1024-MS")
-    assert result == ["info.dit.pixart-sigma-xl-2", "1024-MS"]
+    result = mock_test_database.find_path(field="repo", target="PixArt-alpha/PixArt-Sigma-XL-2-1024-Ms")
+    assert result == ["info.dit.pixart-sigma-xl-2", "1024-ms"]

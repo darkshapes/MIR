@@ -87,18 +87,25 @@ class MIRDatabase:
         :param target: Desired entry to match
         :return: The closest matching dictionary elements
         """
+        from math import isclose
+        from decimal import Decimal
+
         if not matches:
             return None
         min_gap = float("inf")
         best_match = None
         for match in matches:
             option, series, compatibility, _ = match
+            option = option.strip("_").strip("-").strip(".").lower()
+            target = target.strip("_").strip("-").strip(".").lower()
+            print(option, target)
             if target in option or option in target:
                 max_len = len(os.path.commonprefix([option, target]))
-                gap = abs(len(option) - len(target)) + (len(option) - max_len)
-                if gap < min_gap:
+                gap = Decimal(str(abs(len(option) - len(target)) + (len(option) - max_len))) * Decimal("0.1")
+                if gap < min_gap and isclose(gap, 0.9, rel_tol=15e-2):  # 15% variation, 5% error margin, 45% buffer below fail
                     min_gap = gap
                     best_match = [series, compatibility]
+
         return best_match
 
     def ready_stage(self, maybe_match: str, target: str, series: str, compatibility: str) -> Optional[List[str]]:
@@ -125,13 +132,17 @@ class MIRDatabase:
         :raises KeyError: Target string not found
         """
         target = target.lower()
+        # print(norm_target)
+        self.matches = None
         self.matches = []
 
         for series, comp in self.database.items():
             for compatibility, fields in comp.items():
-                maybe_match = fields.get(field)
+                maybe_match = fields.get(field)  # check if this field is in this key
+                # print(fields.get(field))
                 if maybe_match is not None:
-                    if isinstance(maybe_match, dict) and isinstance(next(iter(maybe_match.keys()), None), int):
+                    # check if this field is a dictionary
+                    if isinstance(maybe_match, dict) and str(next(iter(maybe_match.keys()), None)).isnumeric():
                         for _, sub_field in maybe_match.items():
                             result = self.ready_stage(sub_field, target, series, compatibility)
                             if result:
@@ -143,10 +154,9 @@ class MIRDatabase:
 
         best_match = self.grade_maybes(self.matches, target)
         if best_match:
-            # dbug(best_match)
             return best_match
         else:
-            nfo(f"Query '{target}' not found when searched {len(self.database)}'{field}' options")
+            nfo(f"Query '{target}' not found when searched {len(self.database)}'{field}' options\n")
             return None
 
 

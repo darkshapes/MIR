@@ -84,9 +84,14 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
         "black-forest-labs/FLUX.1-schnell": "black-forest-labs/FLUX.1-dev",
         "stabilityai/stable-diffusion-3.5-medium": "stabilityai/stable-diffusion-3.5-large",
     }
+    special_classes = {
+        "StableDiffusion3Pipeline": "stabilityai/stable-diffusion-3.5-medium",  # NOT sd3
+        "HunyuanDiTPipeline": "tencent-hunyuan/hunyuandiT-v1.2-diffusers",  #  NOT hyd .ckpt
+        "ChromaPipeline": "lodestones/Chroma",
+    }
 
     extracted_docs = list(cut_docs())
-    pipe_data = {}
+    pipe_data = {}  # pipeline_stable_diffusion_xl_inpaint
     for code_name, file_name, docs in extracted_docs:
         parse_result = parse_docs(docs)
 
@@ -95,22 +100,18 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
             pipe_repo = parse_result.pipe_repo
             staged_class = parse_result.staged_class
             staged_repo = parse_result.staged_repo
-            if pipe_class == "StableDiffusion3Pipeline":
-                pipe_repo = "stabilityai/stable-diffusion-3.5-medium"
-            elif pipe_class == "HunyuanDiTPipeline":
-                pipe_repo = "tencent-hunyuan/hunyuandiT-v1.2-diffusers"
-            elif pipe_class == "ChromaPipeline":
-                pipe_repo = "lodestones/Chroma"
+            for class_name, swap_repo in special_classes.items():
+                if pipe_class == class_name:
+                    pipe_repo = swap_repo
+                    break
             model_class_obj = make_callable(pipe_class, f"diffusers.pipelines.{code_name}.{file_name}")
             root_class(model_class_obj)
             try:
                 series, comp_data = create_pipe_entry(pipe_repo, pipe_class)
             except TypeError:
                 pass  # Attempt 1
-                # nfo(pipe_repo, pipe_class)
             if pipe_data.get(series):
-                # nfo(pipe_class)
-                exclude_list = ["Img2Img", "Control", "Controlnet"]
+                exclude_list = ["Img2Img", "Control", "Controlnet"]  # causes issues with main repo resolution
                 if any(maybe for maybe in exclude_list if maybe.lower() in pipe_class.lower()):
                     continue
             pipe_data.setdefault(series, {}).update(comp_data)
@@ -178,9 +179,9 @@ def flag_config(transformers: bool = False, **kwargs):
     template_data = _read_data()
 
     if transformers:
-        flags = template_data["arch"]["xfmr"]  # pylint:disable=unsubscriptable-object
+        flags = template_data["arch"]["transformer"]  # pylint:disable=unsubscriptable-object
     else:
-        flags = template_data["arch"]["diff"]  # pylint:disable=unsubscriptable-object
+        flags = template_data["arch"]["diffuser"]  # pylint:disable=unsubscriptable-object
     for mir_prefix, key_match in flags.items():
         if any(kwargs.get(param) for param in key_match):
             return mir_prefix
@@ -239,11 +240,9 @@ def transformers_index():
     transformers_data: Dict[Callable, List[str]] = stock_llm_data()
     for model_class_obj, model_data in transformers_data.items():
         class_name = model_class_obj.__name__
-        # dbuq(class_name)
-        if class_name in list(corrections):  # these are corrected because `root_class` doesn't return anything in these cases
+        if class_name in list(corrections):  # conditional correction: `root_class` doesn't return anything in these cases
             repo_path = corrections[class_name]["repo_path"]
             sub_segments = corrections[class_name].get("sub_segments", root_class(model_data["config"][-1], "transformers"))
-            # dbuq(repo_path)
 
         else:
             repo_path = ""

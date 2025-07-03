@@ -18,7 +18,7 @@
             "scheduler": "",
             "resnet": ""
         },
-        "xfmr": {
+        "transformer": {
             "detr": [
                 "use_timm_backbone",
                 "_resnet_"
@@ -79,7 +79,7 @@
                 "hidden_dropout_prob"
             ]
         },
-        "diff": {
+        "diffuser": {
             "lora": [
                 "motion_adapter"
             ],

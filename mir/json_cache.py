@@ -41,7 +41,6 @@ for const in constants:
     paths = {}
     path_var = f"{const.upper()}_PATH_NAMED"
     globals()[path_var] = set_path_stable(const + ".json")
-    # print(path_var)
 
 
 class JSONCache:

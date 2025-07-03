@@ -125,6 +125,8 @@ def process_with_folder_path(pkg_name: str, folder_path: bool) -> Iterator[Tuple
 
     file_names = list(getattr(folder_path, "_import_structure").keys())
     for file_name in file_names:
+        if file_name == "pipeline_stable_diffusion_xl_inpaint":
+            continue
         try:
             pkg_path = f"diffusers.pipelines.{pkg_name}.{file_name}"
             pipe_file = make_callable(file_name, pkg_path)

@@ -273,6 +273,64 @@ class TestDocParser(unittest.TestCase):
         self.assertEqual(result.staged_class, "StableCascadeDecoderPipeline")  # staged_class
         self.assertEqual(result.staged_repo, "stabilityai/stable-cascade")  # staged_repo
 
+    def test_parse_xl(self):
+        doc_strings = [
+            """
+            Examples:
+                ```py
+                >>> import torch
+                >>> from diffusers import StableDiffusionXLPipeline
+
+                >>> pipe = StableDiffusionXLPipeline.from_pretrained(
+                ...     "stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16
+                ... )
+                >>> pipe = pipe.to("cuda")
+
+                >>> prompt = "a photo of an astronaut riding a horse on mars"
+                >>> image = pipe(prompt).images[0]
+                ```
+        """,
+            """
+            Examples:
+                ```py
+                >>> import torch
+                >>> from diffusers import StableDiffusionXLInpaintPipeline
+                >>> from diffusers.utils import load_image
+
+                >>> pipe = StableDiffusionXLInpaintPipeline.from_pretrained(
+                ...     "stabilityai/stable-diffusion-xl-base-1.0",
+                ...     torch_dtype=torch.float16,
+                ...     variant="fp16",
+                ...     use_safetensors=True,
+                ... )
+                >>> pipe.to("cuda")
+
+                >>> img_url = "https://raw.githubusercontent.com/CompVis/latent-diffusion/main/data/inpainting_examples/overture-creations-5sI6fQgYIuo.png"
+                >>> mask_url = "https://raw.githubusercontent.com/CompVis/latent-diffusion/main/data/inpainting_examples/overture-creations-5sI6fQgYIuo_mask.png"
+
+                >>> init_image = load_image(img_url).convert("RGB")
+                >>> mask_image = load_image(mask_url).convert("RGB")
+
+                >>> prompt = "A majestic tiger sitting on a bench"
+                >>> image = pipe(
+                ...     prompt=prompt, image=init_image, mask_image=mask_image, num_inference_steps=50, strength=0.80
+                ... ).images[0]
+                ```
+        """,
+        ]
+        result = []
+        for doc in doc_strings:
+            result.append(parse_docs(doc))
+
+        self.assertEqual(result[0].pipe_class, "StableDiffusionXLPipeline")  # pipe_class
+        self.assertEqual(result[0].pipe_repo, "stabilityai/stable-diffusion-xl-base-1.0")  # repo_path
+        self.assertIsNone(result[0].staged_class)  # staged_class
+        self.assertIsNone(result[0].staged_repo)  # staged_repo
+        self.assertEqual(result[1].pipe_class, "StableDiffusionXLInpaintPipeline")  # pipe_class
+        self.assertEqual(result[1].pipe_repo, "stabilityai/stable-diffusion-xl-base-1.0")  # repo_path
+        self.assertIsNone(result[1].staged_class)  # staged_class
+        self.assertIsNone(result[1].staged_repo)  # staged_repo
+
 
 if __name__ == "__main__":
     unittest.main()

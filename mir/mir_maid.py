@@ -6,14 +6,16 @@
 # pylint: disable=possibly-used-before-assignment, line-too-long
 from typing import Any, Callable, List, Optional
 import os
+import sys
 
 # from nnll.monitor.file import debug_monitor, dbug
 # from nnll.monitor.console import nfo
 from mir.json_cache import JSONCache, MIR_PATH_NAMED  # pylint:disable=no-name-in-module
-from logging import Logger, INFO
+# from logging import Logger, INFO
 
-nfo_obj = Logger(INFO)
-nfo = nfo_obj.info
+# nfo_obj = Logger(INFO)
+# nfo = nfo_obj.info
+nfo = sys.stderr.write
 
 
 class MIRDatabase:

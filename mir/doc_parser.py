@@ -75,8 +75,6 @@ class DocParser(BaseModel):
     def parse(self) -> DocParseData:
         candidate, prior_candidate, staged = self.doc_match(self.pipe_prefixes)
         if candidate:
-            if prior_candidate:
-                print(candidate, prior_candidate)
             pipe_class, pipe_repo = self._extract_class_and_repo(
                 segment=candidate,
                 call_types=self.call_types,
@@ -101,7 +99,7 @@ class DocParser(BaseModel):
                 staged_class = None
 
             if pipe_class:
-                nfo(f"{pipe_class}, {pipe_repo}, {staged_class}, {staged_repo} \n")
+                # nfo(f"{pipe_class}, {pipe_repo}, {staged_class}, {staged_repo} \n")
                 return DocParseData(pipe_class=pipe_class, pipe_repo=pipe_repo, staged_class=staged_class, staged_repo=staged_repo)
 
     def _extract_class_and_repo(

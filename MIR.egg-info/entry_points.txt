@@ -1,3 +1,0 @@
-[console_scripts]
-mir-add = mir.mir:main
-mir-maid = mir.mir_maid:main

@@ -10,8 +10,8 @@ on:
       personal_access_token:
         required: true
 
-  schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight
+  # schedule:
+  #   - cron: '0 0 * * *'  # Run daily at midnight
 
 jobs:
   pull_and_commit:

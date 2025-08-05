@@ -2,7 +2,7 @@
 language:
 - en
 library_name: mir
-license_name: LGPL-3.0-only
+license_name: MPL-2.0 + Commons Clause 1.0
 ---
 
 <div align="center">

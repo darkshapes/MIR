@@ -1,0 +1,38 @@
+[build-system]
+requires      = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    { name = "darkshapes", email = "91800957+exdysa@users.noreply.github.com" },
+]
+description = "Machine Intelligence Resource URI Schema"
+license = { file = "LICENSE" }
+name = "MIR"
+readme = "README.md"
+requires-python = ">= 3.11"
+version = "0.0.1"
+keywords = ["ML", "AI", "URI", "schema", "diffusion", "LLM", "identification"]
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = ["nnll[dev] @ git+https://github.com/darkshapes/nnll.git"]
+[project.urls]
+Homepage      = "https://github.com/darkshapes/MIR"
+Documentation = "https://github.com/darkshapes/sdbx/wiki"
+
+[project.scripts]
+mir = "mir.__init__:main"
+
+[tool.setuptools]
+packages = ["mir"]
+
+[tool.setuptools.package-data]
+mir = ['mir/*.json']

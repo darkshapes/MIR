@@ -1,0 +1,16 @@
+.gitignore
+LICENSE
+README.md
+pyproject.toml
+.github/workflows/mir.yml
+MIR.egg-info/PKG-INFO
+MIR.egg-info/SOURCES.txt
+MIR.egg-info/dependency_links.txt
+MIR.egg-info/entry_points.txt
+MIR.egg-info/requires.txt
+MIR.egg-info/top_level.txt
+img_src/mir300_dark.png
+img_src/mir300_light.png
+mir/__init__.py
+mir/mir.json
+mir/template.json

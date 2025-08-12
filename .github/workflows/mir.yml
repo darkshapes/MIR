@@ -1,38 +1,28 @@
 name: Pull and Commit JSON File
 
 on:
-  workflow_call:
-    inputs:
-        config-path:
-          required: true
-          type: string
-    secrets:
-      personal_access_token:
-        required: true
-
-  # schedule:
-  #   - cron: '0 0 * * *'  # Run daily at midnight
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight
 
 jobs:
-  pull_and_commit:
+
+  test:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Fetch JSON file
-      run: |
-        curl -o mir/mir.json https://raw.githubusercontent.com/darkshapes/nnll/refs/heads/main/nnll/mir/config/mir.json
-        curl -o mir/template.json https://raw.githubusercontent.com/darkshapes/nnll/refs/heads/main/nnll/mir/config/template.json
-        curl -o mir/versions.json https://raw.githubusercontent.com/darkshapes/nnll/refs/heads/main/nnll/mir/config/versions.json
-
-    - name: Commit changes
-      run: |
-        git config --global user.email "91800957+exdysa@users.noreply.github.com"
-        git config --global user.name "exdysa"
-        git add mir/mir.json
-        git add mir/template.json
-        git add mir/versions.json
-        git commit -m "+Auto-update main .JSON from NNLL"
-        git push
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Install dependencies and build
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libportaudio2
+          pip cache purge
+          rm -rf venv
+          python -m venv .venv
+          source .venv/bin/activate
+          python3 -m pip install --upgrade pip
+          pip install "."
+          cd mir
+          mir

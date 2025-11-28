@@ -142,6 +142,8 @@ An additional SERIES label for identifying cross-compatibility
 
 <hr>
 
+If you would like to regenerate or update the example file here, use [nnll](https://github.com/darkshapes/nnll/tree/0.1.dev799):
+
 MIR is inspired by:
 
 - [AIR-URN](https://github.com/civitai/civitai/wiki/AIR-%E2%80%90-Uniform-Resource-Names-for-AI) project by [CivitAI](https://civitai.com/)

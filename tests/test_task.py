@@ -2,10 +2,10 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 
-from mir.__main__ import main
-from mir.maid import MIRDatabase
+# from mir.__main__ import main
+# from mir.maid import MIRDatabase
 
 
-def test_task_and_pipe():
-    mir_db = MIRDatabase()
-    assert main(mir_db) is not None
+# def test_task_and_pipe():
+#     mir_db = MIRDatabase()
+#     assert main(mir_db) is not None

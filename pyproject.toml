@@ -23,7 +23,14 @@ classifiers = [
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = ["nnll[dev] @ git+https://github.com/darkshapes/nnll.git"]
+dependencies = [
+    "diffusers>=0.35.2",
+    "huggingface-hub[hf-xet]>=1.1.7",
+    "pydantic>=2.12.5",
+    "tokenizers>=0.22.1",
+    "torch>=2.9.1",
+    "transformers>=2.3.0",
+]
 [project.urls]
 Homepage      = "https://github.com/darkshapes/MIR"
 Documentation = "https://github.com/darkshapes/sdbx/wiki"
@@ -35,4 +42,18 @@ mir = "mir.__init__:main"
 packages = ["mir"]
 
 [tool.setuptools.package-data]
-mir = ['mir/*.json']
+mir = ['mir/*.json','mir/config/*.json']
+
+[tool.uv.sources]
+transformers = { git = "https://github.com/huggingface/transformers.git" }
+
+[dependency-groups]
+dev = [
+    "pdoc>=16.0.0",
+    "pyright>=1.1.407",
+    "pytest>=9.0.1",
+    "ruff>=0.14.7",
+]
+
+[tool.ruff.lint]
+ignore = ["E731"]

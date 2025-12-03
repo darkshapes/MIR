@@ -32,7 +32,7 @@ def get_class_parent_folder(class_name: str, pkg_name: str) -> List[str]:
     :return: A list corresponding to the path of the model, or None if not found
     :raises KeyError: for invalid pkg_name
     """
-    from mir.config.logs import dbuq
+    from mir.config.console import dbuq
     from mir.inspect.classes import resolve_code_names, extract_init_params
 
     pkg_name = pkg_name.lower()

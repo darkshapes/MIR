@@ -4,7 +4,7 @@
 from typing import List, Optional, Tuple
 
 from pydantic import BaseModel, field_validator
-from mir.config.logs import dbuq, nfo
+from mir.config.console import dbuq, nfo
 from mir.config.constants import DocParseData, DocStringParserConstants
 
 

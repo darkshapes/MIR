@@ -16,7 +16,7 @@ from diffusers import _import_structure
 from mir.maid import MIRDatabase
 from mir.spec.mir import mir_entry
 from mir.tag import make_mir_tag, make_scheduler_tag, tag_pipe, tag_base_model
-from mir.config.logs import nfo, dbuq
+from mir.config.console import nfo, dbuq
 from mir.config.conversion import slice_number
 from mir.indexers import diffusers_index, transformers_index
 

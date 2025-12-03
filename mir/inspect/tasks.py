@@ -3,7 +3,7 @@
 
 from typing import Any, Callable, Dict, List, get_type_hints
 from mir.maid import MIRDatabase
-from mir.config.logs import dbuq
+from mir.config.console import dbuq
 
 
 flatten_map: List[Any] = lambda nested, unpack: [element for iterative in getattr(nested, unpack)() for element in iterative]

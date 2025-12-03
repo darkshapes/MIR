@@ -37,6 +37,7 @@ Requires-Dist: huggingface-hub[hf-xet]>=1.1.7
 Requires-Dist: pydantic>=2.12.5
 Requires-Dist: tokenizers>=0.22.1
 Requires-Dist: torch>=2.9.1
+Requires-Dist: torchvision>=0.24.1
 Requires-Dist: transformers>=2.3.0
 Dynamic: license-file
 

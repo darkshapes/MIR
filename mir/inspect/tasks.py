@@ -35,17 +35,17 @@ class TaskAnalyzer:
         if class_name:
             from diffusers.pipelines.auto_pipeline import SUPPORTED_TASKS_MAPPINGS, _get_task_class
 
-            alt_tasks = []
+            alt_tasks = set()
             for task_map in SUPPORTED_TASKS_MAPPINGS:
                 task_class = _get_task_class(task_map, class_name, False)
                 if task_class:
-                    alt_tasks.append(task_class.__name__)
+                    alt_tasks.add(task_class.__name__)
                     dbuq(task_class)
                 for model_code, pipe_class_obj in task_map.items():
                     if code_name in model_code:
-                        alt_tasks.append(pipe_class_obj.__name__)
+                        alt_tasks.add(pipe_class_obj.__name__)
 
-        return alt_tasks
+        return list(alt_tasks)
 
     @staticmethod
     def show_transformers_tasks(class_name: str | None = None, code_name: str | None = None) -> list[str]:
@@ -54,6 +54,8 @@ class TaskAnalyzer:
         :param pkg_type: The dependency for the module
         :param alt_method: Use an alternate method to return the classes
         :return: A list of task classes associated with the specified transformer."""
+
+        task_classes = None
 
         if not code_name:
             from mir.config.conversion import import_submodules
@@ -65,9 +67,19 @@ class TaskAnalyzer:
             else:
                 return None
         elif code_name:
-            from mir.config.constants import generate_supported_model_class_names
+            from mir.config.constants import mapped_cls
+            from httpx import HTTPStatusError
+            try:
+                model_class = mapped_cls(code_name)
+                if model_class is not None:
+                    # Convert class type to list containing the class name string
+                    task_classes = [model_class.__name__]
+                else:
+                    return None
+            except (OSError, HTTPStatusError) as e:
+                dbuq(f"Error mapping class {code_name}: {e}")
+                return None
 
-            task_classes = generate_supported_model_class_names(code_name)
         return task_classes
 
     async def detect_tasks(self, mir_db: MIRDatabase, field_name: str = "pkg") -> dict:
@@ -200,7 +212,7 @@ class TaskAnalyzer:
         :param entry: The object containing the model information.
         :return: A sorted list of tasks applicable to the model."""
 
-        from mir.inspect.classes import resolve_class_name
+        from mir.inspect.classes import resolve_code_names
 
         preformatted_task_data = None
         filtered_tasks = None
@@ -215,7 +227,7 @@ class TaskAnalyzer:
             if package_name == "transformers":
                 preformatted_task_data = self.show_transformers_tasks(class_name=class_name)
             elif package_name == "diffusers":
-                code_name = resolve_class_name(class_name, package_name)
+                code_name = resolve_code_names(class_name, package_name)
                 preformatted_task_data = self.show_diffusers_tasks(code_name=code_name, class_name=class_name)
                 preformatted_task_data.sort()
             elif package_name == "mflux":

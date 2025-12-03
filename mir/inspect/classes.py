@@ -38,8 +38,8 @@ def resolve_import_path(code_name: str, pkg_name: str) -> Optional[List[str]]:
         return import_path
 
 
-def resolve_class_names(class_name: Optional[Union[str, Type]] = None, pkg_name: Optional[str] = "transformers", path_format: Optional[bool] = False) -> Union[List[str], str]:
-    """Reveal code names for class names from Diffusers or Transformers\n
+def resolve_code_names(class_name: Optional[Union[str, Type]] = None, pkg_name: Optional[str] = "transformers", path_format: Optional[bool] = False) -> Union[List[str], str]:
+    """Reveal code names for class names from Diffusers or Transformers (formerly get code names)\n
     :param class_name: To return only one class, defaults to None
     :param pkg_name: optional field for library, defaults to "transformers"
     :param path_format: Retrieve just the code name, or the full module path and code name within the package
@@ -81,7 +81,7 @@ def extract_inherited_classes(model_class: Union[Callable, str], pkg_name: Optio
 
 
 def extract_init_params(module: Union[Callable, str], pkg_name: Optional[str] = None) -> Dict[str, List[str]]:
-    """Pick apart a Diffusers or Transformers pipeline class and find its constituent parts\n
+    """Pick apart a Diffusers or Transformers pipeline class and find its constituent parts (formerly root_class)\n
     :param module: Origin pipeline as a class or as a string
     :param library: name of a library to import the class from, only if a string is provided
     :return: Dictionary of sub-classes from the `module`"""

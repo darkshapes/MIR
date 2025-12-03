@@ -25,12 +25,19 @@ def get_transformer_config_classes(parameter_filter: Optional[str] = None) -> Li
 
 
 def get_class_parent_folder(class_name: str, pkg_name: str) -> List[str]:
-    from mir import dbuq
-    from mir.inspect.classes import resolve_class_name, extract_init_params
+    """Retrieve the folder path within a class. Only returns if it is a valid path in the system (formerly seek_class_path)\n
+    ### NOTE: in most cases `__module__` makes this redundant
+    :param class_name: The internal name for the model in the third-party API.
+    :param pkg_name: The API Package
+    :return: A list corresponding to the path of the model, or None if not found
+    :raises KeyError: for invalid pkg_name
+    """
+    from mir.config.logging import dbuq
+    from mir.inspect.classes import resolve_code_names, extract_init_params
 
     pkg_name = pkg_name.lower()
     if pkg_name == "diffusers":
-        parent_folder: List[str] = resolve_class_name(class_name=class_name, pkg_name=pkg_name, path_format=True)
+        parent_folder: List[str] = resolve_code_names(class_name=class_name, pkg_name=pkg_name, path_format=True)
         if not parent_folder or not parent_folder[-1].strip():
             dbuq("Data not found for", " class_name = {class_name},pkg_name = {pkg_name},{parent_folder} = parent_folder")
             return None

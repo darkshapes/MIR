@@ -146,6 +146,7 @@ class MIRDatabase:
         :raises KeyError: Target string not found
         """
         import re
+        from mir.config.logging import nfo
 
         parameters = r"-gguf|-exl2|-exl3|-onnx|-awq|-mlx|-ov"  #
         target = target.lower().strip("-")

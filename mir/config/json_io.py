@@ -17,7 +17,7 @@ def write_json_file(folder_path_named: str, file_name: str, data: Any, mode: str
     import json
     import os
 
-    from mir import dbug
+    from mir.config.logging import dbuq
 
     if ".json" not in file_name:
         file_name += ".json"
@@ -26,7 +26,7 @@ def write_json_file(folder_path_named: str, file_name: str, data: Any, mode: str
         try:
             os.remove(document)
         except FileNotFoundError as error_log:
-            dbug(f"'File was detected but not found to remove: {document}.'{error_log}", exc_info=True)
+            dbuq(f"'File was detected but not found to remove: {document}.'{error_log}", exc_info=True)
 
     with open(document, mode, encoding="UTF-8") as i:
         json.dump(data, i, ensure_ascii=False, indent=4, sort_keys=False)

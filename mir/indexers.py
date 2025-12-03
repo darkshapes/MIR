@@ -7,9 +7,8 @@
 import sys
 from typing import Any, Callable, Dict, List, Optional
 from mir.doc_parser import parse_docs
-from mir.inspect.metadata import gather_transformers_metadata
 from mir.tag import make_mir_tag
-from mir.inspect.classes import resolve_class_names, extract_init_params
+from mir.inspect.classes import resolve_code_names, extract_init_params
 from mir.config.logging import nfo
 from mir.config.conversion import import_submodules
 
@@ -141,11 +140,13 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
         "HunyuanDiTPipeline": "tencent-hunyuan/hunyuandiT-v1.2-diffusers",  #  NOT hyd .ckpt
         "ChromaPipeline": "lodestones/Chroma",
     }
-    extracted_docs = list(gather_transformers_metadata())
+    from mir.inspect.metadata import gather_diffusers_metadata
+    extracted_docs = list(gather_diffusers_metadata())
     pipe_data = {}  # pipeline_stable_diffusion_xl_inpaint
+    print(f"extracted_docs: {extracted_docs}")
     for code_name, file_name, docs in extracted_docs:
         parse_result = parse_docs(docs)
-
+        print(f"parse_result: {parse_result}")
         if parse_result:
             pipe_class = parse_result.pipe_class
             pipe_repo = parse_result.pipe_repo
@@ -276,7 +277,7 @@ def transformers_index():
                 continue
             else:
                 mir_prefix = "info." + mir_prefix
-            code_name = resolve_class_names(class_name)
+            code_name = resolve_code_names(class_name)
             if code_name != "funnel":
                 mir_suffix, mir_comp = list(make_mir_tag(repo_path))
             else:

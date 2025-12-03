@@ -60,6 +60,7 @@ def pkg_path_to_docstring(pkg_name: str, folder_path: bool) -> Iterator[Tuple[st
             dbuq(pkg_path)
             path_exists = os.path.exists(os.path.join(module_path, pkg_name, file_name + ".py"))
             if path_exists:
+                print(f"file_name, pkg_path): {file_name, pkg_path}")
                 pipe_file = import_submodules(file_name, pkg_path)
         except ModuleNotFoundError:
             if pkg_name != "skyreels_v2":

@@ -3,72 +3,50 @@
 from typing import List, Optional, Union
 from mir.config.json_io import read_json_file
 import os
-from transformers.models.auto.modeling_auto import (
-    MODEL_FOR_AUDIO_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_FOR_BACKBONE_MAPPING_NAMES,
-    MODEL_FOR_CAUSAL_LM_MAPPING_NAMES,
-    MODEL_FOR_CTC_MAPPING_NAMES,
-    MODEL_FOR_DOCUMENT_QUESTION_ANSWERING_MAPPING_NAMES,
-    MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_FOR_IMAGE_MAPPING_NAMES,
-    MODEL_FOR_MASKED_IMAGE_MODELING_MAPPING_NAMES,
-    MODEL_FOR_MASKED_LM_MAPPING_NAMES,
-    MODEL_FOR_MULTIPLE_CHOICE_MAPPING_NAMES,
-    MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING_NAMES,
-    MODEL_FOR_PRETRAINING_MAPPING_NAMES,
-    MODEL_FOR_QUESTION_ANSWERING_MAPPING_NAMES,
-    MODEL_FOR_SEMANTIC_SEGMENTATION_MAPPING_NAMES,
-    MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING_NAMES,
-    MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_FOR_SPEECH_SEQ_2_SEQ_MAPPING_NAMES,
-    MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_FOR_ZERO_SHOT_IMAGE_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_MAPPING_NAMES,
-)
-from transformers.configuration_utils import PretrainedConfig
 
+from transformers.models.auto.modeling_auto import MODEL_MAPPING, MODEL_MAPPING_NAMES
+from transformers.models.auto.configuration_auto import CONFIG_MAPPING_NAMES
+import transformers
 
-def generate_supported_model_class_names(
-    model_name: type[PretrainedConfig],
-    supported_tasks: Optional[Union[str, list[str]]] = None,
-) -> list[str]:
-    task_mapping = {
-        "default": MODEL_MAPPING_NAMES,
-        "pretraining": MODEL_FOR_PRETRAINING_MAPPING_NAMES,
-        "next-sentence-prediction": MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING_NAMES,
-        "masked-lm": MODEL_FOR_MASKED_LM_MAPPING_NAMES,
-        "causal-lm": MODEL_FOR_CAUSAL_LM_MAPPING_NAMES,
-        "seq2seq-lm": MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING_NAMES,
-        "speech-seq2seq": MODEL_FOR_SPEECH_SEQ_2_SEQ_MAPPING_NAMES,
-        "multiple-choice": MODEL_FOR_MULTIPLE_CHOICE_MAPPING_NAMES,
-        "document-question-answering": MODEL_FOR_DOCUMENT_QUESTION_ANSWERING_MAPPING_NAMES,
-        "question-answering": MODEL_FOR_QUESTION_ANSWERING_MAPPING_NAMES,
-        "sequence-classification": MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING_NAMES,
-        "token-classification": MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING_NAMES,
-        "masked-image-modeling": MODEL_FOR_MASKED_IMAGE_MODELING_MAPPING_NAMES,
-        "image-classification": MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING_NAMES,
-        "zero-shot-image-classification": MODEL_FOR_ZERO_SHOT_IMAGE_CLASSIFICATION_MAPPING_NAMES,
-        "ctc": MODEL_FOR_CTC_MAPPING_NAMES,
-        "audio-classification": MODEL_FOR_AUDIO_CLASSIFICATION_MAPPING_NAMES,
-        "semantic-segmentation": MODEL_FOR_SEMANTIC_SEGMENTATION_MAPPING_NAMES,
-        "backbone": MODEL_FOR_BACKBONE_MAPPING_NAMES,
-        "image-feature-extraction": MODEL_FOR_IMAGE_MAPPING_NAMES,
-        "video-classification": MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING_NAMES,
-    }
+def mapped_cls(model_identifier: str):
+    """Get model class from identifier without calling huggingface_hub.
+    
+    :param model_identifier: Model identifier like "bert-base-uncased" or "gpt2"
+    :return: Model class (e.g., BertModel, GPT2Model)
+    """
+    # Extract code name from model identifier (e.g., "bert-base-uncased" -> "bert")
+    # Handle various formats: "bert-base-uncased", "gpt2", "microsoft/DialoGPT-medium"
+    code_name = model_identifier.split("/")[-1].split("-")[0].lower()
+    
+    # Method 1: Direct lookup via MODEL_MAPPING_NAMES (simplest)
+    model_class_name = MODEL_MAPPING_NAMES.get(code_name, None)
 
-    if supported_tasks is None:
-        supported_tasks = task_mapping.keys()
-    if isinstance(supported_tasks, str):
-        supported_tasks = [supported_tasks]
+    
+    # Method 2: Via config class lookup (matches _get_model_class behavior more closely)
+    config_class_name = CONFIG_MAPPING_NAMES.get(code_name)
+    if config_class_name:
+        config_class = getattr(transformers, config_class_name, None)
+        if config_class:
+            # Look up in MODEL_MAPPING using config class
+            model_class = MODEL_MAPPING.get(config_class, None)
+            if model_class:
+                if isinstance(model_class, tuple):
+                    model_class = model_class[0]
+                    return model_class
+    
+    # Fallback: try with normalized code name (handle underscores/dashes)
+    normalized = code_name.replace("_", "-")
+    if normalized != code_name:
+        print(f"normalized: {normalized}")
+        model_class_name = MODEL_MAPPING_NAMES.get(normalized,  None)
+        if model_class_name:
+            return getattr(transformers, model_class_name, None)
+    if model_class_name:
+        if isinstance(model_class_name, tuple):
+            model_class_name = model_class_name[0]
+        return getattr(transformers, model_class_name, None)
 
-    model_class_names = []
-    for task in supported_tasks:
-        class_name = task_mapping[task].get(model_name, None)
-        if class_name:
-            model_class_names.append(class_name)
-
-    return model_class_names
+    return None
 
 
 class DocParseData:
@@ -119,10 +97,10 @@ package_map = {
     "diffusers": ("_import_structure", "diffusers.pipelines"),
     "transformers": ("MODEL_MAPPING_NAMES", "transformers.models.auto.modeling_auto"),
 }
-root_path = os.path.dirname(os.path.dirname(__file__))
+root_path = os.path.join(os.getcwd(), "mir")
 versions = read_json_file(os.path.join(root_path, "spec", "versions.json"))
 template = read_json_file(os.path.join(root_path, "spec", "template.json"))
-
+print(root_path)
 MIR_PATH_NAMED = os.path.join(root_path, "mir.json")
 
 BREAKING_SUFFIX = r".*(?:-)(prior)$|.*(?:-)(diffusers)$|.*[_-](\d{3,4}px|-T2V$|-I2V$)"

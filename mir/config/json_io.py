@@ -17,7 +17,7 @@ def write_json_file(folder_path_named: str, file_name: str, data: Any, mode: str
     import json
     import os
 
-    from mir.config.logging import dbuq
+    from mir.config.logs import dbuq
 
     if ".json" not in file_name:
         file_name += ".json"

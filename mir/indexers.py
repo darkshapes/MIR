@@ -9,7 +9,7 @@ from typing import Any, Callable, Dict, List, Optional
 from mir.doc_parser import parse_docs
 from mir.tag import make_mir_tag
 from mir.inspect.classes import resolve_code_names, extract_init_params
-from mir.config.logging import nfo
+from mir.config.logs import nfo
 from mir.config.conversion import import_submodules
 
 if "pytest" in sys.modules:

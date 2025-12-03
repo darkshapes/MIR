@@ -9,7 +9,7 @@ from typing import Any, Callable, List, Optional
 
 from mir.config.constants import MIR_PATH_NAMED
 from mir.config.json_io import read_json_file, write_json_file
-from mir.config.logging import dbuq
+from mir.config.logs import dbuq
 
 
 class MIRDatabase:
@@ -39,7 +39,7 @@ class MIRDatabase:
     def write_to_disk(self, data: Optional[dict] = None) -> None:  # pylint:disable=unused-argument
         """Save data to JSON file\n"""
 
-        from mir.config.logging import nfo
+        from mir.config.logs import nfo
 
         if not os.path.exists(MIR_PATH_NAMED):
             mode = "x"
@@ -146,7 +146,7 @@ class MIRDatabase:
         :raises KeyError: Target string not found
         """
         import re
-        from mir.config.logging import nfo
+        from mir.config.logs import nfo
 
         parameters = r"-gguf|-exl2|-exl3|-onnx|-awq|-mlx|-ov"  #
         target = target.lower().strip("-")
@@ -243,7 +243,7 @@ if __name__ == "__main__":
     if "pytest" not in sys_modules:  #
         import argparse
 
-        from mir.config.logging import nfo
+        from mir.config.logs import nfo
 
         parser = argparse.ArgumentParser(
             formatter_class=argparse.RawTextHelpFormatter,

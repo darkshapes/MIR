@@ -7,7 +7,7 @@
 
 from typing import Callable, Dict, List, Optional, Union, Type
 from mir.config.conversion import import_submodules
-from mir.config.logging import nfo
+from mir.config.logs import nfo
 
 
 def resolve_import_path(code_name: str, pkg_name: str) -> Optional[List[str]]:

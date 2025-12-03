@@ -31,5 +31,4 @@ jobs:
           source .venv/bin/activate
           python3 -m pip install --upgrade pip
           pip install ".[dev]"
-          cd tests
           pytest -vv

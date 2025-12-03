@@ -153,6 +153,7 @@ MIR is inspired by:
 <!--
 [![Python application](https://github.com/darkshapes/MIR/actions/workflows/mir.yml/badge.svg)](https://github.com/darkshapes/MIR/actions/workflows/python-app.yml)<br> -->
 
+[![mir pytest](https://github.com/darkshapes/MIR/actions/workflows/mir.yml/badge.svg)](https://github.com/darkshapes/MIR/actions/workflows/mir.yml)
 ![commits per month](https://img.shields.io/github/commit-activity/m/darkshapes/MIR?color=indigo)<br>
 ![code size](https://img.shields.io/github/languages/code-size/darkshapes/MIR?color=navy)<br>
 [<img src="https://img.shields.io/discord/1266757128249675867?color=5865F2">](https://discord.gg/VVn9Ku74Dk)<br>

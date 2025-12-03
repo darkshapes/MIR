@@ -1,15 +1,16 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
+
 def main():
-    import nnll.mir.maid
-    from nnll.mir.maid import main as mir_main
+    import mir.maid
+    from mir.maid import main as mir_main
 
     mir_main()
-    from nnll.model_detect.tasks import main
+    from mir.inspect.tasks import main
 
     main()
-    from nnll.model_detect.tasks import pipe
+    from mir.inspect.tasks import pipe
 
     pipe()
 
@@ -20,7 +21,8 @@ def main():
         os.remove("mir.json")
     except FileNotFoundError:
         pass
-    shutil.copy2(os.path.join(os.path.dirname(nnll.mir.maid.__file__), "config", "mir.json"), os.path.join(os.getcwd(),"mir.json"))
+    shutil.copy2(os.path.join(os.path.dirname(mir.maid.__file__), "mir.json"), os.path.join(os.getcwd(), "mir.json"))
+
 
 if __name__ == "__main__":
     main()

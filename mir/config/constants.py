@@ -26,7 +26,7 @@ from transformers.models.auto.modeling_auto import (
     MODEL_FOR_ZERO_SHOT_IMAGE_CLASSIFICATION_MAPPING_NAMES,
     MODEL_MAPPING_NAMES,
 )
-from transformers.modeling_utils import PretrainedConfig
+from transformers.configuration_utils import PretrainedConfig
 
 
 def generate_supported_model_class_names(
@@ -119,10 +119,11 @@ package_map = {
     "diffusers": ("_import_structure", "diffusers.pipelines"),
     "transformers": ("MODEL_MAPPING_NAMES", "transformers.models.auto.modeling_auto"),
 }
-versions = read_json_file(os.path.join(os.path.dirname(__file__), "versions.json"))
-template = read_json_file(os.path.join(os.path.dirname(__file__), "template.json"))
+root_path = os.path.dirname(os.path.dirname(__file__))
+versions = read_json_file(os.path.join(root_path, "spec", "versions.json"))
+template = read_json_file(os.path.join(root_path, "spec", "template.json"))
 
-MIR_PATH_NAMED = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mir.json")
+MIR_PATH_NAMED = os.path.join(root_path, "mir.json")
 
 BREAKING_SUFFIX = r".*(?:-)(prior)$|.*(?:-)(diffusers)$|.*[_-](\d{3,4}px|-T2V$|-I2V$)"
 PARAMETERS_SUFFIX = r"(\d{1,4}[KkMmBb]|[._-]\d+[\._-]\d+[Bb][._-]).*?$"

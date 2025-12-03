@@ -38,14 +38,20 @@ Documentation = "https://github.com/darkshapes/sdbx/wiki"
 [project.scripts]
 mir = "mir.__init__:main"
 
-[tool.setuptools]
-packages = ["mir"]
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
 
 [tool.setuptools.package-data]
-mir = ['mir/*.json','mir/config/*.json']
+"*" = ["*.txt", "*.md", "*.json"]
+
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["mir*"]
+exclude = ["tests*"]
 
 [tool.uv.sources]
-transformers = { git = "https://github.com/huggingface/transformers.git" }
+transformers = { git = "https://github.com/huggingface/transformers" }
 
 [dependency-groups]
 dev = [

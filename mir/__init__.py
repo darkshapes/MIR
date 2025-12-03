@@ -7,10 +7,10 @@ def main():
     from mir.maid import main as mir_main
 
     mir_main()
-    from mir.detect_tasks import main
+    from mir.inspect.tasks import main
 
     main()
-    from mir.detect_tasks import pipe
+    from mir.inspect.tasks import pipe
 
     pipe()
 
@@ -21,7 +21,7 @@ def main():
         os.remove("mir.json")
     except FileNotFoundError:
         pass
-    shutil.copy2(os.path.join(os.path.dirname(mir.maid.__file__), "config", "mir.json"), os.path.join(os.getcwd(), "mir.json"))
+    shutil.copy2(os.path.join(os.path.dirname(mir.maid.__file__), "mir.json"), os.path.join(os.getcwd(), "mir.json"))
 
 
 if __name__ == "__main__":

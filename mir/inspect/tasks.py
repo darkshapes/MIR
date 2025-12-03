@@ -2,7 +2,7 @@
 #  # # <!-- // /*  d a r k s h a p e s */ -->
 
 from typing import Any, Callable, Dict, List, get_type_hints
-from mir import MIRDatabase
+from mir.maid import MIRDatabase
 from mir.config.logging import dbuq
 
 

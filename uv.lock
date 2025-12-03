@@ -413,7 +413,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.12.5" },
     { name = "tokenizers", specifier = ">=0.22.1" },
     { name = "torch", specifier = ">=2.9.1" },
-    { name = "transformers", git = "https://github.com/huggingface/transformers.git" },
+    { name = "transformers", git = "https://github.com/huggingface/transformers" },
 ]
 
 [package.metadata.requires-dev]
@@ -1272,7 +1272,7 @@ wheels = [
 [[package]]
 name = "transformers"
 version = "5.0.0.dev0"
-source = { git = "https://github.com/huggingface/transformers.git#377a8ee73f210476c4efb15170d0c32ad3b2c653" }
+source = { git = "https://github.com/huggingface/transformers#377a8ee73f210476c4efb15170d0c32ad3b2c653" }
 dependencies = [
     { name = "filelock" },
     { name = "huggingface-hub" },

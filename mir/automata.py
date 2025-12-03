@@ -16,7 +16,7 @@ from diffusers import _import_structure
 from mir.maid import MIRDatabase
 from mir.spec.mir import mir_entry
 from mir.tag import make_mir_tag, make_scheduler_tag, tag_pipe, tag_base_model
-from mir.config.logging import nfo, dbug, dbuq
+from mir.config.logging import nfo, dbuq
 from mir.config.conversion import slice_number
 from mir.indexers import diffusers_index, transformers_index
 
@@ -132,7 +132,7 @@ def assimilate(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, any]]]) -> 
                 else:
                     target = {key: value}
 
-    dbug(f"{data_tuple}, {len(data_tuple)}")
+    dbuq(f"{data_tuple}, {len(data_tuple)}")
     for arch, series, new_data in data_tuple:
         mir_data = mir_db.database[f"{arch}.{series}"]
         for comp, field_data in new_data.items():

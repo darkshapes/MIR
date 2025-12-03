@@ -2,7 +2,7 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 from typing import Callable, Optional, Union, Type, List, Iterator, Tuple, Dict
-from mir import dbuq, nfo
+from mir.config.logging import dbuq, nfo
 
 
 def import_submodules(module_name: str, pkg_name_or_abs_path: str) -> Optional[Callable]:

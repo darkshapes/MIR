@@ -8,17 +8,18 @@
 # modelspec sai https://github.com/Stability-AI/ModelSpec
 
 from importlib import import_module
-from typing import Dict, List, Tuple
 import re
-import torch
-from diffusers import _import_structure
+from typing import Dict, List, Tuple
 
-from mir.maid import MIRDatabase
-from mir.spec.mir import mir_entry
-from mir.tag import make_mir_tag, make_scheduler_tag, tag_pipe, tag_base_model
-from mir.config.console import nfo, dbuq
+from diffusers import _import_structure
+import torch
+
+from mir.config.console import dbuq, nfo
 from mir.config.conversion import slice_number
 from mir.indexers import diffusers_index, transformers_index
+from mir.maid import MIRDatabase
+from mir.spec.mir import mir_entry
+from mir.tag import make_mir_tag, make_scheduler_tag, tag_base_model, tag_pipe
 
 
 sd1_series, sd1_comp = make_mir_tag("stable-diffusion-v1-5/stable-diffusion-v1-5")

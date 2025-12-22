@@ -89,27 +89,28 @@ Meant to be created by standards community, derived from code and file analysis
 
 | Abbreviation                          | Description                               |
 | ------------------------------------- | ----------------------------------------- |
-| <div align="right">GRU</div>          | Gated recurrent unit                      |
-| <div align="right">RBM</div>          | Restricted Boltzmann machine              |
-| <div align="right">TAE</div>          | Tiny Autoencoder                          |
-| <div align="right">VAE</div>          | Variable Autoencoder                      |
-| <div align="right">LSTM</div>         | Long Short-Term Memory                    |
-| <div align="right">RESNET</div>       | Residual Network                          |
-| <div align="right">CNN</div>          | Convolutional Neural Network              |
-| <div align="right">RCNN</div>         | Region-based Convolutional Neural Network |
-| <div align="right">RNN</div>          | Recurrent Neural Network                  |
-| <div align="right">BRNN</div>         | Bi-directional Recurrent Neural Network   |
-| <div align="right">GAN</div>          | Generative Adversarial Model              |
-| <div align="right">SSM</div>          | State-Space Model                         |
-| <div align="right">DETR</div>         | Detection Transformer                     |
-| <div align="right">VIT</div>          | Vision Transformer                        |
-| <div align="right">MOE</div>          | Mixture of Experts                        |
 | <div align="right">AET</div>          | Autoencoding Transformer                  |
-| <div align="right">STST</div>         | Sequence-to-Sequence Transformer          |
 | <div align="right">ART</div>          | Autoregressive Transformer                |
-| <div align="right">LORA</div>         | Low-Rank Adaptation                       |
+| <div align="right">BRNN</div>         | Bi-directional Recurrent Neural Network   |
+| <div align="right">CNN</div>          | Convolutional Neural Network              |
 | <div align="right">CONTROLNET</div>   | Controlnet                                |
+| <div align="right">DETR</div>         | Detection Transformer                     |
+| <div align="right">GAN</div>          | Generative Adversarial Model              |
+| <div align="right">GRU</div>          | Gated recurrent unit                      |
+| <div align="right">LORA</div>         | Low-Rank Adaptation                       |
+| <div align="right">LSTM</div>         | Long Short-Term Memory                    |
+| <div align="right">MOE</div>          | Mixture of Experts                        |
+| <div align="right">RBM</div>          | Restricted Boltzmann machine              |
+| <div align="right">RCNN</div>         | Region-based Convolutional Neural Network |
+| <div align="right">RESNET</div>       | Residual Network                          |
+| <div align="right">RNN</div>          | Recurrent Neural Network                  |
+| <div align="right">SSM</div>          | State-Space Model                         |
+| <div align="right">STST</div>         | Sequence-to-Sequence Transformer          |
+| <div align="right">TAE</div>          | Tiny Autoencoder                          |
 | <div align="right">UNCLASSIFIED</div> | Unknown                                   |
+| <div align="right">VAE</div>          | Variable Autoencoder                      |
+| <div align="right">VLA</div>          | Vision Language Action                    |
+| <div align="right">VIT</div>          | Vision Transformer                        |
 
 --
 

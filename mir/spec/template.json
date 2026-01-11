@@ -80,6 +80,7 @@
                 "act_dropout",
                 "max_source_positions",
                 "classifier_pooling",
+                "ctc_loss_reduction",
                 "audio_video_config",
                 "video_config"
             ],

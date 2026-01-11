@@ -10,7 +10,7 @@ from typing import Any, Callable
 from mir.config.console import nfo
 from mir.config.constants import ClassMapEntry, extract_init_params
 from mir.config.conversion import get_repo_from_class_map, import_submodules
-from mir.doc_parser import parse_docs
+from mir.doc_parser import parse_docs, DocParseData
 from mir.tag import mir_prefix_from_forward_pass, mir_tag_from_config, tag_model_from_repo
 
 if "pytest" in sys.modules:
@@ -101,44 +101,42 @@ def diffusers_index() -> dict[str, dict[str, dict[str, Any]]]:
     from mir.inspect.metadata import find_diffusers_docstrings
 
     extracted_docstrings = find_diffusers_docstrings()
-    model_info = [
-        extract  #
-        for pipeline in extracted_docstrings
-        for extract in pipeline
-    ]
+    model_info = [extract for pipeline in extracted_docstrings for extract in pipeline]
     pipe_data = {}  # pipeline_stable_diffusion_xl_inpaint
 
-    for extract in model_info:
-        pipe = parse_docs(extract.doc_string)
-        if not pipe:
-            nfo(f"Doc string not found in '{extract.package_name}' in {extract.file_name}")
+    for extracted in model_info:
+        parsed_data: DocParseData = parse_docs(extracted.doc_string)
+        if parsed_data is None:
+            print(f"Doc string not found in '{extracted.package_name}' in {extracted.file_name}")
             continue
         for class_name, swap_repo in special_classes.items():
-            if pipe.pipe_class == class_name:
-                pipe.pipe_repo = swap_repo
+            if parsed_data.pipe_class == class_name:
+                parsed_data.pipe_repo = swap_repo
                 break
-        model_class_obj = import_submodules(pipe.pipe_class, f"diffusers.pipelines.{extract.package_name}.{extract.file_name}")
+        model_class_obj = import_submodules(parsed_data.pipe_class, f"diffusers.pipelines.{extracted.package_name}.{extracted.file_name}")
+        if not model_class_obj:
+            continue
         extract_init_params(model_class_obj)
         try:
-            series, comp_data = create_pipe_entry(pipe.pipe_repo, pipe.pipe_class)
+            series, comp_data = create_pipe_entry(parsed_data.pipe_repo, parsed_data.pipe_class)
         except TypeError:
             pass  # Attempt 1
         if pipe_data.get(series):
-            if "img2img" in pipe.pipe_class.lower():
+            if "img2img" in parsed_data.pipe_class.lower():
                 continue
         pipe_data.setdefault(series, {}).update(comp_data)
         special_conditions = special_repos | special_classes
-        if pipe.staged_class or pipe.pipe_repo in list(special_conditions):
-            test = special_conditions.get(pipe.pipe_repo)
+        if parsed_data.staged_class or parsed_data.pipe_repo in list(special_conditions):
+            test = special_conditions.get(parsed_data.pipe_repo)
             if test:
                 staged_repo = test
-                pipe.staged_class = pipe.pipe_class
+                parsed_data.staged_class = parsed_data.pipe_class
             try:
                 series, comp_data = create_pipe_entry(
-                    staged_repo if pipe.staged_repo else pipe.pipe_repo,
-                    pipe.staged_class  #
-                    if pipe.staged_class
-                    else pipe.pipe_class,
+                    staged_repo if parsed_data.staged_repo else parsed_data.pipe_repo,
+                    parsed_data.staged_class  #
+                    if parsed_data.staged_class
+                    else parsed_data.pipe_class,
                 )
             except TypeError as error_log:
                 nfo(series, comp_data)
@@ -166,7 +164,6 @@ def transformers_index():
     mir_data = {}
     transformers_data: list[ClassMapEntry] = map_transformers_classes()
     for entry in transformers_data:
-        print(entry)
         repo_path = get_repo_from_class_map(entry)
         if config := missing_config_params.get(entry.name, {}):
             entry.config_params = config.get("params", entry.config_params)
@@ -182,7 +179,6 @@ def transformers_index():
             tokenizer_classes = TOKENIZER_MAPPING_NAMES.get(entry.name)
             if isinstance(tokenizer_classes, str):
                 tokenizer_classes = [tokenizer_classes]
-            print(type(tokenizer_classes))
             # mode = modalities.get("mode")
             if tokenizer_classes:
                 index = 0

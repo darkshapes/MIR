@@ -9,6 +9,7 @@ from transformers.models.auto.configuration_auto import CONFIG_MAPPING_NAMES
 from transformers.models.auto.modeling_auto import MODEL_MAPPING, MODEL_MAPPING_NAMES
 
 from mir.config.json_io import read_json_file
+from mir.config.console import nfo
 
 
 def mapped_cls(model_identifier: str):
@@ -50,9 +51,15 @@ def import_submodules(module_name: str, pkg_name_or_abs_path: str) -> Callable:
 
     module = module_name.strip()
     library = pkg_name_or_abs_path.strip()
-    base_library = import_module(library, module)
-    module = getattr(base_library, module)
-    return module
+    try:
+        base_library = import_module(library, module)
+    except SyntaxError:
+        base_library = None
+        nfo(f"Syntax error attempting to import {module_name}")
+    if module := getattr(base_library, module, None):
+        return module
+    else:
+        nfo("failed to find module {module}")
 
 
 def extract_init_params(module: Callable | str, package_name: str | None = None) -> dict[str, list[str]]:
@@ -137,12 +144,15 @@ class DocStringParserConstants:
         ">>> motion_adapter = ",
         ">>> adapter = ",  # if this moves, also change motion_adapter check
         ">>> controlnet = ",
+        ">>> super_res_1_pipe = ",
         ">>> pipe_prior = ",
+        ">>> pipe_prior_redux = ",
         ">>> pipe = ",
         ">>> pipeline = ",
         ">>> blip_diffusion_pipe = ",
         ">>> prior_pipe = ",
         ">>> gen_pipe = ",
+        "pipe = ",
     ]
     repo_variables: List[str] = [
         "controlnet_model",

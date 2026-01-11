@@ -4,7 +4,7 @@
 from typing import List, Optional, Tuple
 
 from pydantic import BaseModel, field_validator
-from mir.config.console import dbuq, nfo
+from mir.config.console import nfo
 from mir.config.constants import DocParseData, DocStringParserConstants
 
 
@@ -80,6 +80,7 @@ class DocStringParser(BaseModel):
             motion_adapter = "motion_adapter" in candidate or "adapter" in candidate
             if motion_adapter and pipe_repo:
                 staged, prior_candidate, _ = self.doc_match(DocStringParserConstants.pipe_prefixes[2:])  # skip the adapter statements
+
             staged_class, staged_repo = (
                 self._extract_class_and_repo(
                     segment=staged,
@@ -90,13 +91,13 @@ class DocStringParser(BaseModel):
                 if staged
                 else (None, None)
             )
-            if motion_adapter and pipe_class:
+            if motion_adapter and pipe_class and staged_class is not None:
                 pipe_class = staged_class
                 staged_repo = None
                 staged_class = None
 
             if DocStringValidator.validate_pipe_class(pipe_class):
-                dbuq(f"class :{pipe_class}, repo : {pipe_repo}, staged_class: {staged_class}, staged_repo:{staged_repo} \n")
+                # dbuq(f"class :{pipe_class}, repo : {pipe_repo}, staged_class: {staged_class}, staged_repo:{staged_repo} \n")
                 return DocParseData(pipe_class=pipe_class, pipe_repo=pipe_repo, staged_class=staged_class, staged_repo=staged_repo)
 
     def _extract_class_and_repo(
@@ -110,8 +111,8 @@ class DocStringParser(BaseModel):
         pipe_repo = None
         for call_type in call_types:
             if call_type in segment:
-                pipe_class = segment.partition(call_type)[0].strip().split("= ")[-1]
-                if prior_class == pipe_class:
+                pipe_class = segment.partition(call_type)[0].strip().split("= ")[-1].split(".")[-1]
+                if prior_class == pipe_class and prior_text.split(call_type)[-1].strip().replace(")", ""):
                     pipe_class = prior_text.partition(call_type)[0].strip().split("= ")[-1]
                     repo_segment = segment.partition(call_type)[2].partition(")")[0]
                 else:

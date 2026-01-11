@@ -8,13 +8,6 @@ from mir.config.console import dbuq, nfo
 from mir.config.constants import DocParseData, DocStringParserConstants
 
 
-def parse_docs(doc_string: str) -> Tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
-    parser = DocStringParser(doc_string=doc_string)
-    result = parser.parse()
-    if result is not None:
-        return result
-
-
 class DocStringValidator:
     """Handles validation of docstring data and extracted values."""
 
@@ -62,7 +55,7 @@ class DocStringParser(BaseModel):
     def normalize_doc(cls, docs: str) -> str:
         return DocStringValidator.normalize_doc_string(docs)
 
-    def doc_match(self, prefix_set: List[str] = None):
+    def doc_match(self, prefix_set: List[str] | None = None):
         if prefix_set is None:
             prefix_set = DocStringParserConstants.pipe_prefixes
         candidate = None
@@ -160,3 +153,8 @@ class DocStringParser(BaseModel):
 
         nfo(f"Warning: {search} not found in docstring.")
         return None
+
+
+def parse_docs(doc_string: str) -> DocParseData:
+    parser = DocStringParser(doc_string=doc_string)
+    return parser.parse()

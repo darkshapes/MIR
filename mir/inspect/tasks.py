@@ -69,6 +69,7 @@ class TaskAnalyzer:
         elif code_name:
             from mir.config.constants import mapped_cls
             from httpx import HTTPStatusError
+
             try:
                 model_class = mapped_cls(code_name)
                 if model_class is not None:
@@ -181,13 +182,13 @@ class TaskAnalyzer:
         :param mir_db: MIRDatabase instance for querying tags/IDs
         :return: Tuple containing MIR tag and class name"""
 
-        from mir.tag import make_scheduler_tag
+        from mir.tag import tag_scheduler
 
         mir_tag = None
         class_name = pipe_class.__name__
         if pipe_role in ["scheduler", "image_noising_scheduler", "prior_scheduler"]:
             sub_field = pipe_class.__module__.split(".")[0]
-            scheduler_series, scheduler_comp = make_scheduler_tag(class_name)
+            scheduler_series, scheduler_comp = tag_scheduler(class_name)
             mir_tag = [f"ops.scheduler.{scheduler_series}", scheduler_comp]
             if not mir_db.database.get(mir_tag[0], {}).get(mir_tag[1]):
                 mir_tag = mir_db.find_tag(field="pkg", target=class_name, sub_field=sub_field, domain="ops.scheduler")
@@ -266,3 +267,65 @@ def trace_classes(pipe_class: str, pkg_name: str) -> Dict[str, List[str]]:
     related_pipes = set(related_pipes)
     related_pipes.update(tuple(x) for x in extract_inherited(model_class=pipe_class, pkg_name=pkg_name))
     return related_pipes
+
+
+def main(mir_db: MIRDatabase = None):
+    """Parse arguments to feed to dict header reader"""
+    import argparse
+    import asyncio
+    from mir.automata import assimilate
+    from sys import modules as sys_modules
+
+    if "pytest" not in sys_modules:
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.RawTextHelpFormatter,
+            description="Scrape the task classes from currently installed libraries and attach them to an existing MIR database.\nOffline function.",
+            usage="mir-tasks",
+            epilog="Can be run automatically with `python -m nnll.mir.maid` Should only be used after `mir-maid`.\n\nOutput:\n    INFO     ('Wrote #### lines to MIR database file.',)",
+        )
+        parser.parse_args()
+
+    if not mir_db:
+        mir_db = MIRDatabase()
+
+    auto_pkg = TaskAnalyzer()
+    task_tuple = asyncio.run(auto_pkg.detect_tasks(mir_db))
+
+    assimilate(mir_db, [task for task in task_tuple])
+
+    mir_db.write_to_disk()
+    return mir_db
+
+
+def run_task():
+    main()
+
+
+def pipe(mir_db: MIRDatabase = None):
+    import argparse
+    import asyncio
+    from sys import modules as sys_modules
+
+    if "pytest" not in sys_modules:
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.RawTextHelpFormatter,
+            description="Infer pipe components from Diffusers library and attach them to an existing MIR database.\nOffline function.",
+            usage="mir-pipe",
+            epilog="Can be run automatically with `python -m nnll.mir.maid` Should only be used after `mir-maid`.\n\nOutput:\n    INFO     ('Wrote #### lines to MIR database file.',)",
+        )
+        parser.parse_args()
+
+    from mir.automata import assimilate
+
+    if not mir_db:
+        mir_db = MIRDatabase()
+
+    auto_pkg = TaskAnalyzer()
+    pipe_tuple = asyncio.run(auto_pkg.detect_pipes(mir_db))
+    assimilate(mir_db, [pipe for pipe in pipe_tuple])
+    mir_db.write_to_disk()
+    return mir_db
+
+
+if __name__ == "__main__":
+    pipe()

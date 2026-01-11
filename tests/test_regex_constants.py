@@ -2,7 +2,7 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 from mir.config.constants import PARAMETERS_SUFFIX
-from mir.tag import make_mir_tag
+from mir.tag import tag_model_from_repo
 
 
 def test_constants():
@@ -23,5 +23,5 @@ def test_constants():
     }
     # regex = PARAMETERS_SUFFIX
     for test, expected in data_tests.items():
-        mir_tag = list(make_mir_tag(test))
+        mir_tag = list(tag_model_from_repo(test))
         assert mir_tag == expected

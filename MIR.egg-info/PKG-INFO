@@ -11,13 +11,14 @@ License: “Commons Clause” License Condition v1.0
         
         For purposes of the foregoing, “Sell” means practicing any or all of the rights granted to you under the License to provide to third parties, for a fee or other consideration (including without limitation fees for hosting or consulting/ support services related to the Software), a product or service whose value derives, entirely or substantially, from the functionality of the Software. Any license notice or attribution required by the License must also include this Commons Clause License Condition notice.
         
-        Software: zodiac
+        Software: mir
         
         License : Mozilla Public License v. 2.0
         
         Licensor: darkshapes github.com/darkshapes
         
         This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+        
 Project-URL: Homepage, https://github.com/darkshapes/MIR
 Project-URL: Documentation, https://github.com/darkshapes/sdbx/wiki
 Keywords: ML,AI,URI,schema,diffusion,LLM,identification
@@ -33,8 +34,10 @@ Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: diffusers>=0.35.2
+Requires-Dist: ftfy>=6.3.1
 Requires-Dist: huggingface-hub[hf-xet]>=1.1.7
 Requires-Dist: pydantic>=2.12.5
+Requires-Dist: sentencepiece>=0.2.1
 Requires-Dist: tokenizers>=0.22.1
 Requires-Dist: torch>=2.9.1
 Requires-Dist: torchvision>=0.24.1

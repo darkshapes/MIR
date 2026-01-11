@@ -1,0 +1,62 @@
+{
+    "bark": {
+        "repo_path": "suno/bark",
+        "params": {
+            "n_head": [
+                ""
+            ]
+        }
+    },
+    "aria_text": {
+        "repo_path": "rhymes-ai/Aria-Chat",
+        "params": {
+            "vision_config": [
+                ""
+            ],
+            "text_config": [
+                ""
+            ]
+        }
+    },
+    "cwm": {
+        "repo_path": "facebook/cwm",
+        "params": {
+            "n_head": [
+                ""
+            ]
+        }
+    },
+    "decision_transformer": {
+        "repo_path": "edbeeching/decision-transformer-gym-hopper-medium"
+    },
+    "distilbert": {
+        "repo_path": "distilbert-base-uncased"
+    },
+    "gpt_bigcode": {
+        "repo_path": "bigcode/gpt_bigcode-santacoder"
+    },
+    "granite": {
+        "repo_path": "ibm-granite/granite-3.3-2b-base"
+    },
+    "granitemoe": {
+        "repo_path": "ibm-research/PowerMoE-3b"
+    },
+    "granitemoehybrid": {
+        "repo_path": "ibm-granite/granite-4.0-h-small"
+    },
+    "musicgen": {
+        "repo_path": "facebook/musicgen-small"
+    },
+    "seamless_m4t_v2": {
+        "repo_path": "facebook/seamless-m4t-v2-large"
+    },
+    "timm_backbone": {
+        "repo_path": "microsoft/resnet-50"
+    },
+    "timm_wrapper": {
+        "repo_path": "timm/resnet18.a1_in1k"
+    },
+    "vision-text-dual-encoder": {
+        "repo_path": "hakuhodo-tech/japanese-clip-vit-h-14-bert-wider"
+    }
+}

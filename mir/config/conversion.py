@@ -1,108 +1,71 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import Callable, Optional, Union, Type, List, Iterator, Tuple, Dict
+
+from typing import Callable, Optional, Union, Type, List, Generator, Dict
+
 from mir.config.console import dbuq, nfo
+from mir.config.constants import DocStringEntry, ClassMapEntry, import_submodules
 
 
-def import_submodules(module_name: str, pkg_name_or_abs_path: str) -> Optional[Callable]:
-    """Convert two strings into a callable function or property\n
-    :param module: The name of the module to import
-    :param library_path: Base package for the module
-    :return: The callable attribute or property
-    """
-    from importlib import import_module
-
-    module = module_name.strip()
-    library = pkg_name_or_abs_path.strip()
-    base_library = import_module(library, module)
-    try:
-        module = getattr(base_library, module)
-        return module
-    except AttributeError:  # as error_log:
-        # dbuq(error_log)
-        return base_library
-
-
-def code_name_to_class_name(
-    code_name: Optional[Union[str, Type]] = None,
-    pkg_name: Optional[str] = "transformers",
-) -> Union[List[str], str]:
-    """Fetch class names from code names from Diffusers or Transformers\n
-    :param class_name: To return only one class, defaults to None
-    :param pkg_name: optional field for library, defaults to "transformers"
-    :return: A list of all code names, or the one corresponding to the provided class"""
-    from mir.config.constants import package_map
-
-    pkg_name = pkg_name.lower()
-    MAPPING_NAMES = import_submodules(*package_map[pkg_name])
-    if code_name:
-        return MAPPING_NAMES.get(code_name)
-    return list(MAPPING_NAMES.keys())
-
-
-def pkg_path_to_docstring(pkg_name: str, folder_path: bool) -> Iterator[Tuple[str, str, str]]:
-    """Processes package folder paths to yield example doc strings if available.\n
-    :param pkg_name: The name of the package under diffusers.pipelines.
-    :param file_specific: A flag indicating whether processing is specific to certain files.
-    :yield: A tuple containing (pkg_name, file_name, EXAMPLE_DOC_STRING) if found.
+def retrieve_diffusers_docstrings(
+    package_name: str,
+    file_names: list[str],
+) -> Generator[DocStringEntry]:
+    """Yield (pkg, file, EXAMPLE_DOC_STRING) from a folder or a single file.\n
+    :param pkg_name: Package under ``diffusers.pipelines``.\n
+    :param file_names: A list of related file names.\n
+    :param use_folder: True → treat ``source`` as a folder with ``_import_structure``.\n
+    :return: DocString Entry class.\n
     """
     import os
     from importlib import import_module
 
-    file_names = list(getattr(folder_path, "_import_structure").keys())
-    module_path = os.path.dirname(import_module("diffusers.pipelines").__file__)
+    module_location: str | None = import_module("diffusers.pipelines").__file__
+    module_path = os.path.dirname(module_location)
+
     for file_name in file_names:
+        assert isinstance(file_name, str)
         if file_name == "pipeline_stable_diffusion_xl_inpaint":
             continue
-        try:
-            pkg_path = f"diffusers.pipelines.{str(pkg_name)}.{file_name}"
-            dbuq(pkg_path)
-            path_exists = os.path.exists(os.path.join(module_path, pkg_name, file_name + ".py"))
-            if path_exists:
-                print(f"file_name, pkg_path): {file_name, pkg_path}")
-                pipe_file = import_submodules(file_name, pkg_path)
-        except ModuleNotFoundError:
-            if pkg_name != "skyreels_v2":
-                nfo(f"Module Not Found for {pkg_name}")
-            pipe_file = None
 
-        try:
-            if pipe_file and hasattr(pipe_file, "EXAMPLE_DOC_STRING"):
-                yield (pkg_name, file_name, pipe_file.EXAMPLE_DOC_STRING)
+        pkg_path = f"diffusers.pipelines.{package_name}.{file_name}"
+        dbuq(pkg_path)
+
+        if os.path.exists(os.path.join(module_path, package_name, f"{file_name}.py")):
+            pipe_file = import_submodules(file_name, pkg_path) or import_module(pkg_path) or nfo(f"Failed to import {pkg_path}")
+            if doc_string := getattr(pipe_file, "EXAMPLE_DOC_STRING", None):
+                yield DocStringEntry(package_name=package_name, file_name=file_name, doc_string=doc_string)
             else:
-                if path_exists:
-                    pipe_file = import_module(pkg_path)
-        except (ModuleNotFoundError, AttributeError):
-            if pkg_name != "skyreels_v2":
-                nfo(f"Doc String Not Found for {pipe_file} {pkg_name}")
-
-
-def file_name_to_docstring(pkg_name: str, file_specific: bool) -> Iterator[Tuple[str, str, str]]:
-    """Processes package using file name to yield example doc strings if available.\n
-    :param pkg_name: The name of the package under diffusers.pipelines.
-    :param file_specific: A flag indicating whether processing is specific to certain files.
-    :yield: A tuple containing (pkg_name, file_name, EXAMPLE_DOC_STRING) if found.
-    """
-    from importlib import import_module
-
-    file_name = f"pipeline_{file_specific}"
-    try:
-        pkg_path = f"diffusers.pipelines.{str(pkg_name)}"
-        pipe_file = import_submodules(file_name, pkg_path)
-    except ModuleNotFoundError:
-        if pkg_name != "skyreels_v2":
-            nfo(f"Module Not Found for {pkg_name}")
-        pipe_file = None
-    try:
-        if pipe_file and hasattr(pipe_file, "EXAMPLE_DOC_STRING"):
-            yield (pkg_name, file_name, pipe_file.EXAMPLE_DOC_STRING)
+                nfo(f"Doc string attribute missing for {package_name}/{file_name}")
         else:
-            pipe_file = import_module(pkg_path)
+            nfo(f"Path not found for {package_name}/{file_name}")
 
-    except AttributeError:
-        if pkg_name != "skyreels_v2":
-            nfo(f"Doc String Not Found for {pipe_file} {pkg_name}")
+    return
+
+
+def get_repo_from_class_map(class_map: ClassMapEntry) -> str | None:
+    """The name of the repository that is associated with a transformers configuration class
+    :param class_map: Transformers class information extracted from dependency
+    :returns: A string matching the repo path for the class"""
+
+    import re
+
+    doc_attempt = []
+    if hasattr(class_map.config, "forward"):
+        doc_attempt = [getattr(class_map.config, "forward")]
+    doc_attempt.append(class_map.config)
+    for pattern in doc_attempt:
+        doc_string = pattern.__doc__
+        matches = re.findall(r"\[([^\]]+)\]", doc_string)
+        if matches:
+            try:
+                repo_path = next(iter(snip.strip('"').strip() for snip in matches if "/" in snip))
+            except StopIteration as error_log:
+                nfo(f"ERROR >>{matches} : LOG >> {error_log}")
+                continue
+            return repo_path
+    return None
 
 
 def class_to_mir_tag(mir_db: Dict[str, str], code_name: str) -> Optional[str]:

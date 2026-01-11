@@ -7,7 +7,7 @@
 
 
 # def test_mir_creation():
-#     from mir.spec.mir import mir_entry
+#     from mir.spec import mir_entry
 #     from pprint import pprint
 
 #     os.remove(MIR_PATH_NAMED)

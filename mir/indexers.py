@@ -5,12 +5,13 @@
 # pylint:disable=no-name-in-module
 
 import sys
-from typing import Any, Callable, Dict, List, Optional
-from mir.doc_parser import parse_docs
-from mir.tag import make_mir_tag
-from mir.inspect.classes import resolve_code_names, extract_init_params
+from typing import Any, Callable
+
 from mir.config.console import nfo
-from mir.config.conversion import import_submodules
+from mir.config.constants import ClassMapEntry, extract_init_params
+from mir.config.conversion import get_repo_from_class_map, import_submodules
+from mir.doc_parser import parse_docs
+from mir.tag import mir_prefix_from_forward_pass, mir_tag_from_config, tag_model_from_repo
 
 if "pytest" in sys.modules:
     import diffusers  # noqa # pyright:ignore[reportMissingImports] # pylint:disable=unused-import
@@ -20,63 +21,20 @@ def check_migrations(repo_path: str):
     """Replaces old organization names in repository paths with new ones.\n
     :param repo_path: Original repository path containing old organization names
     :return: Updated repository path with new organization names"""
-    org_migration: dict[str, str] = {
-        "/helium-2b": "/helium-1-2b",
-        "allenai/Olmo2-7B-1124-hf": "allenai/Olmo-2-1124-7B",
-        "apple/mobilevitv2-1.0": "apple/mobilevitv2-1.0-imagenet1k-256",
-        "caidas/swin2SR-classical-sr-x2-64": "caidas/swin2SR-classical-sr-x2-64",
-        "facebook/hiera-base-224": "facebook/hiera-base-224-hf",
-        "facebook/sam_hq-vit-huge": "syscv-community/sam-hq-vit-huge",
-        "facebook/vit_msn_base": "facebook/vit-msn-base",
-        "facebook/wav2vec2-bert-rel-pos-large": "facebook/w2v-bert-2.0",
-        "google/gemma-3-4b": "google/gemma-3-4b-it",
-        "google/gemma2-7b": "google/gemma-2-9b",
-        "google/gemma3_text-7b": "google/gemma-3-12b-it",
-        "IDEA-Research/dab_detr-base": "IDEA-Research/dab-detr-resnet-50",
-        "LGAI-EXAONE/EXAONE-4.0-Instruct": "LGAI-EXAONE/EXAONE-4.0-32B",
-        "meta/chameleon-7B'": "facebook/chameleon-7b",
-        "mixtralai/Mixtral-8x7B": "mistralai/Mixtral-8x7B-v0.1",
-        "paligemma-hf/paligemma-2b": "google/paligemma2-3b-mix-224",
-        "pixtral-hf/pixtral-9b": "mistralai/Pixtral-12B-Base-2409",
-        "Qwen/Qwen2-7B-beta": "Qwen/Qwen2-7B",
-        "Qwen/Qwen3-15B-A2B": "Qwen/Qwen3-30B-A3B",
-        "s-JoL/Open-Llama-V1": "openlm-research/open_llama_3b",
-        "Salesforce/instruct-blip-flan-t5": "Salesforce/instructblip-flan-t5-xl",
-        "state-spaces/mamba2-2.8b": "AntonV/mamba2-2.7b-hf",
-        "ibm-fms/FalconH1-9.8b-2.2T-hf": "tiiuae/Falcon-H1-34B-Instruct",
-        "nvidia/nemotron-3-8b-base-4k-hf": "mgoin/nemotron-3-8b-chat-4k-sft-hf",
-        "THUDM/": "zai-org/",
-        "THUDM/GLM-4-100B-A10B": "zai-org/GLM-4.5-Air",
-        "zai-org/GLM-4-100B-A10B": "zai-org/GLM-4.5-Air",
-    }
-    for old_name, new_name in org_migration.items():
+    import os
+
+    from mir.config.json_io import read_json_file
+
+    root_folder = os.path.dirname(__file__)
+    migration_file = os.path.join(os.path.join(root_folder, "spec", "repo_migrations.json"))
+    repo_migrations = read_json_file(migration_file)
+    for old_name, new_name in repo_migrations.items():
         if old_name in repo_path:
             repo_path = repo_path.replace(old_name, new_name)
-    # print(repo_path)
     return repo_path
 
 
-def flag_config(transformers: bool = False, data: dict = None, **kwargs):
-    """Set type of MIR prefix depending on model type\n
-    :param transformers: Use transformers data instead of diffusers data, defaults to False
-    :raises ValueError: Model type not detected
-    :return: MIR prefix based on model configuration"""
-    from mir.config.json_io import read_json_file
-
-    data = read_json_file("mir/spec/template.json")
-
-    if transformers:
-        flags = data["arch"]["transformer"]  # pylint:disable=unsubscriptable-object
-    else:
-        flags = data["arch"]["diffuser"]  # pylint:disable=unsubscriptable-object
-    for mir_prefix, key_match in flags.items():
-        if any(kwargs.get(param) for param in key_match):
-            return mir_prefix
-    return None
-    # nfo(f"Unrecognized model type with {kwargs}\n" )
-
-
-def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Optional[Callable] = None) -> tuple[str, Dict[str, Dict[Any, Any]]]:
+def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Callable | None = None) -> tuple[str, dict[str, dict[Any, Any]]]:
     """Create a pipeline article and generate corresponding information according to the provided repo path and pipeline category\n
     :param repo_path (str): Repository path.
     :param model_class_obj (str): The model class function
@@ -105,7 +63,7 @@ def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Optional
         elif any(maybe for maybe in control_net if maybe.lower() in class_name.lower()):
             mir_prefix = "info.controlnet"
         else:
-            mir_prefix = flag_config(**sub_segments)
+            mir_prefix = mir_prefix_from_forward_pass(**sub_segments)
             if mir_prefix is None and class_name not in ["AutoPipelineForImage2Image", "DiffusionPipeline"]:
                 nfo(f"Failed to detect type for {class_name} {list(sub_segments)}\n")
             else:
@@ -115,7 +73,7 @@ def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Optional
             repo_path = "stabilityai/stable-diffusion-3.5-medium"
         if class_name == "HunyuanVideoFramepackPipeline" or repo_path in ["hunyuanvideo-community/HunyuanVideo"]:
             class_name = "HunyuanVideoPipeline"
-        mir_series, mir_comp = list(make_mir_tag(repo_path, decoder))
+        mir_series, mir_comp = list(tag_model_from_repo(repo_path, decoder))
         mir_series = mir_prefix + "." + mir_series
         repo_path = check_migrations(repo_path)
         # modalities = add_mode_types(mir_tag=[mir_series, mir_comp])
@@ -127,7 +85,7 @@ def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Optional
         return mir_series, {mir_comp: prefixed_data}
 
 
-def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
+def diffusers_index() -> dict[str, dict[str, dict[str, Any]]]:
     """Generate diffusion model data for MIR index\n
     :return: Dictionary ready to be applied to MIR data fields
     """
@@ -140,45 +98,53 @@ def diffusers_index() -> Dict[str, Dict[str, Dict[str, Any]]]:
         "HunyuanDiTPipeline": "tencent-hunyuan/hunyuandiT-v1.2-diffusers",  #  NOT hyd .ckpt
         "ChromaPipeline": "lodestones/Chroma",
     }
-    from mir.inspect.metadata import gather_diffusers_metadata
-    extracted_docs = list(gather_diffusers_metadata())
+    from mir.inspect.metadata import find_diffusers_docstrings
+
+    extracted_docstrings = find_diffusers_docstrings()
+    model_info = [
+        extract  #
+        for pipeline in extracted_docstrings
+        for extract in pipeline
+    ]
     pipe_data = {}  # pipeline_stable_diffusion_xl_inpaint
-    print(f"extracted_docs: {extracted_docs}")
-    for code_name, file_name, docs in extracted_docs:
-        parse_result = parse_docs(docs)
-        print(f"parse_result: {parse_result}")
-        if parse_result:
-            pipe_class = parse_result.pipe_class
-            pipe_repo = parse_result.pipe_repo
-            staged_class = parse_result.staged_class
-            staged_repo = parse_result.staged_repo
-            for class_name, swap_repo in special_classes.items():
-                if pipe_class == class_name:
-                    pipe_repo = swap_repo
-                    break
-            model_class_obj = import_submodules(pipe_class, f"diffusers.pipelines.{code_name}.{file_name}")
-            extract_init_params(model_class_obj)
+
+    for extract in model_info:
+        pipe = parse_docs(extract.doc_string)
+        if not pipe:
+            nfo(f"Doc string not found in '{extract.package_name}' in {extract.file_name}")
+            continue
+        for class_name, swap_repo in special_classes.items():
+            if pipe.pipe_class == class_name:
+                pipe.pipe_repo = swap_repo
+                break
+        model_class_obj = import_submodules(pipe.pipe_class, f"diffusers.pipelines.{extract.package_name}.{extract.file_name}")
+        extract_init_params(model_class_obj)
+        try:
+            series, comp_data = create_pipe_entry(pipe.pipe_repo, pipe.pipe_class)
+        except TypeError:
+            pass  # Attempt 1
+        if pipe_data.get(series):
+            if "img2img" in pipe.pipe_class.lower():
+                continue
+        pipe_data.setdefault(series, {}).update(comp_data)
+        special_conditions = special_repos | special_classes
+        if pipe.staged_class or pipe.pipe_repo in list(special_conditions):
+            test = special_conditions.get(pipe.pipe_repo)
+            if test:
+                staged_repo = test
+                pipe.staged_class = pipe.pipe_class
             try:
-                series, comp_data = create_pipe_entry(pipe_repo, pipe_class)
-            except TypeError:
-                pass  # Attempt 1
-            if pipe_data.get(series):
-                if "img2img" in pipe_class.lower():
-                    continue
+                series, comp_data = create_pipe_entry(
+                    staged_repo if pipe.staged_repo else pipe.pipe_repo,
+                    pipe.staged_class  #
+                    if pipe.staged_class
+                    else pipe.pipe_class,
+                )
+            except TypeError as error_log:
+                nfo(series, comp_data)
+                nfo(error_log)
+                continue  # Attempt 2,
             pipe_data.setdefault(series, {}).update(comp_data)
-            special_conditions = special_repos | special_classes
-            if staged_class or pipe_repo in list(special_conditions):
-                test = special_conditions.get(pipe_repo)
-                if test:
-                    staged_repo = test
-                    staged_class = pipe_class
-                try:
-                    series, comp_data = create_pipe_entry(staged_repo if staged_repo else pipe_repo, staged_class if staged_class else pipe_class)
-                except TypeError as error_log:
-                    print(series, comp_data)
-                    print(error_log)
-                    continue  # Attempt 2,
-                pipe_data.setdefault(series, {}).update(comp_data)
     return dict(pipe_data)
 
 
@@ -186,107 +152,37 @@ def transformers_index():
     """Generate LLM model data for MIR index\n
     :return: Dictionary ready to be applied to MIR data fields"""
 
-    import re
+    import os
 
-    import transformers
     from transformers.models.auto.tokenization_auto import TOKENIZER_MAPPING_NAMES
 
-    from mir.inspect.metadata import gather_transformers_metadata
+    from mir.config.json_io import read_json_file
 
-    corrections: dict[dict[str, str | dict[str, list[str]]]] = {  # models with incorrect repos or config
-        "BarkModel": {
-            "repo_path": "suno/bark",
-            "sub_segments": {"n_head": [""]},
-        },
-        "GraniteSpeechForConditionalGeneration": {
-            "repo_path": "ibm-granite/granite-speech-3.3-8b",
-            "sub_segments": {"encoder_layers": [""], "decoder_layers": [""]},
-        },
-        "GptOssModel": {
-            "repo_path": "openai/gpt-oss-120b",
-        },
-        "GraniteModel": {
-            "repo_path": "ibm-granite/granite-3.3-2b-base",
-            "sub_segments": {"rope_theta": [""]},
-        },
-        "DPRQuestionEncoder": {
-            "repo_path": "facebook/dpr-question_encoder-single-nq-base",
-            "sub_segments": {"local_attention": [""], "classifier_proj_size": [""]},
-        },
-        "CohereModel": {
-            "repo_path": "CohereForAI/c4ai-command-r-v01",
-            "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
-        },
-        "Cohere2Model": {
-            "repo_path": "CohereLabs/c4ai-command-r7b-12-2024",
-            "sub_segments": {"attn_config": [""], "num_codebooks": [""]},
-        },
-        "GraniteMoeHybridModel": {
-            "repo_path": "ibm-research/PowerMoE-3b",
-        },
-        "BertForMaskedLM": {
-            "repo_path": "google-bert/bert-base-uncased",
-        },
-        "DistilBertModel": {
-            "repo_path": "distilbert-base-uncased",
-        },
-        "GraniteMoeModel": {
-            "repo_path": "ibm-research/PowerMoE-3b",
-        },
-        "AriaModel": {
-            "repo_path": "rhymes-ai/Aria-Chat",
-            "sub_segments": {"vision_config": [""], "text_config": [""]},
-        },
-        "TimmWrapperModel": {
-            "repo_path": "timm/resnet18.a1_in1k",
-            "sub_segments": {"_resnet_": [""]},
-        },
-        "FunnelModel": {
-            "repo_path": "funnel-transformer/small",
-            "sub_segments": {"separate_cls": [""]},
-        },
-    }
+    root_folder = os.path.dirname(__file__)
+    params_file = os.path.join(os.path.join(root_folder, "spec", "missing_params.json"))
+    missing_config_params = read_json_file(params_file)
+    from mir.inspect.metadata import map_transformers_classes
 
     mir_data = {}
-    # transformers_data = stock_llm_data()
-    transformers_data: Dict[Callable, List[str]] = gather_transformers_metadata()
-    for model_class_obj, model_data in transformers_data.items():
-        class_name = model_class_obj.__name__
-        if class_name in list(corrections):  # conditional correction from mappings above: `extract_init_params` doesn't return anything in these cases
-            repo_path = corrections[class_name]["repo_path"]
-            sub_segments = corrections[class_name].get("sub_segments", extract_init_params(model_data["config"][-1], "transformers"))
-        else:
-            repo_path = ""
-            if model_data.get("config"):
-                doc_attempt = [getattr(transformers, model_data["config"][-1]), model_class_obj.forward]
-            for pattern in doc_attempt:
-                doc_string = pattern.__doc__
-                matches = re.findall(r"\[([^\]]+)\]", doc_string)
-                if matches:
-                    try:
-                        repo_path = next(iter(snip.strip('"').strip() for snip in matches if "/" in snip))
-                    except StopIteration as error_log:
-                        nfo(f"ERROR >>{matches} : LOG >> {error_log}")
-                        pass
-                    break
-            sub_segments: Dict[str, List[str]] = extract_init_params(model_data["config"][-1], "transformers")
-        if sub_segments and list(sub_segments) != ["kwargs"] and list(sub_segments) != ["use_cache", "kwargs"] and repo_path is not None:
-            mir_prefix = flag_config(transformers=True, **sub_segments)
-            if mir_prefix is None:
-                nfo(f"Failed to detect type for {class_name} {list(sub_segments)}\n")
-                continue
-            else:
-                mir_prefix = "info." + mir_prefix
-            code_name = resolve_code_names(class_name)
-            if code_name != "funnel":
-                mir_suffix, mir_comp = list(make_mir_tag(repo_path))
-            else:
-                mir_suffix, mir_comp = ["funnel", "*"]
-            mir_series = mir_prefix + "." + mir_suffix
+    transformers_data: list[ClassMapEntry] = map_transformers_classes()
+    for entry in transformers_data:
+        print(entry)
+        repo_path = get_repo_from_class_map(entry)
+        if config := missing_config_params.get(entry.name, {}):
+            entry.config_params = config.get("params", entry.config_params)
+            if not repo_path:
+                repo_path = config["repo_path"]
+        if not repo_path:
+            raise ValueError(f"Unable to determine repo from {entry}")
+        if entry.config_params and list(entry.config_params) != ["use_cache", "kwargs"]:
+            mir_series, mir_comp, mir_suffix = mir_tag_from_config(entry, repo_path)
             # modalities = add_mode_types(mir_tag=[mir_series, mir_comp])
             repo_path = check_migrations(repo_path)
             tk_pkg = {}
-            tokenizer_classes = TOKENIZER_MAPPING_NAMES.get(code_name)
+            tokenizer_classes = TOKENIZER_MAPPING_NAMES.get(entry.name)
+            if isinstance(tokenizer_classes, str):
+                tokenizer_classes = [tokenizer_classes]
+            print(type(tokenizer_classes))
             # mode = modalities.get("mode")
             if tokenizer_classes:
                 index = 0
@@ -309,7 +205,7 @@ def transformers_index():
                     mir_comp: {
                         "repo": repo_path,
                         "pkg": {
-                            0: {"transformers": class_name},
+                            0: {"transformers": entry.model_name},
                         },
                         # "mode": mode,
                     },

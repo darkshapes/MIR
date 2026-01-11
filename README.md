@@ -93,14 +93,14 @@ Meant to be created by standards community, derived from code and file analysis
 | <div align="right">ART</div>          | Autoregressive Transformer                |
 | <div align="right">BRNN</div>         | Bi-directional Recurrent Neural Network   |
 | <div align="right">CNN</div>          | Convolutional Neural Network              |
-| <div align="right">CONTROLNET</div>   | Controlnet                                |
+| <div align="right">CONTROLNET</div>   | ControlNet                                |
 | <div align="right">DETR</div>         | Detection Transformer                     |
 | <div align="right">GAN</div>          | Generative Adversarial Model              |
-| <div align="right">GRU</div>          | Gated recurrent unit                      |
+| <div align="right">GRU</div>          | Gated Recurrent Unit                      |
 | <div align="right">LORA</div>         | Low-Rank Adaptation                       |
 | <div align="right">LSTM</div>         | Long Short-Term Memory                    |
 | <div align="right">MOE</div>          | Mixture of Experts                        |
-| <div align="right">RBM</div>          | Restricted Boltzmann machine              |
+| <div align="right">RBM</div>          | Restricted Boltzmann Machine              |
 | <div align="right">RCNN</div>         | Region-based Convolutional Neural Network |
 | <div align="right">RESNET</div>       | Residual Network                          |
 | <div align="right">RNN</div>          | Recurrent Neural Network                  |

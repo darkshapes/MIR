@@ -28,14 +28,14 @@ def mock_pkgutil_iter_modules(mocker):
 
 
 def test_list_diffusers_models():
-    from mir.inspect.metadata import gather_diffusers_metadata
+    from mir.inspect.metadata import find_diffusers_docstrings
 
-    gather_diffusers_metadata()
+    find_diffusers_docstrings()
 
 
-def test_gather_diffusers_metadata_excluded(mock_import_module, mock_pkgutil_iter_modules):
+def test_find_docstrings_excluded(mock_import_module, mock_pkgutil_iter_modules):
     """Test that excluded modules are not processed."""
-    from mir.inspect.metadata import gather_diffusers_metadata
+    from mir.inspect.metadata import find_diffusers_docstrings
 
     excluded_modules = ["ddpm"]
 
@@ -45,5 +45,5 @@ def test_gather_diffusers_metadata_excluded(mock_import_module, mock_pkgutil_ite
         return Mock()
 
     mock_import_module.side_effect = side_effect
-    results = list(gather_diffusers_metadata())  # type: ignore # noqa
+    results = list(find_diffusers_docstrings())  # type: ignore # noqa
     assert not any("ddpm" in call_arg[0][0] for call_arg in mock_import_module.call_args_list)

@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import List
-from mir.config.constants import PARAMETERS_SUFFIX, BREAKING_SUFFIX
+from typing import Any
+from mir.config.constants import PARAMETERS_SUFFIX, BREAKING_SUFFIX, ClassMapEntry
 
 
-def make_mir_tag(repo_title: str, decoder=False, data: dict = None) -> List[str]:
+def tag_model_from_repo(repo_title: str, decoder=False, data: dict | None = None) -> tuple[str, Any]:
     """Create a mir label from a repo path\n
     :param mir_prefix: Known period-separated prefix and model type
     :param repo_path: Typical remote source repo path, A URL without domain
@@ -45,7 +45,7 @@ def make_mir_tag(repo_title: str, decoder=False, data: dict = None) -> List[str]
     return (cleaned_string, suffix)
 
 
-def make_scheduler_tag(series_name: str) -> tuple[str]:
+def tag_scheduler(series_name: str) -> tuple[str, str]:
     """Create a mir label from a scheduler operation\n
     :param class_name: Known period-separated prefix and model type
     :return: The assembled mir tag with compatibility pre-separated"""
@@ -64,23 +64,43 @@ def make_scheduler_tag(series_name: str) -> tuple[str]:
     for pattern in patterns:
         series_name = re.sub(pattern, "", series_name)
     series_name.lower()
-    # if not comp_name:
-    #     comp_name = "*"
+    assert series_name is not None
+    assert comp_name is not None
     return series_name, comp_name
 
 
-def tag_base_model(repo_path: str, class_name: str, addendum: dict | None = None) -> tuple[str]:
+def mir_prefix_from_forward_pass(transformers: bool = False, **kwargs):
+    """Set type of MIR prefix depending on model type\n
+    :param transformers: Use transformers data instead of diffusers data, defaults to False
+    :raises ValueError: Model type not detected
+    :return: MIR prefix based on model configuration"""
+    from mir.config.json_io import read_json_file
+
+    data = read_json_file("mir/spec/template.json")
+
+    if transformers:
+        flags = data["arch"]["transformer"]  # pylint:disable=unsubscriptable-object
+    else:
+        flags = data["arch"]["diffuser"]  # pylint:disable=unsubscriptable-object
+    for mir_prefix, key_match in flags.items():
+        if any(kwargs.get(param, None) for param in key_match):
+            return mir_prefix
+    return None
+
+
+def tag_base_model(repo_path: str, class_name: str, addendum: dict | None = None) -> tuple[str, str, str | dict[str, dict]]:
     """Convert model repo paths to MIR tags, classifying by feature\n
     :param name: Repo path
     :param class_name: The HF transformers class for the model
     :return: A segmented MIR tag useful for appending index entries"""
 
     from mir.inspect.classes import extract_init_params
-    from mir.indexers import flag_config
 
-    annotations = extract_init_params(class_name.replace("Model", "Config"), "transformers")
-    mir_prefix = flag_config(transformers=True, **annotations)
-    base_series, base_comp = make_mir_tag(repo_path)
+    annotations = extract_init_params(class_name.replace("Model", "Config"), "transformers")  # remove default annotations from python
+    if not annotations:
+        raise TypeError("No mode type returned")
+    mir_prefix = mir_prefix_from_forward_pass(True, **annotations)
+    base_series, base_comp = tag_model_from_repo(repo_path)
     if not addendum:
         return mir_prefix, base_series, base_comp
     else:
@@ -100,6 +120,28 @@ def tag_pipe(repo_path: str, class_name: str, addendum: dict) -> tuple:
     mir_prefix, mir_series = mir_series.rsplit(".", 1)
     mir_comp = list(mir_data)[0]
     return mir_prefix, mir_series, {mir_comp: addendum}
+
+
+def mir_tag_from_config(class_map: ClassMapEntry, repo_path: str) -> tuple[str, str, str]:
+    """Change a transformers config class into a MIR series and comp
+    :param class_map: Transformers class information extracted from dependency"""
+
+    mir_prefix = mir_prefix_from_forward_pass(transformers=True, **class_map.config_params)
+    if not mir_prefix:
+        if class_map.model_params:
+            if mir_prefix := mir_prefix_from_forward_pass(transformers=True, **class_map.model_params):
+                pass
+            else:
+                raise ValueError(f"Unable to determine MIR prefix from {class_map, repo_path}")
+        else:
+            raise ValueError(f"Unrecognized model type, no tag matched {class_map.name} with {class_map.config_params} or {class_map.model_params}")
+    mir_prefix = "info." + mir_prefix
+    if class_map.name != "funnel":
+        mir_suffix, mir_comp = tag_model_from_repo(repo_path)
+    else:
+        mir_suffix, mir_comp = ["funnel", "*"]
+    mir_series = mir_prefix + "." + mir_suffix
+    return mir_series, mir_comp, mir_suffix
 
 
 # def tag_mlx_model(repo_path: str, class_name: str, addendum: dict) -> tuple[str]:

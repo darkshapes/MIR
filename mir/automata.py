@@ -18,17 +18,17 @@ from mir.config.console import dbuq, nfo
 from mir.config.conversion import slice_number
 from mir.indexers import diffusers_index, transformers_index
 from mir.maid import MIRDatabase
-from mir.spec.mir import mir_entry
-from mir.tag import make_mir_tag, make_scheduler_tag, tag_base_model, tag_pipe
+from mir.spec import mir_entry
+from mir.tag import tag_model_from_repo, tag_scheduler, tag_base_model, tag_pipe
 
 
-sd1_series, sd1_comp = make_mir_tag("stable-diffusion-v1-5/stable-diffusion-v1-5")
-sdxl_series, sdxl_comp = make_mir_tag("stabilityai/stable-diffusion-xl-base-1.0")
-dev_series, dev_comp = make_mir_tag("black-forest-labs/FLUX.1-dev")
-schnell_series, schnell_comp = make_mir_tag("black-forest-labs/FLUX.1-schnell")
-ssd_series, ssd_comp = make_mir_tag("segmind/SSD-1B")
-vega_series, vega_comp = make_mir_tag("segmind/Segmind-Vega")
-sd3_series, sd3_comp = make_mir_tag("stable-diffusion-3.5-medium")  #
+sd1_series, sd1_comp = tag_model_from_repo("stable-diffusion-v1-5/stable-diffusion-v1-5")
+sdxl_series, sdxl_comp = tag_model_from_repo("stabilityai/stable-diffusion-xl-base-1.0")
+dev_series, dev_comp = tag_model_from_repo("black-forest-labs/FLUX.1-dev")
+schnell_series, schnell_comp = tag_model_from_repo("black-forest-labs/FLUX.1-schnell")
+ssd_series, ssd_comp = tag_model_from_repo("segmind/SSD-1B")
+vega_series, vega_comp = tag_model_from_repo("segmind/Segmind-Vega")
+sd3_series, sd3_comp = tag_model_from_repo("stable-diffusion-3.5-medium")  #
 
 # def gen_attention_processors(mir_db: MIRDatabase): # upstream not quite ready for this yet
 #     from diffusers.models.attention_processor import AttentionProcessor
@@ -214,7 +214,7 @@ def add_mir_schedulers(mir_db: MIRDatabase):
 
     for class_name in _import_structure["schedulers"]:
         if class_name != "SchedulerMixin":
-            series_name, comp_name = make_scheduler_tag(class_name)
+            series_name, comp_name = tag_scheduler(class_name)
             class_obj = import_module("diffusers.schedulers")
             class_path = getattr(class_obj, class_name).__module__
             mir_db.add(
@@ -233,7 +233,7 @@ def add_mir_schedulers(mir_db: MIRDatabase):
             )
 
     class_name = "KarrasDiffusionSchedulers"
-    series_name, comp_name = make_scheduler_tag(class_name)
+    series_name, comp_name = tag_scheduler(class_name)
     class_obj = import_module("diffusers.schedulers.scheduling_utils")
     class_path = getattr(class_obj, class_name).__module__
     mir_db.add(
@@ -526,35 +526,6 @@ def mir_update(mir_db: MIRDatabase, task_list: list = None, pipe_list: list = No
                     "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91",  # ckpt
                     "92565dec90f7c8412dc872e820f66cd0c56263bbbc392439645b6fee270f41bb",  # st fp16
                 ],
-            },
-        ),
-        (
-            "Kwai-Kolors/Kolors-diffusers",
-            "KolorsPipeline",
-            {
-                "pkg": {
-                    0: {
-                        "precision": "ops.precision.float.F16",
-                        "generation": {
-                            "negative_prompt": "",
-                            "guidance_scale": 5.0,
-                            "num_inference_steps": 50,
-                            "width": 1024,
-                            "height": 1024,
-                        },
-                    },
-                    1: {"diffusers": "DiffusionPipeline"},
-                },
-                "file_256": [
-                    "425ff1dcbe3a70ac13d3afdd69bd4e3176b0c3260722527c80b210f11d2d966c",  # fp16,
-                ],
-                "layer_b3": [
-                    "6eb15506fa38b4cbb26391ab1b6c9ead05f86c711e46583bfbe8fc4421571414",  # fp16
-                ],
-                "layer_256": [
-                    "04e3c17170b8a200481f6941b370fdc5056a00fe5a16956de01790f8a93c0dcd",  # fp16
-                ],
-                "identifiers": [".DenseReluDense.wi.weight", "encoder_hid_proj.weight"],
             },
         ),
         (
@@ -982,20 +953,6 @@ def mir_update(mir_db: MIRDatabase, task_list: list = None, pipe_list: list = No
             },
         ),
         (
-            "tencent-hunyuan/hunyuandiT-v1.2-diffusers",
-            "HunyuanDiTPipeline",
-            {
-                "pkg": {
-                    0: {
-                        "precision": "ops.precision.float.F16",
-                    }
-                },
-                "file_256": ["7d31ac8fa389ff39dd0a81430010e52c43b59f15adc00c83625a47881e16830e"],
-                "layer_b3": ["bccd37ecc9f85d132b46d0bb67b4facb49fc6c091428a4feba9ab9a93140f5fe"],
-                "layer_256": ["ed25d241d58ca298d28abd5919e70341ad194e77dce4859436b52ea4d8fcb616"],
-            },
-        ),
-        (
             "Alpha-VLLM/Lumina-Image-2.0",
             "Lumina2Pipeline",
             {
@@ -1096,6 +1053,49 @@ def mir_update(mir_db: MIRDatabase, task_list: list = None, pipe_list: list = No
                         },
                     }
                 }
+            },
+        ),
+        (
+            "Kwai-Kolors/Kolors-diffusers",
+            "KolorsPipeline",
+            {
+                "pkg": {
+                    0: {
+                        "precision": "ops.precision.float.F16",
+                        "generation": {
+                            "negative_prompt": "",
+                            "guidance_scale": 5.0,
+                            "num_inference_steps": 50,
+                            "width": 1024,
+                            "height": 1024,
+                        },
+                    },
+                    1: {"diffusers": "DiffusionPipeline"},
+                },
+                "file_256": [
+                    "425ff1dcbe3a70ac13d3afdd69bd4e3176b0c3260722527c80b210f11d2d966c",  # fp16,
+                ],
+                "layer_b3": [
+                    "6eb15506fa38b4cbb26391ab1b6c9ead05f86c711e46583bfbe8fc4421571414",  # fp16
+                ],
+                "layer_256": [
+                    "04e3c17170b8a200481f6941b370fdc5056a00fe5a16956de01790f8a93c0dcd",  # fp16
+                ],
+                "identifiers": [".DenseReluDense.wi.weight", "encoder_hid_proj.weight"],
+            },
+        ),
+        (
+            "tencent-hunyuan/hunyuandiT-v1.2-diffusers",
+            "HunyuanDiTPipeline",
+            {
+                "pkg": {
+                    0: {
+                        "precision": "ops.precision.float.F16",
+                    }
+                },
+                "file_256": ["7d31ac8fa389ff39dd0a81430010e52c43b59f15adc00c83625a47881e16830e"],
+                "layer_b3": ["bccd37ecc9f85d132b46d0bb67b4facb49fc6c091428a4feba9ab9a93140f5fe"],
+                "layer_256": ["ed25d241d58ca298d28abd5919e70341ad194e77dce4859436b52ea4d8fcb616"],
             },
         ),
     ]
@@ -1458,7 +1458,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
     """Create MIR entries missing from the database"""
 
     repo = "microsoft/speecht5_hifigan"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -1476,14 +1476,14 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             ],
         )
     )
-    series, comp = make_mir_tag("lodestones/Chroma")
+    series, comp = tag_model_from_repo("lodestones/Chroma")
     repo = "lodestones/Chroma1-HD"
     mir_db.add(
         mir_entry(
             domain="info",
             arch="dit",
             series=series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={
                 "0": {
@@ -1514,7 +1514,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={
                 "0": {
@@ -1572,7 +1572,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="unet",
             series=sdxl_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "8ece83aa1bed1fb39a2b81f1660f0ce6889218e493c1f2ed55e9f15f59a7e03f",  # v4
@@ -1600,7 +1600,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="unet",
             series=sdxl_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "c2a1a3eaa13d4c107dc7e00c3fe830cab427aa026362740ea094745b3422a331",  # v2
@@ -1631,7 +1631,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="unet",
             series=sdxl_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "11b6d7bce65674659cc6b7ea960658436edfd80e566cb240ebd4bfbc3e2076c8",  # 2.5 diffusers
@@ -1677,7 +1677,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="unet",
             series=sdxl_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "94762e983e5942056be73c5c1d4464b8ffa1ada500b4fef1267550e2447953ce",  # modelspec sai
@@ -1703,7 +1703,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="unet",
             series=sdxl_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "7cb406ec0662e91570a79f3c4fb8f0ea5325bffe6af5d9382edae838698f72bd",  # modelspec sai
@@ -1734,7 +1734,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=schnell_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={
                 2: {
@@ -1762,7 +1762,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=schnell_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={
                 2: {
@@ -1794,7 +1794,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={0: {"generation": {"num_inference_steps": 16, "guidance_scale": 7.5, "width": 768, "height": 1024}}},
             file_256=[
@@ -1815,7 +1815,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=schnell_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={
                 2: {
@@ -1842,7 +1842,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={0: {"generation": {"num_inference_steps": 28}}},
             file_256=[
@@ -1863,7 +1863,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={0: {"f_lite": "FLitePipeline", "generation": {"num_inference_steps": 28}}},
         )
@@ -1874,7 +1874,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={0: {"f_lite": "FLitePipeline", "generation": {"num_inference_steps": 28}}},
         )
@@ -1885,7 +1885,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={0: {"f_lite": "FLitePipeline", "generation": {"num_inference_steps": 28}}},
         )
@@ -1896,7 +1896,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=["4236455adeaeb4ed444d63b253ec99805022d17e962ed7261ada9c72ce11cfee"],
             layer_b3=["c1a6f83585398fe452d20596a79a522e2986f4c2c01a40e7bfd787af113735d3"],
@@ -1909,7 +1909,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "0407108e446a4f57efffc5e7518bc374876af970d3c6068dc4074de0d221c615",  # modelspec sai
@@ -1929,7 +1929,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=dev_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "5d6dce30a266ccbf530c3a3bf253cd5486720a8fb71cdeed556c28304201dc2f",  # modelspec sai
@@ -1949,7 +1949,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
             domain="info",
             arch="dit",
             series=sd3_series,
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             pkg={
                 0: {
@@ -1978,7 +1978,7 @@ def add_mir_diffusion(mir_db: MIRDatabase):
         ),
     )
     repo = "Wan-AI/Wan2.1-FLF2V-14B-720P-Diffusers"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2001,8 +2001,8 @@ def add_mir_diffusion(mir_db: MIRDatabase):
         mir_entry(
             domain="info",
             arch="dit",
-            series=make_mir_tag("Alpha-VLLM/Lumina-Image-2.0")[0],
-            comp=make_mir_tag(repo)[0],
+            series=tag_model_from_repo("Alpha-VLLM/Lumina-Image-2.0")[0],
+            comp=tag_model_from_repo(repo)[0],
             repo=repo,
             file_256=[
                 "dc6cffcfb0ccfca6332ddb5d2fe25bcb5f496f44b481627f48c42626156fa6a8",  # 2b 22100 ema unified fp32
@@ -2053,11 +2053,11 @@ def add_mir_diffusion(mir_db: MIRDatabase):
 def add_mir_llm(mir_db: MIRDatabase):
     base_arch, base_series, base_comp = tag_base_model(repo_path="facebook/chameleon-7b", class_name="ChameleonModel")
     repo = "Alpha-VLLM/Lumina-mGPT-7B-1024"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
-            arch=base_arch,
+            arch="art",
             series=base_series,
             comp=series,
             repo=repo,
@@ -2080,7 +2080,7 @@ def add_mir_llm(mir_db: MIRDatabase):
         ),
     )
     repo = "openai/clip-vit-large-patch14"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2149,7 +2149,7 @@ def add_mir_llm(mir_db: MIRDatabase):
         )
     )
     repo = "laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2192,7 +2192,7 @@ def add_mir_llm(mir_db: MIRDatabase):
         )
     )
     repo = "laion/CLIP-ViT-H-14-laion2B-s32B-b79K"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2221,7 +2221,7 @@ def add_mir_llm(mir_db: MIRDatabase):
         )
     )
     repo = "zai-org/chatglm3-6b"  # formerly THUDM
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2246,11 +2246,11 @@ def add_mir_llm(mir_db: MIRDatabase):
     )
     base_arch, base_series, base_comp = tag_base_model(repo_path="Qwen/Qwen2-7B-beta", class_name="Qwen2Model")
     repo = "ByteDance-Seed/BAGEL-7B-MoT"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
-            arch=base_arch,
+            arch="art",
             series=base_series,
             comp=series,
             repo=repo,
@@ -2262,7 +2262,7 @@ def add_mir_llm(mir_db: MIRDatabase):
 def add_mir_audio(mir_db: MIRDatabase):
     """Create MIR audio modality entries"""
     repo = "facebook/audiogen-medium"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2283,7 +2283,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         )
     )
     repo = "parler-tts/parler-tts-tiny-v1"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2300,7 +2300,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         )
     )
     repo = "Zuellni/snac-24khz-ST"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     (
         mir_db.add(
             mir_entry(
@@ -2324,7 +2324,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         ),
     )
     repo = "parler-tts/parler-tts-large-v1"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2341,7 +2341,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         )
     )
     repo = "hexgrad/Kokoro-82M"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2373,7 +2373,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         )
     )
     repo = "freddyaboulton/silero-vad"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2405,7 +2405,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         ),
     )
     repo = "facebook/wav2vec2-conformer-rope-large-960h-ft"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2424,7 +2424,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         ),
     )
     repo = "canopylabs/orpheus-3b-0.1-ft"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2445,7 +2445,7 @@ def add_mir_audio(mir_db: MIRDatabase):
         )
     )
     repo = "OuteAI/OuteTTS-0.3-1B"
-    series, comp = make_mir_tag(repo)
+    series, comp = tag_model_from_repo(repo)
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2923,7 +2923,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             file_256=["927f7de7f11bbd3b2d5ce402e608d97a7649e0921a9601995b044e8efc81e449"],
         )
     )
-    series, comp = make_mir_tag("Qwen/Qwen-Image")
+    series, comp = tag_model_from_repo("Qwen/Qwen-Image")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2945,9 +2945,9 @@ def add_mir_vae(mir_db: MIRDatabase):
             ],
         )
     )
-    series, comp = make_mir_tag("Wan-AI/Wan2.1-I2V-14B-480P-Diffusers")
-    sr_series_text2v, _ = make_mir_tag("Skywork/SkyReels-V2-T2V-14B-720P-Diffusers")
-    sr_series_image2v, _ = make_mir_tag("Skywork/SkyReels-V2-I2V-14B-720P-Diffusers")
+    series, comp = tag_model_from_repo("Wan-AI/Wan2.1-I2V-14B-480P-Diffusers")
+    sr_series_text2v, _ = tag_model_from_repo("Skywork/SkyReels-V2-T2V-14B-720P-Diffusers")
+    sr_series_image2v, _ = tag_model_from_repo("Skywork/SkyReels-V2-I2V-14B-720P-Diffusers")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -2999,7 +2999,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=[],
         )
     )
-    series, comp = make_mir_tag("Lightricks/LTX-Video")
+    series, comp = tag_model_from_repo("Lightricks/LTX-Video")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3015,7 +3015,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=[],
         )
     )
-    series, comp = make_mir_tag("rhymes-ai/Allegro")
+    series, comp = tag_model_from_repo("rhymes-ai/Allegro")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3031,9 +3031,9 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=[],
         )
     )
-    series, comp = make_mir_tag("zai-org/CogVideoX-5b-I2V")
-    series_fun, _ = make_mir_tag("alibaba-pai/CogVideoX-Fun-V1.1-5b-Pose")
-    series_wish, _ = make_mir_tag("BestWishYsh/ConsisID-preview")
+    series, comp = tag_model_from_repo("zai-org/CogVideoX-5b-I2V")
+    series_fun, _ = tag_model_from_repo("alibaba-pai/CogVideoX-Fun-V1.1-5b-Pose")
+    series_wish, _ = tag_model_from_repo("BestWishYsh/ConsisID-preview")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3073,7 +3073,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=[],
         )
     )
-    series, comp = make_mir_tag("nvidia/Cosmos-1.0-Diffusion-7B-Video2World")
+    series, comp = tag_model_from_repo("nvidia/Cosmos-1.0-Diffusion-7B-Video2World")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3089,7 +3089,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=[],
         )
     )
-    series, comp = make_mir_tag("alibaba-pai/EasyAnimateV5.1-7b-zh-diffusers")
+    series, comp = tag_model_from_repo("alibaba-pai/EasyAnimateV5.1-7b-zh-diffusers")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3105,7 +3105,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=[],
         )
     )
-    series, comp = make_mir_tag("hunyuanvideo-community/HunyuanVideo-I2V")
+    series, comp = tag_model_from_repo("hunyuanvideo-community/HunyuanVideo-I2V")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3126,7 +3126,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             # layer_256=[],
         )
     )
-    series, comp = make_mir_tag("genmo/mochi-1-preview")
+    series, comp = tag_model_from_repo("genmo/mochi-1-preview")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3142,7 +3142,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=[],
         )
     )
-    series, comp = make_mir_tag("rhymes-ai/Allegro")
+    series, comp = tag_model_from_repo("rhymes-ai/Allegro")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3160,7 +3160,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=["bfd496586118165a13243997101fc7cdd4f855b2d8a73ee2b771a4484c4c2f9f"],
         )
     )
-    series, comp = make_mir_tag("cvssp/audioldm-s-full-v2")
+    series, comp = tag_model_from_repo("cvssp/audioldm-s-full-v2")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3179,7 +3179,7 @@ def add_mir_vae(mir_db: MIRDatabase):
         )
     )
 
-    series, comp = make_mir_tag("Efficient-Large-Model/Sana_1600M_1024px_BF16_diffusers")
+    series, comp = tag_model_from_repo("Efficient-Large-Model/Sana_1600M_1024px_BF16_diffusers")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3195,7 +3195,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             layer_256=["abfc39d1a6d71f03dde7bc40fec4a90478a97d17ae1688be9aad00e0512b9bde"],
         )
     )
-    series, comp = make_mir_tag("stabilityai/stable-audio-open-1.0")
+    series, comp = tag_model_from_repo("stabilityai/stable-audio-open-1.0")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3211,7 +3211,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             # layer_256=[],
         )
     )
-    series, comp = make_mir_tag("stable-video-diffusion-img2vid-xt")
+    series, comp = tag_model_from_repo("stable-video-diffusion-img2vid-xt")
     mir_db.add(
         mir_entry(
             domain="info",
@@ -3295,7 +3295,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             domain="info",
             arch="vae",
             series="kl",
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             # no repo here, may conflict
             pkg={
                 0: {"diffusers": "AutoencoderKL"},
@@ -3373,7 +3373,7 @@ def add_mir_vae(mir_db: MIRDatabase):
             domain="info",
             arch="vae",
             series="kl",
-            comp=make_mir_tag(repo)[0],
+            comp=tag_model_from_repo(repo)[0],
             # no repo here, may conflict
             file_256=[
                 "16e0c6c7c34e459c19500cc15cf538e6331db14969ea15917caa9b0966e44fd4",

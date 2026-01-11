@@ -1,3 +1,4 @@
+.env
 .gitignore
 CODE_OF_CONDUCT.md
 LICENSE
@@ -30,6 +31,7 @@ mir/inspect/metadata.py
 mir/inspect/parenting.py
 mir/inspect/pipes.py
 mir/inspect/tasks.py
+mir/spec/docstring_patterns.json
 mir/spec/mir.py
 mir/spec/modes.json
 mir/spec/template.json
@@ -37,6 +39,7 @@ mir/spec/versions.json
 tests/test_class_parent.py
 tests/test_deconstructors_root.py
 tests/test_doc_parser.py
+tests/test_find_docstring_run.py
 tests/test_gather_diffusers_metadata.py
 tests/test_json_io.py
 tests/test_mir_db_create_restore.py

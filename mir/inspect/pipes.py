@@ -4,23 +4,22 @@
 from typing import List, Optional
 
 
-def get_transformer_config_classes(parameter_filter: Optional[str] = None) -> List[str]:
+def show_shared_hyperparameters(parameter_filter: Optional[str] = None) -> List[str]:
     """Show all config classes in the Transformer package with the specified init annotation\n
     :param from_match: Narrow the classes to only those with an exact key inside
     :return: A list of all Classes"""
-    from mir.inspect.metadata import gather_transformers_metadata
-    from mir.inspect.classes import extract_init_params
+    from mir.inspect.metadata import map_transformers_classes
+    from mir.config.constants import extract_init_params
 
-    transformers_data = gather_transformers_metadata()
+    transformers_data = map_transformers_classes()
     config_data = []
-    for model_path in list(transformers_data.values()):
-        config_class = model_path["config"][-1]
+    for entry in transformers_data:
         if parameter_filter:
-            segments = extract_init_params(config_class, pkg_name="transformers")
+            segments = extract_init_params(module=entry.config, package_name="transformers")
             if parameter_filter in list(segments):
-                config_data.append(config_class)
+                config_data.append(entry.config)
         else:
-            config_data.append(config_class)
+            config_data.append(entry.config)
     return config_data
 
 

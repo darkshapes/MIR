@@ -106,6 +106,67 @@
                 "0": {
                     "diffusers": "StableDiffusionPipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusion3ControlNetInpaintingPipeline",
+                "StableDiffusion3ControlNetPipeline",
+                "StableDiffusion3Img2ImgPipeline",
+                "StableDiffusion3InpaintPipeline",
+                "StableDiffusion3PAGImg2ImgPipeline",
+                "StableDiffusion3PAGPipeline",
+                "StableDiffusion3Pipeline",
+                "StableDiffusionControlNetImg2ImgPipeline",
+                "StableDiffusionControlNetInpaintPipeline",
+                "StableDiffusionControlNetPAGInpaintPipeline",
+                "StableDiffusionControlNetPAGPipeline",
+                "StableDiffusionControlNetPipeline",
+                "StableDiffusionImg2ImgPipeline",
+                "StableDiffusionInpaintPipeline",
+                "StableDiffusionPAGImg2ImgPipeline",
+                "StableDiffusionPAGInpaintPipeline",
+                "StableDiffusionPAGPipeline",
+                "StableDiffusionPipeline",
+                "StableDiffusionXLControlNetImg2ImgPipeline",
+                "StableDiffusionXLControlNetInpaintPipeline",
+                "StableDiffusionXLControlNetPAGImg2ImgPipeline",
+                "StableDiffusionXLControlNetPAGPipeline",
+                "StableDiffusionXLControlNetPipeline",
+                "StableDiffusionXLControlNetUnionImg2ImgPipeline",
+                "StableDiffusionXLControlNetUnionInpaintPipeline",
+                "StableDiffusionXLControlNetUnionPipeline",
+                "StableDiffusionXLImg2ImgPipeline",
+                "StableDiffusionXLInpaintPipeline",
+                "StableDiffusionXLPAGImg2ImgPipeline",
+                "StableDiffusionXLPAGInpaintPipeline",
+                "StableDiffusionXLPAGPipeline",
+                "StableDiffusionXLPipeline"
+            ],
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-v1-5"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "safety_checker": [
+                    "StableDiffusionSafetyChecker"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ]
             }
         }
     },
@@ -116,6 +177,79 @@
                 "0": {
                     "diffusers": "StableUnCLIPPipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusion3ControlNetInpaintingPipeline",
+                "StableDiffusion3ControlNetPipeline",
+                "StableDiffusion3Img2ImgPipeline",
+                "StableDiffusion3InpaintPipeline",
+                "StableDiffusion3PAGImg2ImgPipeline",
+                "StableDiffusion3PAGPipeline",
+                "StableDiffusion3Pipeline",
+                "StableDiffusionControlNetImg2ImgPipeline",
+                "StableDiffusionControlNetInpaintPipeline",
+                "StableDiffusionControlNetPAGInpaintPipeline",
+                "StableDiffusionControlNetPAGPipeline",
+                "StableDiffusionControlNetPipeline",
+                "StableDiffusionImg2ImgPipeline",
+                "StableDiffusionInpaintPipeline",
+                "StableDiffusionPAGImg2ImgPipeline",
+                "StableDiffusionPAGInpaintPipeline",
+                "StableDiffusionPAGPipeline",
+                "StableDiffusionPipeline",
+                "StableDiffusionXLControlNetImg2ImgPipeline",
+                "StableDiffusionXLControlNetInpaintPipeline",
+                "StableDiffusionXLControlNetPAGImg2ImgPipeline",
+                "StableDiffusionXLControlNetPAGPipeline",
+                "StableDiffusionXLControlNetPipeline",
+                "StableDiffusionXLControlNetUnionImg2ImgPipeline",
+                "StableDiffusionXLControlNetUnionInpaintPipeline",
+                "StableDiffusionXLControlNetUnionPipeline",
+                "StableDiffusionXLImg2ImgPipeline",
+                "StableDiffusionXLInpaintPipeline",
+                "StableDiffusionXLPAGImg2ImgPipeline",
+                "StableDiffusionXLPAGInpaintPipeline",
+                "StableDiffusionXLPAGPipeline",
+                "StableDiffusionXLPipeline"
+            ],
+            "pipe_names": {
+                "prior_tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-unclip-2-1-l"
+                ],
+                "prior_text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "prior": [
+                    "PriorTransformer"
+                ],
+                "prior_scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "image_normalizer": [
+                    "StableUnCLIPImageNormalizer"
+                ],
+                "image_noising_scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-unclip-2-1-l"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ]
             }
         }
     },
@@ -126,6 +260,71 @@
                 "0": {
                     "diffusers": "StableUnCLIPImg2ImgPipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusion3ControlNetInpaintingPipeline",
+                "StableDiffusion3ControlNetPipeline",
+                "StableDiffusion3Img2ImgPipeline",
+                "StableDiffusion3InpaintPipeline",
+                "StableDiffusion3PAGImg2ImgPipeline",
+                "StableDiffusion3PAGPipeline",
+                "StableDiffusion3Pipeline",
+                "StableDiffusionControlNetImg2ImgPipeline",
+                "StableDiffusionControlNetInpaintPipeline",
+                "StableDiffusionControlNetPAGInpaintPipeline",
+                "StableDiffusionControlNetPAGPipeline",
+                "StableDiffusionControlNetPipeline",
+                "StableDiffusionImg2ImgPipeline",
+                "StableDiffusionInpaintPipeline",
+                "StableDiffusionPAGImg2ImgPipeline",
+                "StableDiffusionPAGInpaintPipeline",
+                "StableDiffusionPAGPipeline",
+                "StableDiffusionPipeline",
+                "StableDiffusionXLControlNetImg2ImgPipeline",
+                "StableDiffusionXLControlNetInpaintPipeline",
+                "StableDiffusionXLControlNetPAGImg2ImgPipeline",
+                "StableDiffusionXLControlNetPAGPipeline",
+                "StableDiffusionXLControlNetPipeline",
+                "StableDiffusionXLControlNetUnionImg2ImgPipeline",
+                "StableDiffusionXLControlNetUnionInpaintPipeline",
+                "StableDiffusionXLControlNetUnionPipeline",
+                "StableDiffusionXLImg2ImgPipeline",
+                "StableDiffusionXLInpaintPipeline",
+                "StableDiffusionXLPAGImg2ImgPipeline",
+                "StableDiffusionXLPAGInpaintPipeline",
+                "StableDiffusionXLPAGPipeline",
+                "StableDiffusionXLPipeline"
+            ],
+            "pipe_names": {
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "image_normalizer": [
+                    "StableUnCLIPImageNormalizer"
+                ],
+                "image_noising_scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-2-1-unclip"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ]
             }
         }
     },
@@ -136,6 +335,56 @@
                 "0": {
                     "diffusers": "StableDiffusionXLPipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusionXLControlNetImg2ImgPipeline",
+                "StableDiffusionXLControlNetInpaintPipeline",
+                "StableDiffusionXLControlNetPAGImg2ImgPipeline",
+                "StableDiffusionXLControlNetPAGPipeline",
+                "StableDiffusionXLControlNetPipeline",
+                "StableDiffusionXLControlNetUnionImg2ImgPipeline",
+                "StableDiffusionXLControlNetUnionInpaintPipeline",
+                "StableDiffusionXLControlNetUnionPipeline",
+                "StableDiffusionXLImg2ImgPipeline",
+                "StableDiffusionXLInpaintPipeline",
+                "StableDiffusionXLPAGImg2ImgPipeline",
+                "StableDiffusionXLPAGInpaintPipeline",
+                "StableDiffusionXLPAGPipeline",
+                "StableDiffusionXLPipeline"
+            ],
+            "pipe_names": {
+                "vae": [
+                    "info.vae.eq",
+                    "info.vae.ms-lc-eq",
+                    "stable-diffusion-xl-1"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-xl-1"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-xl-1"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         },
         "pony-diffusion": {
@@ -242,7 +491,8 @@
                 "703f775c6e48ed5b0eba6e847414f047bcd4adc677dbc1bf221b3ef05b2ac471",
                 "72d4ebe4af61f8a7add8fe36b8acd16602894279fb5a744ad50b5b5bac7067b8",
                 "acb757b851db12cdf9d4365a45ee0d6e64afa77ac95583bb82711baf7c4125fd"
-            ]
+            ],
+            "pipe_names": {}
         },
         "segmind-vega": {
             "repo": "segmind/Segmind-Vega",
@@ -294,6 +544,54 @@
                 "0": {
                     "diffusers": "StableDiffusionXLImg2ImgPipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusionXLControlNetImg2ImgPipeline",
+                "StableDiffusionXLControlNetInpaintPipeline",
+                "StableDiffusionXLControlNetPAGImg2ImgPipeline",
+                "StableDiffusionXLControlNetPAGPipeline",
+                "StableDiffusionXLControlNetPipeline",
+                "StableDiffusionXLControlNetUnionImg2ImgPipeline",
+                "StableDiffusionXLControlNetUnionInpaintPipeline",
+                "StableDiffusionXLControlNetUnionPipeline",
+                "StableDiffusionXLImg2ImgPipeline",
+                "StableDiffusionXLInpaintPipeline",
+                "StableDiffusionXLPAGImg2ImgPipeline",
+                "StableDiffusionXLPAGInpaintPipeline",
+                "StableDiffusionXLPAGPipeline",
+                "StableDiffusionXLPipeline"
+            ],
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-xl-refiner-1"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-xl-refiner-1"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -304,6 +602,47 @@
                 "0": {
                     "diffusers": "StableDiffusionXLInstructPix2PixPipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusionXLControlNetImg2ImgPipeline",
+                "StableDiffusionXLControlNetInpaintPipeline",
+                "StableDiffusionXLControlNetPAGImg2ImgPipeline",
+                "StableDiffusionXLControlNetPAGPipeline",
+                "StableDiffusionXLControlNetPipeline",
+                "StableDiffusionXLControlNetUnionImg2ImgPipeline",
+                "StableDiffusionXLControlNetUnionInpaintPipeline",
+                "StableDiffusionXLControlNetUnionPipeline",
+                "StableDiffusionXLImg2ImgPipeline",
+                "StableDiffusionXLInpaintPipeline",
+                "StableDiffusionXLPAGImg2ImgPipeline",
+                "StableDiffusionXLPAGInpaintPipeline",
+                "StableDiffusionXLPAGPipeline",
+                "StableDiffusionXLPipeline"
+            ],
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "sdxl-pix2pix-768"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "sdxl-pix2pix-768"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ]
             }
         }
     },
@@ -314,6 +653,26 @@
                 "0": {
                     "diffusers": "AllegroPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "allegro"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "allegro"
+                ],
+                "transformer": [
+                    "AllegroTransformer3DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ]
             }
         }
     },
@@ -324,6 +683,26 @@
                 "0": {
                     "diffusers": "AmusedInpaintPipeline"
                 }
+            },
+            "pipe_names": {
+                "vqvae": [
+                    "VQModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "amused-512"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "transformer": [
+                    "UVit2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.amused",
+                    "scheduler"
+                ]
             }
         }
     },
@@ -374,6 +753,38 @@
                 "0": {
                     "diffusers": "BriaPipeline"
                 }
+            },
+            "pipe_names": {
+                "transformer": [
+                    "BriaTransformer2DModel"
+                ],
+                "scheduler": [
+                    [
+                        "ops.scheduler.euler",
+                        "discrete"
+                    ],
+                    [
+                        "ops.scheduler.karrasdiffusion",
+                        "schedulers"
+                    ]
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "bria-3"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -384,6 +795,26 @@
                 "0": {
                     "diffusers": "Flux2Pipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "text_encoder": [
+                    "Mistral3ForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "flux2-dev"
+                ],
+                "transformer": [
+                    "Flux2Transformer2DModel"
+                ]
             }
         }
     },
@@ -394,6 +825,52 @@
                 "0": {
                     "diffusers": "FluxInpaintPipeline"
                 }
+            },
+            "tasks": [
+                "FluxControlImg2ImgPipeline",
+                "FluxControlInpaintPipeline",
+                "FluxControlNetImg2ImgPipeline",
+                "FluxControlNetInpaintPipeline",
+                "FluxControlNetPipeline",
+                "FluxControlPipeline",
+                "FluxImg2ImgPipeline",
+                "FluxInpaintPipeline",
+                "FluxKontextPipeline",
+                "FluxPipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "flux1-schnell"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "flux1-schnell"
+                ],
+                "transformer": [
+                    "FluxTransformer2DModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         },
         "shuttle-3-aesthetic": {
@@ -506,6 +983,45 @@
                 "0": {
                     "diffusers": "FluxFillPipeline"
                 }
+            },
+            "tasks": [
+                "FluxControlImg2ImgPipeline",
+                "FluxControlInpaintPipeline",
+                "FluxControlNetImg2ImgPipeline",
+                "FluxControlNetInpaintPipeline",
+                "FluxControlNetPipeline",
+                "FluxControlPipeline",
+                "FluxImg2ImgPipeline",
+                "FluxInpaintPipeline",
+                "FluxKontextPipeline",
+                "FluxPipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "flux1-fill-dev"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "flux1-fill-dev"
+                ],
+                "transformer": [
+                    "FluxTransformer2DModel"
+                ]
             }
         }
     },
@@ -516,6 +1032,52 @@
                 "0": {
                     "diffusers": "FluxKontextInpaintPipeline"
                 }
+            },
+            "tasks": [
+                "FluxControlImg2ImgPipeline",
+                "FluxControlInpaintPipeline",
+                "FluxControlNetImg2ImgPipeline",
+                "FluxControlNetInpaintPipeline",
+                "FluxControlNetPipeline",
+                "FluxControlPipeline",
+                "FluxImg2ImgPipeline",
+                "FluxInpaintPipeline",
+                "FluxKontextPipeline",
+                "FluxPipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "flux1-kontext-dev"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "flux1-kontext-dev"
+                ],
+                "transformer": [
+                    "FluxTransformer2DModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -526,6 +1088,52 @@
                 "0": {
                     "diffusers": "FluxPipeline"
                 }
+            },
+            "tasks": [
+                "FluxControlImg2ImgPipeline",
+                "FluxControlInpaintPipeline",
+                "FluxControlNetImg2ImgPipeline",
+                "FluxControlNetInpaintPipeline",
+                "FluxControlNetPipeline",
+                "FluxControlPipeline",
+                "FluxImg2ImgPipeline",
+                "FluxInpaintPipeline",
+                "FluxKontextPipeline",
+                "FluxPipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "flux1-dev"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "flux1-dev"
+                ],
+                "transformer": [
+                    "FluxTransformer2DModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         },
         "mystic": {
@@ -639,6 +1247,30 @@
                 "0": {
                     "diffusers": "PRXPipeline"
                 }
+            },
+            "pipe_names": {
+                "transformer": [
+                    "PRXTransformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "text_encoder": [
+                    "T5GemmaEncoder"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "prx-512-t2i-sft"
+                ],
+                "vae": [
+                    "AutoencoderKL",
+                    [
+                        "info.vae.dc",
+                        "sana-1024px-bf16"
+                    ],
+                    "NoneType"
+                ]
             }
         }
     },
@@ -649,6 +1281,25 @@
                 "0": {
                     "diffusers": "AudioLDMPipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "ClapTextModelWithProjection"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "vocoder": [
+                    "SpeechT5HifiGan"
+                ]
             }
         }
     },
@@ -659,6 +1310,46 @@
                 "0": {
                     "diffusers": "AudioLDM2Pipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "ClapModel"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel",
+                    "VitsModel"
+                ],
+                "projection_model": [
+                    "AudioLDM2ProjectionModel"
+                ],
+                "language_model": [
+                    "info.art.gpt2",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "audioldm2"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "audioldm2"
+                ],
+                "feature_extractor": [
+                    "ClapFeatureExtractor"
+                ],
+                "unet": [
+                    "AudioLDM2UNet2DConditionModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "vocoder": [
+                    "SpeechT5HifiGan"
+                ]
             }
         }
     },
@@ -669,6 +1360,30 @@
                 "0": {
                     "diffusers": "BlipDiffusionPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "blipdiffusion"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "scheduler": [
+                    "ops.scheduler.pndm",
+                    "scheduler"
+                ],
+                "qformer": [
+                    "info.vit.blip2-opt",
+                    "*"
+                ],
+                "image_processor": [
+                    "BlipImageProcessor"
+                ]
             }
         }
     },
@@ -679,6 +1394,35 @@
                 "0": {
                     "diffusers": "ChromaPipeline"
                 }
+            },
+            "tasks": [
+                "ChromaPipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "chroma"
+                ],
+                "transformer": [
+                    "ChromaTransformer2DModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         },
         "chroma1-hd": {
@@ -712,7 +1456,36 @@
                 "2c0c7d908d04418a48b453c293237a9826d54472cf0ba76e28697d1309d1021b",
                 "c88f6794753ba23e8f6bf8c84cf220daa35a6aa16d54ea0c3e0136f52e5da7e1",
                 "c759d67ca3ef50a9a1c242e3291c57f406646f226a95f43f66577996494986db"
-            ]
+            ],
+            "tasks": [
+                "ChromaPipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "chroma"
+                ],
+                "transformer": [
+                    "ChromaTransformer2DModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
+            }
         }
     },
     "info.dit.chroma1-hd": {
@@ -722,6 +1495,35 @@
                 "0": {
                     "diffusers": "ChromaImg2ImgPipeline"
                 }
+            },
+            "tasks": [
+                "ChromaPipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "chroma1-hd"
+                ],
+                "transformer": [
+                    "ChromaTransformer2DModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -732,6 +1534,32 @@
                 "0": {
                     "diffusers": "CogVideoXPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cogvideox"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "transformer": [
+                    "CogVideoXTransformer3DModel"
+                ],
+                "scheduler": [
+                    [
+                        "ops.scheduler.cogvideoxddim",
+                        "scheduler"
+                    ],
+                    [
+                        "ops.scheduler.cogvideoxdpm",
+                        "scheduler"
+                    ]
+                ]
             }
         }
     },
@@ -752,6 +1580,32 @@
                 "0": {
                     "diffusers": "CogVideoXImageToVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cogvideox-i2v"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "vae": [
+                    "info.vae.cogvideox",
+                    "cogvideox-i2v"
+                ],
+                "transformer": [
+                    "CogVideoXTransformer3DModel"
+                ],
+                "scheduler": [
+                    [
+                        "ops.scheduler.cogvideoxddim",
+                        "scheduler"
+                    ],
+                    [
+                        "ops.scheduler.cogvideoxdpm",
+                        "scheduler"
+                    ]
+                ]
             }
         }
     },
@@ -762,6 +1616,34 @@
                 "0": {
                     "diffusers": "CogView3PlusPipeline"
                 }
+            },
+            "tasks": [
+                "CogView3PlusPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cogview3"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "transformer": [
+                    "CogView3PlusTransformer2DModel"
+                ],
+                "scheduler": [
+                    [
+                        "ops.scheduler.cogvideoxddim",
+                        "scheduler"
+                    ],
+                    [
+                        "ops.scheduler.cogvideoxdpm",
+                        "scheduler"
+                    ]
+                ]
             }
         }
     },
@@ -772,6 +1654,29 @@
                 "0": {
                     "diffusers": "CogView4Pipeline"
                 }
+            },
+            "tasks": [
+                "CogView4ControlPipeline",
+                "CogView4Pipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cogview4"
+                ],
+                "text_encoder": [
+                    "GlmModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "transformer": [
+                    "CogView4Transformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -792,6 +1697,29 @@
                 "0": {
                     "diffusers": "Cosmos2_5_PredictBasePipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "pre-trianed"
+                ],
+                "transformer": [
+                    "CosmosTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.unipc",
+                    "multistep"
+                ],
+                "safety_checker": [
+                    "CosmosSafetyChecker"
+                ]
             }
         }
     },
@@ -802,6 +1730,29 @@
                 "0": {
                     "diffusers": "Cosmos2TextToImagePipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cosmos-predict2-text2image"
+                ],
+                "transformer": [
+                    "CosmosTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "safety_checker": [
+                    "CosmosSafetyChecker"
+                ]
             }
         }
     },
@@ -812,6 +1763,29 @@
                 "0": {
                     "diffusers": "Cosmos2VideoToWorldPipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cosmos-predict2-video2world"
+                ],
+                "transformer": [
+                    "CosmosTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "safety_checker": [
+                    "CosmosSafetyChecker"
+                ]
             }
         }
     },
@@ -822,6 +1796,29 @@
                 "0": {
                     "diffusers": "CosmosTextToWorldPipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cosmos-1-diffusion-text2world"
+                ],
+                "transformer": [
+                    "CosmosTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "cosmos-1-diffusion-video2world"
+                ],
+                "scheduler": [
+                    "ops.scheduler.edmeuler",
+                    "scheduler"
+                ],
+                "safety_checker": [
+                    "CosmosSafetyChecker"
+                ]
             }
         }
     },
@@ -832,6 +1829,29 @@
                 "0": {
                     "diffusers": "CosmosVideoToWorldPipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "cosmos-1-diffusion-video2world"
+                ],
+                "transformer": [
+                    "CosmosTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "cosmos-1-diffusion-video2world"
+                ],
+                "scheduler": [
+                    "ops.scheduler.edmeuler",
+                    "scheduler"
+                ],
+                "safety_checker": [
+                    "CosmosSafetyChecker"
+                ]
             }
         }
     },
@@ -842,6 +1862,24 @@
                 "0": {
                     "diffusers": "IFPipeline"
                 }
+            },
+            "tasks": [
+                "IFImg2ImgPipeline",
+                "IFInpaintingPipeline",
+                "IFPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "if-i-xl-v1"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.ddpm",
+                    "scheduler"
+                ]
             }
         }
     },
@@ -852,6 +1890,27 @@
                 "0": {
                     "diffusers": "EasyAnimatePipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "info.vae.kl",
+                    "easyanimatev5-zh"
+                ],
+                "text_encoder": [
+                    "Qwen2VLForConditionalGeneration",
+                    "BertModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "easyanimatev5-zh"
+                ],
+                "transformer": [
+                    "EasyAnimateTransformer3DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -872,6 +1931,27 @@
                 "0": {
                     "diffusers": "EasyAnimateInpaintPipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "info.vae.kl",
+                    "easyanimatev5-zh"
+                ],
+                "text_encoder": [
+                    "Qwen2VLForConditionalGeneration",
+                    "BertModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "easyanimatev5-zh-inp"
+                ],
+                "transformer": [
+                    "EasyAnimateTransformer3DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -882,6 +1962,48 @@
                 "0": {
                     "diffusers": "HiDreamImagePipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hidream-i1"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "hidream-i1"
+                ],
+                "text_encoder_3": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_3": [
+                    "info.encoder.tokenizer",
+                    "hidream-i1"
+                ],
+                "text_encoder_4": [
+                    "LlamaForCausalLM"
+                ],
+                "tokenizer_4": [
+                    "info.encoder.tokenizer",
+                    "hidream-i1"
+                ],
+                "transformer": [
+                    "HiDreamImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -892,6 +2014,38 @@
                 "0": {
                     "diffusers": "HunyuanDiTPipeline"
                 }
+            },
+            "tasks": [
+                "HunyuanDiTPipeline"
+            ],
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "BertModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hunyuandit-v1"
+                ],
+                "transformer": [
+                    "HunyuanDiT2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.ddpm",
+                    "scheduler"
+                ],
+                "safety_checker": [
+                    "StableDiffusionSafetyChecker"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "hunyuandit-v1"
+                ]
             }
         }
     },
@@ -902,6 +2056,34 @@
                 "0": {
                     "diffusers": "HunyuanVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "LlamaModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo"
+                ],
+                "transformer": [
+                    "HunyuanVideoTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "hunyuanvideo-i2v"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo"
+                ]
             }
         }
     },
@@ -912,6 +2094,37 @@
                 "0": {
                     "diffusers": "HunyuanVideoImageToVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "LlavaForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo-i2v"
+                ],
+                "transformer": [
+                    "HunyuanVideoTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "hunyuanvideo-i2v"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo-i2v"
+                ],
+                "image_processor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -922,6 +2135,36 @@
                 "0": {
                     "diffusers": "HunyuanVideo15Pipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "Qwen2_5_VLTextModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo-1-480p-t2v"
+                ],
+                "transformer": [
+                    "HunyuanVideo15Transformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "hunyuanvideo-i2v"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo-1-480p-t2v"
+                ],
+                "guider": [
+                    "ClassifierFreeGuidance"
+                ]
             }
         }
     },
@@ -932,6 +2175,42 @@
                 "0": {
                     "diffusers": "HunyuanVideo15ImageToVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "text_encoder": [
+                    "Qwen2_5_VLTextModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo-1-480p-i2v"
+                ],
+                "transformer": [
+                    "HunyuanVideo15Transformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "hunyuanvideo-i2v"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "hunyuanvideo-1-480p-i2v"
+                ],
+                "guider": [
+                    "ClassifierFreeGuidance"
+                ],
+                "image_encoder": [
+                    "SiglipVisionModel"
+                ],
+                "feature_extractor": [
+                    "SiglipImageProcessor"
+                ]
             }
         }
     },
@@ -942,6 +2221,33 @@
                 "0": {
                     "diffusers": "HunyuanImagePipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hunyuanimage-2"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "hunyuanimage-2"
+                ],
+                "transformer": [
+                    "HunyuanImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -952,6 +2258,26 @@
                 "0": {
                     "diffusers": "HunyuanImageRefinerPipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "hunyuanimage-2-refiner"
+                ],
+                "transformer": [
+                    "HunyuanImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -962,6 +2288,46 @@
                 "0": {
                     "diffusers": "KandinskyPriorPipeline"
                 }
+            },
+            "tasks": [
+                "Kandinsky3Img2ImgPipeline",
+                "Kandinsky3Pipeline",
+                "KandinskyCombinedPipeline",
+                "KandinskyImg2ImgCombinedPipeline",
+                "KandinskyImg2ImgPipeline",
+                "KandinskyInpaintCombinedPipeline",
+                "KandinskyInpaintPipeline",
+                "KandinskyPipeline",
+                "KandinskyV22CombinedPipeline",
+                "KandinskyV22Img2ImgCombinedPipeline",
+                "KandinskyV22Img2ImgPipeline",
+                "KandinskyV22InpaintCombinedPipeline",
+                "KandinskyV22InpaintPipeline",
+                "KandinskyV22Pipeline"
+            ],
+            "pipe_names": {
+                "prior": [
+                    "PriorTransformer"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-2-1"
+                ],
+                "scheduler": [
+                    "ops.scheduler.unclip",
+                    "scheduler"
+                ],
+                "image_processor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -972,6 +2338,46 @@
                 "0": {
                     "diffusers": "KandinskyPriorPipeline"
                 }
+            },
+            "tasks": [
+                "Kandinsky3Img2ImgPipeline",
+                "Kandinsky3Pipeline",
+                "KandinskyCombinedPipeline",
+                "KandinskyImg2ImgCombinedPipeline",
+                "KandinskyImg2ImgPipeline",
+                "KandinskyInpaintCombinedPipeline",
+                "KandinskyInpaintPipeline",
+                "KandinskyPipeline",
+                "KandinskyV22CombinedPipeline",
+                "KandinskyV22Img2ImgCombinedPipeline",
+                "KandinskyV22Img2ImgPipeline",
+                "KandinskyV22InpaintCombinedPipeline",
+                "KandinskyV22InpaintPipeline",
+                "KandinskyV22Pipeline"
+            ],
+            "pipe_names": {
+                "prior": [
+                    "PriorTransformer"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-2-2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.unclip",
+                    "scheduler"
+                ],
+                "image_processor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -982,6 +2388,25 @@
                 "0": {
                     "diffusers": "LattePipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "latte-1"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "transformer": [
+                    "LatteTransformer3DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ]
             }
         }
     },
@@ -992,6 +2417,26 @@
                 "0": {
                     "diffusers": "LTXImageToVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "ltx-video"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "ltx-video"
+                ],
+                "transformer": [
+                    "LTXVideoTransformer3DModel"
+                ]
             }
         }
     },
@@ -1002,6 +2447,26 @@
                 "0": {
                     "diffusers": "LTXConditionPipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "ltx-video"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "ltx-video-09"
+                ],
+                "transformer": [
+                    "LTXVideoTransformer3DModel"
+                ]
             }
         }
     },
@@ -1012,6 +2477,29 @@
                 "0": {
                     "diffusers": "LuminaPipeline"
                 }
+            },
+            "tasks": [
+                "Lumina2Pipeline",
+                "LuminaPipeline"
+            ],
+            "pipe_names": {
+                "transformer": [
+                    "LuminaNextDiT2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "GemmaPreTrainedModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "lumina-next-sft"
+                ]
             }
         }
     },
@@ -1022,6 +2510,28 @@
                 "0": {
                     "diffusers": "Lumina2Pipeline"
                 }
+            },
+            "tasks": [
+                "Lumina2Pipeline"
+            ],
+            "pipe_names": {
+                "transformer": [
+                    "Lumina2Transformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "Gemma2PreTrainedModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "lumina-image-2"
+                ]
             }
         },
         "illustrious-lumina-v3": {
@@ -1047,6 +2557,28 @@
                 "0": {
                     "diffusers": "LongCatImagePipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "longcat-image"
+                ],
+                "text_processor": [
+                    "Qwen2VLProcessor"
+                ],
+                "transformer": [
+                    "LongCatImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -1057,6 +2589,28 @@
                 "0": {
                     "diffusers": "LongCatImageEditPipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "longcat-image-edit"
+                ],
+                "text_processor": [
+                    "Qwen2VLProcessor"
+                ],
+                "transformer": [
+                    "LongCatImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -1067,6 +2621,26 @@
                 "0": {
                     "diffusers": "MochiPipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "mochi-1"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "mochi-1"
+                ],
+                "transformer": [
+                    "MochiTransformer3DModel"
+                ]
             }
         }
     },
@@ -1077,6 +2651,26 @@
                 "0": {
                     "diffusers": "MusicLDMPipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "ClapTextModelWithProjection",
+                    "ClapModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "musicldm"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "vocoder": [
+                    "SpeechT5HifiGan"
+                ]
             }
         }
     },
@@ -1087,6 +2681,22 @@
                 "0": {
                     "diffusers": "OmniGenPipeline"
                 }
+            },
+            "pipe_names": {
+                "transformer": [
+                    "OmniGenTransformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "omnigen-v1"
+                ]
             }
         }
     },
@@ -1097,6 +2707,28 @@
                 "0": {
                     "diffusers": "OvisImagePipeline"
                 }
+            },
+            "tasks": [
+                "OvisImagePipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "Qwen3Model"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "ovis-image"
+                ],
+                "transformer": [
+                    "OvisImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -1107,6 +2739,33 @@
                 "0": {
                     "diffusers": "VisualClozeGenerationPipeline"
                 }
+            },
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "visualclozepipeline-384"
+                ],
+                "text_encoder_2": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "visualclozepipeline-384"
+                ],
+                "transformer": [
+                    "FluxTransformer2DModel"
+                ]
             }
         }
     },
@@ -1117,6 +2776,28 @@
                 "0": {
                     "diffusers": "PixArtAlphaPipeline"
                 }
+            },
+            "tasks": [
+                "PixArtAlphaPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "pixart-xl-2-1024-ms"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "transformer": [
+                    "PixArtTransformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.dpm",
+                    "multistep"
+                ]
             }
         }
     },
@@ -1127,6 +2808,29 @@
                 "0": {
                     "diffusers": "PixArtSigmaPipeline"
                 }
+            },
+            "tasks": [
+                "PixArtAlphaPipeline",
+                "PixArtSigmaPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "pixart-sigma-xl-2-1024-ms"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "transformer": [
+                    "PixArtTransformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ]
             }
         }
     },
@@ -1137,6 +2841,30 @@
                 "0": {
                     "diffusers": "SanaPipeline"
                 }
+            },
+            "tasks": [
+                "SanaPAGPipeline",
+                "SanaPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "sana-1024px-bf16"
+                ],
+                "text_encoder": [
+                    "Gemma2PreTrainedModel"
+                ],
+                "vae": [
+                    "info.vae.dc",
+                    "sana-1024px-bf16"
+                ],
+                "transformer": [
+                    "SanaTransformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.dpm",
+                    "multistep"
+                ]
             }
         }
     },
@@ -1157,6 +2885,30 @@
                 "0": {
                     "diffusers": "SanaSprintPipeline"
                 }
+            },
+            "tasks": [
+                "SanaPAGPipeline",
+                "SanaPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "sana-sprint-1024px"
+                ],
+                "text_encoder": [
+                    "Gemma2PreTrainedModel"
+                ],
+                "vae": [
+                    "info.vae.dc",
+                    "sana-1024px-bf16"
+                ],
+                "transformer": [
+                    "SanaTransformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.dpm",
+                    "multistep"
+                ]
             }
         }
     },
@@ -1167,6 +2919,32 @@
                 "0": {
                     "diffusers": "SanaImageToVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "sana-video"
+                ],
+                "text_encoder": [
+                    "Gemma2PreTrainedModel"
+                ],
+                "vae": [
+                    [
+                        "info.vae.dc",
+                        "sana-1024px-bf16"
+                    ],
+                    [
+                        "info.vae.kl",
+                        "audioldm-s-v2"
+                    ]
+                ],
+                "transformer": [
+                    "SanaVideoTransformer3DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1177,6 +2955,26 @@
                 "0": {
                     "diffusers": "ShapEPipeline"
                 }
+            },
+            "pipe_names": {
+                "prior": [
+                    "PriorTransformer"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "shap-e"
+                ],
+                "scheduler": [
+                    "ops.scheduler.heun",
+                    "discrete"
+                ],
+                "shap_e_renderer": [
+                    "ShapERenderer"
+                ]
             }
         }
     },
@@ -1187,6 +2985,29 @@
                 "0": {
                     "diffusers": "StableAudioPipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "info.vae.oobleck",
+                    "stable-audio-open-1"
+                ],
+                "text_encoder": [
+                    "T5EncoderModel"
+                ],
+                "projection_model": [
+                    "StableAudioProjectionModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-audio-open-1"
+                ],
+                "transformer": [
+                    "StableAudioDiTModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.dpm",
+                    "multistep"
+                ]
             }
         }
     },
@@ -1197,6 +3018,23 @@
                 "0": {
                     "diffusers": "StableCascadePriorPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-cascade"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "prior": [
+                    "StableCascadeUNet"
+                ],
+                "scheduler": [
+                    "ops.scheduler.ddpmwuerstchen",
+                    "scheduler"
+                ]
             }
         }
     },
@@ -1207,6 +3045,30 @@
                 "0": {
                     "diffusers": "WuerstchenDecoderPipeline"
                 }
+            },
+            "tasks": [
+                "WuerstchenCombinedPipeline",
+                "WuerstchenDecoderPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "flux1-dev"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "decoder": [
+                    "WuerstchenDiffNeXt"
+                ],
+                "scheduler": [
+                    "ops.scheduler.ddpmwuerstchen",
+                    "scheduler"
+                ],
+                "vqgan": [
+                    "PaellaVQModel"
+                ]
             }
         }
     },
@@ -1217,6 +3079,28 @@
                 "0": {
                     "diffusers": "AuraFlowPipeline"
                 }
+            },
+            "tasks": [
+                "AuraFlowPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "auraflow"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "transformer": [
+                    "AuraFlowTransformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1227,6 +3111,57 @@
                 "0": {
                     "diffusers": "StableDiffusion3Pipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusion3ControlNetInpaintingPipeline",
+                "StableDiffusion3ControlNetPipeline",
+                "StableDiffusion3Img2ImgPipeline",
+                "StableDiffusion3InpaintPipeline",
+                "StableDiffusion3PAGImg2ImgPipeline",
+                "StableDiffusion3PAGPipeline",
+                "StableDiffusion3Pipeline"
+            ],
+            "pipe_names": {
+                "transformer": [
+                    "SD3Transformer2DModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.tae",
+                    "stable-diffusion-3"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-3"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-3"
+                ],
+                "text_encoder_3": [
+                    "T5EncoderModel"
+                ],
+                "tokenizer_3": [
+                    "info.encoder.tokenizer",
+                    "stable-diffusion-3"
+                ],
+                "image_encoder": [
+                    "SiglipVisionModel"
+                ],
+                "feature_extractor": [
+                    "SiglipImageProcessor"
+                ]
             }
         },
         "stable-diffusion-3-turbo": {
@@ -1289,6 +3224,26 @@
                 "0": {
                     "diffusers": "StableVideoDiffusionPipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "unet": [
+                    "UNetSpatioTemporalConditionModel"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -1299,6 +3254,63 @@
                 "0": {
                     "diffusers": "StableDiffusionLDM3DPipeline"
                 }
+            },
+            "tasks": [
+                "StableDiffusion3ControlNetInpaintingPipeline",
+                "StableDiffusion3ControlNetPipeline",
+                "StableDiffusion3Img2ImgPipeline",
+                "StableDiffusion3InpaintPipeline",
+                "StableDiffusion3PAGImg2ImgPipeline",
+                "StableDiffusion3PAGPipeline",
+                "StableDiffusion3Pipeline",
+                "StableDiffusionControlNetImg2ImgPipeline",
+                "StableDiffusionControlNetInpaintPipeline",
+                "StableDiffusionControlNetPAGInpaintPipeline",
+                "StableDiffusionControlNetPAGPipeline",
+                "StableDiffusionControlNetPipeline",
+                "StableDiffusionImg2ImgPipeline",
+                "StableDiffusionInpaintPipeline",
+                "StableDiffusionPAGImg2ImgPipeline",
+                "StableDiffusionPAGInpaintPipeline",
+                "StableDiffusionPAGPipeline",
+                "StableDiffusionPipeline",
+                "StableDiffusionXLControlNetImg2ImgPipeline",
+                "StableDiffusionXLControlNetInpaintPipeline",
+                "StableDiffusionXLControlNetPAGImg2ImgPipeline",
+                "StableDiffusionXLControlNetPAGPipeline",
+                "StableDiffusionXLControlNetPipeline",
+                "StableDiffusionXLControlNetUnionImg2ImgPipeline",
+                "StableDiffusionXLControlNetUnionInpaintPipeline",
+                "StableDiffusionXLControlNetUnionPipeline",
+                "StableDiffusionXLImg2ImgPipeline",
+                "StableDiffusionXLInpaintPipeline",
+                "StableDiffusionXLPAGImg2ImgPipeline",
+                "StableDiffusionXLPAGInpaintPipeline",
+                "StableDiffusionXLPAGPipeline",
+                "StableDiffusionXLPipeline"
+            ],
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "ldm3d-4c"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "safety_checker": [
+                    "StableDiffusionSafetyChecker"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
@@ -1309,6 +3321,33 @@
                 "0": {
                     "diffusers": "I2VGenXLPipeline"
                 }
+            },
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "i2vgen-xl"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ],
+                "unet": [
+                    "I2VGenXLUNet"
+                ],
+                "scheduler": [
+                    "ops.scheduler.ddim",
+                    "scheduler"
+                ]
             }
         }
     },
@@ -1319,6 +3358,27 @@
                 "0": {
                     "diffusers": "WuerstchenPriorPipeline"
                 }
+            },
+            "tasks": [
+                "WuerstchenCombinedPipeline",
+                "WuerstchenDecoderPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "wuerstchen"
+                ],
+                "text_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "prior": [
+                    "WuerstchenPrior"
+                ],
+                "scheduler": [
+                    "ops.scheduler.ddpmwuerstchen",
+                    "scheduler"
+                ]
             }
         }
     },
@@ -1329,6 +3389,28 @@
                 "0": {
                     "diffusers": "WanPipeline"
                 }
+            },
+            "tasks": [
+                "WanImageToVideoPipeline",
+                "WanPipeline",
+                "WanVideoToVideoPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "wan2-t2v"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1339,6 +3421,38 @@
                 "0": {
                     "diffusers": "WanAnimatePipeline"
                 }
+            },
+            "tasks": [
+                "WanImageToVideoPipeline",
+                "WanPipeline",
+                "WanVideoToVideoPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "wan-animate"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.unipc",
+                    "multistep"
+                ],
+                "image_processor": [
+                    "CLIPImageProcessor"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "transformer": [
+                    "WanAnimateTransformer3DModel"
+                ]
             }
         }
     },
@@ -1349,6 +3463,41 @@
                 "0": {
                     "diffusers": "WanImageToVideoPipeline"
                 }
+            },
+            "tasks": [
+                "WanImageToVideoPipeline",
+                "WanPipeline",
+                "WanVideoToVideoPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "wan2-i2v-480p"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "vae": [
+                    "info.vae.wan",
+                    "wan2-i2v-480p"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "image_processor": [
+                    "CLIPImageProcessor"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "transformer": [
+                    "WanTransformer3DModel"
+                ],
+                "transformer_2": [
+                    "WanTransformer3DModel"
+                ]
             }
         }
     },
@@ -1359,6 +3508,34 @@
                 "0": {
                     "diffusers": "WanVACEPipeline"
                 }
+            },
+            "tasks": [
+                "WanImageToVideoPipeline",
+                "WanPipeline",
+                "WanVideoToVideoPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "wan21-vace"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "transformer": [
+                    "WanVACETransformer3DModel"
+                ],
+                "transformer_2": [
+                    "WanVACETransformer3DModel"
+                ]
             }
         }
     },
@@ -1369,6 +3546,31 @@
                 "0": {
                     "diffusers": "WanVideoToVideoPipeline"
                 }
+            },
+            "tasks": [
+                "WanImageToVideoPipeline",
+                "WanPipeline",
+                "WanVideoToVideoPipeline"
+            ],
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "wan21-t2v"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "transformer": [
+                    "WanTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1379,6 +3581,34 @@
                 "0": {
                     "diffusers": "Kandinsky5T2VPipeline"
                 }
+            },
+            "pipe_names": {
+                "transformer": [
+                    "Kandinsky5Transformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "hunyuanvideo-i2v"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-t2v-lite-sft-5s"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-t2v-lite-sft-5s"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1389,6 +3619,33 @@
                 "0": {
                     "diffusers": "Kandinsky5I2IPipeline"
                 }
+            },
+            "pipe_names": {
+                "transformer": [
+                    "Kandinsky5Transformer3DModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-i2i-lite-sft"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-i2i-lite-sft"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1399,6 +3656,34 @@
                 "0": {
                     "diffusers": "Kandinsky5I2VPipeline"
                 }
+            },
+            "pipe_names": {
+                "transformer": [
+                    "Kandinsky5Transformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "hunyuanvideo-i2v"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-i2v-sft-5s"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-i2v-sft-5s"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1409,6 +3694,33 @@
                 "0": {
                     "diffusers": "Kandinsky5T2IPipeline"
                 }
+            },
+            "pipe_names": {
+                "transformer": [
+                    "Kandinsky5Transformer3DModel"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-t2i-lite-sft"
+                ],
+                "text_encoder_2": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "tokenizer_2": [
+                    "info.encoder.tokenizer",
+                    "kandinsky-5-t2i-lite-sft"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1419,6 +3731,38 @@
                 "0": {
                     "diffusers": "ZImageOmniPipeline"
                 }
+            },
+            "tasks": [
+                "ZImageControlNetInpaintPipeline",
+                "ZImageControlNetPipeline",
+                "ZImageImg2ImgPipeline",
+                "ZImageOmniPipeline",
+                "ZImagePipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "PreTrainedModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "z-image-turbo"
+                ],
+                "transformer": [
+                    "ZImageTransformer2DModel"
+                ],
+                "siglip": [
+                    "Siglip2VisionModel"
+                ],
+                "siglip_processor": [
+                    "Siglip2ImageProcessorFast"
+                ]
             }
         }
     },
@@ -1439,6 +3783,26 @@
                 "0": {
                     "diffusers": "SkyReelsV2Pipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "skyreels-v2-t2v-720p"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "transformer": [
+                    "SkyReelsV2Transformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.unipc",
+                    "multistep"
+                ]
             }
         }
     },
@@ -1449,6 +3813,26 @@
                 "0": {
                     "diffusers": "SkyReelsV2DiffusionForcingVideoToVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "skyreels-v2-df-720p"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "transformer": [
+                    "SkyReelsV2Transformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.unipc",
+                    "multistep"
+                ]
             }
         }
     },
@@ -1459,6 +3843,33 @@
                 "0": {
                     "diffusers": "SkyReelsV2ImageToVideoPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "skyreels-v2-i2v-720p"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "image_processor": [
+                    "CLIPProcessor"
+                ],
+                "transformer": [
+                    "SkyReelsV2Transformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.unipc",
+                    "multistep"
+                ]
             }
         }
     },
@@ -1469,6 +3880,35 @@
                 "0": {
                     "diffusers": "QwenImageInpaintPipeline"
                 }
+            },
+            "tasks": [
+                "QwenImageControlNetPipeline",
+                "QwenImageEditInpaintPipeline",
+                "QwenImageEditPipeline",
+                "QwenImageEditPlusPipeline",
+                "QwenImageImg2ImgPipeline",
+                "QwenImageInpaintPipeline",
+                "QwenImagePipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "qwen-image"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "qwen-image"
+                ],
+                "transformer": [
+                    "QwenImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -1499,6 +3939,38 @@
                 "0": {
                     "diffusers": "QwenImageEditInpaintPipeline"
                 }
+            },
+            "tasks": [
+                "QwenImageControlNetPipeline",
+                "QwenImageEditInpaintPipeline",
+                "QwenImageEditPipeline",
+                "QwenImageEditPlusPipeline",
+                "QwenImageImg2ImgPipeline",
+                "QwenImageInpaintPipeline",
+                "QwenImagePipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "qwen-image"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "qwen-image-edit"
+                ],
+                "processor": [
+                    "Qwen2VLProcessor"
+                ],
+                "transformer": [
+                    "QwenImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -1509,6 +3981,38 @@
                 "0": {
                     "diffusers": "QwenImageEditPlusPipeline"
                 }
+            },
+            "tasks": [
+                "QwenImageControlNetPipeline",
+                "QwenImageEditInpaintPipeline",
+                "QwenImageEditPipeline",
+                "QwenImageEditPlusPipeline",
+                "QwenImageImg2ImgPipeline",
+                "QwenImageInpaintPipeline",
+                "QwenImagePipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "qwen-image"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "qwen-image-edit-2509"
+                ],
+                "processor": [
+                    "Qwen2VLProcessor"
+                ],
+                "transformer": [
+                    "QwenImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -1519,6 +4023,38 @@
                 "0": {
                     "diffusers": "QwenImageLayeredPipeline"
                 }
+            },
+            "tasks": [
+                "QwenImageControlNetPipeline",
+                "QwenImageEditInpaintPipeline",
+                "QwenImageEditPipeline",
+                "QwenImageEditPlusPipeline",
+                "QwenImageImg2ImgPipeline",
+                "QwenImageInpaintPipeline",
+                "QwenImagePipeline"
+            ],
+            "pipe_names": {
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "qwen-image"
+                ],
+                "text_encoder": [
+                    "Qwen2_5_VLForConditionalGeneration"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "qwen-image-layered"
+                ],
+                "processor": [
+                    "Qwen2VLProcessor"
+                ],
+                "transformer": [
+                    "QwenImageTransformer2DModel"
+                ]
             }
         }
     },
@@ -1529,6 +4065,33 @@
                 "0": {
                     "diffusers": "ChronoEditPipeline"
                 }
+            },
+            "pipe_names": {
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "chronoedit"
+                ],
+                "text_encoder": [
+                    "UMT5EncoderModel"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "image_processor": [
+                    "CLIPImageProcessor"
+                ],
+                "transformer": [
+                    "ChronoEditTransformer3DModel"
+                ],
+                "vae": [
+                    "info.vae.kl",
+                    "audioldm-s-v2"
+                ],
+                "scheduler": [
+                    "ops.scheduler.euler",
+                    "discrete"
+                ]
             }
         }
     },
@@ -1539,11 +4102,39 @@
                 "0": {
                     "diffusers": "KolorsPipeline"
                 }
+            },
+            "tasks": [
+                "KolorsImg2ImgPipeline",
+                "KolorsPAGPipeline",
+                "KolorsPipeline"
+            ],
+            "pipe_names": {
+                "vae": [
+                    "AutoencoderKL"
+                ],
+                "text_encoder": [
+                    "ChatGLMModel"
+                ],
+                "tokenizer": [
+                    "info.encoder.tokenizer",
+                    "kolors"
+                ],
+                "scheduler": [
+                    "ops.scheduler.karrasdiffusion",
+                    "schedulers"
+                ],
+                "image_encoder": [
+                    "info.vit.clip-vit-patch14",
+                    "*"
+                ],
+                "feature_extractor": [
+                    "CLIPImageProcessor"
+                ]
             }
         }
     },
     "info.encoder.tokenizer": {
-        "funnel": {
+        "omdet-turbo-swin-hf": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -1589,10 +4180,16 @@
                 },
                 "14": {
                     "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "15": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "16": {
+                    "transformers": "transformers.utils.import_utils.transformers"
                 }
             }
         },
-        "nllb-moe": {
+        "blip2-opt": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -1693,160 +4290,7 @@
                 }
             }
         },
-        "xlm-roberta": {
-            "pkg": {
-                "0": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "1": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "2": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "3": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "4": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "5": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "6": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "7": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "8": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "9": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "10": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "11": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "12": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "13": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "14": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "15": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "16": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "17": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "18": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                }
-            }
-        },
-        "gpt2": {
-            "pkg": {
-                "0": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "1": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "2": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "3": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "4": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "5": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "6": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "7": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "8": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "9": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "10": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "11": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "12": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "13": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "14": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                }
-            }
-        },
-        "megatron-bert-uncased": {
-            "pkg": {
-                "0": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "1": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "2": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "3": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "4": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "5": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "6": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "7": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "8": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "9": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "10": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "11": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "12": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                }
-            }
-        },
-        "blenderbot": {
+        "bert-for-seq-generation-l-24-bbc-encoder": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -1916,13 +4360,10 @@
                 },
                 "22": {
                     "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "23": {
-                    "transformers": "transformers.utils.import_utils.transformers"
                 }
             }
         },
-        "omdet-turbo-swin-hf": {
+        "wav2vec2-bert-rel-pos": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -1974,59 +4415,19 @@
                 },
                 "16": {
                     "transformers": "transformers.utils.import_utils.transformers"
-                }
-            }
-        },
-        "mgp-str": {
-            "pkg": {
-                "0": {
+                },
+                "17": {
                     "transformers": "transformers.utils.import_utils.transformers"
                 },
-                "1": {
+                "18": {
                     "transformers": "transformers.utils.import_utils.transformers"
                 },
-                "2": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "3": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "4": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "5": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "6": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "7": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "8": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "9": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "10": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "11": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "12": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "13": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "14": {
+                "19": {
                     "transformers": "transformers.utils.import_utils.transformers"
                 }
             }
         },
-        "blip2-opt": {
+        "nllb-moe": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -2121,7 +4522,117 @@
                 }
             }
         },
-        "wav2vec2-conformer-rel-pos": {
+        "xlm-roberta": {
+            "pkg": {
+                "0": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "1": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "2": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "3": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "4": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "5": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "6": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "7": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "8": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "9": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "10": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "11": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "12": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "13": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "14": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "15": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "16": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "17": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "18": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                }
+            }
+        },
+        "mgp-str": {
+            "pkg": {
+                "0": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "1": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "2": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "3": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "4": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "5": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "6": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "7": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "8": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "9": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "10": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "11": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "12": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "13": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "14": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                }
+            }
+        },
+        "blenderbot": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -2182,10 +4693,218 @@
                 },
                 "19": {
                     "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "20": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "21": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "22": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "23": {
+                    "transformers": "transformers.utils.import_utils.transformers"
                 }
             }
         },
-        "wav2vec2-bert-rel-pos": {
+        "xlm-roberta-xl": {
+            "pkg": {
+                "0": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "1": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "2": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "3": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "4": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "5": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "6": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "7": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "8": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "9": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "10": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "11": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "12": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "13": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "14": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "15": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "16": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "17": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "18": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                }
+            }
+        },
+        "megatron-bert-uncased": {
+            "pkg": {
+                "0": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "1": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "2": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "3": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "4": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "5": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "6": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "7": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "8": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "9": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "10": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "11": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "12": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                }
+            }
+        },
+        "grounding-dino": {
+            "pkg": {
+                "0": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "1": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "2": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "3": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "4": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "5": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "6": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "7": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "8": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "9": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "10": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "11": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "12": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                }
+            }
+        },
+        "funnel": {
+            "pkg": {
+                "0": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "1": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "2": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "3": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "4": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "5": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "6": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "7": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "8": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "9": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "10": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "11": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "12": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "13": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                },
+                "14": {
+                    "transformers": "transformers.utils.import_utils.transformers"
+                }
+            }
+        },
+        "wav2vec2-conformer-rel-pos": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -2292,7 +5011,7 @@
                 }
             }
         },
-        "bert-for-seq-generation-l-24-bbc-encoder": {
+        "gpt2": {
             "pkg": {
                 "0": {
                     "transformers": "transformers.utils.import_utils.transformers"
@@ -2338,204 +5057,6 @@
                 },
                 "14": {
                     "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "15": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "16": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "17": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "18": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "19": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "20": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "21": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "22": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                }
-            }
-        },
-        "grounding-dino": {
-            "pkg": {
-                "0": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "1": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "2": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "3": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "4": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "5": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "6": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "7": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "8": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "9": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "10": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "11": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "12": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                }
-            }
-        },
-        "xlm-roberta-xl": {
-            "pkg": {
-                "0": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "1": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "2": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "3": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "4": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "5": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "6": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "7": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "8": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "9": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "10": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "11": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "12": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "13": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "14": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "15": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "16": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "17": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                },
-                "18": {
-                    "transformers": "transformers.utils.import_utils.transformers"
-                }
-            }
-        }
-    },
-    "info.aet.funnel": {
-        "*": {
-            "repo": "funnel-transformer/small",
-            "pkg": {
-                "0": {
-                    "transformers": "FunnelModel"
-                }
-            }
-        }
-    },
-    "info.stst.nllb-moe": {
-        "*": {
-            "repo": "facebook/nllb-moe-54b",
-            "pkg": {
-                "0": {
-                    "transformers": "NllbMoeModel"
-                }
-            }
-        }
-    },
-    "info.art.deberta-v2-x": {
-        "*": {
-            "repo": "microsoft/deberta-v2-xlarge",
-            "pkg": {
-                "0": {
-                    "transformers": "DebertaV2Model"
-                }
-            }
-        }
-    },
-    "info.art.xlm-roberta": {
-        "*": {
-            "repo": "FacebookAI/xlm-roberta-base",
-            "pkg": {
-                "0": {
-                    "transformers": "XLMRobertaModel"
-                }
-            }
-        }
-    },
-    "info.art.gpt2": {
-        "*": {
-            "repo": "openai-community/gpt2",
-            "pkg": {
-                "0": {
-                    "transformers": "GPT2Model"
-                }
-            }
-        }
-    },
-    "info.art.megatron-bert-uncased": {
-        "*": {
-            "repo": "nvidia/megatron-bert-uncased-345m",
-            "pkg": {
-                "0": {
-                    "transformers": "MegatronBertModel"
-                }
-            }
-        }
-    },
-    "info.stst.blenderbot": {
-        "*": {
-            "repo": "facebook/blenderbot_small-90M",
-            "pkg": {
-                "0": {
-                    "transformers": "BlenderbotSmallModel"
                 }
             }
         }
@@ -2547,27 +5068,11 @@
                 "0": {
                     "transformers": "OmDetTurboForObjectDetection"
                 }
-            }
-        }
-    },
-    "info.vit.ast-finetuned-audioset-10-10-0593": {
-        "*": {
-            "repo": "MIT/ast-finetuned-audioset-10-10-0.4593",
-            "pkg": {
-                "0": {
-                    "transformers": "ASTModel"
-                }
-            }
-        }
-    },
-    "info.vit.mgp-str": {
-        "*": {
-            "repo": "alibaba-damo/mgp-str-base",
-            "pkg": {
-                "0": {
-                    "transformers": "MgpstrForSceneTextRecognition"
-                }
-            }
+            },
+            "tasks": [
+                "OmDetTurboForObjectDetection",
+                "OmDetTurboPreTrainedModel"
+            ]
         }
     },
     "info.vit.blip2-opt": {
@@ -2577,47 +5082,51 @@
                 "0": {
                     "transformers": "Blip2Model"
                 }
-            }
+            },
+            "tasks": [
+                "Blip2Model",
+                "Blip2VisionModelWithProjection",
+                "Blip2QFormerModel",
+                "Blip2PreTrainedModel",
+                "Blip2ForConditionalGeneration",
+                "Blip2ForImageTextRetrieval",
+                "Blip2VisionModel",
+                "Blip2TextModelWithProjection"
+            ]
         }
     },
-    "info.art.efficient-mlm-m0-0": {
+    "info.art.deberta-v2-x": {
         "*": {
-            "repo": "andreasmadsen/efficient_mlm_m0.40",
+            "repo": "microsoft/deberta-v2-xlarge",
             "pkg": {
                 "0": {
-                    "transformers": "RobertaPreLayerNormModel"
+                    "transformers": "DebertaV2Model"
                 }
-            }
+            },
+            "tasks": [
+                "DebertaV2ForMaskedLM",
+                "DebertaV2ForMultipleChoice",
+                "DebertaV2ForQuestionAnswering",
+                "DebertaV2ForSequenceClassification",
+                "DebertaV2ForTokenClassification",
+                "DebertaV2Model",
+                "DebertaV2PreTrainedModel"
+            ]
         }
     },
-    "info.aet.wav2vec2-conformer-rel-pos": {
+    "info.vit.ast-finetuned-audioset-10-10-0593": {
         "*": {
-            "repo": "facebook/wav2vec2-conformer-rel-pos-large",
+            "repo": "MIT/ast-finetuned-audioset-10-10-0.4593",
             "pkg": {
                 "0": {
-                    "transformers": "Wav2Vec2ConformerModel"
+                    "transformers": "ASTModel"
                 }
-            }
-        }
-    },
-    "info.aet.unispeech-sat-100h-libri-ft": {
-        "*": {
-            "repo": "microsoft/unispeech-sat-base-100h-libri-ft",
-            "pkg": {
-                "0": {
-                    "transformers": "UniSpeechSatModel"
-                }
-            }
-        }
-    },
-    "info.detr.table-transformer-detection": {
-        "*": {
-            "repo": "microsoft/table-transformer-detection",
-            "pkg": {
-                "0": {
-                    "transformers": "TableTransformerModel"
-                }
-            }
+            },
+            "tasks": [
+                "ASTForAudioClassification",
+                "ASTModel",
+                "ASTPreTrainedModel"
+            ]
         }
     },
     "info.detr.dab-detr": {
@@ -2627,57 +5136,12 @@
                 "0": {
                     "transformers": "DabDetrModel"
                 }
-            }
-        }
-    },
-    "info.aet.wav2vec2-bert-rel-pos": {
-        "*": {
-            "repo": "facebook/w2v-bert-2.0",
-            "pkg": {
-                "0": {
-                    "transformers": "Wav2Vec2BertModel"
-                }
-            }
-        }
-    },
-    "info.detr.mm-grounding-dino-o365v1-goldg-v3det": {
-        "*": {
-            "repo": "openmmlab-community/mm_grounding_dino_tiny_o365v1_goldg_v3det",
-            "pkg": {
-                "0": {
-                    "transformers": "MMGroundingDinoModel"
-                }
-            }
-        }
-    },
-    "info.art.bert-for-seq-generation-l-24-bbc-encoder": {
-        "*": {
-            "repo": "google/bert_for_seq_generation_L-24_bbc_encoder",
-            "pkg": {
-                "0": {
-                    "transformers": "BertGenerationEncoder"
-                }
-            }
-        }
-    },
-    "info.detr.grounding-dino": {
-        "*": {
-            "repo": "IDEA-Research/grounding-dino-tiny",
-            "pkg": {
-                "0": {
-                    "transformers": "GroundingDinoModel"
-                }
-            }
-        }
-    },
-    "info.art.xlm-roberta-xl": {
-        "*": {
-            "repo": "facebook/xlm-roberta-xl",
-            "pkg": {
-                "0": {
-                    "transformers": "XLMRobertaXLModel"
-                }
-            }
+            },
+            "tasks": [
+                "DabDetrForObjectDetection",
+                "DabDetrModel",
+                "DabDetrPreTrainedModel"
+            ]
         }
     },
     "info.aet.sew-d": {
@@ -2687,7 +5151,299 @@
                 "0": {
                     "transformers": "SEWDModel"
                 }
-            }
+            },
+            "tasks": [
+                "SEWDForCTC",
+                "SEWDForSequenceClassification",
+                "SEWDModel",
+                "SEWDPreTrainedModel"
+            ]
+        }
+    },
+    "info.art.bert-for-seq-generation-l-24-bbc-encoder": {
+        "*": {
+            "repo": "google/bert_for_seq_generation_L-24_bbc_encoder",
+            "pkg": {
+                "0": {
+                    "transformers": "BertGenerationEncoder"
+                }
+            },
+            "tasks": [
+                "BertGenerationDecoder",
+                "BertGenerationEncoder",
+                "BertGenerationPreTrainedModel"
+            ]
+        }
+    },
+    "info.aet.wav2vec2-bert-rel-pos": {
+        "*": {
+            "repo": "facebook/w2v-bert-2.0",
+            "pkg": {
+                "0": {
+                    "transformers": "Wav2Vec2BertModel"
+                }
+            },
+            "tasks": [
+                "Wav2Vec2BertForAudioFrameClassification",
+                "Wav2Vec2BertForCTC",
+                "Wav2Vec2BertForSequenceClassification",
+                "Wav2Vec2BertForXVector",
+                "Wav2Vec2BertModel",
+                "Wav2Vec2BertPreTrainedModel"
+            ]
+        }
+    },
+    "info.stst.nllb-moe": {
+        "*": {
+            "repo": "facebook/nllb-moe-54b",
+            "pkg": {
+                "0": {
+                    "transformers": "NllbMoeModel"
+                }
+            },
+            "tasks": [
+                "NllbMoeForConditionalGeneration",
+                "NllbMoeModel",
+                "NllbMoePreTrainedModel",
+                "NllbMoeTop2Router",
+                "NllbMoeSparseMLP"
+            ]
+        }
+    },
+    "info.art.efficient-mlm-m0-0": {
+        "*": {
+            "repo": "andreasmadsen/efficient_mlm_m0.40",
+            "pkg": {
+                "0": {
+                    "transformers": "RobertaPreLayerNormModel"
+                }
+            },
+            "tasks": [
+                "RobertaPreLayerNormForCausalLM",
+                "RobertaPreLayerNormForMaskedLM",
+                "RobertaPreLayerNormForMultipleChoice",
+                "RobertaPreLayerNormForQuestionAnswering",
+                "RobertaPreLayerNormForSequenceClassification",
+                "RobertaPreLayerNormForTokenClassification",
+                "RobertaPreLayerNormModel",
+                "RobertaPreLayerNormPreTrainedModel"
+            ]
+        }
+    },
+    "info.art.xlm-roberta": {
+        "*": {
+            "repo": "FacebookAI/xlm-roberta-base",
+            "pkg": {
+                "0": {
+                    "transformers": "XLMRobertaModel"
+                }
+            },
+            "tasks": [
+                "XLMRobertaForCausalLM",
+                "XLMRobertaForMaskedLM",
+                "XLMRobertaForMultipleChoice",
+                "XLMRobertaForQuestionAnswering",
+                "XLMRobertaForSequenceClassification",
+                "XLMRobertaForTokenClassification",
+                "XLMRobertaModel",
+                "XLMRobertaPreTrainedModel"
+            ]
+        }
+    },
+    "info.vit.mgp-str": {
+        "*": {
+            "repo": "alibaba-damo/mgp-str-base",
+            "pkg": {
+                "0": {
+                    "transformers": "MgpstrForSceneTextRecognition"
+                }
+            },
+            "tasks": [
+                "MgpstrModel",
+                "MgpstrPreTrainedModel",
+                "MgpstrForSceneTextRecognition"
+            ]
+        }
+    },
+    "info.stst.blenderbot": {
+        "*": {
+            "repo": "facebook/blenderbot_small-90M",
+            "pkg": {
+                "0": {
+                    "transformers": "BlenderbotSmallModel"
+                }
+            },
+            "tasks": [
+                "BlenderbotSmallForCausalLM",
+                "BlenderbotSmallForConditionalGeneration",
+                "BlenderbotSmallModel",
+                "BlenderbotSmallPreTrainedModel"
+            ]
+        }
+    },
+    "info.art.xlm-roberta-xl": {
+        "*": {
+            "repo": "facebook/xlm-roberta-xl",
+            "pkg": {
+                "0": {
+                    "transformers": "XLMRobertaXLModel"
+                }
+            },
+            "tasks": [
+                "XLMRobertaXLForCausalLM",
+                "XLMRobertaXLForMaskedLM",
+                "XLMRobertaXLForMultipleChoice",
+                "XLMRobertaXLForQuestionAnswering",
+                "XLMRobertaXLForSequenceClassification",
+                "XLMRobertaXLForTokenClassification",
+                "XLMRobertaXLModel",
+                "XLMRobertaXLPreTrainedModel"
+            ]
+        }
+    },
+    "info.art.megatron-bert-uncased": {
+        "*": {
+            "repo": "nvidia/megatron-bert-uncased-345m",
+            "pkg": {
+                "0": {
+                    "transformers": "MegatronBertModel"
+                }
+            },
+            "tasks": [
+                "MegatronBertForCausalLM",
+                "MegatronBertForMaskedLM",
+                "MegatronBertForMultipleChoice",
+                "MegatronBertForNextSentencePrediction",
+                "MegatronBertForPreTraining",
+                "MegatronBertForQuestionAnswering",
+                "MegatronBertForSequenceClassification",
+                "MegatronBertForTokenClassification",
+                "MegatronBertModel",
+                "MegatronBertPreTrainedModel"
+            ]
+        }
+    },
+    "info.detr.grounding-dino": {
+        "*": {
+            "repo": "IDEA-Research/grounding-dino-tiny",
+            "pkg": {
+                "0": {
+                    "transformers": "GroundingDinoModel"
+                }
+            },
+            "tasks": [
+                "GroundingDinoForObjectDetection",
+                "GroundingDinoModel",
+                "GroundingDinoPreTrainedModel"
+            ]
+        }
+    },
+    "info.detr.table-transformer-detection": {
+        "*": {
+            "repo": "microsoft/table-transformer-detection",
+            "pkg": {
+                "0": {
+                    "transformers": "TableTransformerModel"
+                }
+            },
+            "tasks": [
+                "TableTransformerForObjectDetection",
+                "TableTransformerModel",
+                "TableTransformerPreTrainedModel"
+            ]
+        }
+    },
+    "info.aet.funnel": {
+        "*": {
+            "repo": "funnel-transformer/small",
+            "pkg": {
+                "0": {
+                    "transformers": "FunnelModel"
+                }
+            },
+            "tasks": [
+                "FunnelBaseModel",
+                "FunnelForMaskedLM",
+                "FunnelForMultipleChoice",
+                "FunnelForPreTraining",
+                "FunnelForQuestionAnswering",
+                "FunnelForSequenceClassification",
+                "FunnelForTokenClassification",
+                "FunnelModel",
+                "FunnelPreTrainedModel"
+            ]
+        }
+    },
+    "info.aet.unispeech-sat-100h-libri-ft": {
+        "*": {
+            "repo": "microsoft/unispeech-sat-base-100h-libri-ft",
+            "pkg": {
+                "0": {
+                    "transformers": "UniSpeechSatModel"
+                }
+            },
+            "tasks": [
+                "UniSpeechSatForAudioFrameClassification",
+                "UniSpeechSatForCTC",
+                "UniSpeechSatForPreTraining",
+                "UniSpeechSatForSequenceClassification",
+                "UniSpeechSatForXVector",
+                "UniSpeechSatModel",
+                "UniSpeechSatPreTrainedModel"
+            ]
+        }
+    },
+    "info.aet.wav2vec2-conformer-rel-pos": {
+        "*": {
+            "repo": "facebook/wav2vec2-conformer-rel-pos-large",
+            "pkg": {
+                "0": {
+                    "transformers": "Wav2Vec2ConformerModel"
+                }
+            },
+            "tasks": [
+                "Wav2Vec2ConformerForAudioFrameClassification",
+                "Wav2Vec2ConformerForCTC",
+                "Wav2Vec2ConformerForPreTraining",
+                "Wav2Vec2ConformerForSequenceClassification",
+                "Wav2Vec2ConformerForXVector",
+                "Wav2Vec2ConformerModel",
+                "Wav2Vec2ConformerPreTrainedModel"
+            ]
+        }
+    },
+    "info.detr.mm-grounding-dino-o365v1-goldg-v3det": {
+        "*": {
+            "repo": "openmmlab-community/mm_grounding_dino_tiny_o365v1_goldg_v3det",
+            "pkg": {
+                "0": {
+                    "transformers": "MMGroundingDinoModel"
+                }
+            },
+            "tasks": [
+                "MMGroundingDinoForObjectDetection",
+                "MMGroundingDinoModel",
+                "MMGroundingDinoPreTrainedModel"
+            ]
+        }
+    },
+    "info.art.gpt2": {
+        "*": {
+            "repo": "openai-community/gpt2",
+            "pkg": {
+                "0": {
+                    "transformers": "GPT2Model"
+                }
+            },
+            "tasks": [
+                "GPT2DoubleHeadsModel",
+                "GPT2ForQuestionAnswering",
+                "GPT2ForSequenceClassification",
+                "GPT2ForTokenClassification",
+                "GPT2LMHeadModel",
+                "GPT2Model",
+                "GPT2PreTrainedModel"
+            ]
         }
     },
     "ops.precision.uint": {
@@ -4334,6 +7090,15 @@
             ],
             "layer_b3": [
                 "6c9c5642aa8dce62bcb3eb577bc519619a2d868005c767c5e65371c583a8a8eb"
+            ],
+            "tasks": [
+                "Wav2Vec2ConformerForAudioFrameClassification",
+                "Wav2Vec2ConformerForCTC",
+                "Wav2Vec2ConformerForPreTraining",
+                "Wav2Vec2ConformerForSequenceClassification",
+                "Wav2Vec2ConformerForXVector",
+                "Wav2Vec2ConformerModel",
+                "Wav2Vec2ConformerPreTrainedModel"
             ]
         }
     },
@@ -4541,6 +7306,15 @@
                 "3f62bfb6bbde05f01435129326166c44aeb113ac0d9f735f31ed3f7dd04f6980",
                 "22f866f3c96a92bc61e9965cf366d706db942ad047ba8cb82109edcd4e68fa40",
                 "f3fa9d7a8f15741621c1fe82f8a1bcc5c601c900d947ac09fba7016615a252a5"
+            ],
+            "tasks": [
+                "CLIPModel",
+                "CLIPPreTrainedModel",
+                "CLIPTextModel",
+                "CLIPTextModelWithProjection",
+                "CLIPVisionModel",
+                "CLIPVisionModelWithProjection",
+                "CLIPForImageClassification"
             ]
         }
     },
@@ -4581,6 +7355,15 @@
                 "f606463295ecf3bae8920d3d45bb9d180793418b3d08c3e84d4c4135c7dc2aa5",
                 "7060993a5eb32d94d1ea8aef7a7301e7be73b199c639c63f8f7cfbfcd2abf10e",
                 "b92af95334c657371af6051a91374a41b5455907fa6622bb66a8c112dc511600"
+            ],
+            "tasks": [
+                "CLIPModel",
+                "CLIPPreTrainedModel",
+                "CLIPTextModel",
+                "CLIPTextModelWithProjection",
+                "CLIPVisionModel",
+                "CLIPVisionModelWithProjection",
+                "CLIPForImageClassification"
             ]
         }
     },
@@ -4606,6 +7389,15 @@
                 "227f26ed63120b9034f4a0c90b6b37eede721a8260f2c1e8f7ea3ccc0d109e7e",
                 "3a38ffd1b60499cf2f451f3065079ff26efb9190a86f23ad1c8d993bbeb9af05",
                 "ce06cf1fd684269ee96631b2bf9334c6ecde6a84a55760dfa0d9d2a6411f28e4"
+            ],
+            "tasks": [
+                "CLIPModel",
+                "CLIPPreTrainedModel",
+                "CLIPTextModel",
+                "CLIPTextModelWithProjection",
+                "CLIPVisionModel",
+                "CLIPVisionModelWithProjection",
+                "CLIPForImageClassification"
             ]
         }
     },

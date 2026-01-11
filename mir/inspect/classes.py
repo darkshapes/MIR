@@ -80,36 +80,6 @@ def extract_inherited_classes(model_class: Union[Callable, str], pkg_name: Optio
     return class_names
 
 
-def extract_init_params(module: Union[Callable, str], pkg_name: Optional[str] = None) -> Dict[str, List[str]]:
-    """Pick apart a Diffusers or Transformers pipeline class and find its constituent parts (formerly root_class)\n
-    :param module: Origin pipeline as a class or as a string
-    :param library: name of a library to import the class from, only if a string is provided
-    :return: Dictionary of sub-classes from the `module`"""
-
-    import inspect
-
-    if pkg_name and isinstance(module, str):
-        module = import_submodules(module, pkg_name)
-    signature = inspect.signature(module.__init__)
-    class_names = {}
-    for folder, param in signature.parameters.items():
-        if folder != "self":
-            sub_module = str(param.annotation).split("'")
-            if len(sub_module) > 1 and sub_module[1] not in [
-                "bool",
-                "int",
-                "float",
-                "complex",
-                "str",
-                "list",
-                "tuple",
-                "dict",
-                "set",
-            ]:
-                class_names.setdefault(folder, sub_module[1].split("."))
-    return class_names
-
-
 # def pull_weight_map(repo_id: str, arch: str) -> Dict[str, str]:
 #     from nnll.download.hub_cache import download_hub_file
 

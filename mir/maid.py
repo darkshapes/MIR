@@ -20,7 +20,7 @@ class MIRDatabase:
 
         if not database:
             try:
-                self.database = read_json_file(MIR_PATH_NAMED)
+                self.database: dict[str, Any] = read_json_file(MIR_PATH_NAMED)
             except JSONDecodeError as error_log:
                 dbuq(error_log)
                 self.database = {}
@@ -32,7 +32,7 @@ class MIRDatabase:
         parent_key = next(iter(resource))
         if self.database is not None:
             if self.database.get(parent_key, 0):
-                self.database[parent_key] = {**self.database[parent_key], **resource[parent_key]}
+                self.database[parent_key] = self.database[parent_key] | resource[parent_key]
             else:
                 self.database[parent_key] = resource[parent_key]
 
@@ -65,7 +65,7 @@ class MIRDatabase:
             self.database = read_json_file(MIR_PATH_NAMED)
             return self.database
 
-    def _stage_maybes(self, maybe_match: str, target: str, series: str, compatibility: str) -> List[str]:
+    def _stage_maybes(self, maybe_match: str, target: str, series: str, compatibility: str) -> list[str | bool]:
         """Process a single value for matching against the target\n
         :param value: An unknown string value
         :param target: The search target
@@ -79,7 +79,7 @@ class MIRDatabase:
 
         results = []
         if isinstance(maybe_match, str):
-            maybe_match = [maybe_match]
+            maybe_match: list[str] = [maybe_match]
         elif isinstance(maybe_match, dict):
             if isinstance(next(iter(maybe_match)), int):
                 maybe_match = list(maybe_match.values())
@@ -97,7 +97,7 @@ class MIRDatabase:
         return results
 
     @staticmethod
-    def grade_maybes(matches: List[List[str]], target: str) -> list[str, str]:
+    def grade_maybes(matches: List[List[str]], target: str) -> list[str] | None:
         """Evaluate and select the best match from a list of potential matches\n
         :param matches: Possible matches to compare
         :param target: Desired entry to match
@@ -151,7 +151,6 @@ class MIRDatabase:
         parameters = r"-gguf|-exl2|-exl3|-onnx|-awq|-mlx|-ov"  #
         target = target.lower().strip("-")
         target = re.sub(parameters, "", target)
-        self.matches = None
         self.matches = []
 
         for series, comp in self.database.items():
@@ -229,6 +228,9 @@ def main(mir_db: Callable | None = None, remake: bool = True) -> None:
     add_mir_diffusion(mir_db)
     add_mir_llm(mir_db)
     add_mir_vae(mir_db)
+    mir_db.write_to_disk()
+    mir_db = MIRDatabase()
+    mir_db = MIRDatabase()
     mir_update(mir_db)
     mir_db.write_to_disk()
 
@@ -242,8 +244,6 @@ if __name__ == "__main__":
 
     if "pytest" not in sys_modules:  #
         import argparse
-
-        from mir.config.console import nfo
 
         parser = argparse.ArgumentParser(
             formatter_class=argparse.RawTextHelpFormatter,
@@ -283,6 +283,7 @@ if __name__ == "__main__":
         pipes = not args.pipes_off
 
     main(remake=remake)
+    update_mir()
     from mir.inspect.tasks import pipe, run_task
 
     mir_db = run_task()

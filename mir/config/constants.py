@@ -41,7 +41,7 @@ def mapped_cls(model_identifier: str):
     return None
 
 
-def import_submodules(module_name: str, pkg_name_or_abs_path: str) -> Callable:
+def import_submodules(module_name: str, pkg_name_or_abs_path: str) -> Callable | None:
     """Convert two strings into a callable function or property\n
     :param module: The name of the module to import
     :param library_path: Base package for the module
@@ -62,7 +62,7 @@ def import_submodules(module_name: str, pkg_name_or_abs_path: str) -> Callable:
         nfo("failed to find module {module}")
 
 
-def extract_init_params(module: Callable | str, package_name: str | None = None) -> dict[str, list[str]]:
+def extract_init_parameters(module: Callable | str, package_name: str | None = None) -> dict[str, list[str]]:
     """Pick apart a Diffusers or Transformers pipeline class and find its constituent parts (formerly root_class)\n
     :param module: Origin pipeline as a class or as a string
     :param library: name of a library to import the class from, only if a string is provided
@@ -77,23 +77,12 @@ def extract_init_params(module: Callable | str, package_name: str | None = None)
         module_obj = module
     signature = inspect.signature(module_obj.__init__)
     class_names = {}
-    for folder, param in signature.parameters.items():
-        if folder not in ["self", "kwargs", "use_cache"]:
-            sub_module = str(param.annotation).split("'")
-            if len(sub_module) > 1 and sub_module[1] not in [
-                "bool",
-                "int",
-                "float",
-                "complex",
-                "str",
-                "list",
-                "tuple",
-                "dict",
-                "set",
-                "inspect",
-                "_empty",
-            ]:
-                class_names.setdefault(folder, sub_module[1].split("."))
+    editable_signature = signature.parameters.copy()
+    editable_signature.pop("self", None)
+    editable_signature.pop("kwargs", None)
+    editable_signature.pop("use_cache", None)
+    for folder, param in editable_signature.items():
+        class_names.setdefault(folder, True)
     return class_names
 
 
@@ -110,9 +99,9 @@ class ClassMapEntry:
 
     def __post_init__(self):
         if self.model:
-            self.model_params = extract_init_params(self.model)
+            self.model_params = extract_init_parameters(self.model)
         if self.config:
-            self.config_params = extract_init_params(self.config)
+            self.config_params = extract_init_parameters(self.config)
 
 
 @dataclass

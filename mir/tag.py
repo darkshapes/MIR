@@ -94,12 +94,12 @@ def tag_base_model(repo_path: str, class_name: str, addendum: dict | None = None
     :param class_name: The HF transformers class for the model
     :return: A segmented MIR tag useful for appending index entries"""
 
-    from mir.config.constants import extract_init_params
+    from mir.config.constants import extract_init_parameters
 
-    annotations = extract_init_params(class_name.replace("Model", "Config"), "transformers")
+    annotations = extract_init_parameters(class_name.replace("Model", "Config"), "transformers")
     if not annotations:
         class_name = class_name.replace("Config", "Model")
-        annotations = extract_init_params(class_name, "transformers")
+        annotations = extract_init_parameters(class_name, "transformers")
     if not annotations:
         raise TypeError("No mode type returned")
     mir_prefix = mir_prefix_from_forward_pass(True, **annotations)

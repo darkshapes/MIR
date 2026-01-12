@@ -4,7 +4,7 @@
 from typing import Callable, Generator
 
 import diffusers
-from mir.config.constants import ClassMapEntry, DocStringEntry, extract_init_params
+from mir.config.constants import ClassMapEntry, DocStringEntry, extract_init_parameters
 from mir.config.conversion import retrieve_diffusers_docstrings
 
 

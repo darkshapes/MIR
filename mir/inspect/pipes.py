@@ -9,13 +9,13 @@ def show_shared_hyperparameters(parameter_filter: Optional[str] = None) -> List[
     :param from_match: Narrow the classes to only those with an exact key inside
     :return: A list of all Classes"""
     from mir.inspect.metadata import map_transformers_classes
-    from mir.config.constants import extract_init_params
+    from mir.config.constants import extract_init_parameters
 
     transformers_data = map_transformers_classes()
     config_data = []
     for entry in transformers_data:
         if parameter_filter:
-            segments = extract_init_params(module=entry.config, package_name="transformers")
+            segments = extract_init_parameters(module=entry.config, package_name="transformers")
             if parameter_filter in list(segments):
                 config_data.append(entry.config)
         else:

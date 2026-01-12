@@ -53,8 +53,19 @@
     "timm_backbone": {
         "repo_path": "microsoft/resnet-50"
     },
+    "gpt_oss": {
+        "repo_path": "openai/gpt-oss-120b"
+    },
+    "bert": {
+        "repo_path": "google-bert/bert-base-uncased"
+    },
     "timm_wrapper": {
-        "repo_path": "timm/resnet18.a1_in1k"
+        "repo_path": "timm/resnet18.a1_in1k",
+        "params": {
+            "_resnet_": [
+                ""
+            ]
+        }
     },
     "vision-text-dual-encoder": {
         "repo_path": "hakuhodo-tech/japanese-clip-vit-h-14-bert-wider"

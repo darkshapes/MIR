@@ -8,7 +8,7 @@ import sys
 from typing import Any, Callable
 
 from mir.config.console import nfo
-from mir.config.constants import ClassMapEntry, extract_init_params
+from mir.config.constants import ClassMapEntry, extract_init_parameters
 from mir.config.conversion import get_repo_from_class_map, import_submodules
 from mir.doc_parser import parse_docs, DocParseData
 from mir.tag import mir_prefix_from_forward_pass, mir_tag_from_config, tag_model_from_repo
@@ -47,7 +47,7 @@ def create_pipe_entry(repo_path: str, class_name: str, model_class_obj: Callable
     mir_prefix = "info"
     if hasattr(diffusers, class_name):
         model_class_obj = getattr(diffusers, class_name)
-        sub_segments = extract_init_params(model_class_obj, "diffusers")
+        sub_segments = extract_init_parameters(model_class_obj, "diffusers")
         decoder = "decoder" in sub_segments
         if repo_path in ["kandinsky-community/kandinsky-3"]:
             mir_prefix = "info.unet"
@@ -116,7 +116,7 @@ def diffusers_index() -> dict[str, dict[str, dict[str, Any]]]:
         model_class_obj = import_submodules(parsed_data.pipe_class, f"diffusers.pipelines.{extracted.package_name}.{extracted.file_name}")
         if not model_class_obj:
             continue
-        extract_init_params(model_class_obj)
+        extract_init_parameters(model_class_obj)
         try:
             series, comp_data = create_pipe_entry(parsed_data.pipe_repo, parsed_data.pipe_class)
         except TypeError:
@@ -167,13 +167,14 @@ def transformers_index():
         repo_path = get_repo_from_class_map(entry)
         if config := missing_config_params.get(entry.name, {}):
             entry.config_params = config.get("params", entry.config_params)
-            if not repo_path:
+            if not repo_path or entry.name == "gpt_oss":
                 repo_path = config["repo_path"]
         if not repo_path:
             raise ValueError(f"Unable to determine repo from {entry}")
-        if entry.config_params and list(entry.config_params) != ["use_cache", "kwargs"]:
+        if entry.config_params:
             mir_series, mir_comp, mir_suffix = mir_tag_from_config(entry, repo_path)
             # modalities = add_mode_types(mir_tag=[mir_series, mir_comp])
+
             repo_path = check_migrations(repo_path)
             tk_pkg = {}
             tokenizer_classes = TOKENIZER_MAPPING_NAMES.get(entry.name)

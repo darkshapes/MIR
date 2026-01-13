@@ -39,7 +39,7 @@ Homepage      = "https://github.com/darkshapes/MIR"
 Documentation = "https://github.com/darkshapes/sdbx/wiki"
 
 [project.scripts]
-mir = "mir.__init__:main"
+mir = "mir.generate.__main__:main"
 
 [tool.setuptools_scm]
 version_scheme = "guess-next-dev"

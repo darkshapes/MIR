@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-# pylint: disable=import-outside-toplevel
-
 from typing import Any
 
 
@@ -17,8 +15,6 @@ def write_json_file(folder_path_named: str, file_name: str, data: Any, mode: str
     import json
     import os
 
-    from mir.config.console import dbuq
-
     if ".json" not in file_name:
         file_name += ".json"
     document = os.path.join(folder_path_named, os.path.basename(file_name))
@@ -26,7 +22,7 @@ def write_json_file(folder_path_named: str, file_name: str, data: Any, mode: str
         try:
             os.remove(document)
         except FileNotFoundError as error_log:
-            dbuq(f"'File was detected but not found to remove: {document}.'{error_log}", exc_info=True)
+            print(f"'File was detected but not found to remove: {document}.'{error_log}")
 
     with open(document, mode, encoding="UTF-8") as i:
         json.dump(data, i, ensure_ascii=False, indent=4, sort_keys=False)

@@ -1,4 +1,7 @@
 {
+    "breaking": ".*(?:-)(prior)$|.*(?:-)(diffusers)$|.*[_-](\\d{3,4}px|-T2V$|-I2V$)",
+    "search": "\\d+[._-]?\\d+[BbMmKk](it)?|[._-]\\d+[BbMmKk](it)?",
+    "parameters": "(\\d{1,4}[KkMmBb]|[._-]\\d+[\\._-]\\d+[Bb][._-]).*?$",
     "semantic": [
         "-?\\d+[bBmMkK]",
         "-?v\\d+",
@@ -8,7 +11,7 @@
         "-large$",
         "-medium$"
     ],
-    "suffixes": [
+    "suffix": [
         "-\\d{1,2}[bBmMkK]",
         "-\\d[1-9][bBmMkK]",
         "-v\\d{1,2}",

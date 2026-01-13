@@ -1,10 +1,14 @@
-#  # # <!-- // /*  SPDX-License-Identifier: MPL-2.0*/ -->
-#  # # <!-- // /*  d a r k s h a p e s */ -->
+# SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
+# <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import Any, Callable, Dict, List, get_type_hints
+
+from typing import Any, Callable, List, get_type_hints
+from mir.generate.from_module import get_internal_name_for, import_object_named
+from mir.generate.transformers.index import show_transformers_tasks
 from mir.maid import MIRDatabase
-from mir.config.console import dbuq
-
+from mir.generate.diffusers.index import show_diffusers_tasks
+from mir.generate.diffusers.schedulers import tag_scheduler
+from mir import DBUQ
 
 flatten_map: List[Any] = lambda nested, unpack: [element for iterative in getattr(nested, unpack)() for element in iterative]
 flatten_map.__annotations__ = {"nested": List[str], "unpack": str}
@@ -24,64 +28,6 @@ class TaskAnalyzer:
         self.skip_auto = ["AutoTokenizer", "AutoModel", "AutoencoderTiny", "AutoencoderKL", "AutoPipelineForImage2Image"]
         self.skip_types = ["int", "bool", "float", "Optional", "NoneType", "List", "UNet2DConditionModel"]
         self.mflux_tasks = ["Image", "Redux", "Kontext", "Depth", "Fill", "ConceptAttention", "ControlNet", "CavTon", "IC-Edit"]
-
-    @staticmethod
-    def show_diffusers_tasks(code_name: str, class_name: str | None = None) -> list[str]:
-        """Return Diffusers task pipes based on package-specific query\n
-        :param class_name: To find task pipes from a Diffusers class pipe, defaults to None
-        :param code_name: To find task pipes from a Transformers class pipe, defaults to None
-        :return: A list of alternate class pipelines derived from the specified class"""
-
-        if class_name:
-            from diffusers.pipelines.auto_pipeline import SUPPORTED_TASKS_MAPPINGS, _get_task_class
-
-            alt_tasks = set()
-            for task_map in SUPPORTED_TASKS_MAPPINGS:
-                task_class = _get_task_class(task_map, class_name, False)
-                if task_class:
-                    alt_tasks.add(task_class.__name__)
-                    dbuq(task_class)
-                for model_code, pipe_class_obj in task_map.items():
-                    if code_name in model_code:
-                        alt_tasks.add(pipe_class_obj.__name__)
-
-        return list(alt_tasks)
-
-    @staticmethod
-    def show_transformers_tasks(class_name: str | None = None, code_name: str | None = None) -> list[str]:
-        """Retrieves a list of task classes associated with a specified transformer class.\n
-        :param class_name: The name of the transformer class to inspect.
-        :param pkg_type: The dependency for the module
-        :param alt_method: Use an alternate method to return the classes
-        :return: A list of task classes associated with the specified transformer."""
-
-        task_classes = None
-
-        if not code_name:
-            from mir.config.conversion import import_submodules
-
-            class_obj: Callable = import_submodules(class_name, "transformers")
-            class_module: Callable = import_submodules(*class_obj.__module__.split(".", 1)[-1:], class_obj.__module__.split(".", 1)[0])
-            if class_module and class_module.__name__ != "DummyPipe":
-                task_classes = getattr(class_module, "__all__")
-            else:
-                return None
-        elif code_name:
-            from mir.config.constants import mapped_cls
-            from httpx import HTTPStatusError
-
-            try:
-                model_class = mapped_cls(code_name)
-                if model_class is not None:
-                    # Convert class type to list containing the class name string
-                    task_classes = [model_class.__name__]
-                else:
-                    return None
-            except (OSError, HTTPStatusError) as e:
-                dbuq(f"Error mapping class {code_name}: {e}")
-                return None
-
-        return task_classes
 
     async def detect_tasks(self, mir_db: MIRDatabase, field_name: str = "pkg") -> dict:
         """Detects and traces tasks MIR data\n
@@ -120,7 +66,6 @@ class TaskAnalyzer:
         :type field_name: str, optional
         :return:A dictionary mapping series names to their respective compatibility and traced tasks.
         :rtype: dict"""
-        from mir.config.conversion import import_submodules
 
         data_tuple = []
         for series, compatibility_data in mir_db.database.items():
@@ -134,8 +79,8 @@ class TaskAnalyzer:
                         for _, pkg_tree in field_data[field_name].items():
                             if pkg_tree and next(iter(pkg_tree)) == "diffusers":
                                 module_name = pkg_tree[next(iter(pkg_tree))]
-                                dbuq(f"{module_name} pipe originator")
-                                class_obj = import_submodules(module_name, "diffusers")
+                                DBUQ(f"{module_name} pipe originator")
+                                class_obj = import_object_named(module_name, "diffusers")
                                 pipe_args = get_type_hints(class_obj.__init__)
                                 detected_pipe = await self.hyperlink_to_mir(pipe_args, series, mir_db)
                                 data_tuple.append((*series.rsplit(".", 1), {compatibility: detected_pipe}))
@@ -157,7 +102,7 @@ class TaskAnalyzer:
             if not any(segment for segment in self.skip_types if pipe_class.__name__ == segment):
                 mir_tag = None
                 detected_links["pipe_names"][pipe_role] = []
-                dbuq(f"pipe_class.__name__ {pipe_class.__name__} {pipe_class}")
+                DBUQ(f"pipe_class.__name__ {pipe_class.__name__} {pipe_class}")
                 if pipe_class.__name__ in ["Union"]:
                     for union_class in pipe_class.__args__:
                         mir_tag = None
@@ -182,8 +127,6 @@ class TaskAnalyzer:
         :param mir_db: MIRDatabase instance for querying tags/IDs
         :return: Tuple containing MIR tag and class name"""
 
-        from mir.tag import tag_scheduler
-
         mir_tag = None
         class_name = pipe_class.__name__
         if pipe_role in ["scheduler", "image_noising_scheduler", "prior_scheduler"]:
@@ -192,18 +135,18 @@ class TaskAnalyzer:
             mir_tag = [f"ops.scheduler.{scheduler_series}", scheduler_comp]
             if not mir_db.database.get(mir_tag[0], {}).get(mir_tag[1]):
                 mir_tag = mir_db.find_tag(field="pkg", target=class_name, sub_field=sub_field, domain="ops.scheduler")
-            dbuq(f"scheduler {mir_tag} {class_name} {sub_field} ")
+            DBUQ(f"scheduler {mir_tag} {class_name} {sub_field} ")
         elif pipe_role == "vae":
             sub_field = pipe_class.__module__.split(".")[0]
             mir_comp = series.rsplit(".", 1)[-1]
-            dbuq(mir_comp)
+            DBUQ(mir_comp)
             mir_tag = [mir_id for mir_id, comp_data in mir_db.database.items() if "info.vae" in mir_id and next(iter(comp_data)) == mir_comp]
             if mir_tag:
                 mir_tag.append(mir_comp)  # keep mir tag as single list
             elif class_name != "AutoencoderKL":
-                dbuq(pipe_class)
+                DBUQ(pipe_class)
                 mir_tag = mir_db.find_tag(field="pkg", target=class_name, sub_field=sub_field, domain="info.vae")
-            dbuq(f"vae {mir_tag} {class_name} {sub_field} ")
+            DBUQ(f"vae {mir_tag} {class_name} {sub_field} ")
         else:
             mir_tag = mir_db.find_tag(field="tasks", target=class_name)
         return mir_tag, class_name
@@ -213,119 +156,24 @@ class TaskAnalyzer:
         :param entry: The object containing the model information.
         :return: A sorted list of tasks applicable to the model."""
 
-        from mir.inspect.classes import resolve_code_names
-
         preformatted_task_data = None
         filtered_tasks = None
         snip_words: set[str] = {"load_tf_weights_in"}
         package_name = next(iter(pkg_tree))
-        dbuq(pkg_tree)
+        DBUQ(pkg_tree)
         class_name = pkg_tree[package_name]
-        dbuq(f"{package_name}, {class_name}")
+        DBUQ(f"{package_name}, {class_name}")
         if class_name not in self.skip_auto:
             if isinstance(class_name, dict):
                 class_name = next(iter(list(class_name)))
             if package_name == "transformers":
-                preformatted_task_data = self.show_transformers_tasks(class_name=class_name)
+                preformatted_task_data = show_transformers_tasks(class_name=class_name)
             elif package_name == "diffusers":
-                code_name = resolve_code_names(class_name, package_name)
-                preformatted_task_data = self.show_diffusers_tasks(code_name=code_name, class_name=class_name)
+                code_name = get_internal_name_for(class_name, package_name)
+                preformatted_task_data = show_diffusers_tasks(code_name=code_name, class_name=class_name)
                 preformatted_task_data.sort()
             elif package_name == "mflux":
                 preformatted_task_data = self.mflux_tasks
             if preformatted_task_data:
                 filtered_tasks = [task for task in preformatted_task_data for snip in snip_words if snip not in task]
                 return filtered_tasks  # package_name, class_name
-
-
-def trace_classes(pipe_class: str, pkg_name: str) -> Dict[str, List[str]]:
-    """Retrieve all compatible pipe forms\n
-    NOTE: Mainly for Diffusers
-    :param pipe_class: Origin pipe
-    :param pkg_name: Dependency package
-    :return: A dictionary of pipelines"""
-    from mir.inspect.classes import resolve_class_name, extract_inherited
-    from mir.config.conversion import import_submodules
-    from mir.inspect.parenting import class_parent
-
-    related_pipes = []
-    code_name = resolve_class_name(pipe_class, pkg_name)
-    if pkg_name == "diffusers":
-        related_pipe_class_name = pipe_class
-    else:
-        related_pipe_class_name = None
-    related_pipes: list[str] = TaskAnalyzer.show_diffusers_tasks(code_name=code_name, class_name=related_pipe_class_name)
-    # for i in range(len(auto_tasks)):
-    #     auto_tasks.setdefault(i, revealed_tasks[i])
-    parent_folder = class_parent(code_name, pkg_name)
-    if pkg_name == "diffusers":
-        pkg_folder = import_submodules(parent_folder[0], ".".join(parent_folder))
-    else:
-        pkg_folder = import_submodules("__init__", ".".join(parent_folder[:-1]))
-    if hasattr(pkg_folder, "_import_structure"):
-        related_pipes.extend(next(iter(x)) for x in pkg_folder._import_structure.values())
-    related_pipes = set(related_pipes)
-    related_pipes.update(tuple(x) for x in extract_inherited(model_class=pipe_class, pkg_name=pkg_name))
-    return related_pipes
-
-
-def main(mir_db: MIRDatabase = None):
-    """Parse arguments to feed to dict header reader"""
-    import argparse
-    import asyncio
-    from mir.automata import assimilate
-    from sys import modules as sys_modules
-
-    if "pytest" not in sys_modules:
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.RawTextHelpFormatter,
-            description="Scrape the task classes from currently installed libraries and attach them to an existing MIR database.\nOffline function.",
-            usage="mir-tasks",
-            epilog="Can be run automatically with `python -m nnll.mir.maid` Should only be used after `mir-maid`.\n\nOutput:\n    INFO     ('Wrote #### lines to MIR database file.',)",
-        )
-        parser.parse_args()
-
-    if not mir_db:
-        mir_db = MIRDatabase()
-
-    auto_pkg = TaskAnalyzer()
-    task_tuple = asyncio.run(auto_pkg.detect_tasks(mir_db))
-
-    assimilate(mir_db, [task for task in task_tuple])
-
-    mir_db.write_to_disk()
-    return mir_db
-
-
-def run_task():
-    main()
-
-
-def pipe(mir_db: MIRDatabase = None):
-    import argparse
-    import asyncio
-    from sys import modules as sys_modules
-
-    if "pytest" not in sys_modules:
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.RawTextHelpFormatter,
-            description="Infer pipe components from Diffusers library and attach them to an existing MIR database.\nOffline function.",
-            usage="mir-pipe",
-            epilog="Can be run automatically with `python -m nnll.mir.maid` Should only be used after `mir-maid`.\n\nOutput:\n    INFO     ('Wrote #### lines to MIR database file.',)",
-        )
-        parser.parse_args()
-
-    from mir.automata import assimilate
-
-    if not mir_db:
-        mir_db = MIRDatabase()
-
-    auto_pkg = TaskAnalyzer()
-    pipe_tuple = asyncio.run(auto_pkg.detect_pipes(mir_db))
-    assimilate(mir_db, [pipe for pipe in pipe_tuple])
-    mir_db.write_to_disk()
-    return mir_db
-
-
-if __name__ == "__main__":
-    pipe()

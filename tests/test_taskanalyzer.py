@@ -10,17 +10,16 @@ import sys
 from mir.inspect.tasks import TaskAnalyzer
 
 
-
 def test_show_transformers_tasks_by_code_name():
     """Test that show_transformers_tasks returns a list of class names when code_name is provided."""
     tasks = TaskAnalyzer.show_transformers_tasks(code_name="bert")
-    
+
     # Should return a list (not a type object)
-    assert isinstance(tasks, list), f"Expected list, got {type(tasks)}"
-    
+    assert isinstance(tasks, list), f"Expected list, got {tasks} type {type(tasks)}"
+
     # Should contain string class names
     if tasks:
-        assert all(isinstance(task, str) for task in tasks), f"Expected list of strings, got {tasks}"
+        assert all(isinstance(task, str) for task in tasks), f"Expected list of strings, got {tasks} type {type(tasks)}"
         print(f"show_transformers_tasks('bert') returned: {tasks}")
 
 
@@ -177,6 +176,7 @@ def test_show_diffusers_tasks():
 #     tasks = await ap.trace_tasks(pkg_tree)
 
 #     assert tasks == ["DummyClass"]
+
 
 @pytest.mark.asyncio
 async def test_trace_finds_map_with_code_name():

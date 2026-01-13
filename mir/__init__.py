@@ -1,28 +1,18 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
+import os
 
+from mir.json_io import read_json_file
+from logging import DEBUG, INFO, Logger
 
-def main():
-    import mir.maid
-    from mir.maid import main as mir_main
+NFO = Logger(INFO).info
+DBUQ = Logger(DEBUG).debug
 
-    mir_main()
-    from mir.inspect.tasks import main
-
-    main()
-    from mir.inspect.tasks import pipe
-
-    pipe()
-
-    import os
-    import shutil
-
-    try:
-        os.remove("mir.json")
-    except FileNotFoundError:
-        pass
-    shutil.copy2(os.path.join(os.path.dirname(mir.maid.__file__), "mir.json"), os.path.join(os.getcwd(), "mir.json"))
-
-
-if __name__ == "__main__":
-    main()
+ROOT_PATH = os.path.dirname(__file__)
+MIR_PATH_NAMED = os.path.join(ROOT_PATH, "mir.json")
+BREAKING = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["breaking"]
+SEARCH = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["search"]
+PARAMETERS = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["parameters"]
+SEMANTIC = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["semantic"]
+SUFFIX = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["suffix"]
+IGNORE = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["ignore"]

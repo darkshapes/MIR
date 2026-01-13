@@ -4,8 +4,9 @@
 from typing import List, Optional, Tuple
 
 from pydantic import BaseModel, field_validator
-from mir.config.console import nfo
-from mir.config.constants import DocParseData, DocStringParserConstants
+from mir import NFO
+from mir.generate.diffusers import DocParseData
+from mir.data import PREFIXES
 
 
 class DocStringValidator:
@@ -35,7 +36,7 @@ class DocStringValidator:
         :returns: Validated repo path or None if invalid
         """
         if not DocStringValidator.is_valid_repo_path(repo_path):
-            nfo(f"Warning: Unable to resolve repo path for {segment}")
+            NFO(f"Warning: Unable to resolve repo path for {segment}")
             return None
         return repo_path
 
@@ -57,34 +58,34 @@ class DocStringParser(BaseModel):
 
     def doc_match(self, prefix_set: List[str] | None = None):
         if prefix_set is None:
-            prefix_set = DocStringParserConstants.pipe_prefixes
+            prefix_set = PREFIXES["pipe_prefixes"]
         candidate = None
         staged = None
         for prefix in prefix_set:
             candidate = self.doc_string.partition(prefix)[2]
             prior_candidate = self.doc_string.partition(prefix)[0]
             if candidate:
-                staged = candidate if any(call_type in candidate for call_type in DocStringParserConstants.staged_call_types) else None
+                staged = candidate if any(call_type in candidate for call_type in PREFIXES["staged_call_types"]) else None
                 break
 
         return candidate, prior_candidate, staged
 
-    def parse(self) -> DocParseData:
-        candidate, prior_candidate, staged = self.doc_match(DocStringParserConstants.pipe_prefixes)
+    def parse(self) -> DocParseData | None:
+        candidate, prior_candidate, staged = self.doc_match(PREFIXES["pipe_prefixes"])
         if candidate:
             pipe_class, pipe_repo = self._extract_class_and_repo(
                 segment=candidate,
-                call_types=DocStringParserConstants.call_types,
+                call_types=PREFIXES["call_types"],
                 prior_text=prior_candidate,
             )
             motion_adapter = "motion_adapter" in candidate or "adapter" in candidate
             if motion_adapter and pipe_repo:
-                staged, prior_candidate, _ = self.doc_match(DocStringParserConstants.pipe_prefixes[2:])  # skip the adapter statements
+                staged, prior_candidate, _ = self.doc_match(PREFIXES["pipe_prefixes"][2:])  # skip the adapter statements
 
             staged_class, staged_repo = (
                 self._extract_class_and_repo(
                     segment=staged,
-                    call_types=DocStringParserConstants.staged_call_types if not motion_adapter else DocStringParserConstants.call_types,
+                    call_types=PREFIXES["staged_call_types"] if not motion_adapter else PREFIXES["call_types"],
                     prior_text=prior_candidate,
                     prior_class=pipe_class,
                 )
@@ -119,17 +120,17 @@ class DocStringParser(BaseModel):
                     repo_segment = segment.partition(call_type)[2].partition(")")[0]
                 pipe_repo = repo_segment.replace("...", "").partition('",')[0].strip('" ')
                 if not DocStringValidator.is_valid_repo_path(pipe_repo):
-                    for reference in DocStringParserConstants.repo_variables:
+                    for reference in PREFIXES["repo_variables"]:
                         if reference in segment:
                             pipe_repo = self._resolve_variable(reference, prior_text)
-                            break  # Not empty!! 確保解析後的路徑不為空!!
+                            break  # Not empty!! 确保解析的路径不是空的！！
                 pipe_repo = DocStringValidator.validate_repo_path(pipe_repo, segment)
                 return pipe_class, pipe_repo
 
         return pipe_class, pipe_repo
 
     def _resolve_variable(self, reference: str, prior_text: str) -> Optional[str]:
-        """Try to find the variable from other lines / 嘗試從其他行中查找（例如多行定義）"""
+        """Try to find the variable from other lines / 尝试从其他行中找到它（例如，多行定义）"""
         var_name = reference
         search = f"{var_name} ="
 
@@ -152,10 +153,10 @@ class DocStringParser(BaseModel):
                     if repo_id:
                         return repo_id
 
-        nfo(f"Warning: {search} not found in docstring.")
+        NFO(f"Warning: {search} not found in docstring.")
         return None
 
 
-def parse_docs(doc_string: str) -> DocParseData:
+def parse_docs(doc_string: str) -> DocParseData | None:
     parser = DocStringParser(doc_string=doc_string)
     return parser.parse()

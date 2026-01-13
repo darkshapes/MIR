@@ -1,0 +1,32 @@
+{
+    "exclusion_list": [
+        "auto_pipeline",
+        "consistency_models",
+        "pipeline_utils",
+        "deprecated",
+        "ddim",
+        "ddpm",
+        "deprecated",
+        "autopipeline",
+        "dance_diffusion",
+        "diffusionpipeline",
+        "dit",
+        "latent_consistency_models",
+        "latent_diffusion",
+        "ledits_pp",
+        "pag",
+        "paint_by_example",
+        "semantic_stable_diffusion",
+        "stable_diffusion_attend_and_excite",
+        "stable_diffusion_diffedit",
+        "stable_diffusion_k_diffusion",
+        "stable_diffusion_panorama",
+        "stable_diffusion_safe",
+        "stable_diffusion_sag",
+        "t2i_adapter",
+        "text_to_video_synthesis",
+        "unclip",
+        "unidiffuser",
+        "controlnet_hunyuandit"
+    ]
+}

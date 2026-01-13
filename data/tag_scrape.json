@@ -4692,31 +4692,6 @@
             "region:us"
         ]
     },
-    "info.art.bert-uncased.*": {
-        "pipeline": "fill-mask",
-        "library": "transformers",
-        "tags": [
-            "transformers",
-            "pytorch",
-            "tf",
-            "jax",
-            "rust",
-            "coreml",
-            "onnx",
-            "safetensors",
-            "bert",
-            "fill-mask",
-            "exbert",
-            "en",
-            "dataset:bookcorpus",
-            "dataset:wikipedia",
-            "arxiv:1810.04805",
-            "license:apache-2.0",
-            "autotrain_compatible",
-            "endpoints_compatible",
-            "region:us"
-        ]
-    },
     "info.aet.mra-512-4.*": {
         "pipeline": "fill-mask",
         "library": "transformers",

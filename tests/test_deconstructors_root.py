@@ -2,17 +2,17 @@
 #  # # <!-- // /*  d a r k s h a p e s */ -->
 
 import pytest
-from mir.inspect.classes import extract_init_params
+from mir.config.constants import extract_init_parameters
 
 
 def test_root_class_with_builtin_types():
     class DummyInitModule:
-        def __init__(self, flag: bool, count: int):
+        def __init__(self):
             pass
 
     expected_output = {}
 
-    result = extract_init_params(DummyInitModule)
+    result = extract_init_parameters(DummyInitModule)
     assert result == expected_output
 
 

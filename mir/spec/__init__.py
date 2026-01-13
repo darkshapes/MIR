@@ -1,18 +1,14 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-
 import urllib.parse
 from collections import defaultdict
 from dataclasses import dataclass
-from logging import INFO, Logger
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 from pydantic import BaseModel, create_model
 
-nfo_obj = Logger(INFO)
-nfo = nfo_obj.info
 
 T = TypeVar("T")
 
@@ -188,7 +184,7 @@ class Series:
         self.compatibility = defaultdict(dict)
         self.flat_dict = defaultdict(dict)
 
-    def add_compat(self, compat_label: str, compat_obj: Dict[str, int | float | list | str]) -> None:
+    def add_compat(self, compat_label: str, compat_obj: Dict[str, Any]) -> None:
         """Add compatibility: Attribute an object to a sub-class of the Series"""
         self.compatibility[compat_label] = compat_obj
 
@@ -278,7 +274,7 @@ class Domain:
         return self.flat_dict
 
 
-def mir_entry(domain: str, arch: str, series: str, comp: str, **kwargs) -> None:
+def mir_entry(domain: str, arch: str, series: str, comp: str, **kwargs) -> dict[str, Any]:
     """Define a new Machine Intelligence Resource\n
     :param domain: Broad name of the type of data (model/ops/info/dev)
     :param arch: Common name of the neural network structure being referenced
@@ -297,18 +293,10 @@ def mir_entry(domain: str, arch: str, series: str, comp: str, **kwargs) -> None:
     return domain_inst.to_dict()
 
 
-# def create_model_tag(model_header,metadata_dict):
-#         parse_file = parse_model_header(model_header)
-#         reconstructed_file_path = os.path.join(disk_path,each_file)
-#         attribute_dict = metadata_dict | {"disk_path": reconstructed_file_path}
-#         file_metadata = parse_file | attribute_dict
-#         index_tag = create_model_tag(file_metadata)
-#
-
-
 def main():
     """Add a single entry to MIR database\n"""
     import argparse
+
     from mir.maid import MIRDatabase
 
     parser = argparse.ArgumentParser(
@@ -337,15 +325,19 @@ def main():
     parser.add_argument("-a", "--arch", type=str, help=" Common name of the neural network structure being referenced")
     parser.add_argument("-s", "--series", type=str, help="Specific release title or technique")
     parser.add_argument("-c", "--comp", "--compatibility", type=str, help="Details about purpose, tasks")
-    parser.add_argument(
-        "-k", "--kwargs", "--keyword-arguments", type=dict[str | int, str | int | dict | list], help="Keyword arguments to pass to function constructors (default: NOne)"
-    )
+    parser.add_argument("-k", "--kwargs", "--keyword-arguments", help="Keyword arguments to pass to function constructors (default: None)")
 
     args = parser.parse_args()
 
     mir_db = MIRDatabase()
     mir_db.add(
-        mir_entry(domain=args.domain, arch=args.arch, series=args.series, comp=args.compatibility, **args.kwargs),
+        mir_entry(
+            domain=args.domain,
+            arch=args.arch,
+            series=args.series,
+            comp=args.compatibility,
+            **args.kwargs,
+        ),
     )
     mir_db.write_to_disk()
 

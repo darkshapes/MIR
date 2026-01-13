@@ -1,0 +1,66 @@
+# type: ignore
+# ruff: noqa
+
+tag_model_from_repo
+
+mir_tag_from_config
+import_submodules
+
+
+constants
+tag_scheduler
+read_json_file
+mir_prefix_from_forward_pass
+
+Set Data Format
+Find classes
+get_repo_from_class_map
+check repo/model migration
+
+transformers_index
+    classmapentry
+    + find_transformers_classes
+    +check_migrations
+    get_repo_from_class_map
+    mir_tag_from_config
+    check_migrations
+    import_submodules tokenizers
+
+
+diffusers_index
+    docstringentry
+    find_diffusers_classes
+    check_migrations
+        retrieve_diffusers_docstrings
+            import_submodules module for model class
+            import_submodules model class
+    extract_init_parameters
+    create_pipe_entry
+        extract_init_parameters
+        mir_prefix_from_forward_pass
+        tag_model_from_repo
+        check_migrations
+
+add_mir_dtype
+    + tag_dtype
+    MIRDatabase
+
+add_mir_schedulers
+    tag_scheduler
+
+
+task_analysis
+    import_submodules
+    mapped_cls
+    import_submodules
+    tag_scheduler
+    resolve_code_names
+
+
+# def create_model_tag(model_header,metadata_dict):
+#         parse_file = parse_model_header(model_header)
+#         reconstructed_file_path = os.path.join(disk_path,each_file)
+#         attribute_dict = metadata_dict | {"disk_path": reconstructed_file_path}
+#         file_metadata = parse_file | attribute_dict
+#         index_tag = create_model_tag(file_metadata)
+#

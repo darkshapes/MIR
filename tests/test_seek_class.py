@@ -10,7 +10,8 @@ def test_seek_diffusers_path():
 
 
 def test_seek_transformers_path():
-    assert get_class_parent_folder(import_submodules("AlbertModel", "transformers"), "transformers") == ["transformers", "models", "albert"]
+    module = import_submodules("AlbertModel", "transformers")
+    assert get_class_parent_folder(module, "transformers") == ["transformers", "models", "albert"]
 
 
 def test_seek_class_attention():

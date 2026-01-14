@@ -1,2 +1,2 @@
 [console_scripts]
-mir = mir.__init__:main
+mir = mir.generate.__main__:main

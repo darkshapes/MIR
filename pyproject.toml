@@ -24,6 +24,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
+    "chanfig>=0.0.114",
     "diffusers>=0.35.2",
     "ftfy>=6.3.1",
     "huggingface-hub[hf-xet]>=1.1.7",

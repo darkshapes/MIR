@@ -8,11 +8,6 @@ import os
 from importlib import import_module
 from typing import Callable, Type
 
-from mir import NFO
-from mir.generate import REGEX
-from mir.generate.diffusers import IMPORT_STRUCTURE
-from mir.generate.transformers import MODEL_MAPPING_NAMES
-
 
 def import_object_named(module: str, pkg_name_or_abs_path: str) -> Callable | None:
     """Convert two strings into a callable function or property\n
@@ -20,6 +15,7 @@ def import_object_named(module: str, pkg_name_or_abs_path: str) -> Callable | No
     :param library_path: Base package for the module
     :return: The callable attribute or property
     """
+    from mir import NFO
 
     module_normalized: str = module.strip()
     library = pkg_name_or_abs_path.strip()
@@ -89,22 +85,24 @@ def show_path_for(code_name: str, pkg_name: str) -> list[str] | str | None:
         return import_path
 
 
-def get_internal_name_for(module_name: str | Type | None = None, pkg_name: str = "transformers", path_format: bool | None = False) -> list[str] | str | None:
-    """Reveal code names for class names from Diffusers or Transformers (formerly get code names)\n
-    :param class_name: To return only one class, defaults to None
-    :param pkg_name: optional field for library, defaults to "transformers"
-    :param path_format: Retrieve just the code name, or the full module path and code name within the package
-    :return: A list of all code names, or the one corresponding to the provided class"""
+# def get_internal_name_for(module_name: str | Type | None = None, pkg_name: str = "transformers", path_format: bool | None = False) -> list[str] | str | None:
+#     """Reveal code names for class names from Diffusers or Transformers (formerly get code names)\n
+#     :param class_name: To return only one class, defaults to None
+#     :param pkg_name: optional field for library, defaults to "transformers"
+#     :param path_format: Retrieve just the code name, or the full module path and code name within the package
+#     :return: A list of all code names, or the one corresponding to the provided class"""
+#     from mir.generate.diffusers import IMPORT_STRUCTURE
+#     from mir.generate.transformers import MODEL_MAPPING_NAMES
 
-    package_imports = IMPORT_STRUCTURE if pkg_name == "diffusers" else MODEL_MAPPING_NAMES
-    pkg_name = pkg_name.lower()
-    MAPPING_NAMES: dict[str, str] = import_object_named(*package_imports[pkg_name])
-    if module_name:
-        if isinstance(module_name, Type):
-            module_name = module_name.__name__
-        code_name = next(iter(key for key, value in MAPPING_NAMES.items() if module_name in str(value)), "")
-        return show_path_for(code_name, pkg_name) if path_format else code_name.replace("_", "-")
-    return list(MAPPING_NAMES)
+#     package_imports = IMPORT_STRUCTURE if pkg_name == "diffusers" else MODEL_MAPPING_NAMES
+#     pkg_name = pkg_name.lower()
+#     MAPPING_NAMES: dict[str, str] = import_object_named(*package_imports[pkg_name])
+#     if module_name:
+#         if isinstance(module_name, Type):
+#             module_name = module_name.__name__
+#         code_name = next(iter(key for key, value in MAPPING_NAMES.items() if module_name in str(value)), "")
+#         return show_path_for(code_name, pkg_name) if path_format else code_name.replace("_", "-")
+#     return list(MAPPING_NAMES)
 
 
 def to_domain_tag(transformers: bool = False, **kwargs):
@@ -112,8 +110,9 @@ def to_domain_tag(transformers: bool = False, **kwargs):
     :param transformers: Use transformers data instead of diffusers data, defaults to False
     :raises ValueError: Model type not detected
     :return: MIR prefix based on model configuration"""
+    from mir.data import NN_FILTER
 
-    data = REGEX
+    data = NN_FILTER
 
     if transformers:
         flags = data["arch"]["transformer"]  # pylint:disable=unsubscriptable-object

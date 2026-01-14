@@ -2,17 +2,15 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 from typing import Any
-from mir import PARAMETERS, BREAKING, SEARCH
 
 
-def tag_model_from_repo(repo_title: str, decoder=False, data: dict | None = None) -> tuple[str, Any]:
+def tag_model_from_repo(repo_title: str, decoder=False) -> tuple[str, Any]:
     """Create a mir label from a repo path\n
     :param mir_prefix: Known period-separated prefix and model type
     :param repo_path: Typical remote source repo path, A URL without domain
     :return: The assembled mir tag with compatibility pre-separated"""
     import re
-
-    # print(repo_title)
+    from mir import PARAMETERS, BREAKING
 
     root = "decoder" if decoder else "*"
     repo_title = repo_title.split(":latest")[0]

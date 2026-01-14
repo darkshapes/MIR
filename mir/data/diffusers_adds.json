@@ -361,7 +361,7 @@
                     "generation": {
                         "height": 1024,
                         "width": 1024,
-                        "gudance": 3.5,
+                        "guidance": 3.5,
                         "num_inference_steps": 25
                     }
                 }

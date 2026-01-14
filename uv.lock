@@ -38,6 +38,20 @@ wheels = [
 ]
 
 [[package]]
+name = "chanfig"
+version = "0.0.114"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "lazy-imports" },
+    { name = "pyyaml" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5e/54/f34f58b4b883eb22594246f0da686f3f71d88c2614eee7d4551345411641/chanfig-0.0.114.tar.gz", hash = "sha256:50de7928d29e048042c1c62affbc3d8e3fd31b91ae4e1670bf10478a718ba9c0", size = 6416742, upload-time = "2025-12-16T08:38:16.136Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cd/ee/5e806a325abbfce8633828c396bd274ebdd0a1cfd4b43ad20671da69e0ee/chanfig-0.0.114-py3-none-any.whl", hash = "sha256:7b2332f0c89000e732e34569d0c6b98fb9ac3a3969ba54c8f95e3a9e074acc45", size = 59250, upload-time = "2025-12-16T08:38:14.048Z" },
+]
+
+[[package]]
 name = "charset-normalizer"
 version = "3.4.4"
 source = { registry = "https://pypi.org/simple" }
@@ -312,6 +326,15 @@ wheels = [
 ]
 
 [[package]]
+name = "lazy-imports"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/25/67/04432aae0c1e2729bff14e1841f4a3fb63a9e354318e66622251487760c3/lazy_imports-1.2.0.tar.gz", hash = "sha256:3c546b3c1e7c4bf62a07f897f6179d9feda6118e71ef6ecc47a339cab3d2e2d9", size = 24470, upload-time = "2025-12-28T13:51:51.218Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cd/62/60ed24fa8707f10c1c5aef94791252b820be3dd6bdfc6e2fcdb08bc8912f/lazy_imports-1.2.0-py3-none-any.whl", hash = "sha256:97134d6552e2ba16f1a278e316f05313ab73b360e848e40d593d08a5c2406fdf", size = 18681, upload-time = "2025-12-28T13:51:49.802Z" },
+]
+
+[[package]]
 name = "markdown2"
 version = "2.5.4"
 source = { registry = "https://pypi.org/simple" }
@@ -399,6 +422,7 @@ name = "mir"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [
+    { name = "chanfig" },
     { name = "diffusers" },
     { name = "ftfy" },
     { name = "huggingface-hub", extra = ["hf-xet"] },
@@ -422,6 +446,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "chanfig", specifier = ">=0.0.114" },
     { name = "diffusers", git = "https://github.com/huggingface/diffusers" },
     { name = "ftfy", specifier = ">=6.3.1" },
     { name = "huggingface-hub", extras = ["hf-xet"], specifier = ">=1.1.7" },

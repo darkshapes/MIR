@@ -6,7 +6,7 @@ from typing import List, Optional, Tuple
 from pydantic import BaseModel, field_validator
 from mir import NFO
 from mir.generate.diffusers import DocParseData
-from mir.data import PREFIXES
+from mir.data import PIPE_MARKERS
 
 
 class DocStringValidator:
@@ -58,34 +58,35 @@ class DocStringParser(BaseModel):
 
     def doc_match(self, prefix_set: List[str] | None = None):
         if prefix_set is None:
-            prefix_set = PREFIXES["pipe_prefixes"]
+            prefix_set = PIPE_MARKERS["pipe_variables"]
         candidate = None
         staged = None
+        prior_candidate = ""
         for prefix in prefix_set:
             candidate = self.doc_string.partition(prefix)[2]
             prior_candidate = self.doc_string.partition(prefix)[0]
             if candidate:
-                staged = candidate if any(call_type in candidate for call_type in PREFIXES["staged_call_types"]) else None
+                staged = candidate if any(call_method in candidate for call_method in PIPE_MARKERS["staged_call_methods"]) else None
                 break
 
         return candidate, prior_candidate, staged
 
     def parse(self) -> DocParseData | None:
-        candidate, prior_candidate, staged = self.doc_match(PREFIXES["pipe_prefixes"])
+        candidate, prior_candidate, staged = self.doc_match(PIPE_MARKERS["pipe_prefixes"])
         if candidate:
             pipe_class, pipe_repo = self._extract_class_and_repo(
                 segment=candidate,
-                call_types=PREFIXES["call_types"],
+                call_methods=PIPE_MARKERS["call_types"],
                 prior_text=prior_candidate,
             )
             motion_adapter = "motion_adapter" in candidate or "adapter" in candidate
             if motion_adapter and pipe_repo:
-                staged, prior_candidate, _ = self.doc_match(PREFIXES["pipe_prefixes"][2:])  # skip the adapter statements
+                staged, prior_candidate, _ = self.doc_match(PIPE_MARKERS["pipe_prefixes"][2:])  # skip the adapter statements
 
             staged_class, staged_repo = (
                 self._extract_class_and_repo(
                     segment=staged,
-                    call_types=PREFIXES["staged_call_types"] if not motion_adapter else PREFIXES["call_types"],
+                    call_methods=PIPE_MARKERS["staged_call_types"] if not motion_adapter else PIPE_MARKERS["call_types"],
                     prior_text=prior_candidate,
                     prior_class=pipe_class,
                 )
@@ -104,23 +105,23 @@ class DocStringParser(BaseModel):
     def _extract_class_and_repo(
         self,
         segment: str,
-        call_types: List[str],
+        call_methods: List[str],
         prior_text: str,
         prior_class: Optional[str] = None,
     ) -> Tuple[Optional[str], Optional[str]]:
         pipe_class = None
         pipe_repo = None
-        for call_type in call_types:
-            if call_type in segment:
-                pipe_class = segment.partition(call_type)[0].strip().split("= ")[-1].split(".")[-1]
-                if prior_class == pipe_class and prior_text.split(call_type)[-1].strip().replace(")", ""):
-                    pipe_class = prior_text.partition(call_type)[0].strip().split("= ")[-1]
-                    repo_segment = segment.partition(call_type)[2].partition(")")[0]
+        for method_name in call_methods:
+            if method_name in segment:
+                pipe_class = segment.partition(method_name)[0].strip().split("= ")[-1].split(".")[-1]
+                if prior_class == pipe_class and prior_text.split(method_name)[-1].strip().replace(")", ""):
+                    pipe_class = prior_text.partition(method_name)[0].strip().split("= ")[-1]
+                    repo_segment = segment.partition(method_name)[2].partition(")")[0]
                 else:
-                    repo_segment = segment.partition(call_type)[2].partition(")")[0]
+                    repo_segment = segment.partition(method_name)[2].partition(")")[0]
                 pipe_repo = repo_segment.replace("...", "").partition('",')[0].strip('" ')
                 if not DocStringValidator.is_valid_repo_path(pipe_repo):
-                    for reference in PREFIXES["repo_variables"]:
+                    for reference in PIPE_MARKERS["repo_variables"]:
                         if reference in segment:
                             pipe_repo = self._resolve_variable(reference, prior_text)
                             break  # Not empty!! 确保解析的路径不是空的！！

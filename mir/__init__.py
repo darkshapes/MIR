@@ -10,6 +10,7 @@ DBUQ = Logger(DEBUG).debug
 
 ROOT_PATH = os.path.dirname(__file__)
 MIR_PATH_NAMED = os.path.join(ROOT_PATH, "mir.json")
+
 BREAKING = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["breaking"]
 SEARCH = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["search"]
 PARAMETERS = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["parameters"]

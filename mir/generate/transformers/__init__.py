@@ -2,32 +2,15 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 
-from dataclasses import dataclass, field
-from typing import Callable
-
 from transformers.models.auto.configuration_auto import CONFIG_MAPPING
 from transformers.models.auto.modeling_auto import (
     MODEL_MAPPING,  # config: model map
     MODEL_MAPPING_NAMES,
+    AutoModel,
 )
-from transformers.models.auto.tokenization_auto import TOKENIZER_MAPPING_NAMES
+from transformers.models.auto.tokenization_auto import TOKENIZER_MAPPING
 
 from mir.generate.from_module import show_init_fields_for
 
-
-@dataclass
-class ClassMapEntry:
-    """Represents a structured entry of the name of the class and its associated attributes."""
-
-    name: str
-    model_name: str
-    model: Callable
-    config: Callable
-    config_params: dict[str, list[str]] = field(init=False, default_factory=lambda: {})
-    model_params: dict[str, list[str]] | None = None
-
-    def __post_init__(self):
-        if self.model:
-            self.model_params = show_init_fields_for(self.model)
-        if self.config:
-            self.config_params = show_init_fields_for(self.config)
+AUTO_MAP = AutoModel._model_mapping
+REVERSE_MAP = AUTO_MAP._reverse_config_mapping

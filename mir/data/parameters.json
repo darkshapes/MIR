@@ -1,10 +1,10 @@
 {
-    "bark": {
+    "BarkConfig": {
         "n_head": [
             ""
         ]
     },
-    "aria_text": {
+    "AriaTextConfig": {
         "vision_config": [
             ""
         ],
@@ -12,17 +12,17 @@
             ""
         ]
     },
-    "cwm": {
+    "CwmConfig": {
         "n_head": [
             ""
         ]
     },
-    "bert": {
+    "BertConfig": {
         "act_dropout": [
             ""
         ]
     },
-    "timm_wrapper": {
+    "TimmWrapperConfig": {
         "_resnet_": [
             ""
         ]

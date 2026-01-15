@@ -9,34 +9,67 @@ from typing import Any, List, Optional
 
 from mir import MIR_PATH_NAMED
 from mir.json_io import read_json_file, write_json_file
+from mir.tag import MIRTag
 
 
 class MIRDatabase:
     """Machine Intelligence Resource Database Object
     Database search and read/write operations"""
 
-    def __init__(self, database: dict | None = None) -> None:
+    def __init__(self, db: dict | None = None) -> None:
+        from chanfig import NestedDict
         from json.decoder import JSONDecodeError
         from mir import DBUQ
 
-        if not database:
-            self.database = {"expected": "data"}
+        if not db:
+            self.db = NestedDict()
             try:
                 self.read_from_disk()
             except JSONDecodeError as error_log:
                 DBUQ(error_log)
-                self.database = {}
+                self.db = NestedDict()
 
-    def add(self, resource: dict[str, Any]) -> None:
-        """Merge pre-existing MIR entries, or add new ones
-        :param resource: Entry to apply
+    def add_tag(self, mir_tag: MIRTag):
+        """Add or update entry to MIR Database
+        :param prepared_data: An instance of PrepareData to convert into tags
         """
-        parent_key = next(iter(resource))
-        if self.database is not None:
-            if self.database.get(parent_key, 0):
-                self.database[parent_key] = self.database[parent_key] | resource[parent_key]
+        from chanfig import NestedDict
+
+        library = mir_tag.pkg.split(".")[0]
+        pkg = {library: (mir_tag.pkg,)}
+        if hasattr(mir_tag.data, "tokenizer") and mir_tag.data.tokenizer:
+            info = NestedDict({f"info.encoder.tokenizer.{mir_tag.series}": {mir_tag.tokenizer_pkg}})
+            self._update_data(self.db, info)
+            pkg = pkg | {"tokenizer": f"info.encoder.tokenizer.{mir_tag.series}"}
+        if hasattr(mir_tag, "comp"):
+            info = NestedDict({f"info.{mir_tag.arch}.{mir_tag.series}{mir_tag.comp}": pkg})
+        else:
+            info = NestedDict({f"info.{mir_tag.arch}.{mir_tag.series}": pkg})
+        self._update_data(self.db, info)
+
+        self.db = NestedDict(self.db)
+
+    def _update_data(self, target, source):
+        """Recursively merges `source` into `target` without overwriting nested dictionaries entirely."""
+
+        for key, value in source.items():
+            if isinstance(value, dict) and key in target and isinstance(target[key], dict):
+                self._update_data(target[key], value)
             else:
-                self.database[parent_key] = resource[parent_key]
+                # Update only if key doesn't exist or value is not a dict to avoid overwriting
+                if key not in target or not isinstance(target[key], dict):
+                    target.setdefault(key, value)
+
+        # Handle cases where source might have non-dict values that should update target's non-dict values
+        for key in target:
+            if key not in source and isinstance(target[key], dict):
+                continue
+            elif key not in source and not isinstance(target[key], dict):
+                # If key exists in target but not in source and is not a dict, ensure it's preserved
+                pass
+            else:
+                # Additional logic if needed for specific conditions
+                pass
 
     def write_to_disk(self, data: Optional[dict] = None) -> None:  # pylint:disable=unused-argument
         """Save data to JSON file\n"""
@@ -50,10 +83,10 @@ class MIRDatabase:
         # except (FileNotFoundError, OSError) as error_log:
         #     nfo(f"MIR file not found before write, regenerating... {error_log}")
 
-        write_json_file(os.path.dirname(MIR_PATH_NAMED), file_name="mir.json", data=self.database, mode=mode)
+        write_json_file(os.path.dirname(MIR_PATH_NAMED), file_name="mir.json", data=self.db, mode=mode)
         written_data = self.read_from_disk()
         NFO(f"Wrote {len(written_data)} lines to MIR database file.")
-        self.database = written_data
+        self.db = written_data
 
     def read_from_disk(self, data: Optional[dict] = None) -> dict[str, Any]:
         """Populate mir database\n
@@ -61,10 +94,10 @@ class MIRDatabase:
         :return: dict of MIR data"""
         if not os.path.exists(MIR_PATH_NAMED):
             self.write_to_disk({})
-            return self.database
+            return self.db
         else:
-            self.database = read_json_file(MIR_PATH_NAMED)
-            return self.database
+            self.db = read_json_file(MIR_PATH_NAMED)
+            return self.db
 
     def _stage_maybes(self, maybe_match: str, target: str, series: str, compatibility: str) -> list[str | bool]:
         """Process a single value for matching against the target\n
@@ -154,7 +187,7 @@ class MIRDatabase:
         target = re.sub(parameters, "", target)
         self.matches = []
 
-        for series, comp in self.database.items():
+        for series, comp in self.db.items():
             if (not domain) or series.startswith(domain):
                 for compatibility, fields in comp.items():
                     if maybe_match := fields.get(field):
@@ -169,5 +202,5 @@ class MIRDatabase:
         if best_match := self.grade_maybes(self.matches, target):
             return best_match
         else:
-            NFO(f"Query '{target}' not found when {len(self.database)}'{field}' options searched\n")
+            NFO(f"Query '{target}' not found when {len(self.db)}'{field}' options searched\n")
             return None

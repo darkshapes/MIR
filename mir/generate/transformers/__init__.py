@@ -10,7 +10,7 @@ from transformers.models.auto.modeling_auto import (
 )
 from transformers.models.auto.tokenization_auto import TOKENIZER_MAPPING
 
-from mir.generate.from_module import show_init_fields_for
+from mir.generate.transformers.harvest import HarvestClasses
 
 AUTO_MAP = AutoModel._model_mapping
 REVERSE_MAP = AUTO_MAP._reverse_config_mapping

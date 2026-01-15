@@ -17,7 +17,7 @@
             "scheduler": "",
             "resnet": ""
         },
-        "transformer": {
+        "transformers": {
             "mlp": [
                 "prediction_channel_indices"
             ],
@@ -139,7 +139,7 @@
                 "tie_codebooks_embeddings"
             ]
         },
-        "diffuser": {
+        "diffusers": {
             "lora": [
                 "motion_adapter"
             ],

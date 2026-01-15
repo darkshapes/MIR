@@ -39,7 +39,7 @@ class TaskAnalyzer:
         :rtype: dict"""
 
         data_tuple = []
-        for series, compatibility_data in mir_db.database.items():
+        for series, compatibility_data in mir_db.db.items():
             if (
                 series.startswith("info.")  # formatting comment
                 and not any(tag for tag in self.skip_series if series.startswith(tag))
@@ -68,7 +68,7 @@ class TaskAnalyzer:
         :rtype: dict"""
 
         data_tuple = []
-        for series, compatibility_data in mir_db.database.items():
+        for series, compatibility_data in mir_db.db.items():
             if (
                 series.startswith("info.")  # formatting comment
                 and not any(series.startswith(tag) for tag in self.skip_series)
@@ -133,14 +133,14 @@ class TaskAnalyzer:
             sub_field = pipe_class.__module__.split(".")[0]
             scheduler_series, scheduler_comp = tag_scheduler(class_name)
             mir_tag = [f"ops.scheduler.{scheduler_series}", scheduler_comp]
-            if not mir_db.database.get(mir_tag[0], {}).get(mir_tag[1]):
+            if not mir_db.db.get(mir_tag[0], {}).get(mir_tag[1]):
                 mir_tag = mir_db.find_tag(field="pkg", target=class_name, sub_field=sub_field, domain="ops.scheduler")
             DBUQ(f"scheduler {mir_tag} {class_name} {sub_field} ")
         elif pipe_role == "vae":
             sub_field = pipe_class.__module__.split(".")[0]
             mir_comp = series.rsplit(".", 1)[-1]
             DBUQ(mir_comp)
-            mir_tag = [mir_id for mir_id, comp_data in mir_db.database.items() if "info.vae" in mir_id and next(iter(comp_data)) == mir_comp]
+            mir_tag = [mir_id for mir_id, comp_data in mir_db.db.items() if "info.vae" in mir_id and next(iter(comp_data)) == mir_comp]
             if mir_tag:
                 mir_tag.append(mir_comp)  # keep mir tag as single list
             elif class_name != "AutoencoderKL":

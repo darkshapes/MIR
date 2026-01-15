@@ -105,19 +105,14 @@ def show_path_for(code_name: str, pkg_name: str) -> list[str] | str | None:
 #     return list(MAPPING_NAMES)
 
 
-def to_domain_tag(transformers: bool = False, **kwargs):
+def to_domain_tag(library: str, **kwargs):
     """Set type of MIR prefix depending on model type\n
     :param transformers: Use transformers data instead of diffusers data, defaults to False
     :raises ValueError: Model type not detected
     :return: MIR prefix based on model configuration"""
     from mir.data import NN_FILTER
 
-    data = NN_FILTER
-
-    if transformers:
-        flags = data["arch"]["transformer"]  # pylint:disable=unsubscriptable-object
-    else:
-        flags = data["arch"]["diffuser"]  # pylint:disable=unsubscriptable-object
+    flags = NN_FILTER["arch"][library]  # pylint:disable=unsubscriptable-object
     for mir_prefix, key_match in flags.items():
         if any(kwargs.get(param, None) for param in key_match):
             return mir_prefix

@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
+
 import os
+from importlib import import_module
+from logging import DEBUG, INFO, Logger
 
 from mir.json_io import read_json_file
-from logging import DEBUG, INFO, Logger
+from mir.generate.transformers.harvest import HarvestClasses
 
 NFO = Logger(INFO).info
 DBUQ = Logger(DEBUG).debug
@@ -17,3 +20,10 @@ PARAMETERS = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["para
 SEMANTIC = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["semantic"]
 SUFFIX = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["suffix"]
 IGNORE = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["ignore"]
+
+
+tag_name = lambda path: path.rsplit(".", 1)
+mir_run = lambda parts: getattr(import_module(parts[0]), parts[1])
+
+
+Mir = HarvestClasses().db.db

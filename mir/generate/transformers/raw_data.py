@@ -3,7 +3,7 @@
 
 
 from dataclasses import dataclass, field
-from typing import Callable
+from typing import Callable, Any
 
 
 @dataclass
@@ -12,13 +12,11 @@ class PrepareData:
 
     name: str
     model: Callable
-    config: Callable
+    config: type
     repo_path: str
     config_params: dict[str, list[str]]
-    model_params: dict[str, list[str]] | None = None
-    mir_arch: str = field(init=False)
-    mir_series: str = field(init=False)
-    mir_comp: str = field(init=False)
+    model_params: dict[str, list[str]] | None = field(init=True, default_factory=lambda: {"": [""]})
+    tasks: list[str] = field(init=False, default_factory=lambda: [""])
 
     def __post_init__(self) -> None:
         """Initializes the PrepareData instance by setting derived attributes."""
@@ -26,12 +24,10 @@ class PrepareData:
 
         self.model_name: str = self.model.__name__.split(".")[-1]
         if tokenizer := TOKENIZER_MAPPING.get(self.config, None):
-            self.tokenizer = tokenizer
-            self.tokenizer_pkg: dict[str, str] | None = {"transformers": f"{self.tokenizer.__module__}.{self.tokenizer.__name__}"}
+            self.tokenizer: tuple[type[Any] | None, type[Any] | None] = tokenizer
         if internal_name := REVERSE_MAP.get(self.config):
             self.internal_name = internal_name
         self.model_to_tasks()
-        self.mir_tag_from_config()
 
     def model_to_tasks(self) -> None:
         """Transform a single model class into derivative classes for specific tasks.\n
@@ -41,26 +37,10 @@ class PrepareData:
 
         import_path = Path(self.model.__module__).stem
         parent_module = import_module(import_path)
-
+        self.tasks = []
         if hasattr(parent_module, "__all__") and parent_module.__name__ != "DummyPipe":
-            self.task_classes = parent_module.__all__
+            for module in parent_module.__all__:
+                if (module.lower() != module) and (module != self.model_name) and (module != self.config.__name__):
+                    self.tasks.append(module)
         else:
-            self.task_classes = [self.model.__name__]
-
-    def mir_tag_from_config(self) -> None:
-        """Generates MIR series and component tags based on the configuration class.\n
-        :return: Tuple containing MIR series, component, and suffix tags."""
-
-        from mir.generate.from_module import to_domain_tag
-        from mir.tag import tag_model_from_repo
-
-        mir_prefix = to_domain_tag(transformers=True, **self.config_params)
-        if not mir_prefix:
-            if self.model_params:
-                if mir_prefix := to_domain_tag(transformers=True, **self.model_params):
-                    pass
-                raise ValueError(f"Unable to determine MIR prefix from {self}")
-            else:
-                raise ValueError(f"Unrecognized model type, no tag matched {self.name} with {self.config_params} or {self.model_params}")
-        self.mir_arch = mir_prefix
-        self.mir_series, self.mir_comp = tag_model_from_repo(self.repo_path)
+            self.tasks = [self.model.__name__]

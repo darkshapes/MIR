@@ -28,62 +28,8 @@ vega_series, vega_comp = tag_model_from_repo("segmind/Segmind-Vega")
 sd3_series, sd3_comp = tag_model_from_repo("stable-diffusion-3.5-medium")  #
 
 
-def assimilate(mir_db: MIRDatabase, data_tuple: List[Tuple[Dict[str, Any]]]) -> None:
-    """Merge new data into a pre-generated MIR database, updating while preserving existing data structures.\n
-    :param mir_db: The MIRDatabase instance
-    :param data_tuple: A list of tuples, each containing:\n
-            - arch (str): The architecture name
-            - series (str): The series name
-            - `new_data`: New data to be merged into the database.
-    :raises TypeError: If any field in `new_data` is not a dictionary.
-    """
-
-    def update_nested_dict(target, source):
-        for key, value in source.items():
-            if isinstance(value, dict) and key in target:
-                if isinstance(target, dict):
-                    update_nested_dict(target[key], value)
-            else:
-                if isinstance(source, dict):
-                    # dbuq(target)
-                    target.setdefault(key, value)
-                else:
-                    target = {key: value}
-
-    dbuq(f"{data_tuple}, {len(data_tuple)}")
-    for arch, series, new_data in data_tuple:
-        mir_data = mir_db.database[f"{arch}.{series}"]
-        for comp, field_data in new_data.items():
-            if not isinstance(field_data, dict):
-                raise TypeError(f"{field_data} <-- Cannot combine with database: Not `dict()`")
-
-            # dbuq(f"{arch}.{series} : {comp}")
-            update_nested_dict(mir_data.setdefault(comp, {}), field_data)
-
-            if series == sdxl_series:
-                for field, field_data in field_data.items():
-                    if isinstance(field_data, dict):
-                        for definition, sub_def_data in field_data.items():
-                            # dbug(definition)
-                            if isinstance(sub_def_data, dict):
-                                mir_data[comp][field].setdefault(definition, {})
-                                update_nested_dict(mir_data[comp][field][definition], sub_def_data)
-
-
 # def auto_gan etc etc
 # ai-forever/Real-ESRGAN
-
-
-def mir_update(mir_db: MIRDatabase, task_list: list = None, pipe_list: list = None):
-    """Create mir unet info database"""
-
-    additional_tags = [tag_pipe(*entry) for entry in diffusers_addons]
-    additional_tags.extend([tag_base_model(*entry) for entry in transformers_addons])
-
-    assimilate(
-        mir_db,  # format
-        additional_tags,
-    )
 
 
 def add_mir_diffusion(mir_db: MIRDatabase):

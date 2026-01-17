@@ -2,7 +2,6 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 from dataclasses import dataclass, field
-from typing import Callable
 
 from mir.generate.transformers.raw_data import PrepareData
 
@@ -12,55 +11,38 @@ class MIRTag:
     """Represents a MIR tag associated with a specific domain and model data.\n
 
     Attributes:\n
-        domain: The domain of the MIR tag.
         prepared_data: Object containing prepared model data.
         arch: The architecture component of the MIR tag (generated).
         series: The series component of the MIR tag (generated).
-        pkg Package information associated with the MIR tag (generated).
-        tokenizer_pkg Dependency package information associated with the MIR tag (generated).
+        comp The compatibility component of the MIR tag (generated, optional).
     """
 
-    domain: str
-    data: PrepareData
+    raw_data: PrepareData
     arch: str = field(init=False)
     series: str = field(init=False)
-    pkg: str = field(default_factory=str)
-    tokenizer_pkg: str = field(default_factory=str)
 
     def __post_init__(self) -> None:
         """Initializes MIRTag instance, setting up database connection and generating package and MIR tag information."""
-        from mir.maid import MIRDatabase
-
-        self.mir_db = MIRDatabase()
-        self.pkg = self.generate_pkg(pkg=self.data.model)
-        if hasattr(self.data, "tokenizer") and self.data.tokenizer:
-            self.tokenizer_pkg = self.generate_pkg(pkg=self.data.tokenizer)  # type:ignore
         self.generate_arch()
-        self.generate_series_and_comp(repo_title=self.data.repo_path)
-
-    def generate_pkg(self, pkg: Callable) -> str:
-        """Generates package information for the MIR tag based on class.
-        :param pkg: A class object (model, tokenizer, etc) to build a tag from"""
-
-        return f"{pkg.__module__}.{pkg.__name__}"
+        self.generate_series_and_comp(repo_title=self.raw_data.repo_path)
 
     def generate_arch(self) -> None:
         """Generates the architecture part of the MIR tag based on prepared data.\n
         :raises ValueError: If no suitable tag can be determined."""
         from mir.generate.from_module import to_domain_tag
 
-        library = self.pkg.split(".")[0]
-        arch = to_domain_tag(library, **self.data.config_params)
+        library = self.raw_data.model.__module__.split(".")[0]
+        arch = to_domain_tag(library, **self.raw_data.config_params)
         if not arch:
-            if self.data.model_params:
-                if arch := to_domain_tag(library, **self.data.model_params):
+            if self.raw_data.model_params:
+                if arch := to_domain_tag(library, **self.raw_data.model_params):
                     pass
                 raise ValueError(f"Unable to determine MIR prefix from {self}")
             else:
                 raise ValueError(
                     f"Unrecognized model type, \
-                        no tag matched {self.data.name} \
-                            with {self.data.config_params} or {self.data.model_params}",
+                        no tag matched {self.raw_data.name} \
+                            with {self.raw_data.config_params} or {self.raw_data.model_params}",
                 )
         self.arch = arch
 

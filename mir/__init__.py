@@ -22,8 +22,8 @@ SUFFIX = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["suffix"]
 IGNORE = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["ignore"]
 
 
-tag_name = lambda path: path.rsplit(".", 1)
-mir_run = lambda parts: getattr(import_module(parts[0]), parts[1])
+tag = lambda path: path.rsplit(".", 1)
+run = lambda parts: getattr(import_module(parts[0]), parts[1])
 
 
 Mir = HarvestClasses().db.db

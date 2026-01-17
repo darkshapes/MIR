@@ -8,13 +8,14 @@ import os
 from typing import Any, List, Optional
 
 from mir import MIR_PATH_NAMED
+from mir.framework import MIRNesting
 from mir.json_io import read_json_file, write_json_file
 from mir.tag import MIRTag
 
 
 class MIRDatabase:
-    """Machine Intelligence Resource Database Object
-    Database search and read/write operations"""
+    """Machine Intelligence Resource database object\n
+    Database query and read/write operations"""
 
     def __init__(self, db: dict | None = None) -> None:
         from chanfig import NestedDict
@@ -29,47 +30,23 @@ class MIRDatabase:
                 DBUQ(error_log)
                 self.db = NestedDict()
 
-    def add_tag(self, mir_tag: MIRTag):
-        """Add or update entry to MIR Database
-        :param prepared_data: An instance of PrepareData to convert into tags
-        """
+    def add_data(self, mir_nest: MIRNesting, *args) -> None:
+        """Add entry to MIR Database\n
+        :param mir_tag:  An instance of MIRTag to be added to the database"""
         from chanfig import NestedDict
 
-        library = mir_tag.pkg.split(".")[0]
-        pkg = {library: (mir_tag.pkg,)}
-        if hasattr(mir_tag.data, "tokenizer") and mir_tag.data.tokenizer:
-            info = NestedDict({f"info.encoder.tokenizer.{mir_tag.series}": {mir_tag.tokenizer_pkg}})
-            self._update_data(self.db, info)
-            pkg = pkg | {"tokenizer": f"info.encoder.tokenizer.{mir_tag.series}"}
-        if hasattr(mir_tag, "comp"):
-            info = NestedDict({f"info.{mir_tag.arch}.{mir_tag.series}{mir_tag.comp}": pkg})
-        else:
-            info = NestedDict({f"info.{mir_tag.arch}.{mir_tag.series}": pkg})
-        self._update_data(self.db, info)
-
+        for nested_tag in args:
+            self._include_data(self.db, getattr(mir_nest, nested_tag))
         self.db = NestedDict(self.db)
 
-    def _update_data(self, target, source):
-        """Recursively merges `source` into `target` without overwriting nested dictionaries entirely."""
-
+    def _include_data(self, target: dict[str, Any], source: dict[str, Any]):
+        """Recursively merges `source` into `target` without overwriting nested dictionaries or their entries."""
         for key, value in source.items():
-            if isinstance(value, dict) and key in target and isinstance(target[key], dict):
-                self._update_data(target[key], value)
+            if isinstance(value, dict) and key in target and isinstance(target[key], dict):  # 递归 recurse
+                self._include_data(target[key], value)
             else:
-                # Update only if key doesn't exist or value is not a dict to avoid overwriting
                 if key not in target or not isinstance(target[key], dict):
                     target.setdefault(key, value)
-
-        # Handle cases where source might have non-dict values that should update target's non-dict values
-        for key in target:
-            if key not in source and isinstance(target[key], dict):
-                continue
-            elif key not in source and not isinstance(target[key], dict):
-                # If key exists in target but not in source and is not a dict, ensure it's preserved
-                pass
-            else:
-                # Additional logic if needed for specific conditions
-                pass
 
     def write_to_disk(self, data: Optional[dict] = None) -> None:  # pylint:disable=unused-argument
         """Save data to JSON file\n"""

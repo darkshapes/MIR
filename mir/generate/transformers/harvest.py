@@ -3,6 +3,7 @@
 
 from typing import Any, Callable
 
+from mir.framework import MIRNesting, MIRPackage
 from mir.generate.transformers.raw_data import PrepareData
 from mir.tag import MIRTag
 
@@ -29,8 +30,17 @@ class HarvestClasses:
             if config_data := self.extract_config_class_data(config_class):
                 if model_data := self.extract_model_class_data(model_class):
                     if prepared_data := PrepareData(**config_data, **model_data):  # type:ignore
-                        mir_tag = MIRTag("info", prepared_data)
-                        self.db.add_tag(mir_tag)
+                        mir_tag = MIRTag(prepared_data)
+                        mir_package = MIRPackage()
+                        mir_nest = MIRNesting(mir_tag)
+                        mir_package(data=prepared_data.model)
+                        mir_nest(mir_package, prepared_data)
+                        if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
+                            mir_package(data=prepared_data.tokenizer)
+                            mir_nest(mir_package)
+                        mir_package.add_framework(mir_nest.framework_data)
+                        mir_nest(mir_package)
+                        self.db.add_data(mir_nest, *mir_nest.loops)
 
     def extract_config_class_data(self, config_class: Callable) -> dict[str, str | Callable | dict[str, Any]] | None:
         """Extracts information from config classes.\n

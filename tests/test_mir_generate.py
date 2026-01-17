@@ -3,7 +3,7 @@ def test_info_key_exists_and_library_is_not_nested():
 
     print(Mir.info.cnn.yolos)
     result = Mir.info.cnn.yolos["transformers"]  # should not throw
-    assert result == "ops.cnn.yolos"
+    assert result == {"repo": "hustvl/yolos-base", "model": "ops.cnn.yolos"}
 
 
 def test_ops_key_exists_and_library_is_not_tested():
@@ -19,3 +19,10 @@ def test_ops_key_exists_and_library_is_not_tested():
         "YolosImageProcessor",
     ]
     assert all(task in result["tasks"] for task in expected_tasks)
+
+
+def test_ops_tokenizer_created():
+    from mir import Mir
+
+    result = Mir.ops.encoder.tokenizer.zamba2['transformers']
+    assert result == {"model": "transformers.models.llama.tokenization_llama.LlamaTokenizer"}

@@ -10,36 +10,29 @@ from mir.tag import MIRTag
 @dataclass
 class MIRPackage:
     data: Callable | str | dict[str, str]
-    library: str = field(init=False, default_factory=str)
-    package: dict[str, dict[str, str]] = field(init=False, default_factory=dict[str, dict[str, str]])
-    framework: dict[str, dict[str, str]] = field(init=False, default_factory=dict[str, dict[str, str]])
+    package: dict[str, str] = field(init=False, default_factory=dict[str, str])
 
-    def __init__(self):
-        pass
-
-    def __call__(self, data: Callable | str | dict[str, str]):
+    def __init__(self, data: Callable | str | dict[str, str]):
+        self.package = {}
         self.data = data
-        if isinstance(self.data, Callable):
+        if not isinstance(self.data, dict):
             self.generate_package()
 
     def generate_package(self) -> None:
         """Generates package information for the MIR tag based on class.
         :param pkg: A class object (model, tokenizer, etc) to build a tag from"""
         self.domain = "ops"
-        module_path = self.data.__module__
-        self.library = module_path.split(".")[0]
-        self.package: dict[str, dict[str, str]] = {self.library: {"model": f"{module_path}.{self.data.__name__}"}}
+        model = f"{self.data.__module__}.{self.data.__name__}"
+        self.package: dict[str, str] = {"model": model}
 
     def add_framework(self, framework_data) -> None:
         self.domain = "info"
-        self.framework = {self.library: framework_data}
+        self.package = framework_data
 
 
 class MIRNesting:
     """Build tag components from the extracted data\n
     :param mir_tag: An instance of MIR tag with the necessary information
-    :param name: Identification string to store data underneath
-    :param mir_package: Instance of MIRPackage to store inside the nested dict
     :param prepared_data: Instance of PrepareData to attribute the final information
     :returns: The final, assembled MIR tag"""
 
@@ -49,66 +42,78 @@ class MIRNesting:
     framework: dict[str, str] = field(init=False)
     tokenizer: str | None = field(default_factory=str)
 
-    def __init__(self, mir_tag: MIRTag) -> None:
+    def __init__(self, mir_tag: MIRTag, prepared_data: PrepareData) -> None:
+        """\nInitialize the framework with MIR tag and prepared data.\n
+        :param mir_tag : The MIR tag instance.
+        :param prepared_data : The prepared data for processing."""
         self.mir_tag = mir_tag
+
+        self.prepared_data = prepared_data
         self.loops = []
         self.framework_data = {}
 
-    def __call__(self, mir_package: MIRPackage, prepared_data: PrepareData | None = None):
-        if hasattr(mir_package, "library"):
-            self.library = mir_package.library
-        if prepared_data:
-            self.framework_data.setdefault("repo", prepared_data.repo_path)
-        if hasattr(mir_package, "tokenizer"):
-            name = "tokenizer"
-            self.package = mir_package.package
-            self.nest_data(
-                name=name,
-                domain=mir_package.domain,
-                arch="encoder",
-                series="tokenizer",
-                comp=self.mir_tag.series,
-            )
-            self.framework_data.setdefault("tokenizer", f"{mir_package.domain}.encoder.tokenizer.{self.mir_tag.series}")
-        else:
-            data = f"{mir_package.domain}.{self.mir_tag.arch}.{self.mir_tag.series}"
-            if comp := getattr(self.mir_tag, "comp", None):
-                self.framework_data.setdefault("model", data + comp)
-            else:
-                self.framework_data.setdefault("model", data)
+    def __call__(self, mir_package: MIRPackage) -> None:
+        """Dispatches a MIRPackage to the appropriate handler based on its domain.
+        :param mir_package: An instance of MIRPackage with the requisite data to tag"""
 
-            if hasattr(mir_package, "framework"):
-                name = "framework"
-                self.package = mir_package.framework
-            else:
-                name = "model"
-                self.package = mir_package.package
-                if hasattr(prepared_data, "tasks") and prepared_data.tasks:
-                    self.package[mir_package.library].setdefault("tasks", prepared_data.tasks)
-            self.nest_data(
-                name=name,
-                domain=mir_package.domain,
-                arch=self.mir_tag.arch,
-                series=self.mir_tag.series,
-                comp=comp,
-            )
+        if (mir_package.domain == "ops" and
+            hasattr(self.prepared_data, "tokenizer") and
+            self.prepared_data.tokenizer and self.loops== ['model']):
+            self._process("tokenizer", mir_package)
+        elif mir_package.domain == "ops":
+            self._process("model", mir_package)
+        elif mir_package.domain == "info":
+            self._process("framework", mir_package)
+
+    def _process(self, name: str, mir_package: MIRPackage) -> None:
+        """Common routine for handling a package: store tag data, nest the package,
+        and record the name of the newly-created attribute.\n
+        :param name: Identification string to store data underneath
+        :param mir_package: An instance of MIRPackage with the requisite data"""
+
+        is_framework = name == "framework"
+        is_model = name == "model"
+
+
+        if is_framework:
+            package_data = {self.prepared_data.library: mir_package.package}
+            tag_data = f"{mir_package.domain}.{self.mir_tag.arch}.{self.mir_tag.series}"
+            if comp := getattr(self.mir_tag, "comp", None):
+                tag_data += comp
+            self.framework_data.setdefault("repo", self.prepared_data.repo_path)
+        elif is_model:
+            package_data = {self.prepared_data.library: mir_package.package}
+            if hasattr(self.prepared_data, "tasks") and self.prepared_data.tasks:
+                package_data[self.prepared_data.library].setdefault("tasks", self.prepared_data.tasks)
+            tag_data = f"{mir_package.domain}.{self.mir_tag.arch}.{self.mir_tag.series}"
+            if comp := getattr(self.mir_tag, "comp", None):
+                tag_data += comp
+            self.framework_data.setdefault(name, tag_data)
+        else:  # tokenizer case
+            package_data = {self.prepared_data.library: mir_package.package}
+            tag_data = f"{mir_package.domain}.encoder.tokenizer.{self.mir_tag.series}"
+            self.framework_data.setdefault(name, tag_data)
+
+        self.nest_data(name=name, tag_data=tag_data, package_data=package_data)
         self.loops.append(name)
 
-    def nest_data(self, name: str, domain: str, arch: str, series: str, comp: str | None = None) -> None:
+    def nest_data(self, name: str, tag_data: str, package_data: dict) -> None:
+        """Nest data into a hierarchical attribute structure.\n
+        :param name: Attribute name to store the nested data
+        :param tag_data: Dotted path string for nesting
+        :param package_data: Data to be stored in the nested structure"""
+
         from chanfig import NestedDict
 
-        if comp:
+        tag_parts = tuple(x for x in tag_data.split("."))
+
+        if len(tag_parts) ==4:
+            domain, arch, series, comp = tag_parts
             nest = NestedDict({f"{domain}.{arch}.{series}": {comp: ""}})
-            nest[domain][arch][series] = self.package
+            nest[domain][arch][series][comp] = package_data
         else:
+            domain, arch, series = tag_parts
             nest = NestedDict({f"{domain}.{arch}": {series: ""}})
-            nest[domain][arch][series] = self.package
+            nest[domain][arch][series] = package_data
+
         setattr(self, name, nest)
-
-
-#     data[domain][arch][series] = pkg_data
-#  if tag_data.comp:
-#            data[tag_datadomain][arch][series][comp_tag] = pkg_data
-#         self.generate_pkg("pkg", self.raw_data.model)
-#  self.generate_pkg("tokenizer_pkg", self.raw_data.tokenizer)
-# framework: dict[str,FrameworkBundle]

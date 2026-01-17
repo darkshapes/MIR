@@ -31,12 +31,11 @@ class HarvestClasses:
                 if model_data := self.extract_model_class_data(model_class):
                     if prepared_data := PrepareData(**config_data, **model_data):  # type:ignore
                         mir_tag = MIRTag(prepared_data)
-                        mir_package = MIRPackage()
-                        mir_nest = MIRNesting(mir_tag)
-                        mir_package(data=prepared_data.model)
-                        mir_nest(mir_package, prepared_data)
+                        mir_nest = MIRNesting(mir_tag, prepared_data)
+                        mir_package = MIRPackage(data=prepared_data.model)
+                        mir_nest(mir_package)
                         if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
-                            mir_package(data=prepared_data.tokenizer)
+                            mir_package = MIRPackage(data=prepared_data.tokenizer)
                             mir_nest(mir_package)
                         mir_package.add_framework(mir_nest.framework_data)
                         mir_nest(mir_package)

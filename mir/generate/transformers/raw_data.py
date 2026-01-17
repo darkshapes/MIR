@@ -27,6 +27,7 @@ class PrepareData:
             self.tokenizer: tuple[type[Any] | None, type[Any] | None] = tokenizer
         if internal_name := REVERSE_MAP.get(self.config):
             self.internal_name = internal_name
+        self.library = self.model.__module__.split(".")[0]
         self.model_to_tasks()
 
     def model_to_tasks(self) -> None:

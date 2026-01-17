@@ -17,6 +17,8 @@ class MIRPackage:
         self.data = data
         if not isinstance(self.data, dict):
             self.generate_package()
+        else:
+            self.add_framework(self.data)
 
     def generate_package(self) -> None:
         """Generates package information for the MIR tag based on class.

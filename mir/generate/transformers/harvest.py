@@ -22,24 +22,27 @@ class HarvestClasses:
         :return: List of PrepareData entries representing the transformer classes."""
         from mir.generate.transformers import AUTO_MAP
 
-        model_data = []
-        for pair_map in AUTO_MAP.items():
-            config_class, model_class = pair_map  # type:ignore
+        for config_class, model_class in AUTO_MAP.items():
             if isinstance(model_class, tuple):
-                model_class: Callable = model_class[0]
-            if config_data := self.extract_config_class_data(config_class):
-                if model_data := self.extract_model_class_data(model_class):
-                    if prepared_data := PrepareData(**config_data, **model_data):  # type:ignore
-                        mir_tag = MIRTag(prepared_data)
-                        mir_nest = MIRNesting(mir_tag, prepared_data)
-                        mir_package = MIRPackage(data=prepared_data.model)
-                        mir_nest(mir_package)
-                        if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
-                            mir_package = MIRPackage(data=prepared_data.tokenizer)
-                            mir_nest(mir_package)
-                        mir_package.add_framework(mir_nest.framework_data)
-                        mir_nest(mir_package)
-                        self.db.add_data(mir_nest, *mir_nest.loops)
+                model_class = model_class[0]
+            if not (config_data := self.extract_config_class_data(config_class)):
+                continue
+            if not (model_data := self.extract_model_class_data(model_class)):
+                continue
+            if not (prepared_data := PrepareData(**config_data, **model_data)):  # type:ignore
+                continue
+
+            mir_tag = MIRTag(prepared_data)
+            mir_nest = MIRNesting(mir_tag, prepared_data)
+            packages = [MIRPackage(data=prepared_data.model)]
+            if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
+                packages.append(MIRPackage(data=prepared_data.tokenizer))
+            packages.append(MIRPackage(data=mir_nest.framework_data))
+            for pkg in packages:
+                mir_nest(pkg)
+
+
+            self.db.add_data(mir_nest, *mir_nest.loops)
 
     def extract_config_class_data(self, config_class: Callable) -> dict[str, str | Callable | dict[str, Any]] | None:
         """Extracts information from config classes.\n

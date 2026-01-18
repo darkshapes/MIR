@@ -22,21 +22,21 @@ class HarvestClasses:
         :return: List of PrepareData entries representing the transformer classes."""
         from mir.generate.transformers import AUTO_MAP
 
-        for config_class, model_class in AUTO_MAP.items():
+        for config_class, model_class in AUTO_MAP.items(): #type: ignore
             if isinstance(model_class, tuple):
-                model_class = model_class[0]
+                model_class: Callable = model_class[0]
             if not (config_data := self.extract_config_class_data(config_class)):
                 continue
             if not (model_data := self.extract_model_class_data(model_class)):
                 continue
-            if not (prepared_data := PrepareData(**config_data, **model_data)):  # type:ignore
+            if not (prepared_data := PrepareData(**config_data, **model_data)):  # type:ignore , _Lazyautomapping tuple
                 continue
 
             mir_tag = MIRTag(prepared_data)
             mir_nest = MIRNesting(mir_tag, prepared_data)
             packages = [MIRPackage(data=prepared_data.model)]
             if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
-                packages.append(MIRPackage(data=prepared_data.tokenizer))
+                packages.append(MIRPackage(data=prepared_data.tokenizer)) #type: ignore  , _Lazyautomapping tuple
             packages.append(MIRPackage(data=mir_nest.framework_data))
             for pkg in packages:
                 mir_nest(pkg)

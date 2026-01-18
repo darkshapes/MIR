@@ -27,6 +27,7 @@
         "text_to_video_synthesis",
         "unclip",
         "unidiffuser",
-        "controlnet_hunyuandit"
+        "controlnet_hunyuandit",
+        "pipeline_stable_diffusion_xl_inpaint"
     ]
 }

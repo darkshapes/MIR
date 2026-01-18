@@ -3,6 +3,7 @@
 
 from typing import Any, Callable
 from dataclasses import dataclass, field
+from mir.generate.diffusers.raw_data import DPrepareData
 from mir.generate.transformers.raw_data import PrepareData
 from mir.tag import MIRTag
 
@@ -12,7 +13,7 @@ class MIRPackage:
     data: Callable | str | dict[str, str]
     package: dict[str, str] = field(init=False, default_factory=dict[str, str])
 
-    def __init__(self, data: Callable | str | dict[str, str]):
+    def __init__(self, data: Callable | str | dict[str, str] | dict[str, Any]):
         self.package = {}
         self.data = data
         if not isinstance(self.data, dict):
@@ -44,7 +45,7 @@ class MIRNesting:
     framework: dict[str, str] = field(init=False)
     tokenizer: str | None = field(default_factory=str)
 
-    def __init__(self, mir_tag: MIRTag, prepared_data: PrepareData) -> None:
+    def __init__(self, mir_tag: MIRTag, prepared_data: PrepareData | DPrepareData) -> None:
         """\nInitialize the framework with MIR tag and prepared data.\n
         :param mir_tag : The MIR tag instance.
         :param prepared_data : The prepared data for processing."""
@@ -58,9 +59,7 @@ class MIRNesting:
         """Dispatches a MIRPackage to the appropriate handler based on its domain.
         :param mir_package: An instance of MIRPackage with the requisite data to tag"""
 
-        if (mir_package.domain == "ops" and
-            hasattr(self.prepared_data, "tokenizer") and
-            self.prepared_data.tokenizer and self.loops== ['model']):
+        if mir_package.domain == "ops" and hasattr(self.prepared_data, "tokenizer") and self.prepared_data.tokenizer and self.loops == ["model"]:  # type: ignore
             self._process("tokenizer", mir_package)
         elif mir_package.domain == "ops":
             self._process("model", mir_package)
@@ -75,7 +74,6 @@ class MIRNesting:
 
         is_framework = name == "framework"
         is_model = name == "model"
-
 
         if is_framework:
             package_data = {self.prepared_data.library: mir_package.package}
@@ -109,7 +107,7 @@ class MIRNesting:
 
         tag_parts = tuple(x for x in tag_data.split("."))
 
-        if len(tag_parts) ==4:
+        if len(tag_parts) == 4:
             domain, arch, series, comp = tag_parts
             nest = NestedDict({f"{domain}.{arch}.{series}": {comp: ""}})
             nest[domain][arch][series][comp] = package_data

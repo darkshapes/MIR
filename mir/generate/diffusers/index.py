@@ -7,11 +7,9 @@ from typing import Any, Generator
 
 from mir import DBUQ, NFO
 from mir.data import EXCLUSIONS
-from mir.generate.diffusers import GET_TASK_CLASS, IMPORT_STRUCTURE, SUPPORTED_TASKS_MAPPINGS, DocParseData, DocStringEntry
-from mir.generate.diffusers.doc_parse import parse_docs
+from mir.generate.diffusers import GET_TASK_CLASS, IMPORT_STRUCTURE, SUPPORTED_TASKS_MAPPINGS
 from mir.generate.from_module import import_object_named, show_init_fields_for, to_domain_tag
 from mir.generate.indexers import migrations
-from mir.tag import tag_model_from_repo
 
 
 def retrieve_diffusers_docstrings(
@@ -128,25 +126,6 @@ def find_diffusers_docstrings() -> Generator[list[DocStringEntry]]:
                 continue
 
 
-def show_diffusers_tasks(code_name: str, class_name: str | None = None) -> list[str]:
-    """Return Diffusers task pipes based on package-specific query\n
-    :param class_name: To find task pipes from a Diffusers class pipe, defaults to None
-    :param code_name: To find task pipes from a Transformers class pipe, defaults to None
-    :return: A list of alternate class pipelines derived from the specified class"""
-
-    alt_tasks = set()
-    for task_map in SUPPORTED_TASKS_MAPPINGS:
-        task_class = GET_TASK_CLASS(task_map, class_name, False)
-        if task_class:
-            alt_tasks.add(task_class.__name__)
-            DBUQ(task_class)
-        for model_code, pipe_class_obj in task_map.items():
-            if code_name in model_code:
-                alt_tasks.add(pipe_class_obj.__name__)
-
-    return list(alt_tasks)
-
-
 def diffusers_index() -> dict[str, dict[str, dict[str, Any]]]:
     """Generate diffusion model data for MIR index\n
     :return: Dictionary ready to be applied to MIR data fields
@@ -160,7 +139,9 @@ def diffusers_index() -> dict[str, dict[str, dict[str, Any]]]:
         "HunyuanDiTPipeline": "tencent-hunyuan/hunyuandiT-v1.2-diffusers",  #  NOT hyd .ckpt
         "ChromaPipeline": "lodestones/Chroma",
     }
-
+    for class_name, swap_repo in special_classes.items():
+        if parsed_data.pipe_class == class_name:
+            parsed_data.pipe_repo = swap_repo
     extracted_docstrings = find_diffusers_docstrings()
     model_info = [extract for pipeline in extracted_docstrings for extract in pipeline]
     pipe_data = {}  # pipeline_stable_diffusion_xl_inpaint

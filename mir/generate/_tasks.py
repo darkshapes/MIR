@@ -2,9 +2,8 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 
-from typing import Any, Callable, List, get_type_hints
-from mir.maid import MIRDatabase
-from mir.generate.diffusers.index import show_diffusers_tasks
+from typing import Any, Callable, List
+from mir.generate.diffusers.raw_data import DPrepareData
 from mir.generate.diffusers.schedulers import tag_scheduler
 from mir import DBUQ
 from mir.tag import MIRTag
@@ -14,7 +13,13 @@ flatten_map.__annotations__ = {"nested": List[str], "unpack": str}
 
 
 class TaskAnalyzer:
-    def __init__(self) -> None:
+    prepared_data: DPrepareData
+    mir_tag: MIRTag
+    tasks: dict[str, str] | None = None
+
+    def __init__(self, prepared_data: DPrepareData, mir_tag: MIRTag) -> None:
+        self.prepared_data = prepared_data
+        self.mir_tag = mir_tag
         self.skip_series = [
             "info.lora",
             "info.vae",
@@ -28,7 +33,7 @@ class TaskAnalyzer:
         self.skip_types = ["int", "bool", "float", "Optional", "NoneType", "List", "UNet2DConditionModel"]
         self.mflux_tasks = ["Image", "Redux", "Kontext", "Depth", "Fill", "ConceptAttention", "ControlNet", "CavTon", "IC-Edit"]
 
-    async def detect_pipes(self, mir_tag: MIRTag, model: Callable, type_params: dict) -> dict:
+    async def __post_init__(self) -> None:
         """Detects and traces Pipes MIR data\n
         :param mir_db:: An instance of MIRDatabase containing the database of information.
         :type mir_db: MIRDatabase
@@ -38,14 +43,13 @@ class TaskAnalyzer:
         :rtype: dict"""
 
         data_tuple = []
-        tasks = show_diffusers_tasks(code_name= class_name=model.__name__)
-        detected_pipe = await self.hyperlink_to_mir(type_params, mir_tag.series)
-        if hasattr(mir_tag, "comp") and mir_tag.comp:
-            data_tuple.append((*mir_tag.series, {mir_tag.comp: detected_pipe}))
+        detected_pipe = await self.hyperlink_to_mir(self.prepared_data.model_params, self.mir_tag.series)
+        if hasattr(self.mir_tag, "comp") and self.mir_tag.comp:
+            self.tasks(*self.mir_tag.series, {self.mir_tag.comp: detected_pipe})
         else:
-            data_tuple.append(({mir_tag.series: detected_pipe}))
+            self.tasks({self.mir_tag.series: self.prepared_data.model_path})
 
-        return data_tuple
+        self.tasks = data_tuple
 
     async def hyperlink_to_mir(self, pipe_args: dict, series: str):
         """Maps pipeline components to MIR tags/IDs based on class names and roles.\n
@@ -98,4 +102,3 @@ class TaskAnalyzer:
             DBUQ(mir_comp)
             mir_tag = "info.vae"
         return mir_tag, class_name
-

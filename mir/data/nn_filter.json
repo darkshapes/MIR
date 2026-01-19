@@ -140,19 +140,30 @@
             ]
         },
         "diffusers": {
+            "vae": [
+                "autoencoder",
+                "autoencoders"
+            ],
+            "scheduler": [
+                "scheduler",
+                "schedulers"
+            ],
             "lora": [
                 "motion_adapter"
             ],
             "controlnet": [
-                "controlnet"
+                "controlnet",
+                "controlnets"
             ],
             "unet": [
                 "unet",
+                "unets",
                 "prior",
                 "decoder"
             ],
             "dit": [
-                "transformer"
+                "transformer",
+                "transformers"
             ]
         }
     }

@@ -6,7 +6,6 @@ from importlib import import_module
 from logging import DEBUG, INFO, Logger
 
 from mir.json_io import read_json_file
-from mir.generate.transformers.harvest import HarvestClasses
 
 NFO = Logger(INFO).info
 DBUQ = Logger(DEBUG).debug
@@ -21,5 +20,8 @@ SEMANTIC = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["semant
 SUFFIX = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["suffix"]
 IGNORE = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["ignore"]
 
+# from mir.generate.transformers.harvest import HarvestClasses
+# Mir = HarvestClasses().db.db
+from mir.generate.diffusers.harvest import HarvestClasses
 
 Mir = HarvestClasses().db.db

@@ -31,26 +31,19 @@ class MIRTag:
     def generate_arch(self) -> None:
         """Generates the architecture part of the MIR tag based on prepared data.\n
         :raises ValueError: If no suitable tag can be determined."""
-        from mir.generate.from_module import to_domain_tag
 
+        arch = None
         library = self.raw_data.model.__module__.split(".")[0]
         if hasattr(self.raw_data, "config_params"):
-            arch = to_domain_tag(library, **self.raw_data.config_params)  # type: ignore
-        else:
+            arch = self.tag_architecture(library, **self.raw_data.config_params)  # type: ignore
+        elif hasattr(self.raw_data, "model_params"):
             arch = None
             self.decoder = "decoder" in [self.raw_data.model_params]
+            arch = self.tag_architecture(library, **self.raw_data.model_params)  # type: ignore
         if not arch:
-            if self.raw_data.model_params:
-                if arch := to_domain_tag(library, **self.raw_data.model_params):
-                    pass
-                raise ValueError(f"Unable to determine MIR prefix from {self}")
-            else:
-                raise ValueError(
-                    f"Unrecognized model type, \
-                        no tag matched {self.raw_data.name} \
-                            with {self.raw_data}",
-                )
-        self.arch = arch
+            print(f"Unrecognized model type, no tag matched {self.raw_data.name} with {self.raw_data.model_name}")
+        else:
+            self.arch = arch
 
     def generate_series_and_comp(self, repo_path: str, decoder=decoder) -> None:
         """Generates the MIR tag components from a repository title.\n
@@ -93,33 +86,57 @@ class MIRTag:
         if suffix != "*":
             self.comp = suffix
 
-    # def generate_pipe_tag(repo_path: str, class_name: str, model_class_obj: Callable | None = None) -> tuple[str, dict[str, dict[Any, Any]]]:
-    #     """Create a pipeline article and generate corresponding information according to the provided repo path and pipeline category\n
-    #     :param repo_path (str): Repository path.
-    #     :param model_class_obj (str): The model class function
-    #     :raises TypeError: If 'repo_path' or 'class_name' are not set.
-    #     :return: Tuple: The data structure containing mir_series and mir_comp is used for subsequent processing.
-    #     """
-    #     import diffusers  # pyright: ignore[reportMissingImports] # pylint:disable=redefined-outer-name
+    def tag_architecture(self, library: str, **kwargs) -> str | None:
+        """Set type of MIR prefix depending on model type\n
+        :param library: Library source of the original data
+        :raises ValueError: Model type not detected
+        :return: MIR prefix based on model configuration"""
+        from mir.data import NN_FILTER
 
-    #     if hasattr(diffusers, class_name):
-    #         model_class_obj = getattr(diffusers, class_name)
-    #         sub_segments = show_init_fields_for(model_class_obj, "diffusers")
+        flags = NN_FILTER["arch"][library]  # pylint:disable=unsubscriptable-object
+        if library == "diffusers":
+            for module_type, module_obj in kwargs.items():
+                module_name = module_obj.__module__
+                library_path = f"{library}.models."
+                if library_path in module_name:
+                    module_name = module_name.replace(library_path, "").split(".")[0]
+                    if mir_prefix := [match for match in flags if module_name in flags[match]]:
+                        return mir_prefix[0]
+        for mir_prefix, key_match in flags.items():
+            if any(kwargs.get(param, None) for param in key_match):
+                return mir_prefix
+        return None
 
-    #         else:
-    #             mir_prefix = to_domain_tag(**sub_segments)
-    #             if mir_prefix is None and class_name not in ["AutoPipelineForImage2Image", "DiffusionPipeline"]:
-    #                 NFO(f"Failed to detect type for {class_name} {list(sub_segments)}\n")
-    #             else:
-    #                 mir_prefix = "info." + mir_prefix
 
-    #         mir_series, mir_comp = list(tag_model_from_repo(repo_path, decoder))
-    #         mir_series = mir_prefix + "." + mir_series
-    #         repo_path = migrations(repo_path)
-    #         # modalities = add_mode_types(mir_tag=[mir_series, mir_comp])
-    #         prefixed_data = {
-    #             "repo": repo_path,
-    #             "pkg": {0: {"diffusers": class_name}},
-    #             # "mode": modalities.get("mode"),
-    #         }
-    #         return mir_series, {mir_comp: prefixed_data}
+def tag_scheduler(self, scheduler_name: str) -> tuple[str, str]:
+    """Create a mir label from a scheduler operation\n
+    :param class_name: Known period-separated prefix and model type
+    :return: The assembled mir tag with compatibility pre-separated"""
+    import re
+
+    series_name = None
+    comp_name = None
+    patterns = [r"Schedulers", r"Multistep", r"Solver", r"Discrete", r"Scheduler"]
+    for scheduler in patterns:
+        compiled = re.compile(scheduler)
+        match = re.search(compiled, scheduler_name)
+        if match:
+            comp_name = match.group()
+            comp_name = comp_name.lower()
+            break
+    for pattern in patterns:
+        series_name = re.sub(pattern, "", scheduler_name)
+    if not series_name:
+        series_name = scheduler_name
+    series_name.lower()
+    assert series_name is not None, "Expected series tag but got None"
+    assert comp_name is not None, "Expected compatibility tag but got None"
+    return series_name, comp_name
+
+
+def tag_tokenizer():
+    pass
+
+
+def tag_tokenizer():
+    pass

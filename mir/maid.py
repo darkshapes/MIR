@@ -8,9 +8,8 @@ import os
 from typing import Any, List, Optional
 
 from mir import MIR_PATH_NAMED
-from mir.framework import MIRNesting
+from mir.package import MIRNesting
 from mir.json_io import read_json_file, write_json_file
-from mir.tag import MIRTag
 
 
 class MIRDatabase:

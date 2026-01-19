@@ -42,16 +42,15 @@ class DocStringValidator:
 class DocStringParser(BaseModel):
     doc_string: str
     model: Callable
+    model_path: str
+    pipe_repo: str | None = None
+    staged_repo: str | None = None
 
     @field_validator("doc_string")
     def normalize_doc(cls, docs: str) -> str:
         return DocStringValidator.normalize_doc_string(docs)
 
-    def __init__(self, doc_string, model) -> None:
-        self.doc_string = doc_string
-        self.model = model
-
-    def __post_init__(self) -> dict[str, str] | None:
+    def parse(self) -> dict[str, str] | None:
         candidate, prior_candidate, staged = self.doc_match(PIPE_MARKERS["pipe_variables"])
         if candidate:
             pipe_repo = self._extract_class_and_repo(
@@ -79,6 +78,7 @@ class DocStringParser(BaseModel):
     def doc_match(self, prefix_set: List[str] | None = None):
         if prefix_set is None:
             prefix_set = PIPE_MARKERS["pipe_variables"]
+        assert prefix_set is not None
         candidate = None
         staged = None
         prior_candidate = ""

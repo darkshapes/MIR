@@ -36,27 +36,6 @@ def _class_parent(code_name: str, pkg_name: str) -> Optional[List[str]]:
         return import_path
 
 
-def _extract_inherited_classes(model_class: Union[Callable, str], pkg_name: Optional[str] = None) -> Optional[Dict[str, List[str]]]:
-    """Strips <class> tags from module's base classes and extracts inherited class members.\n
-    If `module` is a string, it requires the `library` argument to convert it into a callable.\n
-    :param module: A module or string representing a module.
-    :param library: Library name required if `module` is a string. Defaults to None.
-    :returns: Mapping indices to class path segments, or None if invalid input."""
-
-    if isinstance(model_class, str):
-        if not pkg_name:
-            NFO("Provide a library type argument to process strings")
-            return None
-        model_class = import_object_named(model_class, pkg_name)
-    signature = model_class.__bases__
-    class_names = []
-    for index, class_annotation in enumerate(signature):
-        tag_stripped = str(class_annotation)[8:-2]
-        module_segments = tag_stripped.split(".")
-        class_names.append(module_segments)
-    return class_names
-
-
 def _trace_classes(pipe_class: str, pkg_name: str) -> Dict[str, List[str]]:
     """Retrieve all compatible pipe forms\n
     NOTE: Mainly for Diffusers
@@ -189,3 +168,75 @@ def tag_transformers_model(repo_path: str, class_name: str, addendum: dict | Non
     else:
         mir_prefix = f"info.{mir_prefix}"
     return mir_prefix, base_series, {base_comp: addendum}
+
+
+# def extract_model_data(self,pipe_name, file_name: str) -> dict | None:
+#     migrated_pipes = MIGRATIONS["migrated_pipes"]
+#     pkg_path = f"diffusers.pipelines.{pipe_name}.{file_name}"
+#     pipe_file: Callable = import_object_named(file_name, pkg_path) or import_module(pkg_path)
+#     if pipe_file and (doc_string := getattr(pipe_file, "EXAMPLE_DOC_STRING", None)): #where pipe class and repo are
+#         docstrings= DocStringEntry(package_name=pipe_name, file_name=file_name, pipe_module=pipe_file, doc_string=doc_string)
+#         DocStringParser(doc_string=docstrings.doc_string)
+#         self.parsed_docs.pipe_repo = migrated_pipes.get(self.parsed_docs.pipe_class, self.parsed_docs.pipe_repo)
+#         model = import_object_named(parsed_data.pipe_class, docstrings.pipe_module.__name__)
+#         model_data = show_init_fields_for(model,"diffusers")
+#         return {"model_params": model_data}
+
+
+#   for pipe_name in IMPORT_STRUCTURE.keys():
+#             if pipe_name not in exclusion_list and (import_name := getattr(diffusers_pipelines, str(pipe_name))):
+#                 file_specific = uncommon_naming.get(pipe_name, pipe_name)
+#                 file_names:list[str] = [getattr(import_name, "_import_structure", {})] or [f"pipeline_{file_specific}"]
+#                 for file_name in file_names:
+#                     if not file_name in exclusion_list or not (model_data := self.extract_model_data(pipe_name, file_name)):
+#                         continue
+#                     if not (prepared_data := PrepareData( **model_data)):
+#                         continue
+# else:
+# continue
+
+
+# def show_path_for(code_name: str, pkg_name: str) -> list[str] | str | None:
+#     """Retrieve the folder path within a class. Only returns if it is a valid path in the system\n
+#     ### NOTE: in most cases `__module__` makes this redundant
+#     :param code_name: The internal name for the model in the third-party API.
+#     :param pkg_name: The API Package
+#     :return: A list corresponding to the path of the model, or None if not found
+#     :raises KeyError: for invalid pkg_name
+#     """
+
+#     pkg_paths = {
+#         "diffusers": "pipelines",
+#         "transformers": "models",
+#     }
+#     folder_name = code_name.replace("-", "_")
+#     pkg_name = pkg_name.lower()
+#     folder_path = pkg_paths[pkg_name]
+#     package_obj = import_module(pkg_name)
+#     folder_path_named = [folder_path, folder_name]
+#     pkg_folder = os.path.dirname(getattr(package_obj, "__file__"))
+#     # dbuq(os.path.exists(os.path.join(pkg_folder, *folder_path_named)))
+#     if os.path.exists(os.path.join(pkg_folder, *folder_path_named)) is True:
+#         import_path = [pkg_name]
+#         import_path.extend(folder_path_named)
+#         return import_path
+
+
+# def get_internal_name_for(module_name: str | Type | None = None, pkg_name: str = "transformers", path_format: bool | None = False) -> list[str] | str | None:
+#     """Reveal code names for class names from Diffusers or Transformers (formerly get code names)\n
+#     :param class_name: To return only one class, defaults to None
+#     :param pkg_name: optional field for library, defaults to "transformers"
+#     :param path_format: Retrieve just the code name, or the full module path and code name within the package
+#     :return: A list of all code names, or the one corresponding to the provided class"""
+#     from mir.generate.diffusers import IMPORT_STRUCTURE
+#     from mir.generate.transformers import MODEL_MAPPING_NAMES
+
+#     package_imports = IMPORT_STRUCTURE if pkg_name == "diffusers" else MODEL_MAPPING_NAMES
+#     pkg_name = pkg_name.lower()
+#     MAPPING_NAMES: dict[str, str] = import_object_named(*package_imports[pkg_name])
+#     if module_name:
+#         if isinstance(module_name, Type):
+#             module_name = module_name.__name__
+#         code_name = next(iter(key for key, value in MAPPING_NAMES.items() if module_name in str(value)), "")
+#         return show_path_for(code_name, pkg_name) if path_format else code_name.replace("_", "-")
+#     return list(MAPPING_NAMES)

@@ -3,7 +3,7 @@
 
 from typing import Any, Callable
 
-from mir.framework import MIRNesting, MIRPackage
+from mir.package import MIRNesting, MIRPackage
 from mir.generate.transformers.raw_data import PrepareData
 from mir.tag import MIRTag
 
@@ -14,7 +14,6 @@ class HarvestClasses:
         from mir.maid import MIRDatabase
 
         self.db = MIRDatabase()
-        self.raw_data = []
         self.find_transformers_classes()
 
     def find_transformers_classes(self) -> None:
@@ -22,7 +21,7 @@ class HarvestClasses:
         :return: List of PrepareData entries representing the transformer classes."""
         from mir.generate.transformers import AUTO_MAP
 
-        for config_class, model_class in AUTO_MAP.items(): #type: ignore
+        for config_class, model_class in AUTO_MAP.items():  # type: ignore
             if isinstance(model_class, tuple):
                 model_class: Callable = model_class[0]
             if not (config_data := self.extract_config_class_data(config_class)):
@@ -34,13 +33,12 @@ class HarvestClasses:
 
             mir_tag = MIRTag(prepared_data)
             mir_nest = MIRNesting(mir_tag, prepared_data)
-            packages = [MIRPackage(data=prepared_data.model)]
-            if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
-                packages.append(MIRPackage(data=prepared_data.tokenizer)) #type: ignore  , _Lazyautomapping tuple
-            packages.append(MIRPackage(data=mir_nest.framework_data))
-            for pkg in packages:
-                mir_nest(pkg)
 
+            packages = {"model": MIRPackage(data=prepared_data.model)}
+            if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
+                packages.setdefault("tokenizer", MIRPackage(data=prepared_data.tokenizer))  # type: ignore  , _Lazyautomapping tuple
+            packages.setdefault("framework", MIRPackage(data=mir_nest.framework_data))
+            mir_nest(packages)
 
             self.db.add_data(mir_nest, *mir_nest.loops)
 

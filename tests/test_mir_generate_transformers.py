@@ -1,5 +1,7 @@
 def test_info_key_exists_and_library_is_not_nested():
-    from mir import Mir
+    from mir.generate.transformers.harvest import HarvestClasses
+
+    Mir = HarvestClasses().db.db
 
     print(Mir.info.cnn.yolos)
     result = Mir.info.cnn.yolos["transformers"]  # should not throw
@@ -7,7 +9,9 @@ def test_info_key_exists_and_library_is_not_nested():
 
 
 def test_ops_key_exists_and_library_is_not_tested():
-    from mir import Mir
+    from mir.generate.transformers.harvest import HarvestClasses
+
+    Mir = HarvestClasses().db.db
 
     print(Mir.ops.cnn.yolos)
     result = Mir.ops.cnn.yolos["transformers"]  # should not throw
@@ -22,7 +26,9 @@ def test_ops_key_exists_and_library_is_not_tested():
 
 
 def test_ops_tokenizer_created():
-    from mir import Mir
+    from mir.generate.transformers.harvest import HarvestClasses
 
-    result = Mir.ops.encoder.tokenizer.zamba2['transformers']
+    Mir = HarvestClasses().db.db
+
+    result = Mir.ops.encoder.tokenizer.zamba2["transformers"]
     assert result == {"model": "transformers.models.llama.tokenization_llama.LlamaTokenizer"}

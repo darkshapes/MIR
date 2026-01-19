@@ -4,9 +4,22 @@
 # 模块发现和解构
 
 import inspect
-import os
+
 from importlib import import_module
-from typing import Callable, Type
+from typing import Callable
+
+
+def migrations(repo_path: str):
+    """Replaces old organization names in repository paths with new ones.\n
+    :param repo_path: Original repository path containing old organization names
+    :return: Updated repository path with new organization names"""
+    from mir.data import MIGRATIONS
+
+    repo_migrations = MIGRATIONS
+    for old_name, new_name in repo_migrations.items():
+        if old_name in repo_path:
+            repo_path = repo_path.replace(old_name, new_name)
+    return repo_path
 
 
 def import_object_named(module: str, pkg_name_or_abs_path: str) -> Callable | None:
@@ -57,63 +70,3 @@ def show_init_fields_for(module: Callable | str, package_name: str | None = None
     class_names = dict(class_names)
 
     return class_names
-
-
-def show_path_for(code_name: str, pkg_name: str) -> list[str] | str | None:
-    """Retrieve the folder path within a class. Only returns if it is a valid path in the system\n
-    ### NOTE: in most cases `__module__` makes this redundant
-    :param code_name: The internal name for the model in the third-party API.
-    :param pkg_name: The API Package
-    :return: A list corresponding to the path of the model, or None if not found
-    :raises KeyError: for invalid pkg_name
-    """
-
-    pkg_paths = {
-        "diffusers": "pipelines",
-        "transformers": "models",
-    }
-    folder_name = code_name.replace("-", "_")
-    pkg_name = pkg_name.lower()
-    folder_path = pkg_paths[pkg_name]
-    package_obj = import_module(pkg_name)
-    folder_path_named = [folder_path, folder_name]
-    pkg_folder = os.path.dirname(getattr(package_obj, "__file__"))
-    # dbuq(os.path.exists(os.path.join(pkg_folder, *folder_path_named)))
-    if os.path.exists(os.path.join(pkg_folder, *folder_path_named)) is True:
-        import_path = [pkg_name]
-        import_path.extend(folder_path_named)
-        return import_path
-
-
-# def get_internal_name_for(module_name: str | Type | None = None, pkg_name: str = "transformers", path_format: bool | None = False) -> list[str] | str | None:
-#     """Reveal code names for class names from Diffusers or Transformers (formerly get code names)\n
-#     :param class_name: To return only one class, defaults to None
-#     :param pkg_name: optional field for library, defaults to "transformers"
-#     :param path_format: Retrieve just the code name, or the full module path and code name within the package
-#     :return: A list of all code names, or the one corresponding to the provided class"""
-#     from mir.generate.diffusers import IMPORT_STRUCTURE
-#     from mir.generate.transformers import MODEL_MAPPING_NAMES
-
-#     package_imports = IMPORT_STRUCTURE if pkg_name == "diffusers" else MODEL_MAPPING_NAMES
-#     pkg_name = pkg_name.lower()
-#     MAPPING_NAMES: dict[str, str] = import_object_named(*package_imports[pkg_name])
-#     if module_name:
-#         if isinstance(module_name, Type):
-#             module_name = module_name.__name__
-#         code_name = next(iter(key for key, value in MAPPING_NAMES.items() if module_name in str(value)), "")
-#         return show_path_for(code_name, pkg_name) if path_format else code_name.replace("_", "-")
-#     return list(MAPPING_NAMES)
-
-
-def to_domain_tag(library: str, **kwargs):
-    """Set type of MIR prefix depending on model type\n
-    :param transformers: Use transformers data instead of diffusers data, defaults to False
-    :raises ValueError: Model type not detected
-    :return: MIR prefix based on model configuration"""
-    from mir.data import NN_FILTER
-
-    flags = NN_FILTER["arch"][library]  # pylint:disable=unsubscriptable-object
-    for mir_prefix, key_match in flags.items():
-        if any(kwargs.get(param, None) for param in key_match):
-            return mir_prefix
-    return None

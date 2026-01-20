@@ -1,108 +1,44 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import Any, Callable
+from typing import Callable
 
-from mir.package import MIRNesting, MIRPackage
 from mir.generate.transformers.raw_data import PrepareData
-from mir.tag import MIRTag
 
 
-class HarvestClasses:
+class HarvestLoop:
     def __init__(self) -> None:
         """Initializes the HarvestClasses instance with an empty list to store raw class data."""
         from mir.maid import MIRDatabase
 
         self.db = MIRDatabase()
-        self.find_transformers_classes()
 
-    def find_transformers_classes(self) -> None:
-        """Finds and collects PrepareData entries for all transformer classes defined in AUTO_MAP.\n
-        :return: List of PrepareData entries representing the transformer classes."""
+    def __call__(self) -> None:
         from mir.generate.transformers import AUTO_MAP
+        from mir.generate.transformers import TOKENIZER_MAPPING
 
-        for config_class, model_class in AUTO_MAP.items():  # type: ignore
-            if isinstance(model_class, tuple):
-                model_class: Callable = model_class[0]
-            if not (config_data := self.extract_config_class_data(config_class)):
-                continue
-            if not (model_data := self.extract_model_class_data(model_class)):
-                continue
-            if not (prepared_data := PrepareData(**config_data, **model_data)):  # type:ignore , _Lazyautomapping tuple
-                continue
+        prepared_data = {}
+        for config_class, model_data in AUTO_MAP.items():
+            assert isinstance(config_class, Callable)
+            loop_parameters = {"model": (model_data, config_class)}
+            if tokenizer := TOKENIZER_MAPPING.get(config_class, None):
+                loop_parameters.setdefault("tokenizer", (tokenizer, tokenizer))  # type: ignore
+            for name, (self.model, self.config) in loop_parameters.items():
+                if prepare_data := self.prepare_class_data():  # type: ignore
+                    prepared_data.setdefault(name, prepare_data)
+        for data in prepared_data:
+            pass
 
-            mir_tag = MIRTag(prepared_data)
-            mir_nest = MIRNesting(mir_tag, prepared_data)
-
-            packages = {"model": MIRPackage(data=prepared_data.model)}
-            if hasattr(prepared_data, "tokenizer") and prepared_data.tokenizer:
-                packages.setdefault("tokenizer", MIRPackage(data=prepared_data.tokenizer))  # type: ignore  , _Lazyautomapping tuple
-            packages.setdefault("framework", MIRPackage(data=mir_nest.framework_data))
-            mir_nest(packages)
-
-            self.db.add_data(mir_nest, *mir_nest.loops)
-
-    def extract_config_class_data(self, config_class: Callable) -> dict[str, str | Callable | dict[str, Any]] | None:
-        """Extracts information from config classes.\n
-        :param config_class: Model class or callable returning model classes.
-        :return: dictionary of discovered elements"""
-        from mir.data import MIGRATIONS, PARAMETERS
+    def prepare_class_data(self) -> PrepareData | None:
+        """Extract and collect information from model and config classes.\n
+        :return: A PrepareData entry representing the transformer class."""
+        from mir.data import PARAMETERS
         from mir.generate.from_module import show_init_fields_for
 
-        config_name = config_class.__name__
-        config_params = PARAMETERS.get(config_name, {})
-        if not config_params:
-            config_params = show_init_fields_for(config_class)
-        repo_path = MIGRATIONS["config"].get(config_name, {})
-        if not repo_path:
-            repo_path = self.config_to_repo(config_class)
-        if not repo_path or not config_params:
+        config_name = self.config.__name__
+        config_params = PARAMETERS.get(config_name, show_init_fields_for(self.config))
+        if any(x in config_params for x in ["inspect", "deprecated"]):
             return None
-        elif "inspect" in config_params or "deprecated" in config_params:
-            return None
-        return {
-            "name": config_name,
-            "config": config_class,
-            "config_params": config_params,
-            "repo_path": repo_path,
-        }
-
-    def extract_model_class_data(self, model_class: Callable) -> dict[str, str | Any] | None:
-        """Extracts information from model classes.\n
-        :param model_class: Model class or callable returning model classes.
-        :return: dictionary of discovered elements"""
-        from mir.generate.from_module import show_init_fields_for  # Ensure it's a tuple for consistency.
-
-        model_data: dict[str, str | Any] = {"model": model_class}
-        model_params = show_init_fields_for(model_class)
-        if "inspect" in model_params or "deprecated" in model_params:
-            return None
-        else:
-            return model_data | {
-                "model_params": model_params,
-            }
-
-    def config_to_repo(self, config_class: Callable) -> str | None:
-        """Extracts the repository path from the configuration class documentation.\n
-        :param config_class: Configuration class to extract repository path from.
-        :return: Repository path as a string if found, otherwise None."""
-        import re
-
-        from mir import NFO
-
-        doc_check = [config_class]
-        if hasattr(config_class, "forward"):
-            doc_check.append(config_class.forward)  # type: ignore
-        for pattern in doc_check:
-            doc_string = pattern.__doc__
-            matches = re.findall(r"\[([^\]]+)\]", doc_string)  # type: ignore
-            if matches:
-                try:
-                    return next(iter(snip.strip('"').strip() for snip in matches if "/" in snip))
-                except StopIteration as error_log:
-                    NFO(f"ERROR >>{matches} : LOG >> {error_log}")
-                    continue
-
-
-if __name__ == "__main__":
-    HarvestClasses()
+        if isinstance(self.model, tuple):
+            self.model_class: Callable = self.model[0]
+        return PrepareData(model=self.model, **config_params)  # type: ignore

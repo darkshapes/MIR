@@ -22,6 +22,6 @@ IGNORE = read_json_file(os.path.join(ROOT_PATH, "spec", "regex.json"))["ignore"]
 
 # from mir.generate.transformers.harvest import HarvestClasses
 # Mir = HarvestClasses().db.db
-from mir.generate.diffusers.harvest import HarvestClasses
+# from mir.generate.diffusers.harvest import HarvestClasses
 
-Mir = HarvestClasses().db.db
+# Mir = HarvestClasses().db.db

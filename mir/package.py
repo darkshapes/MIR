@@ -8,31 +8,6 @@ from mir.generate.transformers.raw_data import PrepareData
 from mir.tag import MIRTag
 
 
-@dataclass
-class MIRPackage:
-    data: Callable | str | dict[str, str]
-    package: dict[str, str] = field(init=False, default_factory=dict[str, str])
-
-    def __init__(self, data: Callable | str | dict[str, str] | dict[str, Any]):
-        self.package = {}
-        self.data = data
-        if not isinstance(self.data, dict):
-            self.generate_package()
-        else:
-            self.add_framework(self.data)
-
-    def generate_package(self) -> None:
-        """Generates package information for the MIR tag based on class.
-        :param pkg: A class object (model, tokenizer, etc) to build a tag from"""
-        self.domain = "ops"
-        model = f"{self.data.__module__}.{self.data.__name__}"
-        self.package: dict[str, str] = {"model": model}
-
-    def add_framework(self, framework_data) -> None:
-        self.domain = "info"
-        self.package = framework_data
-
-
 class MIRNesting:
     """Build tag components from the extracted data\n
     :param mir_tag: An instance of MIR tag with the necessary information
@@ -55,7 +30,7 @@ class MIRNesting:
         self.loops = []
         self.framework_data = {}
 
-    def __call__(self, packages: dict[str, MIRPackage]) -> None:
+    def __call__(self, packages: MIRPackage) -> None:
         """Common routine for handling a package: store tag data, nest the package,
         and record the name of the newly-created attribute.\n
         :param name: Identification string to store data underneath
@@ -64,6 +39,7 @@ class MIRNesting:
         for name, mir_package in packages.items():
             is_framework = name == "framework"
             is_model = name == "model"
+            is_tokenizer = name == "tokenizer"
 
             if is_framework:
                 package_data = {self.prepared_data.library: mir_package.package}

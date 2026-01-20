@@ -2,9 +2,9 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 from dataclasses import dataclass, field
-
-from mir.generate.transformers.raw_data import PrepareData
-from mir.generate.diffusers.raw_data import DPrepareData
+from typing import Callable
+# from mir.generate.transformers.raw_data import PrepareData
+# from mir.generate.diffusers.raw_data import DPrepareData
 
 
 @dataclass
@@ -18,20 +18,30 @@ class MIRTag:
         comp The compatibility component of the MIR tag (generated, optional).
     """
 
-    raw_data: PrepareData | DPrepareData
+    domain: str = field(init=False)
     arch: str = field(init=False)
     series: str = field(init=False)
     decoder: bool = False
 
     def __post_init__(self) -> None:
         """Initializes MIRTag instance, setting up database connection and generating package and MIR tag information."""
+        self.generate_domain()
         self.generate_arch()
         self.generate_series_and_comp(repo_path=self.raw_data.repo_path)
+        if hasattr(self, "comp"):
+            self.flat = f"{self.domain}.{self.arch}.{self.series}.{self.comp}"
+        else:
+            self.flat = f"{self.domain}.{self.arch}.{self.series}"
+
+    def generate_domain(self) -> None:
+        if isinstance(self.raw_data.model, Callable):
+            self.domain = "ops"
+        else:
+            self.domain = "info"
 
     def generate_arch(self) -> None:
         """Generates the architecture part of the MIR tag based on prepared data.\n
         :raises ValueError: If no suitable tag can be determined."""
-
         arch = None
         library = self.raw_data.model.__module__.split(".")[0]
         if hasattr(self.raw_data, "config_params"):

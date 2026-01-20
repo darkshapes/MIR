@@ -1,6 +1,6 @@
 def test_info_key_exists_and_library_is_not_nested():
-    from mir.generate.diffusers.harvest import HarvestClasses
+    from mir.generate.diffusers.harvest import HarvestLoop
 
-    Mir = HarvestClasses().db.db
+    Mir = HarvestLoop().db.db
 
     # print(Mir)

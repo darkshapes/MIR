@@ -4,7 +4,6 @@
 
 from typing import Any, Callable, List
 from mir.generate.diffusers.raw_data import DPrepareData
-from mir.generate.diffusers.schedulers import tag_scheduler
 from mir import DBUQ
 from mir.tag import MIRTag
 
@@ -88,6 +87,7 @@ class TaskAnalyzer:
         :param pipe_role: Role of the class in the pipeline
         :param series: Series identifier for the component
         :return: Tuple containing MIR tag and class name"""
+        from mir.generate.diffusers.schedulers import tag_scheduler
 
         mir_tag = None
         class_name = pipe_class.__name__

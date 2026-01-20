@@ -3,92 +3,46 @@
 
 from importlib import import_module
 from inspect import getmro
-from typing import Any, Callable, get_type_hints
+from typing import get_type_hints
 
 from mir.generate.diffusers.raw_data import DPrepareData
-from mir.package import MIRNesting, MIRPackage
-from mir.tag import MIRTag
 
 
-class HarvestClasses:
+class HarvestLoop:
     def __init__(self) -> None:
         """Initializes the HarvestClasses instance with an empty list to store raw class data."""
+        from mir.generate.transformers.harvest import HarvestLoop
+
         from mir.maid import MIRDatabase
 
         self.db = MIRDatabase()
-        self.raw_data = []
-        self.find_diffusers_docstrings()
+        self.harvest_tf = HarvestLoop()
 
-    def find_diffusers_docstrings(self) -> None:
-        """Pull down docstrings from 🤗Diffusers pipelines, minimizing internet requests\n
-        :return: Docstrings for common diffusers models"""
-
-        # from mir.generate.tasks import TaskAnalyzer
-
-        subclasses = self.extract_subclass_data("diffusers", "DiffusionPipeline")
-        for module_path, model in subclasses.items():
-            if not (base_data := self.extract_base_data(module_path)):
-                continue
-            if not (model_data := self.extract_model_class_data(model)):
-                continue
-            if not (prepared_data := DPrepareData(**base_data, **model_data)):
-                continue
-            mir_tag = MIRTag(prepared_data)
-            # task_analysis = TaskAnalyzer(prepared_data=prepared_data, mir_tag=mir_tag)
-            mir_nest = MIRNesting(mir_tag, prepared_data)
-            packages = {"model": MIRPackage(data=prepared_data.model)}
-            for component_name, component_model in prepared_data.model_params.items():
-                if hasattr(prepared_data, component_name):
-                    packages.setdefault(component_name, MIRPackage(data=component_model))
-            packages.setdefault("framework", MIRPackage(data=mir_nest.framework_data))
-            # print(packages)
-            mir_nest(packages)
-
-            self.db.add_data(mir_nest, *mir_nest.loops)
-
-    def extract_base_data(self, module_path: str) -> dict[str, str] | None:
+    def __call__(self) -> None:
         from mir.data import EXCLUSIONS
 
-        if module_path.rsplit(".", 1)[-1] in EXCLUSIONS["exclusion_list"]:
-            return None
-        base_path = module_path.rsplit(".", 1)[0]
-        model_path = import_module(base_path)
-        if doc_string := getattr(model_path, "EXAMPLE_DOC_STRING", None):
-            return {
-                "doc_string": doc_string,
-                "model_path": base_path,
-            }
-        return None
+        prepared_data = {}
+        library = "diffusers"
+        subclasses = self.extract_subclass_data(library, "DiffusionPipeline")  # diffusers.pipelines.
+        for module_path, pipeline in subclasses.items():
+            if module_path.rsplit(".", 1)[-1] not in EXCLUSIONS["exclusion_list"]:
+                loop_parameters = get_type_hints(pipeline.__init__)
+                loop_parameters.setdefault("pipeline", pipeline)
+                for name, self.model in loop_parameters.items():
+                    if prepare_data := self.prepare_class_data():
+                        prepared_data.setdefault(name, prepare_data)
+        for data in prepared_data:
+            pass
 
-    def extract_model_class_data(self, model: Callable) -> dict[str, str | Callable | dict[str, Any]] | None:
-        model_name: str = model.__name__
-        library: str = model.__module__.split(".", 1)[0]
-        model_params: dict[str, Any] = get_type_hints(model.__init__)
-        for module in model_params.values():
-            module_name = module.__module__
-            library_path = f"{library}.models."
-            if library_path in module_name:
-                module_name = module_name.replace(library_path, "").split(".")[0]
-                return {
-                    "model": model,
-                    "model_name": model_name,
-                    "model_params": model_params,
-                    "library": library,
-                }
-        return None
+    def prepare_class_data(self):
+        prepared_data = DPrepareData(model=self.model)
+        return prepared_data
 
     def extract_subclass_data(self, package_name: str, base_class_name: str):
-        """
-        Return a dict mapping `<module_name>.<class_name>` → class object
+        """Return a dict mapping `<module_name>.<class_name>` → class object
         for every class in `package_name` that subclasses a class named
-        `base_class_name`.
+        `base_class_name`."""
 
-        The implementation is intentionally defensive: it avoids
-        triggering `__getattr__` on lazy‑loaded submodules that might
-        raise a `RuntimeError`.  Instead of `inspect.getmembers`, it
-        iterates over the module's `__dict__` which contains only
-        attributes that have already been imported.
-        """
         from pkgutil import walk_packages
 
         results = {}

@@ -1,49 +1,36 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-from importlib import import_module
-from inspect import getmro
 from typing import get_type_hints
 
-from mir.generate.diffusers.raw_data import DPrepareData
 
-
-class HarvestLoop:
+class GatherLoop:
     def __init__(self) -> None:
-        """Initializes the HarvestClasses instance with an empty list to store raw class data."""
-        from mir.generate.transformers.harvest import HarvestLoop
-
+        """Loops through diffusers packages to harvest class data."""
         from mir.maid import MIRDatabase
 
         self.db = MIRDatabase()
-        self.harvest_tf = HarvestLoop()
-
-    def __call__(self) -> None:
         from mir.data import EXCLUSIONS
+        from mir.build_entry import BuildEntry
 
-        prepared_data = {}
-        library = "diffusers"
-        subclasses = self.extract_subclass_data(library, "DiffusionPipeline")  # diffusers.pipelines.
+        build_entries = []
+        subclasses = self.extract_subclass_data("diffusers", "DiffusionPipeline")
         for module_path, pipeline in subclasses.items():
             if module_path.rsplit(".", 1)[-1] not in EXCLUSIONS["exclusion_list"]:
-                loop_parameters = get_type_hints(pipeline.__init__)
-                loop_parameters.setdefault("pipeline", pipeline)
-                for name, self.model in loop_parameters.items():
-                    if prepare_data := self.prepare_class_data():
-                        prepared_data.setdefault(name, prepare_data)
-        for data in prepared_data:
-            pass
-
-    def prepare_class_data(self):
-        prepared_data = DPrepareData(model=self.model)
-        return prepared_data
+                build_entries.extend([BuildEntry(model_type=model_type, model=model) for model_type, model in get_type_hints(pipeline.__init__).items()])
+            build_entries.append(BuildEntry(model_type="pipeline", model=pipeline))
+        print([x.attributes for x in build_entries])
+        # TODO: for data in prepared_data:
 
     def extract_subclass_data(self, package_name: str, base_class_name: str):
-        """Return a dict mapping `<module_name>.<class_name>` → class object
-        for every class in `package_name` that subclasses a class named
-        `base_class_name`."""
+        """Extracts subclasses from a package that inherit from a specified base class.\n
+        :param package_name: Name of the package to search
+        :param base_class_name: Name of the base class to inherit from
+        :return: Dictionary mapping fully qualified class names to class objects"""
 
         from pkgutil import walk_packages
+        from inspect import getmro
+        from importlib import import_module
 
         results = {}
         root_pkg = import_module(package_name)

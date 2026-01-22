@@ -2,9 +2,9 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 from dataclasses import dataclass, field
-from typing import Callable
-# from mir.generate.transformers.raw_data import PrepareData
-# from mir.generate.diffusers.raw_data import DPrepareData
+
+from mir.model import ModelAttributes
+from mir.package import MIRPackage
 
 
 @dataclass
@@ -18,44 +18,30 @@ class MIRTag:
         comp The compatibility component of the MIR tag (generated, optional).
     """
 
-    domain: str = field(init=False)
+    attributes: ModelAttributes
+    package: MIRPackage
+    decoder: bool = False
     arch: str = field(init=False)
     series: str = field(init=False)
-    decoder: bool = False
 
     def __post_init__(self) -> None:
         """Initializes MIRTag instance, setting up database connection and generating package and MIR tag information."""
-        self.generate_domain()
         self.generate_arch()
-        self.generate_series_and_comp(repo_path=self.raw_data.repo_path)
+        self.generate_series_and_comp()
         if hasattr(self, "comp"):
-            self.flat = f"{self.domain}.{self.arch}.{self.series}.{self.comp}"
+            self.flat = f"{self.arch}.{self.series}.{self.comp}"
         else:
-            self.flat = f"{self.domain}.{self.arch}.{self.series}"
-
-    def generate_domain(self) -> None:
-        if isinstance(self.raw_data.model, Callable):
-            self.domain = "ops"
-        else:
-            self.domain = "info"
+            self.flat = f"{self.arch}.{self.series}"
 
     def generate_arch(self) -> None:
         """Generates the architecture part of the MIR tag based on prepared data.\n
         :raises ValueError: If no suitable tag can be determined."""
-        arch = None
-        library = self.raw_data.model.__module__.split(".")[0]
-        if hasattr(self.raw_data, "config_params"):
-            arch = self.tag_architecture(library, **self.raw_data.config_params)  # type: ignore
-        elif hasattr(self.raw_data, "model_params"):
-            arch = None
-            self.decoder = "decoder" in [self.raw_data.model_params]
-            arch = self.tag_architecture(library, **self.raw_data.model_params)  # type: ignore
-        if not arch:
-            print(f"Unrecognized model type, no tag matched {self.raw_data.name} with {self.raw_data.model_name}")
-        else:
-            self.arch = arch
 
-    def generate_series_and_comp(self, repo_path: str, decoder=decoder) -> None:
+        arch = self.tag_architecture()  # type: ignore
+        assert arch is not None, f"Unrecognized model type, no tag matched {self.attributes.model_name} with {self.attributes}"
+        self.arch = arch
+
+    def generate_series_and_comp(self, base_model_label="*") -> None:
         """Generates the MIR tag components from a repository title.\n
         :param repo_title: The title of the repository from which to derive the MIR tag.
         :param decoder: Boolean flag indicating if the model is a decoder.
@@ -65,8 +51,7 @@ class MIRTag:
 
         from mir import BREAKING, PARAMETERS
 
-        root = "decoder" if decoder else "*"
-        repo_path = repo_path.split(":latest")[0]
+        repo_path = self.package.repo.split(":latest")[0]
         repo_path = repo_path.split(":Q")[0]
         repo_path = repo_path.split(r"/")[-1].lower()
         pattern = r"^.*[v]?(\d{1}+\.\d).*"
@@ -90,7 +75,9 @@ class MIRTag:
             suffix = next(iter(suffix for suffix in suffix_match[0] if suffix))
             cleaned_string = re.sub(suffix.lower(), "-", cleaned_string).rstrip("-,")
         else:
-            suffix = root
+            suffix = "*"
+            if isinstance(self.attributes, DiffusersModelAttributes) and self.attributes.model_type == "decoder":
+                suffix = "decoder"
         cleaned_string = re.sub(r"[.-]+", "_", cleaned_string.lower()).strip("-_")
         self.series = cleaned_string
         if suffix != "*":
@@ -142,10 +129,6 @@ def tag_scheduler(self, scheduler_name: str) -> tuple[str, str]:
     assert series_name is not None, "Expected series tag but got None"
     assert comp_name is not None, "Expected compatibility tag but got None"
     return series_name, comp_name
-
-
-def tag_tokenizer():
-    pass
 
 
 def tag_tokenizer():

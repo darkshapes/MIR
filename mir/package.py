@@ -1,85 +1,111 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import Any, Callable
-from dataclasses import dataclass, field
-from mir.generate.diffusers.raw_data import DPrepareData
-from mir.generate.transformers.raw_data import PrepareData
-from mir.tag import MIRTag
+from dataclasses import dataclass
+from mir.model import ModelAttributes
+from mir.data import MIGRATIONS
 
 
-class MIRNesting:
-    """Build tag components from the extracted data\n
-    :param mir_tag: An instance of MIR tag with the necessary information
-    :param prepared_data: Instance of PrepareData to attribute the final information
-    :returns: The final, assembled MIR tag"""
+@dataclass
+class MIRPackage:
+    attributes: ModelAttributes
 
-    loops: list[str]
-    framework_data: dict[str, str | dict[str, Any]] = {}
-    repo: str | None = field(default_factory=str | None)
-    framework: dict[str, str] = field(init=False)
-    tokenizer: str | None = field(default_factory=str)
+    def __post_init__(self):
+        self.package = {}
+        if self.attributes.model_type == "model":
+            if self.attributes.library == "transformers":
+                self.package_transformers()
+            elif self.attributes.library == "diffusers":
+                self.package_diffusers()
+        model = f"{self.attributes.import_path}.{self.attributes.model_name}"
+        self.package: dict[str, str] = {"model": model}
 
-    def __init__(self, mir_tag: MIRTag, prepared_data: PrepareData | DPrepareData) -> None:
-        """\nInitialize the framework with MIR tag and prepared data.\n
-        :param mir_tag : The MIR tag instance.
-        :param prepared_data : The prepared data for processing."""
-        self.mir_tag = mir_tag
+    def package_transformers(self) -> None:
+        """Generates package information for the MIR tag based on class."""
 
-        self.prepared_data = prepared_data
-        self.loops = []
-        self.framework_data = {}
+        if hasattr(self.attributes, "config"):
+            config_name = self.attributes.config.__name__
+            if repo := MIGRATIONS["config"].get(config_name, {}):
+                self.repo = repo
+            else:
+                self.repo_from_config()
+            self.tasks_from_model()
 
-    def __call__(self, packages: MIRPackage) -> None:
-        """Common routine for handling a package: store tag data, nest the package,
-        and record the name of the newly-created attribute.\n
-        :param name: Identification string to store data underneath
-        :param mir_package: An instance of MIRPackage with the requisite data"""
+    def package_diffusers(self) -> None:
+        """Generates package information for the MIR tag based on class."""
 
-        for name, mir_package in packages.items():
-            is_framework = name == "framework"
-            is_model = name == "model"
-            is_tokenizer = name == "tokenizer"
+        if repo := MIGRATIONS["migrated_pipes"].get(self.attributes.model_name, False):
+            self.repo = repo
+        elif doc_string := getattr(self.attributes.import_path, "EXAMPLE_DOC_STRING", None) and not any(x in self.attributes.model_type for x in ["tokenizer", "scheduler"]):
+            self.repo_from_doc_string(doc_string=doc_string)  # type: ignore
+        self.tasks_from_internal_name()
 
-            if is_framework:
-                package_data = {self.prepared_data.library: mir_package.package}
-                tag_data = f"{mir_package.domain}.{self.mir_tag.arch}.{self.mir_tag.series}"
-                if comp := getattr(self.mir_tag, "comp", None):
-                    tag_data += comp
-                self.framework_data.setdefault("repo", self.prepared_data.repo_path)
-            elif is_model:
-                package_data = {self.prepared_data.library: mir_package.package}
-                if hasattr(self.prepared_data, "tasks") and self.prepared_data.tasks:
-                    package_data[self.prepared_data.library].setdefault("tasks", self.prepared_data.tasks)
-                tag_data = f"{mir_package.domain}.{self.mir_tag.arch}.{self.mir_tag.series}"
-                if comp := getattr(self.mir_tag, "comp", None):
-                    tag_data += comp
-                self.framework_data.setdefault(name, tag_data)
-            elif is_tokenizer:  # tokenizer case
-                package_data = {self.prepared_data.library: mir_package.package}
-                tag_data = f"{mir_package.domain}.encoder.tokenizer.{self.mir_tag.series}"
-                self.framework_data.setdefault(name, tag_data)
+    def repo_from_config(self) -> None:
+        """Extracts the repository path from the configuration class documentation.\n
+        :param config_class: Configuration class to extract repository path from.
+        :return: Repository path as a string if found, otherwise None."""
+        import re
 
-            self.nest_data(name=name, tag_data=tag_data, package_data=package_data)
-            self.loops.append(name)
+        from mir import NFO
 
-    def nest_data(self, name: str, tag_data: str, package_data: dict) -> None:
-        """Nest data into a hierarchical attribute structure.\n
-        :param name: Attribute name to store the nested data
-        :param tag_data: Dotted path string for nesting
-        :param package_data: Data to be stored in the nested structure"""
+        doc_check = [self.attributes.config]
+        if hasattr(self.attributes.config, "forward"):
+            doc_check.append(self.config.forward)  # type: ignore
+        for pattern in doc_check:
+            doc_string = pattern.__doc__
+            matches = re.findall(r"\[([^\]]+)\]", doc_string)  # type: ignore
+            if matches:
+                try:
+                    self.repo = next(iter(snip.strip('"').strip() for snip in matches if "/" in snip))
+                except StopIteration as error_log:
+                    NFO(f"ERROR >>{matches} : LOG >> {error_log}")
+                    continue
 
-        from chanfig import NestedDict
+    def repo_from_doc_string(self, doc_string: str) -> None:
+        from mir.generate.diffusers.doc_parse import DocStringParser
 
-        tag_parts = tuple(x for x in tag_data.split("."))
+        doc_parser = DocStringParser(
+            doc_string=doc_string,
+            model=self.attributes.model,
+            model_path=self.attributes.import_path,
+        )
+        doc_parser.parse()
+        if repo_path := doc_parser.pipe_repo:
+            self.repo = repo_path
+        if staged_repo := doc_parser.staged_repo:
+            self.staged_repo = staged_repo
 
-        if len(tag_parts) == 4:
-            domain, arch, series, comp = tag_parts
-            nest = NestedDict({f"{domain}.{arch}.{series}": {comp: ""}})
-            nest[domain][arch][series][comp] = package_data
+    def tasks_from_internal_name(self) -> None:
+        """Return Diffusers task pipes based on package-specific query\n
+        :param class_name: To find task pipes from a Diffusers class pipe, defaults to None
+        :param code_name: To find task pipes from a Transformers class pipe, defaults to None
+        :return: A list of alternate class pipelines derived from the specified class"""
+        from mir.generate.diffusers import SUPPORTED_TASKS_MAPPINGS, GET_TASK_CLASS
+
+        alt_tasks = set({})
+        self.internal_name = self.attributes.import_path.rsplit(".", 2)[-1]
+        for task_map in SUPPORTED_TASKS_MAPPINGS:
+            task_class = GET_TASK_CLASS(task_map, self.attributes.model, False)
+            if task_class:
+                alt_tasks.add(task_class.__name__)
+            for model_code, pipe_class_obj in task_map.items():
+                if self.internal_name in model_code:
+                    alt_tasks.add(pipe_class_obj.__name__)
+        if alt_tasks:
+            self.tasks = [x for x in alt_tasks]
+
+    def tasks_from_model(self) -> None:
+        """Transform a single model class into derivative classes for specific tasks.\n
+        :return: A list of task classes associated with the model."""
+        from importlib import import_module
+
+        model_name = self.attributes.model_name
+
+        parent_module = import_module(self.attributes.import_path)
+        self.tasks = []
+        if hasattr(parent_module, "__all__") and parent_module.__name__ != "DummyPipe":
+            for module in parent_module.__all__:
+                if (module.lower() != module) and (module != model_name) and (module != self.attributes.config.__name__):
+                    self.tasks.append(module)
         else:
-            domain, arch, series = tag_parts
-            nest = NestedDict({f"{domain}.{arch}": {series: ""}})
-            nest[domain][arch][series] = package_data
-
-        setattr(self, name, nest)
+            self.tasks = [model_name]

@@ -8,7 +8,7 @@ import os
 from typing import Any, List, Optional
 
 from mir import MIR_PATH_NAMED
-from mir.package import MIRNesting
+from mir.nesting import MIRNesting
 from mir.json_io import read_json_file, write_json_file
 
 

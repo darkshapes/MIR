@@ -3,7 +3,7 @@
 
 
 from typing import Any, Callable, List
-from mir.generate.diffusers.raw_data import DPrepareData
+from mir.generate.diffusers.raw_data import ModelAttributes
 from mir import DBUQ
 from mir.tag import MIRTag
 
@@ -12,11 +12,11 @@ flatten_map.__annotations__ = {"nested": List[str], "unpack": str}
 
 
 class TaskAnalyzer:
-    prepared_data: DPrepareData
+    prepared_data: ModelAttributes
     mir_tag: MIRTag
     tasks: dict[str, str] | None = None
 
-    def __init__(self, prepared_data: DPrepareData, mir_tag: MIRTag) -> None:
+    def __init__(self, prepared_data: ModelAttributes, mir_tag: MIRTag) -> None:
         self.prepared_data = prepared_data
         self.mir_tag = mir_tag
         self.skip_series = [

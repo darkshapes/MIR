@@ -9,7 +9,7 @@ from importlib import import_module
 from typing import Callable
 
 
-def migrations(repo_path: str):
+def migrations(repo_path: str) -> str:
     """Replaces old organization names in repository paths with new ones.\n
     :param repo_path: Original repository path containing old organization names
     :return: Updated repository path with new organization names"""

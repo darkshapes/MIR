@@ -26,8 +26,17 @@ class MIRTag:
 
     def __post_init__(self) -> None:
         """Initializes MIRTag instance, setting up database connection and generating package and MIR tag information."""
-        self.generate_arch()
-        self.generate_series_and_comp()
+
+        if "scheduler" in self.attributes.model_type:
+            self.tag_scheduler()
+        elif "tokenizer" in self.attributes.model_type:
+            self.arch = "encoder"
+            self.generate_series_and_comp()
+            self.comp = self.series
+            self.series = "tokenizer"
+        else:
+            self.generate_arch()
+            self.generate_series_and_comp()
         if hasattr(self, "comp"):
             self.flat = f"{self.arch}.{self.series}.{self.comp}"
         else:
@@ -41,7 +50,7 @@ class MIRTag:
         assert arch is not None, f"Unrecognized model type, no tag matched {self.attributes.model_name} with {self.attributes}"
         self.arch = arch
 
-    def generate_series_and_comp(self, base_model_label="*") -> None:
+    def generate_series_and_comp(self) -> None:
         """Generates the MIR tag components from a repository title.\n
         :param repo_title: The title of the repository from which to derive the MIR tag.
         :param decoder: Boolean flag indicating if the model is a decoder.
@@ -76,21 +85,24 @@ class MIRTag:
             cleaned_string = re.sub(suffix.lower(), "-", cleaned_string).rstrip("-,")
         else:
             suffix = "*"
-            if isinstance(self.attributes, DiffusersModelAttributes) and self.attributes.model_type == "decoder":
+            if self.attributes.model_type == "decoder":
                 suffix = "decoder"
         cleaned_string = re.sub(r"[.-]+", "_", cleaned_string.lower()).strip("-_")
         self.series = cleaned_string
         if suffix != "*":
             self.comp = suffix
 
-    def tag_architecture(self, library: str, **kwargs) -> str | None:
+    def tag_architecture(self) -> str | None:
         """Set type of MIR prefix depending on model type\n
         :param library: Library source of the original data
         :raises ValueError: Model type not detected
         :return: MIR prefix based on model configuration"""
         from mir.data import NN_FILTER
 
+        library = self.attributes.library
+
         flags = NN_FILTER["arch"][library]  # pylint:disable=unsubscriptable-object
+
         if library == "diffusers":
             for module_type, module_obj in kwargs.items():
                 module_name = module_obj.__module__
@@ -104,31 +116,31 @@ class MIRTag:
                 return mir_prefix
         return None
 
+    def tag_scheduler(self) -> tuple[str, str]:
+        """Create a mir label from a scheduler operation\n
+        :param class_name: Known period-separated prefix and model type
+        :return: The assembled mir tag with compatibility pre-separated"""
+        import re
 
-def tag_scheduler(self, scheduler_name: str) -> tuple[str, str]:
-    """Create a mir label from a scheduler operation\n
-    :param class_name: Known period-separated prefix and model type
-    :return: The assembled mir tag with compatibility pre-separated"""
-    import re
-
-    series_name = None
-    comp_name = None
-    patterns = [r"Schedulers", r"Multistep", r"Solver", r"Discrete", r"Scheduler"]
-    for scheduler in patterns:
-        compiled = re.compile(scheduler)
-        match = re.search(compiled, scheduler_name)
-        if match:
-            comp_name = match.group()
-            comp_name = comp_name.lower()
-            break
-    for pattern in patterns:
-        series_name = re.sub(pattern, "", scheduler_name)
-    if not series_name:
-        series_name = scheduler_name
-    series_name.lower()
-    assert series_name is not None, "Expected series tag but got None"
-    assert comp_name is not None, "Expected compatibility tag but got None"
-    return series_name, comp_name
+        scheduler_name = self.attributes.model_name
+        series_name = None
+        comp_name = None
+        patterns = [r"Schedulers", r"Multistep", r"Solver", r"Discrete", r"Scheduler"]
+        for scheduler in patterns:
+            compiled = re.compile(scheduler)
+            match = re.search(compiled, scheduler_name)
+            if match:
+                comp_name = match.group()
+                comp_name = comp_name.lower()
+                break
+        for pattern in patterns:
+            series_name = re.sub(pattern, "", scheduler_name)
+        if not series_name:
+            series_name = scheduler_name
+        series_name.lower()
+        assert series_name is not None, "Expected series tag but got None"
+        assert comp_name is not None, "Expected compatibility tag but got None"
+        return series_name, comp_name
 
 
 def tag_tokenizer():

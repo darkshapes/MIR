@@ -62,7 +62,7 @@ class MIRPackage:
                     continue
 
     def repo_from_doc_string(self, doc_string: str) -> None:
-        from mir.generate.diffusers.doc_parse import DocStringParser
+        from mir.doc_parse import DocStringParser
 
         doc_parser = DocStringParser(
             doc_string=doc_string,
@@ -80,7 +80,7 @@ class MIRPackage:
         :param class_name: To find task pipes from a Diffusers class pipe, defaults to None
         :param code_name: To find task pipes from a Transformers class pipe, defaults to None
         :return: A list of alternate class pipelines derived from the specified class"""
-        from mir.generate.diffusers import SUPPORTED_TASKS_MAPPINGS, GET_TASK_CLASS
+        from mir.gatherers.diffusers import SUPPORTED_TASKS_MAPPINGS, GET_TASK_CLASS
 
         alt_tasks = set({})
         self.internal_name = self.attributes.import_path.rsplit(".", 2)[-1]

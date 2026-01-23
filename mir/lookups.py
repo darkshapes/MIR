@@ -4,9 +4,36 @@
 # 模块发现和解构
 
 import inspect
-
 from importlib import import_module
+from types import ModuleType
 from typing import Callable
+
+tag = lambda path: path.rsplit(".", 1)  # noqa
+run = lambda parts: getattr(import_module(parts[0]), parts[1])
+
+
+def get_attribute_chain(root_object: Callable | ModuleType, attribute_path: str) -> Callable | ModuleType:
+    """Retrieve a nested attribute from *root_object* using a dot-separated string.\n
+    :param root_object : The object from which the attribute chain will be resolved.
+    :param attribute_path : Dot-separated attribute names, e.g. ``"ops.cnn.yolos"``.
+    :returns: The final attribute value reached by following the chain.
+    :raises: AttributeError If any part of the chain does not exist on the current object."""
+    current = root_object
+    for part in attribute_path.split("."):
+        current = getattr(current, part)
+    return current
+
+
+def get_import_chain(class_path: str) -> Callable | ModuleType:
+    """Retrieve a class object from dot-separated string reference.\n
+    :param class_path : The object from which the attribute chain will be resolved.
+    :returns: The final imported object reached by following the chain.
+    :raises: AttributeError If any part of the chain does not exist on the current object."""
+    library_name = class_path.split(".")[0]
+    attribute_path = class_path.replace(library_name + ".", "")
+    library = import_module(library_name)
+    path_chain = get_attribute_chain(library, attribute_path)
+    return path_chain
 
 
 def migrations(repo_path: str) -> str:

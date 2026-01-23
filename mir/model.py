@@ -33,13 +33,13 @@ class ModelAttributes:
         if not hasattr(self, "config") and any(x in self.model_type for x in ["tokenizer", "prior_tokenizer"]):
             self.config = self.model
         elif not hasattr(self, "config") and self.library == "transformers" and "model" in self.model_type:
-            from mir.generate.transformers import AUTO_MAP
+            from mir.gatherers.transformers import AUTO_MAP
 
             config: dict = {model: config for config, model in AUTO_MAP.items() if model == self.model}
             self.config = config.get(self.model, None)  # type:ignore
         if getattr(self, "config", None) and self.library == "transformers":
             from mir.data import PARAMETERS
-            from mir.generate.from_module import show_init_fields_for
+            from mir.lookups import show_init_fields_for
 
             config_name = self.config.__name__
             config_parameters = PARAMETERS.get(config_name, show_init_fields_for(self.config))

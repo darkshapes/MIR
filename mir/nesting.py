@@ -2,8 +2,7 @@
 # <!-- // /*  d a r k s h a p e s */ -->
 
 from typing import Any
-from dataclasses import dataclass, field
-from mir.model import ModelAttributes
+from dataclasses import field
 from mir.tag import MIRTag
 from mir.package import MIRPackage
 
@@ -20,13 +19,12 @@ class MIRNesting:
     framework: dict[str, str] = field(init=False)
     tokenizer: str | None = field(default_factory=str)
 
-    def __init__(self, mir_tag: MIRTag, prepared_data: ModelAttributes | ModelAttributes) -> None:
+    def __init__(self, mir_tag: MIRTag, mir_package: MIRPackage) -> None:
         """\nInitialize the framework with MIR tag and prepared data.\n
         :param mir_tag : The MIR tag instance.
         :param prepared_data : The prepared data for processing."""
         self.mir_tag = mir_tag
-
-        self.prepared_data = prepared_data
+        self.mir_package = mir_package
         self.loops = []
         self.framework_data = {}
 

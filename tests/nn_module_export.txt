@@ -1,0 +1,3224 @@
+[ModuleList(
+  (0-11): 12 x Aimv2EncoderLayer(
+    (attention): Aimv2Attention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=False)
+      (v_proj): Linear(in_features=768, out_features=768, bias=False)
+      (q_proj): Linear(in_features=768, out_features=768, bias=False)
+      (out_proj): Linear(in_features=768, out_features=768, bias=False)
+    )
+    (ffn): Aimv2MLP(
+      (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+      (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+      (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+      (act_fn): SiLUActivation()
+    )
+    (rms_norm1): Aimv2RMSNorm((768,), eps=1e-05)
+    (rms_norm2): Aimv2RMSNorm((768,), eps=1e-05)
+  )
+), ModuleList(
+  (0-23): 24 x Aimv2EncoderLayer(
+    (attention): Aimv2Attention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=False)
+    )
+    (ffn): Aimv2MLP(
+      (gate_proj): Linear(in_features=1024, out_features=2816, bias=False)
+      (up_proj): Linear(in_features=1024, out_features=2816, bias=False)
+      (down_proj): Linear(in_features=2816, out_features=1024, bias=False)
+      (act_fn): SiLUActivation()
+    )
+    (rms_norm1): Aimv2RMSNorm((1024,), eps=1e-05)
+    (rms_norm2): Aimv2RMSNorm((1024,), eps=1e-05)
+  )
+), ModuleList(
+  (0): AlbertLayer(
+    (full_layer_layer_norm): LayerNorm((4096,), eps=1e-12, elementwise_affine=True)
+    (attention): AlbertAttention(
+      (attention_dropout): Dropout(p=0, inplace=False)
+      (output_dropout): Dropout(p=0, inplace=False)
+      (query): Linear(in_features=4096, out_features=4096, bias=True)
+      (key): Linear(in_features=4096, out_features=4096, bias=True)
+      (value): Linear(in_features=4096, out_features=4096, bias=True)
+      (dense): Linear(in_features=4096, out_features=4096, bias=True)
+      (LayerNorm): LayerNorm((4096,), eps=1e-12, elementwise_affine=True)
+    )
+    (ffn): Linear(in_features=4096, out_features=16384, bias=True)
+    (ffn_output): Linear(in_features=16384, out_features=4096, bias=True)
+    (activation): NewGELUActivation()
+    (dropout): Dropout(p=0, inplace=False)
+  )
+), ModuleList(
+  (0-11): 12 x ASTLayer(
+    (attention): ASTAttention(
+      (attention): ASTSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): ASTSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): ASTIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ASTOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-31): 32 x AudioFlamingo3EncoderLayer(
+    (self_attn): AudioFlamingo3Attention(
+      (k_proj): Linear(in_features=1280, out_features=1280, bias=False)
+      (v_proj): Linear(in_features=1280, out_features=1280, bias=True)
+      (q_proj): Linear(in_features=1280, out_features=1280, bias=True)
+      (out_proj): Linear(in_features=1280, out_features=1280, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1280, out_features=5120, bias=True)
+    (fc2): Linear(in_features=5120, out_features=1280, bias=True)
+    (final_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-1): 2 x AutoformerEncoderLayer(
+    (self_attn): AutoformerAttention(
+      (k_proj): Linear(in_features=64, out_features=64, bias=True)
+      (v_proj): Linear(in_features=64, out_features=64, bias=True)
+      (q_proj): Linear(in_features=64, out_features=64, bias=True)
+      (out_proj): Linear(in_features=64, out_features=64, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=64, out_features=32, bias=True)
+    (fc2): Linear(in_features=32, out_features=64, bias=True)
+    (final_layer_norm): AutoformerLayernorm(
+      (layernorm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    )
+    (decomp1): AutoformerSeriesDecompositionLayer(
+      (avg): AvgPool1d(kernel_size=(25,), stride=(1,), padding=(0,))
+    )
+    (decomp2): AutoformerSeriesDecompositionLayer(
+      (avg): AvgPool1d(kernel_size=(25,), stride=(1,), padding=(0,))
+    )
+  )
+), ModuleList(
+  (0-11): 12 x BartEncoderLayer(
+    (self_attn): BartAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x BertLayer(
+    (attention): BertAttention(
+      (self): BertSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): BertSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): BertIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): BertOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-23): 24 x BertGenerationLayer(
+    (attention): BertGenerationAttention(
+      (self): BertGenerationSelfAttention(
+        (query): Linear(in_features=1024, out_features=1024, bias=True)
+        (key): Linear(in_features=1024, out_features=1024, bias=True)
+        (value): Linear(in_features=1024, out_features=1024, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): BertGenerationSelfOutput(
+        (dense): Linear(in_features=1024, out_features=1024, bias=True)
+        (LayerNorm): LayerNorm((1024,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): BertGenerationIntermediate(
+      (dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): BertGenerationOutput(
+      (dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (LayerNorm): LayerNorm((1024,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x BigBirdLayer(
+    (attention): BigBirdAttention(
+      (self): BigBirdBlockSparseAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): BigBirdSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): BigBirdIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): NewGELUActivation()
+    )
+    (output): BigBirdOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-15): 16 x BigBirdPegasusEncoderLayer(
+    (self_attn): BigBirdPegasusEncoderAttention(
+      (self): BigBirdPegasusBlockSparseAttention(
+        (query): Linear(in_features=1024, out_features=1024, bias=False)
+        (key): Linear(in_features=1024, out_features=1024, bias=False)
+        (value): Linear(in_features=1024, out_features=1024, bias=False)
+      )
+      (output): Linear(in_features=1024, out_features=1024, bias=False)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): NewGELUActivation()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x BioGptDecoderLayer(
+    (self_attn): BioGptAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (activation_fn): GELUActivation()
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-1): 2 x BlenderbotEncoderLayer(
+    (self_attn): BlenderbotAttention(
+      (k_proj): Linear(in_features=2560, out_features=2560, bias=True)
+      (v_proj): Linear(in_features=2560, out_features=2560, bias=True)
+      (q_proj): Linear(in_features=2560, out_features=2560, bias=True)
+      (out_proj): Linear(in_features=2560, out_features=2560, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((2560,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=2560, out_features=10240, bias=True)
+    (fc2): Linear(in_features=10240, out_features=2560, bias=True)
+    (final_layer_norm): LayerNorm((2560,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-7): 8 x BlenderbotSmallEncoderLayer(
+    (self_attn): BlenderbotSmallAttention(
+      (k_proj): Linear(in_features=512, out_features=512, bias=True)
+      (v_proj): Linear(in_features=512, out_features=512, bias=True)
+      (q_proj): Linear(in_features=512, out_features=512, bias=True)
+      (out_proj): Linear(in_features=512, out_features=512, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=512, out_features=2048, bias=True)
+    (fc2): Linear(in_features=2048, out_features=512, bias=True)
+    (final_layer_norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-1): 2 x BloomBlock(
+    (input_layernorm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (self_attention): BloomAttention(
+      (query_key_value): Linear(in_features=64, out_features=192, bias=True)
+      (dense): Linear(in_features=64, out_features=64, bias=True)
+      (attention_dropout): Dropout(p=0.0, inplace=False)
+    )
+    (post_attention_layernorm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (mlp): BloomMLP(
+      (dense_h_to_4h): Linear(in_features=64, out_features=256, bias=True)
+      (gelu_impl): BloomGelu()
+      (dense_4h_to_h): Linear(in_features=256, out_features=64, bias=True)
+    )
+  )
+), ModuleList(
+  (0-1): 2 x BridgeTowerResidualAttention(
+    (attn): MultiheadAttention(
+      (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)
+    )
+    (ln_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (mlp): ModuleDict(
+      (c_fc): Linear(in_features=768, out_features=3072, bias=True)
+      (gelu): QuickGELUActivation()
+      (c_proj): Linear(in_features=3072, out_features=768, bias=True)
+    )
+    (ln_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x BrosLayer(
+    (attention): BrosAttention(
+      (self): BrosSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): BrosSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): BrosIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): BrosOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x CamembertLayer(
+    (attention): CamembertAttention(
+      (self): CamembertSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): CamembertSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): CamembertIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): CamembertOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x CLIPEncoderLayer(
+    (self_attn): CLIPAttention(
+      (k_proj): Linear(in_features=512, out_features=512, bias=True)
+      (v_proj): Linear(in_features=512, out_features=512, bias=True)
+      (q_proj): Linear(in_features=512, out_features=512, bias=True)
+      (out_proj): Linear(in_features=512, out_features=512, bias=True)
+    )
+    (layer_norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+    (mlp): CLIPMLP(
+      (activation_fn): QuickGELUActivation()
+      (fc1): Linear(in_features=512, out_features=2048, bias=True)
+      (fc2): Linear(in_features=2048, out_features=512, bias=True)
+    )
+    (layer_norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x CLIPEncoderLayer(
+    (self_attn): CLIPAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (layer_norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (mlp): CLIPMLP(
+      (activation_fn): QuickGELUActivation()
+      (fc1): Linear(in_features=768, out_features=3072, bias=True)
+      (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    )
+    (layer_norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-27): 28 x CodeGenBlock(
+    (ln_1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+    (attn): CodeGenAttention(
+      (attn_dropout): Dropout(p=0.0, inplace=False)
+      (resid_dropout): Dropout(p=0.0, inplace=False)
+      (qkv_proj): Linear(in_features=4096, out_features=12288, bias=False)
+      (out_proj): Linear(in_features=4096, out_features=4096, bias=False)
+    )
+    (mlp): CodeGenMLP(
+      (fc_in): Linear(in_features=4096, out_features=16384, bias=True)
+      (fc_out): Linear(in_features=16384, out_features=4096, bias=True)
+      (act): NewGELUActivation()
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x ConditionalDetrEncoderLayer(
+    (self_attn): DetrAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): ReLU()
+    (fc1): Linear(in_features=256, out_features=2048, bias=True)
+    (fc2): Linear(in_features=2048, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x ConvBertLayer(
+    (attention): ConvBertAttention(
+      (self): ConvBertSelfAttention(
+        (query): Linear(in_features=768, out_features=384, bias=True)
+        (key): Linear(in_features=768, out_features=384, bias=True)
+        (value): Linear(in_features=768, out_features=384, bias=True)
+        (key_conv_attn_layer): SeparableConv1D(
+          (depthwise): Conv1d(768, 768, kernel_size=(9,), stride=(1,), padding=(4,), groups=768, bias=False)
+          (pointwise): Conv1d(768, 384, kernel_size=(1,), stride=(1,), bias=False)
+        )
+        (conv_kernel_layer): Linear(in_features=384, out_features=54, bias=True)
+        (conv_out_layer): Linear(in_features=768, out_features=384, bias=True)
+        (unfold): Unfold(kernel_size=[9, 1], dilation=1, padding=[4, 0], stride=1)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): ConvBertSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): ConvBertIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ConvBertOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x CpmAntTransformerBlock(
+    (self_att): CpmAntSelfAttentionBlock(
+      (layernorm_before_attention): CpmAntLayerNorm()
+      (self_attention): CpmAntAttention(
+        (project_q): Linear(in_features=4096, out_features=4096, bias=False)
+        (project_k): Linear(in_features=4096, out_features=4096, bias=False)
+        (project_v): Linear(in_features=4096, out_features=4096, bias=False)
+        (attention_out): Linear(in_features=4096, out_features=4096, bias=False)
+        (softmax): Softmax(dim=-1)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (ffn): CpmAntFFNBlock(
+      (layernorm_before_ffn): CpmAntLayerNorm()
+      (ffn): CpmAntFeedForward(
+        (w_in): CpmAntDenseGatedACT(
+          (w_0): Linear(in_features=4096, out_features=10240, bias=False)
+          (w_1): Linear(in_features=4096, out_features=10240, bias=False)
+          (act): GELU(approximate='none')
+        )
+        (dropout): Dropout(p=0.0, inplace=False)
+        (w_out): Linear(in_features=10240, out_features=4096, bias=False)
+      )
+    )
+  )
+), ModuleList(
+  (0-5): 6 x DFineDecoderLayer(
+    (self_attn): DFineMultiheadAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (activation_fn): ReLU()
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (encoder_attn): DFineMultiscaleDeformableAttention(
+      (sampling_offsets): Linear(in_features=256, out_features=192, bias=True)
+      (attention_weights): Linear(in_features=256, out_features=96, bias=True)
+    )
+    (fc1): Linear(in_features=256, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (gateway): DFineGate(
+      (gate): Linear(in_features=512, out_features=512, bias=True)
+      (norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x DabDetrEncoderLayer(
+    (self_attn): DetrAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): PReLU(num_parameters=1)
+    (fc1): Linear(in_features=256, out_features=2048, bias=True)
+    (fc2): Linear(in_features=2048, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-8): 9 x DacVectorQuantize(
+    (in_proj): Conv1d(1024, 8, kernel_size=(1,), stride=(1,))
+    (out_proj): Conv1d(8, 1024, kernel_size=(1,), stride=(1,))
+    (codebook): Embedding(1024, 8)
+  )
+), ModuleList(
+  (0-4): 5 x Data2VecAudioPositionalConvLayer(
+    (conv): Conv1d(768, 768, kernel_size=(19,), stride=(1,), padding=(9,), groups=16)
+    (padding): Data2VecAudioPadLayer()
+    (activation): GELUActivation()
+    (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=False)
+  )
+), ModuleList(
+  (0-11): 12 x Data2VecTextLayer(
+    (attention): Data2VecTextAttention(
+      (self): Data2VecTextSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): Data2VecTextSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): Data2VecTextIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): Data2VecTextOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x DebertaLayer(
+    (attention): DebertaAttention(
+      (self): DisentangledSelfAttention(
+        (in_proj): Linear(in_features=768, out_features=2304, bias=False)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): DebertaSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): DebertaLayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): DebertaIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): DebertaOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): DebertaLayerNorm()
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-23): 24 x DebertaV2Layer(
+    (attention): DebertaV2Attention(
+      (self): DisentangledSelfAttention(
+        (query_proj): Linear(in_features=1536, out_features=1536, bias=True)
+        (key_proj): Linear(in_features=1536, out_features=1536, bias=True)
+        (value_proj): Linear(in_features=1536, out_features=1536, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): DebertaV2SelfOutput(
+        (dense): Linear(in_features=1536, out_features=1536, bias=True)
+        (LayerNorm): LayerNorm((1536,), eps=1e-07, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): DebertaV2Intermediate(
+      (dense): Linear(in_features=1536, out_features=6144, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): DebertaV2Output(
+      (dense): Linear(in_features=6144, out_features=1536, bias=True)
+      (LayerNorm): LayerNorm((1536,), eps=1e-07, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-2): 3 x DecisionTransformerGPT2Block(
+    (ln_1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+    (attn): DecisionTransformerGPT2Attention(
+      (c_attn): Conv1D(nf=384, nx=128)
+      (c_proj): Conv1D(nf=128, nx=128)
+      (attn_dropout): Dropout(p=0.1, inplace=False)
+      (resid_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ln_2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+    (mlp): DecisionTransformerGPT2MLP(
+      (c_fc): Conv1D(nf=512, nx=128)
+      (c_proj): Conv1D(nf=128, nx=512)
+      (act): ReLU()
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x DeformableDetrEncoderLayer(
+    (self_attn): DeformableDetrMultiscaleDeformableAttention(
+      (attn): MultiScaleDeformableAttention()
+      (sampling_offsets): Linear(in_features=256, out_features=256, bias=True)
+      (attention_weights): Linear(in_features=256, out_features=128, bias=True)
+      (value_proj): Linear(in_features=256, out_features=256, bias=True)
+      (output_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): ReLU()
+    (fc1): Linear(in_features=256, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x DeiTLayer(
+    (attention): DeiTAttention(
+      (attention): DeiTSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): DeiTSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): DeiTIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): DeiTOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-5): 6 x DetrEncoderLayer(
+    (self_attn): DetrAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): ReLU()
+    (fc1): Linear(in_features=256, out_features=2048, bias=True)
+    (fc2): Linear(in_features=2048, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x Dinov2Layer(
+    (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (attention): Dinov2Attention(
+      (attention): Dinov2SelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): Dinov2SelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (layer_scale1): Dinov2LayerScale()
+    (drop_path): Identity()
+    (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (mlp): Dinov2MLP(
+      (fc1): Linear(in_features=768, out_features=3072, bias=True)
+      (activation): GELUActivation()
+      (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    )
+    (layer_scale2): Dinov2LayerScale()
+  )
+), ModuleList(
+  (0-11): 12 x Dinov2WithRegistersLayer(
+    (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (attention): Dinov2WithRegistersAttention(
+      (attention): Dinov2WithRegistersSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): Dinov2WithRegistersSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (layer_scale1): Dinov2WithRegistersLayerScale()
+    (drop_path): Identity()
+    (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (mlp): Dinov2WithRegistersMLP(
+      (fc1): Linear(in_features=768, out_features=3072, bias=True)
+      (activation): GELUActivation()
+      (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    )
+    (layer_scale2): Dinov2WithRegistersLayerScale()
+  )
+), ModuleList(
+  (0-11): 12 x DINOv3ViTLayer(
+    (norm1): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+    (attention): DINOv3ViTAttention(
+      (k_proj): Linear(in_features=384, out_features=384, bias=False)
+      (v_proj): Linear(in_features=384, out_features=384, bias=True)
+      (q_proj): Linear(in_features=384, out_features=384, bias=True)
+      (o_proj): Linear(in_features=384, out_features=384, bias=True)
+    )
+    (layer_scale1): DINOv3ViTLayerScale()
+    (drop_path): Identity()
+    (norm2): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+    (mlp): DINOv3ViTMLP(
+      (up_proj): Linear(in_features=384, out_features=1536, bias=True)
+      (down_proj): Linear(in_features=1536, out_features=384, bias=True)
+      (act_fn): GELUActivation()
+    )
+    (layer_scale2): DINOv3ViTLayerScale()
+  )
+), ModuleList(
+  (0-5): 6 x TransformerBlock(
+    (attention): DistilBertSelfAttention(
+      (q_lin): Linear(in_features=768, out_features=768, bias=True)
+      (k_lin): Linear(in_features=768, out_features=768, bias=True)
+      (v_lin): Linear(in_features=768, out_features=768, bias=True)
+      (out_lin): Linear(in_features=768, out_features=768, bias=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (sa_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (ffn): FFN(
+      (dropout): Dropout(p=0.1, inplace=False)
+      (lin1): Linear(in_features=768, out_features=3072, bias=True)
+      (lin2): Linear(in_features=3072, out_features=768, bias=True)
+      (activation): GELUActivation()
+    )
+    (output_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-31): 32 x DogeDecoderLayer(
+    (input_layernorm): DogeRMSNorm((1024,), eps=1e-06)
+    (self_attn): DogeAttention(
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (dt_proj): Linear(in_features=1024, out_features=8, bias=False)
+      (o_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (q_norm): DogeRMSNorm((128,), eps=1e-06)
+      (k_norm): DogeRMSNorm((128,), eps=1e-06)
+    )
+    (post_attention_layernorm): DogeRMSNorm((1024,), eps=1e-06)
+    (mlp): DogeMLP(
+      (gate_proj): Linear(in_features=1024, out_features=2048, bias=False)
+      (up_proj): Linear(in_features=1024, out_features=2048, bias=False)
+      (down_proj): Linear(in_features=2048, out_features=1024, bias=False)
+      (act_fn): SiLUActivation()
+    )
+  )
+), ModuleList(
+  (0-11): 12 x DPTViTLayer(
+    (attention): DPTViTAttention(
+      (attention): DPTSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): DPTViTSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): DPTViTIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): DPTViTOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-1): 2 x EdgeTamVideoMemoryFuserCXBlock(
+    (depthwise_conv): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=256)
+    (layer_norm): EdgeTamVideoLayerNorm((256,), eps=1e-06, elementwise_affine=True)
+    (activation): GELUActivation()
+    (pointwise_conv1): Linear(in_features=256, out_features=1024, bias=True)
+    (pointwise_conv2): Linear(in_features=1024, out_features=256, bias=True)
+  )
+), ModuleList(
+  (0-11): 12 x ElectraLayer(
+    (attention): ElectraAttention(
+      (self): ElectraSelfAttention(
+        (query): Linear(in_features=256, out_features=256, bias=True)
+        (key): Linear(in_features=256, out_features=256, bias=True)
+        (value): Linear(in_features=256, out_features=256, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): ElectraSelfOutput(
+        (dense): Linear(in_features=256, out_features=256, bias=True)
+        (LayerNorm): LayerNorm((256,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): ElectraIntermediate(
+      (dense): Linear(in_features=256, out_features=1024, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ElectraOutput(
+      (dense): Linear(in_features=1024, out_features=256, bias=True)
+      (LayerNorm): LayerNorm((256,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-31): 32 x EncodecVectorQuantization(
+    (codebook): EncodecEuclideanCodebook()
+  )
+), ModuleList(
+  (0-11): 12 x ErnieLayer(
+    (attention): ErnieAttention(
+      (self): ErnieSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): ErnieSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): ErnieIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ErnieOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x EsmLayer(
+    (attention): EsmAttention(
+      (self): EsmSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): EsmSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    )
+    (intermediate): EsmIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+    )
+    (output): EsmOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-4): 5 x FastSpeech2ConformerBatchNormConvLayer(
+    (conv): Conv1d(80, 256, kernel_size=(5,), stride=(1,), padding=(2,), bias=False)
+    (batch_norm): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (activation): Tanh()
+    (dropout): Dropout(p=0.5, inplace=False)
+  )
+), ModuleList(
+  (0-11): 12 x FNetLayer(
+    (fourier): FNetFourierTransform(
+      (self): FNetBasicFourierTransform()
+      (output): FNetBasicOutput(
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      )
+    )
+    (intermediate): FNetIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): NewGELUActivation()
+    )
+    (output): FNetOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x EncoderLayer(
+    (self_attn): Attention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): ReLU()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x Gemma3nAudioConformerBlock(
+    (ffw_layer_start): Gemma3nAudioConformerFeedForward(
+      (pre_layer_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+      (ffw_layer_1): Linear(in_features=1536, out_features=6144, bias=False)
+      (ffw_layer_2): Linear(in_features=6144, out_features=1536, bias=False)
+      (post_layer_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+    )
+    (attention): Gemma3nAudioConformerAttention(
+      (pre_attn_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+      (attn): Gemma3nAudioAttention(
+        (relative_position_embedding): Gemma3nAudioRelativePositionEmbedding(
+          (pos_proj): Linear(in_features=1536, out_features=1536, bias=False)
+        )
+        (q_proj): Linear(in_features=1536, out_features=1536, bias=False)
+        (k_proj): Linear(in_features=1536, out_features=1536, bias=False)
+        (v_proj): Linear(in_features=1536, out_features=1536, bias=False)
+      )
+      (post): Linear(in_features=1536, out_features=1536, bias=False)
+      (post_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+    )
+    (lconv1d): Gemma3nAudioConformerLightConv1d(
+      (pre_layer_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+      (linear_start): Linear(in_features=1536, out_features=3072, bias=False)
+      (depthwise_conv1d): Conv1d(1536, 1536, kernel_size=(5,), stride=(1,), groups=1536, bias=False)
+      (conv_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+      (linear_end): Linear(in_features=1536, out_features=1536, bias=False)
+    )
+    (ffw_layer_end): Gemma3nAudioConformerFeedForward(
+      (pre_layer_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+      (ffw_layer_1): Linear(in_features=1536, out_features=6144, bias=False)
+      (ffw_layer_2): Linear(in_features=6144, out_features=1536, bias=False)
+      (post_layer_norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+    )
+    (norm): Gemma3nRMSNorm((1536,), eps=1e-06)
+  )
+), ModuleList(
+  (0-23): 24 x Glm4vMoeVisionBlock(
+    (norm1): Glm4vMoeRMSNorm((1536,), eps=1e-05)
+    (norm2): Glm4vMoeRMSNorm((1536,), eps=1e-05)
+    (attn): Glm4vMoeVisionAttention(
+      (qkv): Linear(in_features=1536, out_features=4608, bias=False)
+      (proj): Linear(in_features=1536, out_features=1536, bias=False)
+    )
+    (mlp): Glm4vMoeisionMlp(
+      (gate_proj): Linear(in_features=1536, out_features=4096, bias=False)
+      (up_proj): Linear(in_features=1536, out_features=4096, bias=False)
+      (down_proj): Linear(in_features=4096, out_features=1536, bias=False)
+      (act_fn): SiLUActivation()
+    )
+  )
+), ModuleList(
+  (0-23): 24 x Glm4vVisionBlock(
+    (norm1): Glm4vRMSNorm((1536,), eps=1e-05)
+    (norm2): Glm4vRMSNorm((1536,), eps=1e-05)
+    (attn): Glm4vVisionAttention(
+      (qkv): Linear(in_features=1536, out_features=4608, bias=False)
+      (proj): Linear(in_features=1536, out_features=1536, bias=False)
+    )
+    (mlp): Glm4VisionMlp(
+      (gate_proj): Linear(in_features=1536, out_features=4096, bias=False)
+      (up_proj): Linear(in_features=1536, out_features=4096, bias=False)
+      (down_proj): Linear(in_features=4096, out_features=1536, bias=False)
+      (act_fn): SiLUActivation()
+    )
+  )
+), ModuleList(
+  (0-39): 40 x GlmImageVisionBlock(
+    (norm1): LayerNorm((1536,), eps=1e-06, elementwise_affine=True)
+    (norm2): LayerNorm((1536,), eps=1e-06, elementwise_affine=True)
+    (attn): GlmImageVisionAttention(
+      (qkv): Linear(in_features=1536, out_features=4608, bias=True)
+      (proj): Linear(in_features=1536, out_features=1536, bias=True)
+    )
+    (mlp): GlmImageVisionMLP(
+      (activation_fn): GELUActivation()
+      (fc1): Linear(in_features=1536, out_features=6144, bias=True)
+      (fc2): Linear(in_features=6144, out_features=1536, bias=True)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x GPT2Block(
+    (ln_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (attn): GPT2Attention(
+      (c_attn): Conv1D(nf=2304, nx=768)
+      (c_proj): Conv1D(nf=768, nx=768)
+      (attn_dropout): Dropout(p=0.1, inplace=False)
+      (resid_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ln_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (mlp): GPT2MLP(
+      (c_fc): Conv1D(nf=3072, nx=768)
+      (c_proj): Conv1D(nf=768, nx=3072)
+      (act): NewGELUActivation()
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x GPT2Block(
+    (ln_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (attn): GPT2Attention(
+      (c_attn): Conv1D(nf=2304, nx=768)
+      (c_proj): Conv1D(nf=768, nx=768)
+      (attn_dropout): Dropout(p=0.1, inplace=False)
+      (resid_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ln_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (mlp): GPT2MLP(
+      (c_fc): Conv1D(nf=3072, nx=768)
+      (c_proj): Conv1D(nf=768, nx=3072)
+      (act): NewGELUActivation()
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x GPTBigCodeBlock(
+    (ln_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (attn): GPTBigCodeAttention(
+      (c_attn): Linear(in_features=768, out_features=896, bias=True)
+      (c_proj): Linear(in_features=768, out_features=768, bias=True)
+      (resid_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ln_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (mlp): GPTBigCodeMLP(
+      (c_fc): Linear(in_features=768, out_features=3072, bias=True)
+      (c_proj): Linear(in_features=3072, out_features=768, bias=True)
+      (act): GELUTanh()
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x GroundingDinoEncoderLayer(
+    (text_enhancer_layer): GroundingDinoTextEnhancerLayer(
+      (self_attn): GroundingDinoMultiheadAttention(
+        (query): Linear(in_features=256, out_features=256, bias=True)
+        (key): Linear(in_features=256, out_features=256, bias=True)
+        (value): Linear(in_features=256, out_features=256, bias=True)
+        (out_proj): Linear(in_features=256, out_features=256, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+      (fc1): Linear(in_features=256, out_features=1024, bias=True)
+      (fc2): Linear(in_features=1024, out_features=256, bias=True)
+      (layer_norm_before): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (layer_norm_after): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (activation): ReLU()
+    )
+    (fusion_layer): GroundingDinoFusionLayer(
+      (layer_norm_vision): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (layer_norm_text): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (attn): GroundingDinoBiMultiHeadAttention(
+        (vision_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (text_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (values_vision_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (values_text_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (out_vision_proj): Linear(in_features=1024, out_features=256, bias=True)
+        (out_text_proj): Linear(in_features=1024, out_features=256, bias=True)
+      )
+      (drop_path): GroundingDinoDropPath(p=0.1)
+    )
+    (deformable_layer): GroundingDinoDeformableLayer(
+      (self_attn): GroundingDinoMultiscaleDeformableAttention(
+        (attn): MultiScaleDeformableAttention()
+        (sampling_offsets): Linear(in_features=256, out_features=256, bias=True)
+        (attention_weights): Linear(in_features=256, out_features=128, bias=True)
+        (value_proj): Linear(in_features=256, out_features=256, bias=True)
+        (output_proj): Linear(in_features=256, out_features=256, bias=True)
+      )
+      (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (activation_fn): ReLU()
+      (fc1): Linear(in_features=256, out_features=2048, bias=True)
+      (fc2): Linear(in_features=2048, out_features=256, bias=True)
+      (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+), ModuleList(
+  (0-23): 24 x HeliumDecoderLayer(
+    (self_attn): HeliumAttention(
+      (q_proj): Linear(in_features=2560, out_features=2560, bias=False)
+      (k_proj): Linear(in_features=2560, out_features=2560, bias=False)
+      (v_proj): Linear(in_features=2560, out_features=2560, bias=False)
+      (o_proj): Linear(in_features=2560, out_features=2560, bias=False)
+    )
+    (mlp): HeliumMLP(
+      (gate_proj): Linear(in_features=2560, out_features=7040, bias=False)
+      (up_proj): Linear(in_features=2560, out_features=7040, bias=False)
+      (down_proj): Linear(in_features=7040, out_features=2560, bias=False)
+      (act_fn): SiLUActivation()
+    )
+    (input_layernorm): HeliumRMSNorm((2560,), eps=1e-08)
+    (post_attention_layernorm): HeliumRMSNorm((2560,), eps=1e-08)
+  )
+), ModuleList(
+  (0-11): 12 x HubertEncoderLayer(
+    (attention): HubertAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): HubertFeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x IBertLayer(
+    (attention): IBertAttention(
+      (self): IBertSelfAttention(
+        (query): (QuantLinear() weight_bit=8, quant_mode=False)
+        (key): (QuantLinear() weight_bit=8, quant_mode=False)
+        (value): (QuantLinear() weight_bit=8, quant_mode=False)
+        (query_activation): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        (key_activation): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        (value_activation): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        (output_activation): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        (dropout): Dropout(p=0.1, inplace=False)
+        (softmax): IntSoftmax(
+          (act): QuantAct(activation_bit=16, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        )
+      )
+      (output): IBertSelfOutput(
+        (dense): (QuantLinear() weight_bit=8, quant_mode=False)
+        (ln_input_act): QuantAct(activation_bit=22, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        (LayerNorm): IntLayerNorm(
+          (activation): QuantAct(activation_bit=32, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        )
+        (output_activation): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): IBertIntermediate(
+      (dense): (QuantLinear() weight_bit=8, quant_mode=False)
+      (intermediate_act_fn): IntGELU(
+        (activation_fn): GELU(approximate='none')
+      )
+      (output_activation): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+    )
+    (output): IBertOutput(
+      (dense): (QuantLinear() weight_bit=8, quant_mode=False)
+      (ln_input_act): QuantAct(activation_bit=22, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+      (LayerNorm): IntLayerNorm(
+        (activation): QuantAct(activation_bit=32, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+      )
+      (output_activation): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (pre_intermediate_act): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+    (pre_output_act): QuantAct(activation_bit=8, quant_mode: False, Act_min: -0.00, Act_max: 0.00)
+  )
+), ModuleList(
+  (0-31): 32 x IdeficsDecoderLayer(
+    (self_attn): IdeficsAttention(
+      (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+      (k_proj): Linear(in_features=4096, out_features=4096, bias=False)
+      (v_proj): Linear(in_features=4096, out_features=4096, bias=False)
+      (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+      (rotary_emb): IdeficsEmbedding()
+    )
+    (mlp): IdeficsMLP(
+      (gate_proj): Linear(in_features=4096, out_features=11008, bias=False)
+      (down_proj): Linear(in_features=11008, out_features=4096, bias=False)
+      (up_proj): Linear(in_features=4096, out_features=11008, bias=False)
+      (act_fn): SiLUActivation()
+    )
+    (input_layernorm): IdeficsRMSNorm((4096,), eps=1e-06)
+    (post_attention_layernorm): IdeficsRMSNorm((4096,), eps=1e-06)
+  )
+), ModuleList(
+  (0-11): 12 x Idefics3EncoderLayer(
+    (self_attn): Idefics3VisionAttention(
+      (k_proj): Linear(in_features=1152, out_features=1152, bias=True)
+      (v_proj): Linear(in_features=1152, out_features=1152, bias=True)
+      (q_proj): Linear(in_features=1152, out_features=1152, bias=True)
+      (out_proj): Linear(in_features=1152, out_features=1152, bias=True)
+    )
+    (layer_norm1): LayerNorm((1152,), eps=1e-06, elementwise_affine=True)
+    (mlp): Idefics3VisionMLP(
+      (activation_fn): GELUTanh()
+      (fc1): Linear(in_features=1152, out_features=3072, bias=True)
+      (fc2): Linear(in_features=3072, out_features=1152, bias=True)
+    )
+    (layer_norm2): LayerNorm((1152,), eps=1e-06, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x IJepaLayer(
+    (attention): IJepaAttention(
+      (attention): IJepaSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): IJepaSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): IJepaIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): IJepaOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x ImageGPTBlock(
+    (ln_1): ImageGPTLayerNorm()
+    (attn): ImageGPTAttention(
+      (c_attn): Conv1D(nf=1536, nx=512)
+      (c_proj): Conv1D(nf=512, nx=512)
+      (attn_dropout): Dropout(p=0.1, inplace=False)
+      (resid_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ln_2): ImageGPTLayerNorm()
+    (mlp): ImageGPTMLP(
+      (c_fc): Conv1D(nf=2048, nx=512)
+      (c_proj): Conv1D(nf=512, nx=2048)
+      (act): QuickGELUActivation()
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-1): 2 x InformerEncoderLayer(
+    (self_attn_layer_norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=64, out_features=32, bias=True)
+    (fc2): Linear(in_features=32, out_features=64, bias=True)
+    (final_layer_norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (self_attn): InformerProbSparseAttention(
+      (k_proj): Linear(in_features=64, out_features=64, bias=True)
+      (v_proj): Linear(in_features=64, out_features=64, bias=True)
+      (q_proj): Linear(in_features=64, out_features=64, bias=True)
+      (out_proj): Linear(in_features=64, out_features=64, bias=True)
+    )
+  )
+), ModuleList(
+  (0-23): 24 x InternVLVisionLayer(
+    (attention): InternVLVisionAttention(
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (projection_layer): Linear(in_features=1024, out_features=1024, bias=True)
+      (projection_dropout): Identity()
+      (q_norm): Identity()
+      (k_norm): Identity()
+    )
+    (mlp): InternVLVisionMLP(
+      (activation_fn): GELUActivation()
+      (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+      (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    )
+    (layernorm_before): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+    (layernorm_after): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+    (dropout): Dropout(p=0.0, inplace=False)
+  )
+), ModuleList(
+  (0-11): 12 x JetMoeDecoderLayer(
+    (mlp): JetMoeMoE(
+      (activation): SiLUActivation()
+      (input_linear): JetMoeParallelExperts()
+      (output_linear): JetMoeParallelExperts()
+      (router): JetMoeTopKGating(
+        (layer): Linear(in_features=2048, out_features=8, bias=False)
+      )
+    )
+    (input_layernorm): JetMoeRMSNorm((2048,), eps=1e-06)
+    (post_attention_layernorm): JetMoeRMSNorm((2048,), eps=1e-06)
+    (self_attention): JetMoeAttention(
+      (experts): JetMoeMoA(
+        (input_linear): JetMoeParallelExperts()
+        (output_linear): JetMoeParallelExperts()
+        (router): JetMoeTopKGating(
+          (layer): Linear(in_features=2048, out_features=8, bias=False)
+        )
+      )
+      (kv_proj): Linear(in_features=2048, out_features=4096, bias=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x LayoutLMLayer(
+    (attention): LayoutLMAttention(
+      (self): LayoutLMSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): LayoutLMSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): LayoutLMIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): LayoutLMOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x LayoutLMv2Layer(
+    (attention): LayoutLMv2Attention(
+      (self): LayoutLMv2SelfAttention(
+        (qkv_linear): Linear(in_features=768, out_features=2304, bias=False)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): LayoutLMv2SelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): LayoutLMv2Intermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): LayoutLMv2Output(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x LayoutLMv3Layer(
+    (attention): LayoutLMv3Attention(
+      (self): LayoutLMv3SelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): LayoutLMv3SelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): LayoutLMv3Intermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): LayoutLMv3Output(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x LiltLayer(
+    (attention): LiltAttention(
+      (self): LiltSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (layout_query): Linear(in_features=192, out_features=192, bias=True)
+        (layout_key): Linear(in_features=192, out_features=192, bias=True)
+        (layout_value): Linear(in_features=192, out_features=192, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): LiltSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (layout_output): LiltSelfOutput(
+        (dense): Linear(in_features=192, out_features=192, bias=True)
+        (LayerNorm): LayerNorm((192,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): LiltIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): LiltOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (layout_intermediate): LiltIntermediate(
+      (dense): Linear(in_features=192, out_features=768, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (layout_output): LiltOutput(
+      (dense): Linear(in_features=768, out_features=192, bias=True)
+      (LayerNorm): LayerNorm((192,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x LukeLayer(
+    (attention): LukeAttention(
+      (self): LukeSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (w2e_query): Linear(in_features=768, out_features=768, bias=True)
+        (e2w_query): Linear(in_features=768, out_features=768, bias=True)
+        (e2e_query): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): LukeSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): LukeIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): LukeOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x LxmertLayer(
+    (attention): LxmertSelfAttentionLayer(
+      (self): LxmertAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): LxmertAttentionOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): LxmertIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): LxmertOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x M2M100EncoderLayer(
+    (self_attn): M2M100Attention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): ReLU()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x MarianEncoderLayer(
+    (self_attn): MarianAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x MarkupLMLayer(
+    (attention): MarkupLMAttention(
+      (self): MarkupLMSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): MarkupLMSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): MarkupLMIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): MarkupLMOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x Mask2FormerPixelDecoderEncoderLayer(
+    (self_attn): Mask2FormerPixelDecoderEncoderMultiscaleDeformableAttention(
+      (sampling_offsets): Linear(in_features=256, out_features=192, bias=True)
+      (attention_weights): Linear(in_features=256, out_features=96, bias=True)
+      (value_proj): Linear(in_features=256, out_features=256, bias=True)
+      (output_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (fc1): Linear(in_features=256, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x MBartEncoderLayer(
+    (self_attn): MBartAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x MegatronBertLayer(
+    (attention): MegatronBertAttention(
+      (ln): LayerNorm((1024,), eps=1e-12, elementwise_affine=True)
+      (self): MegatronBertSelfAttention(
+        (query): Linear(in_features=1024, out_features=1024, bias=True)
+        (key): Linear(in_features=1024, out_features=1024, bias=True)
+        (value): Linear(in_features=1024, out_features=1024, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): MegatronBertSelfOutput(
+        (dense): Linear(in_features=1024, out_features=1024, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (ln): LayerNorm((1024,), eps=1e-12, elementwise_affine=True)
+    (intermediate): MegatronBertIntermediate(
+      (dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): MegatronBertOutput(
+      (dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-47): 48 x MLCDEncoderLayer(
+    (self_attn): MLCDAttention(
+      (k_proj): Linear(in_features=1664, out_features=1664, bias=True)
+      (v_proj): Linear(in_features=1664, out_features=1664, bias=True)
+      (q_proj): Linear(in_features=1664, out_features=1664, bias=True)
+      (out_proj): Linear(in_features=1664, out_features=1664, bias=True)
+    )
+    (layer_norm1): LayerNorm((1664,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLCDMLP(
+      (activation_fn): GELUActivation()
+      (fc1): Linear(in_features=1664, out_features=8192, bias=True)
+      (fc2): Linear(in_features=8192, out_features=1664, bias=True)
+    )
+    (layer_norm2): LayerNorm((1664,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-5): 6 x MMGroundingDinoEncoderLayer(
+    (text_enhancer_layer): MMGroundingDinoTextEnhancerLayer(
+      (self_attn): MMGroundingDinoMultiheadAttention(
+        (query): Linear(in_features=256, out_features=256, bias=True)
+        (key): Linear(in_features=256, out_features=256, bias=True)
+        (value): Linear(in_features=256, out_features=256, bias=True)
+        (out_proj): Linear(in_features=256, out_features=256, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+      (fc1): Linear(in_features=256, out_features=1024, bias=True)
+      (fc2): Linear(in_features=1024, out_features=256, bias=True)
+      (layer_norm_before): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (layer_norm_after): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (activation): ReLU()
+    )
+    (fusion_layer): MMGroundingDinoFusionLayer(
+      (layer_norm_vision): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (layer_norm_text): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (attn): MMGroundingDinoBiMultiHeadAttention(
+        (vision_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (text_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (values_vision_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (values_text_proj): Linear(in_features=256, out_features=1024, bias=True)
+        (out_vision_proj): Linear(in_features=1024, out_features=256, bias=True)
+        (out_text_proj): Linear(in_features=1024, out_features=256, bias=True)
+      )
+      (drop_path): MMGroundingDinoDropPath(p=0.1)
+    )
+    (deformable_layer): MMGroundingDinoDeformableLayer(
+      (self_attn): MMGroundingDinoMultiscaleDeformableAttention(
+        (attn): MultiScaleDeformableAttention()
+        (sampling_offsets): Linear(in_features=256, out_features=256, bias=True)
+        (attention_weights): Linear(in_features=256, out_features=128, bias=True)
+        (value_proj): Linear(in_features=256, out_features=256, bias=True)
+        (output_proj): Linear(in_features=256, out_features=256, bias=True)
+      )
+      (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (activation_fn): ReLU()
+      (fc1): Linear(in_features=256, out_features=2048, bias=True)
+      (fc2): Linear(in_features=2048, out_features=256, bias=True)
+      (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x FFNLayer(
+    (intermediate): MobileBertIntermediate(
+      (dense): Linear(in_features=128, out_features=512, bias=True)
+      (intermediate_act_fn): ReLU()
+    )
+    (output): FFNOutput(
+      (dense): Linear(in_features=512, out_features=128, bias=True)
+      (LayerNorm): NoNorm()
+    )
+  )
+), ModuleList(
+  (0-11): 12 x MPNetLayer(
+    (attention): MPNetAttention(
+      (attn): MPNetSelfAttention(
+        (q): Linear(in_features=768, out_features=768, bias=True)
+        (k): Linear(in_features=768, out_features=768, bias=True)
+        (v): Linear(in_features=768, out_features=768, bias=True)
+        (o): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (intermediate): MPNetIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): MPNetOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-23): 24 x MptBlock(
+    (norm_1): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+    (attn): MptAttention(
+      (Wqkv): Linear(in_features=2048, out_features=6144, bias=False)
+      (out_proj): Linear(in_features=2048, out_features=2048, bias=False)
+    )
+    (norm_2): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+    (ffn): MptMLP(
+      (up_proj): Linear(in_features=2048, out_features=8192, bias=False)
+      (act): GELU(approximate='none')
+      (down_proj): Linear(in_features=8192, out_features=2048, bias=False)
+    )
+    (resid_attn_dropout): Dropout(p=0, inplace=False)
+  )
+), ModuleList(
+  (0-11): 12 x MraLayer(
+    (attention): MraAttention(
+      (self): MraSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): MraSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): MraIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): MraOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-7): 8 x MT5Block(
+    (layer): ModuleList(
+      (0): MT5LayerSelfAttention(
+        (SelfAttention): MT5Attention(
+          (q): Linear(in_features=512, out_features=384, bias=False)
+          (k): Linear(in_features=512, out_features=384, bias=False)
+          (v): Linear(in_features=512, out_features=384, bias=False)
+          (o): Linear(in_features=384, out_features=512, bias=False)
+        )
+        (layer_norm): MT5LayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (1): MT5LayerFF(
+        (DenseReluDense): MT5DenseGatedActDense(
+          (wi_0): Linear(in_features=512, out_features=1024, bias=False)
+          (wi_1): Linear(in_features=512, out_features=1024, bias=False)
+          (wo): Linear(in_features=1024, out_features=512, bias=False)
+          (dropout): Dropout(p=0.1, inplace=False)
+          (act): NewGELUActivation()
+        )
+        (layer_norm): MT5LayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+  )
+), ModuleList(
+  (0-11): 12 x MvpEncoderLayer(
+    (self_attn): MvpAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x NystromformerLayer(
+    (attention): NystromformerAttention(
+      (self): NystromformerSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+        (conv): Conv2d(12, 12, kernel_size=(65, 1), stride=(1, 1), padding=(32, 0), groups=12, bias=False)
+      )
+      (output): NystromformerSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): NystromformerIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): NewGELUActivation()
+    )
+    (output): NystromformerOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0): OmDetTurboEncoderLayer(
+    (self_attn): OmDetTurboMultiheadAttention(
+      (query): Linear(in_features=256, out_features=256, bias=True)
+      (key): Linear(in_features=256, out_features=256, bias=True)
+      (value): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (dropout): Dropout(p=0.0, inplace=False)
+    (activation_fn): ReLU()
+    (encoder_feedforward_dropout): Dropout(p=0.0, inplace=False)
+    (fc1): Linear(in_features=256, out_features=2048, bias=True)
+    (fc2): Linear(in_features=2048, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-5): 6 x OneFormerPixelDecoderEncoderLayer(
+    (self_attn): OneFormerPixelDecoderEncoderMultiscaleDeformableAttention(
+      (sampling_offsets): Linear(in_features=256, out_features=192, bias=True)
+      (attention_weights): Linear(in_features=256, out_features=96, bias=True)
+      (value_proj): Linear(in_features=256, out_features=256, bias=True)
+      (output_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (fc1): Linear(in_features=256, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x OPTDecoderLayer(
+    (self_attn): OPTAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (activation_fn): ReLU()
+    (self_attn_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (fc1): Linear(in_features=768, out_features=3072, bias=True)
+    (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x ParakeetEncoderBlock(
+    (feed_forward1): ParakeetEncoderFeedForward(
+      (linear1): Linear(in_features=1024, out_features=4096, bias=True)
+      (activation): SiLUActivation()
+      (linear2): Linear(in_features=4096, out_features=1024, bias=True)
+    )
+    (self_attn): ParakeetEncoderAttention(
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (o_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (relative_k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+    )
+    (conv): ParakeetEncoderConvolutionModule(
+      (activation): SiLUActivation()
+      (pointwise_conv1): Conv1d(1024, 2048, kernel_size=(1,), stride=(1,))
+      (depthwise_conv): Conv1d(1024, 1024, kernel_size=(9,), stride=(1,), padding=(4,), groups=1024)
+      (norm): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (pointwise_conv2): Conv1d(1024, 1024, kernel_size=(1,), stride=(1,))
+    )
+    (feed_forward2): ParakeetEncoderFeedForward(
+      (linear1): Linear(in_features=1024, out_features=4096, bias=True)
+      (activation): SiLUActivation()
+      (linear2): Linear(in_features=4096, out_features=1024, bias=True)
+    )
+    (norm_feed_forward1): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (norm_self_att): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (norm_conv): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (norm_feed_forward2): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (norm_out): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-2): 3 x PatchTSTEncoderLayer(
+    (self_attn): PatchTSTAttention(
+      (k_proj): Linear(in_features=128, out_features=128, bias=True)
+      (v_proj): Linear(in_features=128, out_features=128, bias=True)
+      (q_proj): Linear(in_features=128, out_features=128, bias=True)
+      (out_proj): Linear(in_features=128, out_features=128, bias=True)
+    )
+    (dropout_path1): Identity()
+    (norm_sublayer1): PatchTSTBatchNorm(
+      (batchnorm): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (ff): Sequential(
+      (0): Linear(in_features=128, out_features=512, bias=True)
+      (1): GELUActivation()
+      (2): Identity()
+      (3): Linear(in_features=512, out_features=128, bias=True)
+    )
+    (dropout_path3): Identity()
+    (norm_sublayer3): PatchTSTBatchNorm(
+      (batchnorm): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x PegasusEncoderLayer(
+    (self_attn): PegasusAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-15): 16 x PegasusXDecoderLayer(
+    (self_attn): PegasusXAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=False)
+    )
+    (activation_fn): GELUActivation()
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (encoder_attn): PegasusXAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=False)
+    )
+    (encoder_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-31): 32 x PixioLayer(
+    (norm1): LayerNorm((1280,), eps=1e-06, elementwise_affine=True)
+    (attention): PixioAttention(
+      (attention): PixioSelfAttention(
+        (query): Linear(in_features=1280, out_features=1280, bias=True)
+        (key): Linear(in_features=1280, out_features=1280, bias=True)
+        (value): Linear(in_features=1280, out_features=1280, bias=True)
+      )
+      (output): PixioSelfOutput(
+        (dense): Linear(in_features=1280, out_features=1280, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (drop_path): Identity()
+    (norm2): LayerNorm((1280,), eps=1e-06, elementwise_affine=True)
+    (mlp): PixioMLP(
+      (fc1): Linear(in_features=1280, out_features=5120, bias=True)
+      (activation): GELUActivation()
+      (fc2): Linear(in_features=5120, out_features=1280, bias=True)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x PLBartEncoderLayer(
+    (self_attn): PLBartAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=768, out_features=3072, bias=True)
+    (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x ProphetNetEncoderLayer(
+    (self_attn): ProphetNetAttention(
+      (key_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (value_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (query_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): ProphetNetFeedForward(
+      (activation_fn): GELUActivation()
+      (intermediate): Linear(in_features=1024, out_features=4096, bias=True)
+      (output): Linear(in_features=4096, out_features=1024, bias=True)
+    )
+    (feed_forward_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-31): 32 x Qwen2AudioEncoderLayer(
+    (self_attn): Qwen2AudioAttention(
+      (k_proj): Linear(in_features=1280, out_features=1280, bias=False)
+      (v_proj): Linear(in_features=1280, out_features=1280, bias=True)
+      (q_proj): Linear(in_features=1280, out_features=1280, bias=True)
+      (out_proj): Linear(in_features=1280, out_features=1280, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1280, out_features=5120, bias=True)
+    (fc2): Linear(in_features=5120, out_features=1280, bias=True)
+    (final_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-5): 6 x ReformerLayer(
+    (attention): ReformerAttention(
+      (layer_norm): LayerNorm((256,), eps=1e-12, elementwise_affine=True)
+      (self_attention): LocalSelfAttention(
+        (query): Linear(in_features=256, out_features=768, bias=False)
+        (key): Linear(in_features=256, out_features=768, bias=False)
+        (value): Linear(in_features=256, out_features=768, bias=False)
+      )
+      (output): ReformerSelfOutput(
+        (dense): Linear(in_features=768, out_features=256, bias=False)
+      )
+    )
+    (feed_forward): ChunkReformerFeedForward(
+      (layer_norm): LayerNorm((256,), eps=1e-12, elementwise_affine=True)
+      (dense): ReformerFeedForwardDense(
+        (act_fn): ReLU()
+        (dense): Linear(in_features=256, out_features=512, bias=True)
+      )
+      (output): ReformerFeedForwardOutput(
+        (dense): Linear(in_features=512, out_features=256, bias=True)
+      )
+    )
+  )
+), ModuleList(
+  (0-31): 32 x RemBertLayer(
+    (attention): RemBertAttention(
+      (self): RemBertSelfAttention(
+        (query): Linear(in_features=1152, out_features=1152, bias=True)
+        (key): Linear(in_features=1152, out_features=1152, bias=True)
+        (value): Linear(in_features=1152, out_features=1152, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+      (output): RemBertSelfOutput(
+        (dense): Linear(in_features=1152, out_features=1152, bias=True)
+        (LayerNorm): LayerNorm((1152,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): RemBertIntermediate(
+      (dense): Linear(in_features=1152, out_features=4608, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): RemBertOutput(
+      (dense): Linear(in_features=4608, out_features=1152, bias=True)
+      (LayerNorm): LayerNorm((1152,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x RobertaLayer(
+    (attention): RobertaAttention(
+      (self): RobertaSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): RobertaSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): RobertaIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): RobertaOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x RobertaPreLayerNormLayer(
+    (attention): RobertaPreLayerNormAttention(
+      (self): RobertaPreLayerNormSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): RobertaPreLayerNormSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    )
+    (intermediate): RobertaPreLayerNormIntermediate(
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): RobertaPreLayerNormOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x RoCBertLayer(
+    (attention): RoCBertAttention(
+      (self): RoCBertSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): RoCBertSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): RoCBertIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): RoCBertOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x RoFormerLayer(
+    (attention): RoFormerAttention(
+      (self): RoFormerSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): RoFormerSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): RoFormerIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): RoFormerOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0): RTDetrEncoderLayer(
+    (self_attn): RTDetrMultiheadAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=256, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-5): 6 x RTDetrV2DecoderLayer(
+    (self_attn): RTDetrV2MultiheadAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (activation_fn): ReLU()
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (encoder_attn): RTDetrV2MultiscaleDeformableAttention(
+      (sampling_offsets): Linear(in_features=256, out_features=192, bias=True)
+      (attention_weights): Linear(in_features=256, out_features=96, bias=True)
+      (value_proj): Linear(in_features=256, out_features=256, bias=True)
+      (output_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (encoder_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (fc1): Linear(in_features=256, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-3): 4 x Sam2VideoMemoryAttentionLayer(
+    (self_attn): Sam2VideoRoPEAttention(
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (o_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (cross_attn_image): Sam2VideoRoPEAttention(
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (k_proj): Linear(in_features=64, out_features=256, bias=True)
+      (v_proj): Linear(in_features=64, out_features=256, bias=True)
+      (o_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (linear1): Linear(in_features=256, out_features=2048, bias=True)
+    (dropout): Dropout(p=0.1, inplace=False)
+    (linear2): Linear(in_features=2048, out_features=256, bias=True)
+    (layer_norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (layer_norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (layer_norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (dropout1): Dropout(p=0.1, inplace=False)
+    (dropout2): Dropout(p=0.1, inplace=False)
+    (dropout3): Dropout(p=0.1, inplace=False)
+    (activation): ReLU()
+  )
+), ModuleList(
+  (0-3): 4 x Sam3TrackerVideoMemoryAttentionLayer(
+    (self_attn): Sam3TrackerVideoRoPEAttention(
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (o_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (cross_attn_image): Sam3TrackerVideoRoPEAttention(
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (k_proj): Linear(in_features=64, out_features=256, bias=True)
+      (v_proj): Linear(in_features=64, out_features=256, bias=True)
+      (o_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (linear1): Linear(in_features=256, out_features=2048, bias=True)
+    (dropout): Dropout(p=0.1, inplace=False)
+    (linear2): Linear(in_features=2048, out_features=256, bias=True)
+    (layer_norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (layer_norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (layer_norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (dropout1): Dropout(p=0.1, inplace=False)
+    (dropout2): Dropout(p=0.1, inplace=False)
+    (dropout3): Dropout(p=0.1, inplace=False)
+    (activation): ReLU()
+  )
+), ModuleList(
+  (0-23): 24 x SeamlessM4TConformerEncoderLayer(
+    (ffn1_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (ffn1): SeamlessM4TConformerFeedForward(
+      (intermediate_dropout): Dropout(p=0.0, inplace=False)
+      (intermediate_dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): SiLU()
+      (output_dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (output_dropout): Dropout(p=0.0, inplace=False)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (self_attn_dropout): Dropout(p=0.0, inplace=False)
+    (self_attn): SeamlessM4TConformerSelfAttention(
+      (linear_q): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_k): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_v): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_out): Linear(in_features=1024, out_features=1024, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (linear_pos): Linear(in_features=1024, out_features=1024, bias=False)
+    )
+    (conv_module): SeamlessM4TConformerConvolutionModule(
+      (layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      (pointwise_conv1): Conv1d(1024, 2048, kernel_size=(1,), stride=(1,), bias=False)
+      (glu): GLU(dim=1)
+      (depthwise_conv): Conv1d(1024, 1024, kernel_size=(31,), stride=(1,), padding=same, groups=1024, bias=False)
+      (batch_norm): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (activation): SiLU()
+      (pointwise_conv2): Conv1d(1024, 1024, kernel_size=(1,), stride=(1,), bias=False)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (ffn2_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (ffn2): SeamlessM4TConformerFeedForward(
+      (intermediate_dropout): Dropout(p=0.0, inplace=False)
+      (intermediate_dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): SiLU()
+      (output_dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (output_dropout): Dropout(p=0.0, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x SeamlessM4Tv2ConformerEncoderLayer(
+    (ffn1_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (ffn1): SeamlessM4Tv2ConformerFeedForward(
+      (intermediate_dropout): Dropout(p=0.0, inplace=False)
+      (intermediate_dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): SiLU()
+      (output_dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (output_dropout): Dropout(p=0.0, inplace=False)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (self_attn_dropout): Dropout(p=0.0, inplace=False)
+    (self_attn): SeamlessM4Tv2ConformerSelfAttention(
+      (linear_q): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_k): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_v): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_out): Linear(in_features=1024, out_features=1024, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (distance_embedding): Embedding(73, 64)
+    )
+    (conv_module): SeamlessM4Tv2ConformerConvolutionModule(
+      (layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      (pointwise_conv1): Conv1d(1024, 2048, kernel_size=(1,), stride=(1,), bias=False)
+      (glu): GLU(dim=1)
+      (depthwise_conv): Conv1d(1024, 1024, kernel_size=(31,), stride=(1,), groups=1024, bias=False)
+      (depthwise_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      (activation): SiLU()
+      (pointwise_conv2): Conv1d(1024, 1024, kernel_size=(1,), stride=(1,), bias=False)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (ffn2_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (ffn2): SeamlessM4Tv2ConformerFeedForward(
+      (intermediate_dropout): Dropout(p=0.0, inplace=False)
+      (intermediate_dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): SiLU()
+      (output_dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (output_dropout): Dropout(p=0.0, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x SEWEncoderLayer(
+    (attention): SEWAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): SEWFeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x SEWDLayer(
+    (attention): SEWDAttention(
+      (self): DisentangledSelfAttention(
+        (query_proj): Linear(in_features=768, out_features=768, bias=True)
+        (key_proj): Linear(in_features=768, out_features=768, bias=True)
+        (value_proj): Linear(in_features=768, out_features=768, bias=True)
+        (pos_dropout): StableDropout()
+        (dropout): StableDropout()
+      )
+      (output): SEWDSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-07, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): SEWDIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): SEWDOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-07, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x Siglip2EncoderLayer(
+    (layer_norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (self_attn): Siglip2Attention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (layer_norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (mlp): Siglip2MLP(
+      (activation_fn): GELUTanh()
+      (fc1): Linear(in_features=768, out_features=3072, bias=True)
+      (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x SiglipEncoderLayer(
+    (layer_norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (self_attn): SiglipAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (layer_norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (mlp): SiglipMLP(
+      (activation_fn): GELUTanh()
+      (fc1): Linear(in_features=768, out_features=3072, bias=True)
+      (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x SmolVLMEncoderLayer(
+    (self_attn): SmolVLMVisionAttention(
+      (k_proj): Linear(in_features=1152, out_features=1152, bias=True)
+      (v_proj): Linear(in_features=1152, out_features=1152, bias=True)
+      (q_proj): Linear(in_features=1152, out_features=1152, bias=True)
+      (out_proj): Linear(in_features=1152, out_features=1152, bias=True)
+    )
+    (layer_norm1): LayerNorm((1152,), eps=1e-06, elementwise_affine=True)
+    (mlp): SmolVLMVisionMLP(
+      (activation_fn): GELUTanh()
+      (fc1): Linear(in_features=1152, out_features=3072, bias=True)
+      (fc2): Linear(in_features=3072, out_features=1152, bias=True)
+    )
+    (layer_norm2): LayerNorm((1152,), eps=1e-06, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x Speech2TextEncoderLayer(
+    (self_attn): Speech2TextAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): ReLU()
+    (fc1): Linear(in_features=256, out_features=2048, bias=True)
+    (fc2): Linear(in_features=2048, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-4): 5 x SpeechT5BatchNormConvLayer(
+    (conv): Conv1d(80, 256, kernel_size=(5,), stride=(1,), padding=(2,), bias=False)
+    (batch_norm): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (activation): Tanh()
+    (dropout): Dropout(p=0.5, inplace=False)
+  )
+), ModuleList(
+  (0-11): 12 x SplinterLayer(
+    (attention): SplinterAttention(
+      (self): SplinterSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): SplinterSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): SplinterIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): SplinterOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x SqueezeBertModule(
+    (attention): SqueezeBertSelfAttention(
+      (query): Conv1d(768, 768, kernel_size=(1,), stride=(1,), groups=4)
+      (key): Conv1d(768, 768, kernel_size=(1,), stride=(1,), groups=4)
+      (value): Conv1d(768, 768, kernel_size=(1,), stride=(1,), groups=4)
+      (dropout): Dropout(p=0.1, inplace=False)
+      (softmax): Softmax(dim=-1)
+      (matmul_qk): MatMulWrapper()
+      (matmul_qkv): MatMulWrapper()
+    )
+    (post_attention): ConvDropoutLayerNorm(
+      (conv1d): Conv1d(768, 768, kernel_size=(1,), stride=(1,))
+      (layernorm): SqueezeBertLayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (intermediate): ConvActivation(
+      (conv1d): Conv1d(768, 3072, kernel_size=(1,), stride=(1,), groups=4)
+      (act): GELUActivation()
+    )
+    (output): ConvDropoutLayerNorm(
+      (conv1d): Conv1d(3072, 768, kernel_size=(1,), stride=(1,), groups=4)
+      (layernorm): SqueezeBertLayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-5): 6 x T5Block(
+    (layer): ModuleList(
+      (0): T5LayerSelfAttention(
+        (SelfAttention): T5Attention(
+          (q): Linear(in_features=512, out_features=512, bias=False)
+          (k): Linear(in_features=512, out_features=512, bias=False)
+          (v): Linear(in_features=512, out_features=512, bias=False)
+          (o): Linear(in_features=512, out_features=512, bias=False)
+        )
+        (layer_norm): T5LayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (1): T5LayerFF(
+        (DenseReluDense): T5DenseActDense(
+          (wi): Linear(in_features=512, out_features=2048, bias=False)
+          (wo): Linear(in_features=2048, out_features=512, bias=False)
+          (dropout): Dropout(p=0.1, inplace=False)
+          (act): ReLU()
+        )
+        (layer_norm): T5LayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+  )
+), ModuleList(
+  (0-5): 6 x TableTransformerEncoderLayer(
+    (self_attn): TableTransformerAttention(
+      (k_proj): Linear(in_features=256, out_features=256, bias=True)
+      (v_proj): Linear(in_features=256, out_features=256, bias=True)
+      (q_proj): Linear(in_features=256, out_features=256, bias=True)
+      (out_proj): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): ReLU()
+    (fc1): Linear(in_features=256, out_features=2048, bias=True)
+    (fc2): Linear(in_features=2048, out_features=256, bias=True)
+    (final_layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x TapasLayer(
+    (attention): TapasAttention(
+      (self): TapasSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): TapasSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): TapasIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): TapasOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-1): 2 x TimeSeriesTransformerEncoderLayer(
+    (self_attn): TimeSeriesTransformerAttention(
+      (k_proj): Linear(in_features=64, out_features=64, bias=True)
+      (v_proj): Linear(in_features=64, out_features=64, bias=True)
+      (q_proj): Linear(in_features=64, out_features=64, bias=True)
+      (out_proj): Linear(in_features=64, out_features=64, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=64, out_features=32, bias=True)
+    (fc2): Linear(in_features=32, out_features=64, bias=True)
+    (final_layer_norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x TvpEncodeLayer(
+    (attention): TvpAttention(
+      (query): Linear(in_features=768, out_features=768, bias=True)
+      (key): Linear(in_features=768, out_features=768, bias=True)
+      (value): Linear(in_features=768, out_features=768, bias=True)
+      (attn_dropout): Dropout(p=0.1, inplace=False)
+      (dense): Linear(in_features=768, out_features=768, bias=True)
+      (layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (intermediate): TvpIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): TvpOutputLayer(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-23): 24 x UdopBlock(
+    (layer): ModuleList(
+      (0): UdopLayerSelfAttention(
+        (SelfAttention): UdopAttention(
+          (q): Linear(in_features=1024, out_features=1024, bias=False)
+          (k): Linear(in_features=1024, out_features=1024, bias=False)
+          (v): Linear(in_features=1024, out_features=1024, bias=False)
+          (o): Linear(in_features=1024, out_features=1024, bias=False)
+        )
+        (layer_norm): UdopLayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (1): UdopLayerFF(
+        (DenseReluDense): UdopDenseActDense(
+          (wi): Linear(in_features=1024, out_features=4096, bias=False)
+          (wo): Linear(in_features=4096, out_features=1024, bias=False)
+          (dropout): Dropout(p=0.1, inplace=False)
+          (act): ReLU()
+        )
+        (layer_norm): UdopLayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+  )
+), ModuleList(
+  (0-7): 8 x UMT5Block(
+    (layer): ModuleList(
+      (0): UMT5LayerSelfAttention(
+        (SelfAttention): UMT5Attention(
+          (q): Linear(in_features=512, out_features=384, bias=False)
+          (k): Linear(in_features=512, out_features=384, bias=False)
+          (v): Linear(in_features=512, out_features=384, bias=False)
+          (o): Linear(in_features=384, out_features=512, bias=False)
+          (relative_attention_bias): Embedding(32, 6)
+        )
+        (layer_norm): UMT5LayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (1): UMT5LayerFF(
+        (DenseReluDense): UMT5DenseGatedActDense(
+          (wi_0): Linear(in_features=512, out_features=1024, bias=False)
+          (wi_1): Linear(in_features=512, out_features=1024, bias=False)
+          (wo): Linear(in_features=1024, out_features=512, bias=False)
+          (dropout): Dropout(p=0.1, inplace=False)
+          (act): NewGELUActivation()
+        )
+        (layer_norm): UMT5LayerNorm()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+  )
+), ModuleList(
+  (0-11): 12 x UniSpeechEncoderLayer(
+    (attention): UniSpeechAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): UniSpeechFeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x UniSpeechSatEncoderLayer(
+    (attention): UniSpeechSatAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): UniSpeechSatFeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x UnivNetKernelPredictorResidualBlock(
+    (dropout): Dropout(p=0.0, inplace=False)
+    (conv1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    (conv2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+  )
+), ModuleList(
+  (0-11): 12 x VideoLlama3VisionEncoderLayer(
+    (layer_norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (self_attn): VideoLlama3VisionAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (layer_norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (mlp): VideoLlama3VisionMLP(
+      (activation_fn): GELUTanh()
+      (fc1): Linear(in_features=768, out_features=3072, bias=True)
+      (fc2): Linear(in_features=3072, out_features=768, bias=True)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x VideoMAELayer(
+    (attention): VideoMAEAttention(
+      (attention): VideoMAESelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=False)
+        (key): Linear(in_features=768, out_features=768, bias=False)
+        (value): Linear(in_features=768, out_features=768, bias=False)
+      )
+      (output): VideoMAESelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): VideoMAEIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): VideoMAEOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x ViltLayer(
+    (attention): ViltAttention(
+      (attention): ViltSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+      (output): ViltSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): ViltIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ViltOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x VisualBertLayer(
+    (attention): VisualBertAttention(
+      (self): VisualBertSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): VisualBertSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): VisualBertIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): VisualBertOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-11): 12 x ViTLayer(
+    (attention): ViTAttention(
+      (attention): ViTSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): ViTSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): ViTIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ViTOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x ViTMAELayer(
+    (attention): ViTMAEAttention(
+      (attention): ViTMAESelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): ViTMAESelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): ViTMAEIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ViTMAEOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x ViTMSNLayer(
+    (attention): ViTMSNAttention(
+      (attention): ViTMSNSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): ViTMSNSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): ViTMSNIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): ViTMSNOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-5): 6 x VitsEncoderLayer(
+    (attention): VitsAttention(
+      (k_proj): Linear(in_features=192, out_features=192, bias=True)
+      (v_proj): Linear(in_features=192, out_features=192, bias=True)
+      (q_proj): Linear(in_features=192, out_features=192, bias=True)
+      (out_proj): Linear(in_features=192, out_features=192, bias=True)
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (layer_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): VitsFeedForward(
+      (conv_1): Conv1d(192, 768, kernel_size=(3,), stride=(1,))
+      (conv_2): Conv1d(768, 192, kernel_size=(3,), stride=(1,))
+      (dropout): Dropout(p=0.1, inplace=False)
+      (act_fn): ReLU()
+    )
+    (final_layer_norm): LayerNorm((192,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x VivitLayer(
+    (attention): VivitAttention(
+      (attention): VivitSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): VivitSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): VivitIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (intermediate_act_fn): FastGELUActivation()
+    )
+    (output): VivitOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-2): 3 x VJEPA2PoolerSelfAttentionLayer(
+    (layer_norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+    (self_attn): VJEPA2PoolerSelfAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (layer_norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+    (mlp): VJEPA2MLP(
+      (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+      (activation): GELUActivation()
+      (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    )
+  )
+), ModuleList(
+  (0-31): 32 x VoxtralEncoderLayer(
+    (self_attn): VoxtralAttention(
+      (k_proj): Linear(in_features=1280, out_features=1280, bias=False)
+      (v_proj): Linear(in_features=1280, out_features=1280, bias=True)
+      (q_proj): Linear(in_features=1280, out_features=1280, bias=True)
+      (out_proj): Linear(in_features=1280, out_features=1280, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=1280, out_features=5120, bias=True)
+    (fc2): Linear(in_features=5120, out_features=1280, bias=True)
+    (final_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x Wav2Vec2EncoderLayer(
+    (attention): Wav2Vec2Attention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): Wav2Vec2FeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x Wav2Vec2BertEncoderLayer(
+    (ffn1_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (ffn1): Wav2Vec2BertFeedForward(
+      (intermediate_dropout): Dropout(p=0.0, inplace=False)
+      (intermediate_dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): SiLU()
+      (output_dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (output_dropout): Dropout(p=0.0, inplace=False)
+    )
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (self_attn_dropout): Dropout(p=0.0, inplace=False)
+    (self_attn): Wav2Vec2BertSelfAttention(
+      (linear_q): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_k): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_v): Linear(in_features=1024, out_features=1024, bias=True)
+      (linear_out): Linear(in_features=1024, out_features=1024, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+      (distance_embedding): Embedding(73, 64)
+    )
+    (conv_module): Wav2Vec2BertConvolutionModule(
+      (layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      (pointwise_conv1): Conv1d(1024, 2048, kernel_size=(1,), stride=(1,), bias=False)
+      (glu): GLU(dim=1)
+      (depthwise_conv): Conv1d(1024, 1024, kernel_size=(31,), stride=(1,), groups=1024, bias=False)
+      (depthwise_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      (activation): SiLU()
+      (pointwise_conv2): Conv1d(1024, 1024, kernel_size=(1,), stride=(1,), bias=False)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ffn2_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (ffn2): Wav2Vec2BertFeedForward(
+      (intermediate_dropout): Dropout(p=0.0, inplace=False)
+      (intermediate_dense): Linear(in_features=1024, out_features=4096, bias=True)
+      (intermediate_act_fn): SiLU()
+      (output_dense): Linear(in_features=4096, out_features=1024, bias=True)
+      (output_dropout): Dropout(p=0.0, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x Wav2Vec2ConformerEncoderLayer(
+    (ffn1_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (ffn1): Wav2Vec2ConformerFeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (self_attn_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (self_attn_dropout): Dropout(p=0.1, inplace=False)
+    (self_attn): Wav2Vec2ConformerSelfAttention(
+      (linear_q): Linear(in_features=768, out_features=768, bias=True)
+      (linear_k): Linear(in_features=768, out_features=768, bias=True)
+      (linear_v): Linear(in_features=768, out_features=768, bias=True)
+      (linear_out): Linear(in_features=768, out_features=768, bias=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+      (linear_pos): Linear(in_features=768, out_features=768, bias=False)
+    )
+    (conv_module): Wav2Vec2ConformerConvolutionModule(
+      (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (pointwise_conv1): Conv1d(768, 1536, kernel_size=(1,), stride=(1,), bias=False)
+      (glu): GLU(dim=1)
+      (depthwise_conv): Conv1d(768, 768, kernel_size=(31,), stride=(1,), padding=(15,), groups=768, bias=False)
+      (batch_norm): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (activation): GELUActivation()
+      (pointwise_conv2): Conv1d(768, 768, kernel_size=(1,), stride=(1,), bias=False)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ffn2_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (ffn2): Wav2Vec2ConformerFeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x WavLMEncoderLayer(
+    (attention): WavLMAttention(
+      (k_proj): Linear(in_features=768, out_features=768, bias=True)
+      (v_proj): Linear(in_features=768, out_features=768, bias=True)
+      (q_proj): Linear(in_features=768, out_features=768, bias=True)
+      (out_proj): Linear(in_features=768, out_features=768, bias=True)
+      (gru_rel_pos_linear): Linear(in_features=64, out_features=8, bias=True)
+      (rel_attn_embed): Embedding(320, 12)
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    (feed_forward): WavLMFeedForward(
+      (intermediate_dropout): Dropout(p=0.1, inplace=False)
+      (intermediate_dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+      (output_dense): Linear(in_features=3072, out_features=768, bias=True)
+      (output_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (final_layer_norm): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-3): 4 x WhisperEncoderLayer(
+    (self_attn): WhisperAttention(
+      (k_proj): Linear(in_features=384, out_features=384, bias=False)
+      (v_proj): Linear(in_features=384, out_features=384, bias=True)
+      (q_proj): Linear(in_features=384, out_features=384, bias=True)
+      (out_proj): Linear(in_features=384, out_features=384, bias=True)
+    )
+    (self_attn_layer_norm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+    (activation_fn): GELUActivation()
+    (fc1): Linear(in_features=384, out_features=1536, bias=True)
+    (fc2): Linear(in_features=1536, out_features=384, bias=True)
+    (final_layer_norm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x XGLMDecoderLayer(
+    (self_attn): XGLMAttention(
+      (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+      (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (activation_fn): GELUActivation()
+    (self_attn_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (final_layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x XLMRobertaLayer(
+    (attention): XLMRobertaAttention(
+      (self): XLMRobertaSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): XLMRobertaSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): XLMRobertaIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): XLMRobertaOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+), ModuleList(
+  (0-35): 36 x XLMRobertaXLLayer(
+    (attention): XLMRobertaXLAttention(
+      (self): XLMRobertaXLSelfAttention(
+        (query): Linear(in_features=2560, out_features=2560, bias=True)
+        (key): Linear(in_features=2560, out_features=2560, bias=True)
+        (value): Linear(in_features=2560, out_features=2560, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): XLMRobertaXLSelfOutput(
+        (dense): Linear(in_features=2560, out_features=2560, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (self_attn_layer_norm): LayerNorm((2560,), eps=1e-05, elementwise_affine=True)
+    )
+    (intermediate): XLMRobertaXLIntermediate(
+      (dense): Linear(in_features=2560, out_features=10240, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): XLMRobertaXLOutput(
+      (dense): Linear(in_features=10240, out_features=2560, bias=True)
+    )
+    (LayerNorm): LayerNorm((2560,), eps=1e-05, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-23): 24 x XLNetLayer(
+    (rel_attn): XLNetRelativeAttention(
+      (layer_norm): LayerNorm((1024,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (ff): XLNetFeedForward(
+      (layer_norm): LayerNorm((1024,), eps=1e-12, elementwise_affine=True)
+      (layer_1): Linear(in_features=1024, out_features=4096, bias=True)
+      (layer_2): Linear(in_features=4096, out_features=1024, bias=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+      (activation_function): GELUActivation()
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+  )
+), ModuleList(
+  (0-31): 32 x xLSTMBlock(
+    (norm_mlstm): xLSTMRMSNorm()
+    (mlstm_layer): xLSTMLayer(
+      (q): Linear(in_features=4096, out_features=2048, bias=False)
+      (k): Linear(in_features=4096, out_features=2048, bias=False)
+      (v): Linear(in_features=4096, out_features=4096, bias=False)
+      (ogate_preact): Linear(in_features=4096, out_features=4096, bias=False)
+      (igate_preact): Linear(in_features=4096, out_features=8, bias=True)
+      (fgate_preact): Linear(in_features=4096, out_features=8, bias=True)
+      (ogate_act_fn): Sigmoid()
+      (mlstm_backend): xLSTMBackend(
+        xLSTMConfig {
+          "add_out_norm": true,
+          "autocast_kernel_dtype": "bfloat16",
+          "bos_token_id": 0,
+          "chunk_size": 64,
+          "chunkwise_kernel": "chunkwise--native_autograd",
+          "embedding_dim": 4096,
+          "eos_token_id": 2,
+          "eps": 1e-06,
+          "ffn_proj_factor": 2.667,
+          "ffn_round_up_to_multiple_of": 64,
+          "gate_soft_cap": 15.0,
+          "hidden_size": 4096,
+          "inference_state_dtype": "float32",
+          "max_inference_chunksize": 16384,
+          "mode": "inference",
+          "model_type": "xlstm",
+          "norm_eps": 1e-06,
+          "norm_reduction_force_float32": true,
+          "num_blocks": 32,
+          "num_heads": 8,
+          "num_hidden_layers": 32,
+          "output_logit_soft_cap": 30.0,
+          "pad_token_id": 1,
+          "qk_dim_factor": 0.5,
+          "return_last_states": true,
+          "sequence_kernel": "native_sequence__native",
+          "step_kernel": "native",
+          "tie_word_embeddings": false,
+          "transformers_version": "5.0.0.dev0",
+          "use_bias": false,
+          "use_cache": true,
+          "v_dim_factor": 1.0,
+          "vocab_size": 50304,
+          "weight_mode": "single"
+        }
+        
+      )
+      (multihead_norm): xLSTMMultiHeadLayerNorm()
+      (out_proj): Linear(in_features=4096, out_features=4096, bias=False)
+    )
+    (norm_ffn): xLSTMRMSNorm()
+    (ffn): xLSTMFeedForward(
+      (proj_up_gate): Linear(in_features=4096, out_features=10944, bias=False)
+      (proj_up): Linear(in_features=4096, out_features=10944, bias=False)
+      (proj_down): Linear(in_features=10944, out_features=4096, bias=False)
+      (act_fn): SiLU()
+    )
+  )
+), ModuleList(
+  (0-11): 12 x XmodLayer(
+    (attention): XmodAttention(
+      (self): XmodSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): XmodSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): XmodIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): XmodOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+      (adapter_modules): ModuleDict(
+        (en_XX): XmodAdapter(
+          (dense1): Linear(in_features=768, out_features=384, bias=True)
+          (dense2): Linear(in_features=384, out_features=768, bias=True)
+          (adapter_act_fn): GELUActivation()
+        )
+      )
+    )
+  )
+), ModuleList(
+  (0-11): 12 x YolosLayer(
+    (attention): YolosAttention(
+      (attention): YolosSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+      )
+      (output): YolosSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (intermediate): YolosIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): YolosOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (layernorm_before): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+    (layernorm_after): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  )
+), ModuleList(
+  (0-11): 12 x YosoLayer(
+    (attention): YosoAttention(
+      (self): YosoSelfAttention(
+        (query): Linear(in_features=768, out_features=768, bias=True)
+        (key): Linear(in_features=768, out_features=768, bias=True)
+        (value): Linear(in_features=768, out_features=768, bias=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (output): YosoSelfOutput(
+        (dense): Linear(in_features=768, out_features=768, bias=True)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (intermediate): YosoIntermediate(
+      (dense): Linear(in_features=768, out_features=3072, bias=True)
+      (intermediate_act_fn): GELUActivation()
+    )
+    (output): YosoOutput(
+      (dense): Linear(in_features=3072, out_features=768, bias=True)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+  )
+)]

@@ -37,6 +37,7 @@ Requires-Dist: chanfig>=0.0.114
 Requires-Dist: diffusers>=0.35.2
 Requires-Dist: ftfy>=6.3.1
 Requires-Dist: huggingface-hub[hf-xet]>=1.1.7
+Requires-Dist: numpy>=2.4.1
 Requires-Dist: pydantic>=2.12.5
 Requires-Dist: sentencepiece>=0.2.1
 Requires-Dist: tokenizers>=0.22.1

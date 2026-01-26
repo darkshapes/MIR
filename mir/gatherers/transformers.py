@@ -30,4 +30,4 @@ class GatherLoop:
             build_entries.append(BuildEntry("model", model))
             if tokenizer := TOKENIZER_MAPPING.get(config, None):
                 build_entries.append(BuildEntry("tokenizer", tokenizer))
-        self.model_db = {x.attributes.model_name: x.attributes.model_parameters for x in build_entries}
+        self.model_db = {x.attributes.model_name: x.attributes.layers for x in build_entries if hasattr(x.attributes, "layers")}

@@ -1,0 +1,128 @@
+"BertAttention":
+"BertEmbeddings":
+"BertEncoder":
+"BertIntermediate":
+"BertLayer":
+"BertOutput":
+"BertPooler":
+"BertSdpaSelfAttention":
+"BertSelfAttention":
+"BertSelfOutput":
+
+"BertLMPredictionHead": "<'transformers.models.bert.modeling_bert.BertLMPredictionHead'>",
+"BertOnlyMLMHead": "<'transformers.models.bert.modeling_bert.BertOnlyMLMHead'>",
+"BertOnlyNSPHead": "<'transformers.models.bert.modeling_bert.BertOnlyNSPHead'>",
+"BertPredictionHeadTransform": "<'transformers.models.bert.modeling_bert.BertPredictionHeadTransform'>",
+"BertPreTrainingHeads": "<'transformers.models.bert.modeling_bert.BertPreTrainingHeads'>",
+
+"BertGenerationAttention": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationAttention'>",
+"BertGenerationEmbeddings": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationEmbeddings'>",
+"BertGenerationIntermediate": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationIntermediate'>",
+"BertGenerationLayer": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationLayer'>",
+"BertGenerationOnlyLMHead": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationOnlyLMHead'>",
+"BertGenerationOutput": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationOutput'>",
+"BertGenerationSelfAttention": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationSelfAttention'>",
+"BertGenerationSelfOutput": "<'transformers.models.bert_generation.modeling_bert_generation.BertGenerationSelfOutput'>",
+
+"AlbertAttention": "<'transformers.models.albert.modeling_albert.AlbertAttention'>",
+"AlbertEmbeddings": "<'transformers.models.albert.modeling_albert.AlbertEmbeddings'>",
+"AlbertLayer": "<'transformers.models.albert.modeling_albert.AlbertLayer'>",
+"AlbertLayerGroup": "<'transformers.models.albert.modeling_albert.AlbertLayerGroup'>",
+"AlbertMLMHead": "<'transformers.models.albert.modeling_albert.AlbertMLMHead'>",
+"AlbertSdpaAttention": "<'transformers.models.albert.modeling_albert.AlbertSdpaAttention'>",
+"AlbertSOPHead": "<'transformers.models.albert.modeling_albert.AlbertSOPHead'>",
+"AlbertTransformer": "<'transformers.models.albert.modeling_albert.AlbertTransformer'>",
+
+
+"XLNetFeedForward": "<'transformers.models.xlnet.modeling_xlnet.XLNetFeedForward'>",
+"XLNetLayer": "<'transformers.models.xlnet.modeling_xlnet.XLNetLayer'>",
+"XLNetPoolerAnswerClass": "<'transformers.models.xlnet.modeling_xlnet.XLNetPoolerAnswerClass'>",
+"XLNetPoolerEndLogits": "<'transformers.models.xlnet.modeling_xlnet.XLNetPoolerEndLogits'>",
+"XLNetPoolerStartLogits": "<'transformers.models.xlnet.modeling_xlnet.XLNetPoolerStartLogits'>",
+"XLNetRelativeAttention": "<'transformers.models.xlnet.modeling_xlnet.XLNetRelativeAttention'>",
+"XLNetSequenceSummary": "<'transformers.models.xlnet.modeling_xlnet.XLNetSequenceSummary'>",
+
+
+"GPT2Attention":
+"GPT2Block":
+"GPT2MLP":
+"GPT2SequenceSummary":
+
+
+"CLIPAttention": "<'transformers.models.clip.modeling_clip.CLIPAttention'>",
+"CLIPEncoder": "<'transformers.models.clip.modeling_clip.CLIPEncoder'>",
+"CLIPEncoderLayer": "<'transformers.models.clip.modeling_clip.CLIPEncoderLayer'>",
+"CLIPMLP": "<'transformers.models.clip.modeling_clip.CLIPMLP'>",
+
+
+"LlamaAttention": "<'transformers.models.llama.modeling_llama.LlamaAttention'>",
+"LlamaDecoderLayer": "<'transformers.models.llama.modeling_llama.LlamaDecoderLayer'>",
+"LlamaMLP": "<'transformers.models.llama.modeling_llama.LlamaMLP'>",
+"LlamaRMSNorm": "<'transformers.models.llama.modeling_llama.LlamaRMSNorm'>",
+"LlamaRotaryEmbedding": "<'transformers.models.llama.modeling_llama.LlamaRotaryEmbedding'>",
+
+
+
+
+
+"ViTAttention": "<'transformers.models.vit.modeling_vit.ViTAttention'>",
+"VitDetAttention": "<'transformers.models.vitdet.modeling_vitdet.VitDetAttention'>",
+"VitDetDropPath": "<'transformers.models.vitdet.modeling_vitdet.VitDetDropPath'>",
+"VitDetEmbeddings": "<'transformers.models.vitdet.modeling_vitdet.VitDetEmbeddings'>",
+"VitDetEncoder": "<'transformers.models.vitdet.modeling_vitdet.VitDetEncoder'>",
+"VitDetLayer": "<'transformers.models.vitdet.modeling_vitdet.VitDetLayer'>",
+"VitDetLayerNorm": "<'transformers.models.vitdet.modeling_vitdet.VitDetLayerNorm'>",
+"VitDetMlp": "<'transformers.models.vitdet.modeling_vitdet.VitDetMlp'>",
+"VitDetResBottleneckBlock": "<'transformers.models.vitdet.modeling_vitdet.VitDetResBottleneckBlock'>",
+"ViTEmbeddings": "<'transformers.models.vit.modeling_vit.ViTEmbeddings'>",
+"ViTEncoder": "<'transformers.models.vit.modeling_vit.ViTEncoder'>",
+"ViTLayer": "<'transformers.models.vit.modeling_vit.ViTLayer'>",
+"ViTOutput": "<'transformers.models.vit.modeling_vit.ViTOutput'>",
+"ViTPooler": "<'transformers.models.vit.modeling_vit.ViTPooler'>",
+
+
+"EsmAttention": "<'transformers.models.esm.modeling_esm.EsmAttention'>",
+"EsmClassificationHead": "<'transformers.models.esm.modeling_esm.EsmClassificationHead'>",
+"EsmContactPredictionHead": "<'transformers.models.esm.modeling_esm.EsmContactPredictionHead'>",
+"EsmEmbeddings": "<'transformers.models.esm.modeling_esm.EsmEmbeddings'>",
+"EsmEncoder": "<'transformers.models.esm.modeling_esm.EsmEncoder'>",
+"EsmIntermediate": "<'transformers.models.esm.modeling_esm.EsmIntermediate'>",
+"EsmLayer": "<'transformers.models.esm.modeling_esm.EsmLayer'>",
+"EsmLMHead": "<'transformers.models.esm.modeling_esm.EsmLMHead'>",
+"EsmOutput": "<'transformers.models.esm.modeling_esm.EsmOutput'>",
+"EsmPooler": "<'transformers.models.esm.modeling_esm.EsmPooler'>",
+"EsmSelfAttention": "<'transformers.models.esm.modeling_esm.EsmSelfAttention'>",
+"EsmSelfOutput": "<'transformers.models.esm.modeling_esm.EsmSelfOutput'>",
+
+
+modeling_layers.GradientCheckpointingLayer
+time_series_utils.ParameterProjection
+time_series_utils.LambdaLayer
+
+{
+    "LayerNorm": "<'torch.nn.modules.normalization.LayerNorm'>",
+    "SqueezeBertLayerNorm": "<'transformers.models.squeezebert.modeling_squeezebert.SqueezeBertLayerNorm'>",
+    "ChameleonLayerNorm": "<'transformers.models.chameleon.modeling_chameleon.ChameleonLayerNorm'>",
+    "EomtLayerNorm2d": "<'transformers.models.eomt.modeling_eomt.EomtLayerNorm2d'>",
+    "LayoutLMLayerNorm": "<'torch.nn.modules.normalization.LayerNorm'>",
+    "NemotronLayerNorm1P": "<'transformers.models.nemotron.modeling_nemotron.NemotronLayerNorm1P'>",
+    "FusedLayerNorm": "<'torch.nn.modules.normalization.LayerNorm'>",
+    "JukeboxLayerNorm": "<'transformers.models.deprecated.jukebox.modeling_jukebox.JukeboxLayerNorm'>"
+}
+
+{
+    "ModuleList": "<'torch.nn.modules.container.ModuleList'>",
+    "SequentialLlama4TextExperts": "<'transformers.quantizers.base.SequentialLlama4TextExperts'>",
+    "AfmoeExperts": "<'transformers.models.afmoe.modeling_afmoe.AfmoeExperts'>",
+    "VitPoseNaiveMoe": "<'transformers.models.vitpose_backbone.modeling_vitpose_backbone.VitPoseNaiveMoe'>"
+}
+
+{
+    "BertEncoder": "<'transformers.models.bert.modeling_bert.BertEncoder'>",
+    "ErnieEncoder": "<'transformers.models.ernie.modular_ernie.ErnieEncoder'>"
+}
+
+
+
+['ContextPooler', 'VisualBertPooler', 'FlavaPooler', 'SqueezeBertPooler', 'PoolFormerFinalPooler', 'ViltPooler', 'EsmPooler', 'EvollaSaProtPooler', 'EvollaSaProtPooler', 'LukePooler', 'ContextPooler', 'MarkupLMPooler', 'VJEPA2AttentivePooler', 'VJEPA2PoolerCrossAttention', 'VJEPA2PoolerCrossAttentionLayer', 'VJEPA2PoolerSelfAttention', 'VJEPA2PoolerSelfAttentionLayer', 'EsmPooler', 'LxmertPooler', 'LlavaNextVideoPooler', 'TapasPooler', 'Data2VecVisionPooler', 'Data2VecTextPooler', 'LayoutLMv2Pooler', 'XLMRobertaPooler', 'MobileBertPooler', 'BlipTextPooler', 'DeiTPooler', 'DPTViTPooler', 'CamembertPooler', 'AlignTextPooler', 'ViTPooler', 'XLMPoolerAnswerClass', 'XLMPoolerEndLogits', 'XLMPoolerStartLogits', 'BertPooler', 'IJepaPooler', 'ClapTextPooler', 'HieraPooler', 'ChineseCLIPTextPooler', 'VivitPooler', 'XLMRobertaXLPooler', 'AltRobertaPooler', 'LongformerPooler', 'YolosPooler', 'BeitPooler', 'RobertaPooler', 'TvpPooler', 'BridgeTowerPooler', 'ContextPooler', 'RobertaPreLayerNormPooler', 'XLNetPoolerAnswerClass', 'XLNetPoolerEndLogits', 'XLNetPoolerStartLogits', 'MPNetPooler', 'BertPooler', 'ErniePooler', 'ErniePooler', 'BrosPooler', 'IBertPooler', 'FlaubertPoolerAnswerClass', 'FlaubertPoolerEndLogits', 'FlaubertPoolerStartLogits', 'RoCBertPooler', 'MegatronBertPooler', 'XmodPooler', 'LayoutLMPooler', 'FNetPooler', 'CaninePooler', 'LiltPooler', 'RemBertPooler',]
+['SEWDIntermediate', 'VisualBertIntermediate', 'Blip2QFormerIntermediate', 'FlavaIntermediate', 'VideoMAEIntermediate', 'SwinIntermediate', 'ViltIntermediate', 'ElectraIntermediate', 'EsmIntermediate', 'EvollaSaProtIntermediate', 'EvollaSaProtIntermediate', 'LukeIntermediate', 'DebertaIntermediate', 'DonutSwinIntermediate', 'MaskFormerSwinIntermediate', 'MarkupLMIntermediate', 'CpmAntIntermediate', 'EsmIntermediate', 'BigBirdIntermediate', 'BertGenerationIntermediate', 'ViTMSNIntermediate', 'LxmertIntermediate', 'TapasIntermediate', 'Data2VecVisionIntermediate', 'Data2VecTextIntermediate', 'DinatIntermediate', 'LayoutLMv2Intermediate', 'LayoutLMv3Intermediate', 'XLMRobertaIntermediate', 'MobileBertIntermediate', 'BlipTextIntermediate', 'DeiTIntermediate', 'DPTViTIntermediate', 'YosoIntermediate', 'CamembertIntermediate', 'RoFormerIntermediate', 'TimesformerIntermediate', 'AlignTextIntermediate', 'ViTIntermediate', 'BertIntermediate', 'IJepaIntermediate', 'ClapAudioIntermediate', 'ClapTextIntermediate', 'MobileViTIntermediate', 'ConvBertIntermediate', 'ChineseCLIPTextIntermediate', 'VivitIntermediate', 'XLMRobertaXLIntermediate', 'AltRobertaIntermediate', 'SplinterIntermediate', 'LongformerIntermediate', 'YolosIntermediate', 'NystromformerIntermediate', 'BeitIntermediate', 'CvtIntermediate', 'RobertaIntermediate', 'TvpIntermediate', 'ASTIntermediate', 'BridgeTowerIntermediate', 'DebertaV2Intermediate', 'Swinv2Intermediate', 'RobertaPreLayerNormIntermediate', 'MPNetIntermediate', 'ErnieIntermediate', 'InstructBlipQFormerIntermediate', 'BrosIntermediate', 'MraIntermediate', 'InstructBlipVideoQFormerIntermediate', 'IBertIntermediate', 'ViTMAEIntermediate', 'RoCBertIntermediate', 'MegatronBertIntermediate', 'XmodIntermediate', 'LayoutLMIntermediate', 'GitIntermediate', 'FNetIntermediate', 'CanineIntermediate', 'LiltIntermediate', 'RemBertIntermediate', 'Swin2SRIntermediate',]

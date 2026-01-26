@@ -23,7 +23,7 @@ class GatherLoop:
             if module_path.rsplit(".", 1)[-1] not in EXCLUSIONS["exclusion_list"]:
                 build_entries.extend([BuildEntry(model_type=model_type, model=model) for model_type, model in get_type_hints(pipeline.__init__).items()])
             build_entries.append(BuildEntry(model_type="pipeline", model=pipeline))
-        self.model_db = {x.attributes.model_name: x.attributes.model_parameters for x in build_entries}
+        self.model_db = {x.attributes.model_name: x.attributes.model.layers for x in build_entries for x in build_entries if hasattr(x.attributes, "layers")}
         # TODO: for data in prepared_data:
 
     def extract_subclass_data(self, package_name: str, base_class_name: str):

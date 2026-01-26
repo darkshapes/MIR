@@ -1,0 +1,20 @@
+{
+    "components": [
+        "scheduler",
+        "vae",
+        "unet",
+        "transformer",
+        "transformer_2",
+        "transformer_3",
+        "text_model",
+        "text_model_2",
+        "text_model_3",
+        "text_model_4",
+        "tokenizer",
+        "tokenizer_1",
+        "tokenizer_2",
+        "tokenizer_3",
+        "tokenizer_4",
+        "feature_extractor"
+    ]
+}

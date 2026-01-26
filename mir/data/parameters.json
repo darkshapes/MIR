@@ -1,0 +1,30 @@
+{
+    "BarkConfig": {
+        "n_head": [
+            ""
+        ]
+    },
+    "AriaTextConfig": {
+        "vision_config": [
+            ""
+        ],
+        "text_config": [
+            ""
+        ]
+    },
+    "CwmConfig": {
+        "n_head": [
+            ""
+        ]
+    },
+    "BertConfig": {
+        "act_dropout": [
+            ""
+        ]
+    },
+    "TimmWrapperConfig": {
+        "_resnet_": [
+            ""
+        ]
+    }
+}

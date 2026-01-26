@@ -1,113 +1,147 @@
 # SPDX-License-Identifier: MPL-2.0 AND LicenseRef-Commons-Clause-License-Condition-1.0
 # <!-- // /*  d a r k s h a p e s */ -->
 
-from typing import List
-from mir.config.constants import PARAMETERS_SUFFIX, BREAKING_SUFFIX
+from dataclasses import dataclass, field
+
+from mir.model import ModelAttributes
+from mir.package import MIRPackage
 
 
-def make_mir_tag(repo_title: str, decoder=False, data: dict = None) -> List[str]:
-    """Create a mir label from a repo path\n
-    :param mir_prefix: Known period-separated prefix and model type
-    :param repo_path: Typical remote source repo path, A URL without domain
-    :return: The assembled mir tag with compatibility pre-separated"""
-    import re
+@dataclass
+class MIRTag:
+    """Represents a MIR tag associated with a specific domain and model data.\n
 
-    # print(repo_title)
+    Attributes:\n
+        prepared_data: Object containing prepared model data.
+        arch: The architecture component of the MIR tag (generated).
+        series: The series component of the MIR tag (generated).
+        comp The compatibility component of the MIR tag (generated, optional).
+    """
 
-    root = "decoder" if decoder else "*"
-    repo_title = repo_title.split(":latest")[0]
-    repo_title = repo_title.split(":Q")[0]
-    repo_title = repo_title.split(r"/")[-1].lower()
-    pattern = r"^.*[v]?(\d{1}+\.\d).*"
-    match = re.findall(pattern, repo_title)
-    if match:
-        if next(iter(match)):
-            repo_title = repo_title.replace(next(iter(match))[-1], "")
-    parts = repo_title.replace(".", "").split("-")
-    if len(parts) == 1:
-        parts = repo_title.split("_")
-    subtraction_prefixes = r"\d.b-|\-rl|tiny|large|mlx|onnx|gguf|medium|base|multimodal|mini|instruct|full|:latest|preview|small|pro|beta|hybrid|plus|dpo|community"
+    attributes: ModelAttributes
+    package: MIRPackage
+    decoder: bool = False
+    arch: str = field(init=False)
+    series: str = field(init=False)
 
-    pattern_2 = re.compile(PARAMETERS_SUFFIX)
-    clean_parts = [re.sub(pattern_2, "", segment.lower()) for segment in parts]
-    cleaned_string = "-".join([x for x in clean_parts if x])
-    cleaned_string = re.sub(subtraction_prefixes, "", cleaned_string)
-    cleaned_string = re.sub("-it", "", cleaned_string.replace("-bit", "")).replace("--", "-")
-    cleaned_string = cleaned_string.replace("-b-", "")
-    # print(cleaned_string)
-    suffix_match = re.findall(BREAKING_SUFFIX, cleaned_string)  # Check for breaking suffixes first
-    if suffix_match:
-        suffix = next(iter(suffix for suffix in suffix_match[0] if suffix))
-        cleaned_string = re.sub(suffix.lower(), "-", cleaned_string).rstrip("-,")
-    else:
-        suffix = root
-    cleaned_string = re.sub(r"[._]+", "-", cleaned_string.lower()).strip("-_")
-    return (cleaned_string, suffix)
+    def __post_init__(self) -> None:
+        """Initializes MIRTag instance, setting up database connection and generating package and MIR tag information."""
 
+        if "scheduler" in self.attributes.model_type:
+            self.tag_scheduler()
+        elif "tokenizer" in self.attributes.model_type:
+            self.arch = "encoder"
+            self.generate_series_and_comp()
+            self.comp = self.series
+            self.series = "tokenizer"
+        else:
+            self.generate_arch()
+            self.generate_series_and_comp()
+        if hasattr(self, "comp"):
+            self.flat = f"{self.arch}.{self.series}.{self.comp}"
+        else:
+            self.flat = f"{self.arch}.{self.series}"
 
-def make_scheduler_tag(series_name: str) -> tuple[str]:
-    """Create a mir label from a scheduler operation\n
-    :param class_name: Known period-separated prefix and model type
-    :return: The assembled mir tag with compatibility pre-separated"""
+    def generate_arch(self) -> None:
+        """Generates the architecture part of the MIR tag based on prepared data.\n
+        :raises ValueError: If no suitable tag can be determined."""
 
-    import re
+        arch = self.tag_architecture()  # type: ignore
+        assert arch is not None, f"Unrecognized model type, no tag matched {self.attributes.model_name} with {self.attributes}"
+        self.arch = arch
 
-    comp_name = None
-    patterns = [r"Schedulers", r"Multistep", r"Solver", r"Discrete", r"Scheduler"]
-    for scheduler in patterns:
-        compiled = re.compile(scheduler)
-        match = re.search(compiled, series_name)
+    def generate_series_and_comp(self) -> None:
+        """Generates the MIR tag components from a repository title.\n
+        :param repo_title: The title of the repository from which to derive the MIR tag.
+        :param decoder: Boolean flag indicating if the model is a decoder.
+        :return: A tuple containing the cleaned tag string and suffix."""
+
+        import re
+
+        from mir import BREAKING, PARAMETERS
+
+        repo_path = self.package.repo.split(":latest")[0]
+        repo_path = repo_path.split(":Q")[0]
+        repo_path = repo_path.split(r"/")[-1].lower()
+        pattern = r"^.*[v]?(\d{1}+\.\d).*"
+        match = re.findall(pattern, repo_path)
         if match:
-            comp_name = match.group()
-            comp_name = comp_name.lower()
-            break
-    for pattern in patterns:
-        series_name = re.sub(pattern, "", series_name)
-    series_name.lower()
-    # if not comp_name:
-    #     comp_name = "*"
-    return series_name, comp_name
+            if next(iter(match)):
+                repo_path = repo_path.replace(next(iter(match))[-1], "")
+        parts = repo_path.replace(".", "").split("-")
+        if len(parts) == 1:
+            parts = repo_path.split("_")
+        subtraction_prefixes = r"\d.b-|\-rl|tiny|large|mlx|onnx|gguf|medium|base|multimodal|mini|instruct|full|:latest|preview|small|pro|beta|hybrid|plus|dpo|community"
+
+        pattern_2 = re.compile(PARAMETERS)
+        clean_parts = [re.sub(pattern_2, "", segment.lower()) for segment in parts]
+        cleaned_string = "-".join([x for x in clean_parts if x])
+        cleaned_string = re.sub(subtraction_prefixes, "", cleaned_string)
+        cleaned_string = re.sub("-it", "", cleaned_string.replace("-bit", "")).replace("--", "-")
+        cleaned_string = cleaned_string.replace("-b-", "")
+        suffix_match = re.findall(BREAKING, cleaned_string)  # Check for breaking suffixes first
+        if suffix_match:
+            suffix = next(iter(suffix for suffix in suffix_match[0] if suffix))
+            cleaned_string = re.sub(suffix.lower(), "-", cleaned_string).rstrip("-,")
+        else:
+            suffix = "*"
+            if self.attributes.model_type == "decoder":
+                suffix = "decoder"
+        cleaned_string = re.sub(r"[.-]+", "_", cleaned_string.lower()).strip("-_")
+        self.series = cleaned_string
+        if suffix != "*":
+            self.comp = suffix
+
+    def tag_architecture(self) -> str | None:
+        """Set type of MIR prefix depending on model type\n
+        :param library: Library source of the original data
+        :raises ValueError: Model type not detected
+        :return: MIR prefix based on model configuration"""
+        from mir.data import NN_FILTER
+
+        library = self.attributes.library
+
+        flags = NN_FILTER["arch"][library]  # pylint:disable=unsubscriptable-object
+
+        if library == "diffusers":
+            for module_type, module_obj in kwargs.items():
+                module_name = module_obj.__module__
+                library_path = f"{library}.models."
+                if library_path in module_name:
+                    module_name = module_name.replace(library_path, "").split(".")[0]
+                    if mir_prefix := [match for match in flags if module_name in flags[match]]:
+                        return mir_prefix[0]
+        for mir_prefix, key_match in flags.items():
+            if any(kwargs.get(param, None) for param in key_match):
+                return mir_prefix
+        return None
+
+    def tag_scheduler(self) -> tuple[str, str]:
+        """Create a mir label from a scheduler operation\n
+        :param class_name: Known period-separated prefix and model type
+        :return: The assembled mir tag with compatibility pre-separated"""
+        import re
+
+        scheduler_name = self.attributes.model_name
+        series_name = None
+        comp_name = None
+        patterns = [r"Schedulers", r"Multistep", r"Solver", r"Discrete", r"Scheduler"]
+        for scheduler in patterns:
+            compiled = re.compile(scheduler)
+            match = re.search(compiled, scheduler_name)
+            if match:
+                comp_name = match.group()
+                comp_name = comp_name.lower()
+                break
+        for pattern in patterns:
+            series_name = re.sub(pattern, "", scheduler_name)
+        if not series_name:
+            series_name = scheduler_name
+        series_name.lower()
+        assert series_name is not None, "Expected series tag but got None"
+        assert comp_name is not None, "Expected compatibility tag but got None"
+        return series_name, comp_name
 
 
-def tag_base_model(repo_path: str, class_name: str, addendum: dict | None = None) -> tuple[str]:
-    """Convert model repo paths to MIR tags, classifying by feature\n
-    :param name: Repo path
-    :param class_name: The HF transformers class for the model
-    :return: A segmented MIR tag useful for appending index entries"""
-
-    from mir.inspect.classes import extract_init_params
-    from mir.indexers import flag_config
-
-    annotations = extract_init_params(class_name.replace("Model", "Config"), "transformers")
-    mir_prefix = flag_config(transformers=True, **annotations)
-    base_series, base_comp = make_mir_tag(repo_path)
-    if not addendum:
-        return mir_prefix, base_series, base_comp
-    else:
-        mir_prefix = f"info.{mir_prefix}"
-    return mir_prefix, base_series, {base_comp: addendum}
-
-
-def tag_pipe(repo_path: str, class_name: str, addendum: dict) -> tuple:
-    """Convert model repo pipes to MIR tags, classifying by feature\n
-    :param name: Repo path
-    :param class_name: The HF Diffusers class for the model
-    :return: A segmented MIR tag useful for appending index entries"""
-
-    from mir.indexers import create_pipe_entry
-
-    mir_series, mir_data = create_pipe_entry(repo_path=repo_path, class_name=class_name)
-    mir_prefix, mir_series = mir_series.rsplit(".", 1)
-    mir_comp = list(mir_data)[0]
-    return mir_prefix, mir_series, {mir_comp: addendum}
-
-
-# def tag_mlx_model(repo_path: str, class_name: str, addendum: dict) -> tuple[str]:
-#     dev_series, dev_comp = make_mir_tag("black-forest-labs/FLUX.1-dev")
-#     schnell_series, schnell_comp = make_mir_tag("black-forest-labs/FLUX.1-schnell")
-#     series, comp = make_mir_tag(repo_path)
-#     if class_name == "Flux1":
-#         mir_prefix = "info.dit"
-#         base_series = dev_series
-#         mir_comp = series
-#         return mir_prefix, base_series, {base_comp: addendum}
+def tag_tokenizer():
+    pass

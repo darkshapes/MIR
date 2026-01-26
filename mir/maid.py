@@ -5,67 +5,77 @@
 
 # pylint: disable=possibly-used-before-assignment, line-too-long
 import os
-from typing import Any, Callable, List, Optional
+from typing import Any, List, Optional
 
-from mir.config.constants import MIR_PATH_NAMED
-from mir.config.json_io import read_json_file, write_json_file
-from mir.config.console import dbuq
+from mir import MIR_PATH_NAMED
+from mir.nesting import MIRNesting
+from mir.json_io import read_json_file, write_json_file
 
 
 class MIRDatabase:
-    """Machine Intelligence Resource Database"""
+    """Machine Intelligence Resource database object\n
+    Database query and read/write operations"""
 
-    def __init__(self, database: dict | None = None) -> None:
+    def __init__(self, db: dict | None = None) -> None:
+        from chanfig import NestedDict
         from json.decoder import JSONDecodeError
+        from mir import DBUQ
 
-        if not database:
+        if not db:
+            self.db = NestedDict()
             try:
-                self.database = read_json_file(MIR_PATH_NAMED)
+                self.read_from_disk()
             except JSONDecodeError as error_log:
-                dbuq(error_log)
-                self.database = {}
+                DBUQ(error_log)
+                self.db = NestedDict()
 
-    def add(self, resource: dict[str, Any]) -> None:
-        """Merge pre-existing MIR entries, or add new ones
-        :param resource: Entry to apply
-        """
-        parent_key = next(iter(resource))
-        if self.database is not None:
-            if self.database.get(parent_key, 0):
-                self.database[parent_key] = {**self.database[parent_key], **resource[parent_key]}
+    def add_data(self, mir_nest: MIRNesting, *args) -> None:
+        """Add entry to MIR Database\n
+        :param mir_tag:  An instance of MIRTag to be added to the database"""
+        from chanfig import NestedDict
+
+        for nested_tag in args:
+            self._include_data(self.db, getattr(mir_nest, nested_tag))
+        self.db = NestedDict(self.db)
+
+    def _include_data(self, target: dict[str, Any], source: dict[str, Any]):
+        """Recursively merges `source` into `target` without overwriting nested dictionaries or their entries."""
+        for key, value in source.items():
+            if isinstance(value, dict) and key in target and isinstance(target[key], dict):  # 递归 recurse
+                self._include_data(target[key], value)
             else:
-                self.database[parent_key] = resource[parent_key]
+                if key not in target or not isinstance(target[key], dict):
+                    target.setdefault(key, value)
 
     def write_to_disk(self, data: Optional[dict] = None) -> None:  # pylint:disable=unused-argument
         """Save data to JSON file\n"""
 
-        from mir.config.console import nfo
+        from mir import NFO
 
         if not os.path.exists(MIR_PATH_NAMED):
             mode = "x"
-            if not self.database:
-                self.database = {"expected": "data"}
         else:
             mode = "w"
         # except (FileNotFoundError, OSError) as error_log:
         #     nfo(f"MIR file not found before write, regenerating... {error_log}")
 
-        write_json_file(os.path.dirname(MIR_PATH_NAMED), file_name="mir.json", data=self.database, mode=mode)
+        write_json_file(os.path.dirname(MIR_PATH_NAMED), file_name="mir.json", data=self.db, mode=mode)
         written_data = self.read_from_disk()
-        nfo(f"Wrote {len(written_data)} lines to MIR database file.")
-        self.database = written_data
+        NFO(f"Wrote {len(written_data)} lines to MIR database file.")
+        self.db = written_data
 
     def read_from_disk(self, data: Optional[dict] = None) -> dict[str, Any]:
         """Populate mir database\n
         :param data: mir decorator auto-populated, defaults to None
         :return: dict of MIR data"""
         if not os.path.exists(MIR_PATH_NAMED):
-            return {}
+            self.write_to_disk({})
+            return self.db
         else:
-            self.database = read_json_file(MIR_PATH_NAMED)
-            return self.database
+            self.db = read_json_file(MIR_PATH_NAMED)
+            return self.db
 
-    def _stage_maybes(self, maybe_match: str, target: str, series: str, compatibility: str) -> List[str]:
+    def _stage_maybes(self, maybe_match: str, target: str, series: str, compatibility: str) -> list[str | bool]:
         """Process a single value for matching against the target\n
         :param value: An unknown string value
         :param target: The search target
@@ -75,19 +85,19 @@ class MIRDatabase:
         :return: A list of likely options and their MIR paths"""
         import re
 
-        from mir.config.constants import SEARCH_SUFFIX
+        from mir import SEARCH
 
         results = []
         if isinstance(maybe_match, str):
-            maybe_match = [maybe_match]
+            maybe_match: list[str] = [maybe_match]
         elif isinstance(maybe_match, dict):
             if isinstance(next(iter(maybe_match)), int):
                 maybe_match = list(maybe_match.values())
             else:
                 maybe_match = list(maybe_match.keys())
         for option in maybe_match:
-            option_lower = re.sub(SEARCH_SUFFIX, "", option.lower())
-            target = re.sub(SEARCH_SUFFIX, "", target.lower())
+            option_lower = re.sub(SEARCH, "", option.lower())
+            target = re.sub(SEARCH, "", target.lower())
             if option_lower:
                 if option_lower:
                     if option_lower in target:
@@ -97,7 +107,7 @@ class MIRDatabase:
         return results
 
     @staticmethod
-    def grade_maybes(matches: List[List[str]], target: str) -> list[str, str]:
+    def grade_maybes(matches: List[List[str]], target: str) -> list[str] | None:
         """Evaluate and select the best match from a list of potential matches\n
         :param matches: Possible matches to compare
         :param target: Desired entry to match
@@ -146,15 +156,14 @@ class MIRDatabase:
         :raises KeyError: Target string not found
         """
         import re
-        from mir.config.console import nfo
+        from mir import NFO
 
         parameters = r"-gguf|-exl2|-exl3|-onnx|-awq|-mlx|-ov"  #
         target = target.lower().strip("-")
         target = re.sub(parameters, "", target)
-        self.matches = None
         self.matches = []
 
-        for series, comp in self.database.items():
+        for series, comp in self.db.items():
             if (not domain) or series.startswith(domain):
                 for compatibility, fields in comp.items():
                     if maybe_match := fields.get(field):
@@ -169,121 +178,5 @@ class MIRDatabase:
         if best_match := self.grade_maybes(self.matches, target):
             return best_match
         else:
-            nfo(f"Query '{target}' not found when {len(self.database)}'{field}' options searched\n")
+            NFO(f"Query '{target}' not found when {len(self.db)}'{field}' options searched\n")
             return None
-
-
-def main(mir_db: Callable | None = None, remake: bool = True) -> None:
-    """Build the database"""
-    from sys import modules as sys_modules
-
-    if __name__ != "__main__" and "pytest" not in sys_modules:  #
-        import argparse
-
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.RawTextHelpFormatter,
-            description="Build a custom MIR model database from the currently installed system environment.\nOffline function.",
-            usage="mir-maid",
-            epilog="""Does NOT include results of `mir-task` and `mir-pipe`. These commands should be run separately. Output:
-            2025-08-03 14:22:47 INFO     ('Wrote 0 lines to MIR database file.',)
-            2025-08-03 14:22:47 INFO     ('Wrote #### lines to MIR database file.',)""",
-        )
-        parser.add_argument(
-            "-r",
-            "--remake_off",
-            action="store_true",
-            default=False,
-            help="Prevent erasing and remaking the MIR database file (default: False, always start from a completely empty MIR file)",
-        )
-
-        args = parser.parse_args()
-        remake = not args.remake_off
-
-    from mir.automata import (
-        add_mir_audio,
-        add_mir_diffusion,
-        add_mir_dtype,
-        add_mir_llm,
-        add_mir_lora,
-        add_mir_schedulers,
-        add_mir_vae,
-        hf_pkg_to_mir,
-        mir_update,
-    )
-    from mir.config.json_io import write_json_file
-
-    if remake:
-        os.remove(MIR_PATH_NAMED)
-        folder_path_named = os.path.dirname(MIR_PATH_NAMED)
-        mode = "x"
-    else:
-        mode = "w"
-    write_json_file(folder_path_named, file_name="mir.json", data={"expected": "data"}, mode=mode)
-    mir_db = MIRDatabase()
-    mir_db.database.pop("expected", {})
-    hf_pkg_to_mir(mir_db)
-    add_mir_dtype(mir_db)
-    add_mir_schedulers(mir_db)
-    add_mir_lora(mir_db)
-    add_mir_audio(mir_db)
-    add_mir_diffusion(mir_db)
-    add_mir_llm(mir_db)
-    add_mir_vae(mir_db)
-    mir_update(mir_db)
-    mir_db.write_to_disk()
-
-
-if __name__ == "__main__":
-    remake: bool = True
-    tasks = True
-    pipes = True
-
-    from sys import modules as sys_modules
-
-    if "pytest" not in sys_modules:  #
-        import argparse
-
-        from mir.config.console import nfo
-
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.RawTextHelpFormatter,
-            description="Build a custom MIR model database from the currently installed system environment.\nOffline function.",
-            usage="python -m nnll.mir.maid",
-            epilog="""Includes `mir-task` and `mir-pipe` by default. Output:
-            2025-08-15 19:41:18 INFO     ('Wrote 0 lines to MIR database file.',)
-            2025-08-15 19:38:48 INFO     ('Wrote ### lines to MIR database file.',)
-                                INFO     ('Wrote ### lines to MIR database file.',)
-                                INFO     ('Wrote ### lines to MIR database file.',)""",
-        )
-        parser.add_argument(
-            "-r",
-            "--remake_off",
-            action="store_true",
-            default=False,
-            help="Don't erase and remake the MIR database (default: False)",
-        )
-        parser.add_argument(
-            "-t",
-            "--tasks_off",
-            action="store_true",
-            default=False,
-            help="Don't append task information to the MIR database (default: False)",
-        )
-        parser.add_argument(
-            "-p",
-            "--pipes_off",
-            action="store_true",
-            default=False,
-            help="Don't append pipeline information to the MIR database (default: False)",
-        )
-
-        args = parser.parse_args()
-        remake = not args.remake_off
-        tasks = not args.tasks_off
-        pipes = not args.pipes_off
-
-    main(remake=remake)
-    from mir.inspect.tasks import pipe, run_task
-
-    mir_db = run_task()
-    pipe(mir_db)

@@ -24,9 +24,13 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
+    "chanfig>=0.0.114",
     "diffusers>=0.35.2",
+    "ftfy>=6.3.1",
     "huggingface-hub[hf-xet]>=1.1.7",
+    "numpy>=2.4.1",
     "pydantic>=2.12.5",
+    "sentencepiece>=0.2.1",
     "tokenizers>=0.22.1",
     "torch>=2.9.1",
     "torchvision>=0.24.1",
@@ -37,7 +41,8 @@ Homepage      = "https://github.com/darkshapes/MIR"
 Documentation = "https://github.com/darkshapes/sdbx/wiki"
 
 [project.scripts]
-mir = "mir.__init__:main"
+mir = "mir.generate.__main__:main"
+mir-nn = "mir.nn_walk:main"
 
 [tool.setuptools_scm]
 version_scheme = "guess-next-dev"
@@ -67,3 +72,8 @@ dev = [
 
 [tool.ruff.lint]
 ignore = ["E731"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
